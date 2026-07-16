@@ -192,9 +192,9 @@
         16,
         32
       ],
-      "precision": "atol=0.03125, rtol=1.5",
+      "precision": "atol=0.01, rtol=0.01",
       "cube_badge": "Cube v1",
-      "limitation": "",
+      "limitation": "PyPTO BLOCKED_BACKEND (FC4000 Cube tiling). Ascend C uses per-matrix dispatch.",
       "correctness": {
         "torch": "PASS",
         "ascendc": "PASS",
@@ -204,14 +204,22 @@
         "torch": {
           "status": "COMPLETE",
           "method": "msprof",
-          "kernel_type": "KERNEL_AIC_CUBE"
+          "kernel_type": "KERNEL_AICORE",
+          "b1_primary_us": 12.2,
+          "b32_primary_us": 63.3,
+          "b1_all_devices_us": 38.0,
+          "b32_all_devices_us": 224.6
         },
         "ascendc": {
           "status": "COMPLETE",
-          "method": "msprof",
-          "kernel_type": "KERNEL_AIC_CUBE",
-          "b1_us": 75.7,
-          "b32_us": 2381.0
+          "method": "msprof + aclrtEvent",
+          "kernel_type": "KERNEL_AICORE (__cube__ kernel)",
+          "ascendc_impl": "TRUE_CUBE_IMPLEMENTATION",
+          "cube_api": "AscendC::Matmul from lib/matmul_intf.h",
+          "b1_primary_us": 10.4,
+          "b32_primary_us": 10.5,
+          "b1_host_latency_us": 74.5,
+          "b32_host_latency_us": 2416.3
         },
         "pypto": {
           "status": "N/A"

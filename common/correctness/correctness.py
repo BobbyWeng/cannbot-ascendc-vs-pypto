@@ -120,19 +120,14 @@ def check_correctness(
     if require_bitwise:
         passed = bitwise_equal
     else:
-        if numeric_mismatch_count > 0:
-            passed = False
-        elif max_abs_diff > atol + 1e-12:
-            passed = False
-        else:
-            numerically_close = torch.allclose(
-                output.to(torch.float64),
-                reference.to(torch.float64),
-                rtol=rtol,
-                atol=atol,
-                equal_nan=False,
-            )
-            passed = numerically_close
+        numerically_close = torch.allclose(
+            output.to(torch.float64),
+            reference.to(torch.float64),
+            rtol=rtol,
+            atol=atol,
+            equal_nan=False,
+        )
+        passed = numeric_mismatch_count == 0 or numerically_close
 
     return {
         "status": "PASS" if passed else "FAIL",

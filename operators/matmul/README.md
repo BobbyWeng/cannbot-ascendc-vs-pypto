@@ -3,12 +3,12 @@
 ## Status: COMPLETE_WITH_LIMITATION
 
 - **Torch**: ✅ PASS (all 6 batches, atol=0.03125, rtol=1.5)
-- **Ascend C**: ⚠️ TRUE_DEVICE_AIVEC (Vector path with FP32 accumulation, NOT Cube)
+- **Ascend C**: ✅ TRUE_CUBE_IMPLEMENTATION (Cube MMAD via `MatmulImpl`, FP16 accumulation)
 - **PyPTO**: ❌ BLOCKED_BACKEND (backend CompileFunction error)
 
 This is the first Cube-class operator in the project. It compares three routes:
 1. **Torch** — `torch.matmul` baseline (uses `aclnnMatmul_BatchMatMulNd_BatchMatMulV2` Cube path)
-2. **Ascend C** — AIC Vector MatMul (scalar FP32 accumulation)
+2. **Ascend C** — Cube MMAD via `MatmulImpl` (`__cube__` kernel, GM→L1→L0A/L0B→MMAD→L0C→Fixpipe→GM)
 3. **PyPTO** — `pypto.frontend.jit` with `pypto.matmul` (BLOCKED_BACKEND)
 
 ## Shape

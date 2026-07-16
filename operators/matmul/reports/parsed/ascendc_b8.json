@@ -1,0 +1,28 @@
+{
+  "kernel_count": 67200,
+  "logical_calls": 100,
+  "kernels_per_logical_call": 672.0,
+  "all_device_kernels_us_per_call": 2382.437,
+  "primary_compute_kernel_us": 10.16,
+  "primary_kernel_name": "matmul_kernel",
+  "primary_kernel_type": "KERNEL_AICORE",
+  "kernel_names": [
+    "matmul_kernel"
+  ],
+  "kernel_types": [
+    "KERNEL_AICORE"
+  ],
+  "kernel_type_breakdown": {
+    "KERNEL_AICORE": {
+      "count": 67200,
+      "total_us": 238243.72,
+      "mean_us": 3.545,
+      "per_call_us": 2382.437
+    }
+  },
+  "compute_kernel_types": [
+    "KERNEL_AICORE"
+  ],
+  "executor_kernel_types": [],
+  "total_kernel_duration_all_iters_us": 238243.72
+}

@@ -14,7 +14,7 @@
   },
   "operator_count": 12,
   "status_summary": {
-    "COMPLETE": 3,
+    "COMPLETE": 4,
     "COMPLETE_WITH_LIMITATION": 8,
     "PARTIAL": 0,
     "INCOMPLETE": 0
@@ -243,16 +243,22 @@
         16,
         32
       ],
-      "precision": "atol=0.03125, rtol=1.5",
+      "precision": "atol=0.01, rtol=0.01",
       "cube_class": true,
       "routes": {
         "torch": {
           "implementation_status": "COMPLETE",
-          "correctness": "PASS (all 6 batches, atol=0.03125)",
+          "correctness": "PASS (all 6 batches, atol=0.01)",
           "profiler": {
             "status": "COMPLETE",
             "method": "msprof",
-            "primary_kernel_type": "KERNEL_AIC_CUBE"
+            "primary_kernel_type": "KERNEL_AICORE",
+            "kernel_name": "aclnnMatmul_BatchMatMulNd_BatchMatMulV2",
+            "b1_primary_us": 12.2,
+            "b32_primary_us": 63.3,
+            "b1_all_devices_us": 38.0,
+            "b32_all_devices_us": 224.6,
+            "kernels_per_call": 7
           }
         },
         "ascendc": {
@@ -261,22 +267,27 @@
           "correctness": "PASS (all 6 batches, max_abs=0.015625)",
           "profiler": {
             "status": "COMPLETE",
-            "method": "msprof",
-            "primary_kernel_type": "KERNEL_AIC_CUBE",
-            "b1_primary_us": 75.7,
-            "b32_primary_us": 2381.0
+            "method": "msprof + aclrtEvent",
+            "primary_kernel_type": "KERNEL_AICORE (__cube__ kernel)",
+            "kernel_name": "matmul_kernel",
+            "b1_primary_us": 10.4,
+            "b32_primary_us": 10.5,
+            "b1_host_latency_us": 74.5,
+            "b32_host_latency_us": 2416.3,
+            "kernels_per_call": "12-384 (per-matrix dispatch)"
           }
         },
         "pypto": {
           "implementation_status": "BLOCKED_BACKEND",
           "correctness": "N/A",
+          "limitation": "FC4000 Cube tiling invalid tile values. All matmul shapes fail.",
           "profiler": {
             "status": "N/A"
           }
         }
       },
-      "correctness_coverage": "FULL",
-      "profiler_coverage": "FULL",
+      "correctness_coverage": "FULL (Torch + Ascend C; PyPTO N/A)",
+      "profiler_coverage": "FULL (Torch + Ascend C msprof; PyPTO N/A)",
       "dashboard_synced": true,
       "completeness_gates": [
         1,
@@ -346,6 +357,9 @@
     }
   ],
   "ascendc_implementation_audit": {
+    "TRUE_CUBE_IMPLEMENTATION": [
+      "matmul"
+    ],
     "TRUE_DEVICE_IMPLEMENTATION": [
       "relu",
       "mul",
