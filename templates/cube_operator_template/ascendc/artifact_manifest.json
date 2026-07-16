@@ -1,0 +1,18 @@
+{
+  "operator": "{{op_name}}",
+  "implementation": "ascendc",
+  "cube_class": true,
+  "source_files": [
+    "src/{{op_name}}_kernel.asc",
+    "src/{{op_name}}_host.cpp",
+    "src/{{op_name}}_tiling.h",
+    "src/cube_config.h",
+    "src/cube_schedule.h",
+    "src/cube_copy.h",
+    "src/cube_compute.h",
+    "src/cube_store.h"
+  ],
+  "config_files": ["CMakeLists.txt"],
+  "kernel_type": "KERNEL_AIC_CUBE",
+  "last_updated": "{{timestamp}}"
+}

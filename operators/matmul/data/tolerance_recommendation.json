@@ -1,0 +1,57 @@
+{
+  "tolerance_stats": [
+    {
+      "batch": 1,
+      "max_abs_diff": 0.0078125,
+      "mean_abs_diff": 9.999712347052991e-07,
+      "max_rel_diff": 0.00494233937934041,
+      "mean_rel_diff": 1.2941677596245427e-06,
+      "rmse": 6.045739064575173e-05
+    },
+    {
+      "batch": 2,
+      "max_abs_diff": 0.0078125,
+      "mean_abs_diff": 1.0768999345600605e-06,
+      "max_rel_diff": 0.11111108213663101,
+      "mean_rel_diff": 1.8821202729668585e-06,
+      "rmse": 6.361169653246179e-05
+    },
+    {
+      "batch": 4,
+      "max_abs_diff": 0.0078125,
+      "mean_abs_diff": 1.119960302276013e-06,
+      "max_rel_diff": 0.1808873564004898,
+      "mean_rel_diff": 1.938539980983478e-06,
+      "rmse": 6.579992623301223e-05
+    },
+    {
+      "batch": 8,
+      "max_abs_diff": 0.0078125,
+      "mean_abs_diff": 1.1158089137097704e-06,
+      "max_rel_diff": 0.15599998831748962,
+      "mean_rel_diff": 1.750267983879894e-06,
+      "rmse": 6.67233471176587e-05
+    },
+    {
+      "batch": 16,
+      "max_abs_diff": 0.015625,
+      "mean_abs_diff": 1.098532493415405e-06,
+      "max_rel_diff": 0.3239435851573944,
+      "mean_rel_diff": 1.983672291316907e-06,
+      "rmse": 6.385293090716004e-05
+    },
+    {
+      "batch": 32,
+      "max_abs_diff": 0.015625,
+      "mean_abs_diff": 1.167887944575341e-06,
+      "max_rel_diff": 0.739129900932312,
+      "mean_rel_diff": 2.0329061953816563e-06,
+      "rmse": 6.774048961233348e-05
+    }
+  ],
+  "recommended_atol": 0.03125,
+  "recommended_rtol": 1.47826,
+  "max_abs_diff": 0.015625,
+  "max_rel_diff": 0.739129900932312,
+  "note": "FP16 MatMul accumulation differs from FP32 accumulation. Tolerance must account for this."
+}

@@ -53,9 +53,9 @@ cannbot_ascendc_vs_pypto/
 | expand | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ✅ PASS (dispatch) | ⚠️ Major gaps | ❌ No msprof |
 | transpose | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ⚠️ Partial (small PASS) | ⚠️ Major gaps | ❌ No msprof |
 | reduce_sum | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ✅ SUCCESS (unverified) | ⚠️ Major gaps | ❌ No msprof |
-| **matmul** | **🧊 INCOMPLETE** | ⏳ Pending | ⏳ Pending (Cube 🧊) | ⏳ Pending | ⏳ Pending | ⏳ Pending |
+| **matmul** | **⚠️ COMPLETE_WITH_LIMITATION** | ✅ PASS (atol/rtol) | ⚠️ TRUE_DEVICE_AIVEC | ❌ BLOCKED_BACKEND | ✅ msprof |
 
-**Summary**: 2 COMPLETE, 6 COMPLETE_WITH_LIMITATION, 3 PARTIAL, 1 INCOMPLETE (matmul Cube)
+  **Summary**: 2 COMPLETE, 7 COMPLETE_WITH_LIMITATION, 3 PARTIAL
 
 ## Key Corrections vs Previous Reports
 

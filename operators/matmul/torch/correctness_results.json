@@ -1,0 +1,914 @@
+{
+  "operator": "matmul",
+  "variant": "torch",
+  "reference_type": "fp16",
+  "batch_results": [
+    {
+      "batch": 1,
+      "impl": "torch",
+      "results": [
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.00390625,
+          "max_rel_diff": 0.0049715908244252205,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98304,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "perf_fp16",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98304,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "zeros",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98304,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "ones",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98304,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "identity",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0001220703125,
+          "max_rel_diff": 0.0006480881129391491,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98304,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "sparse",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98304,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "small_values",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.03125,
+          "max_rel_diff": 0.013559321872889996,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98304,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "mixed_signs",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98304,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "cancellation",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "max_safe",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98304,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "underflow",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "overflow_risk",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.005747126415371895,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98272,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "nan",
+          "batch": 1
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.0024183797650039196,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 98272,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "inf",
+          "batch": 1
+        }
+      ],
+      "all_pass": true
+    },
+    {
+      "batch": 2,
+      "impl": "torch",
+      "results": [
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.033333323895931244,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196608,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "perf_fp16",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196608,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "zeros",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196608,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "ones",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196608,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "identity",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.00048828125,
+          "max_rel_diff": 0.0009165902738459408,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196608,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "sparse",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196608,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "small_values",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.03125,
+          "max_rel_diff": 0.09191176295280457,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196608,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "mixed_signs",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196608,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "cancellation",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "max_safe",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196608,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "underflow",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "overflow_risk",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.005291005130857229,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196576,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "nan",
+          "batch": 2
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.049180321395397186,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 196576,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "inf",
+          "batch": 2
+        }
+      ],
+      "all_pass": true
+    },
+    {
+      "batch": 4,
+      "impl": "torch",
+      "results": [
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.22499997913837433,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393216,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "perf_fp16",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393216,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "zeros",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393216,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "ones",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393216,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "identity",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.00048828125,
+          "max_rel_diff": 0.0008547008619643748,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393216,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "sparse",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393216,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "small_values",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.03125,
+          "max_rel_diff": 0.02689243108034134,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393216,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "mixed_signs",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393216,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "cancellation",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "max_safe",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393216,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "underflow",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "overflow_risk",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.059090904891490936,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393184,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "nan",
+          "batch": 4
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.03125,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 393184,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "inf",
+          "batch": 4
+        }
+      ],
+      "all_pass": true
+    },
+    {
+      "batch": 8,
+      "impl": "torch",
+      "results": [
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.13840828835964203,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786432,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "perf_fp16",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786432,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "zeros",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786432,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "ones",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786432,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "identity",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0009765625,
+          "max_rel_diff": 0.0017482517287135124,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786432,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "sparse",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786432,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "small_values",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.03125,
+          "max_rel_diff": 0.014583333395421505,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786432,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "mixed_signs",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786432,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "cancellation",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "max_safe",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786432,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "underflow",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "overflow_risk",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.0415019728243351,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786400,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "nan",
+          "batch": 8
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.043333329260349274,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 786400,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "inf",
+          "batch": 8
+        }
+      ],
+      "all_pass": true
+    },
+    {
+      "batch": 16,
+      "impl": "torch",
+      "results": [
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.015625,
+          "max_rel_diff": 0.14084506034851074,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572864,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "perf_fp16",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572864,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "zeros",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572864,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "ones",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572864,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "identity",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.00048828125,
+          "max_rel_diff": 0.007812499068677425,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572864,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "sparse",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572864,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "small_values",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.03125,
+          "max_rel_diff": 0.8124996423721313,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572864,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "mixed_signs",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572864,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "cancellation",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "max_safe",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572864,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "underflow",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "overflow_risk",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.3333331346511841,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572832,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "nan",
+          "batch": 16
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.0590277723968029,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 1572832,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "inf",
+          "batch": 16
+        }
+      ],
+      "all_pass": true
+    },
+    {
+      "batch": 32,
+      "impl": "torch",
+      "results": [
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 0.7499992251396179,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145728,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "perf_fp16",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145728,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "zeros",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145728,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "ones",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145728,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "identity",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0009765625,
+          "max_rel_diff": 0.02941175177693367,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145728,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "sparse",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145728,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "small_values",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0625,
+          "max_rel_diff": 0.11989099532365799,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145728,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "mixed_signs",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145728,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "cancellation",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "max_safe",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0,
+          "max_rel_diff": 0.0,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145728,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "underflow",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "note": "all reference values are NaN/Inf",
+          "case": "overflow_risk",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.0078125,
+          "max_rel_diff": 7.999933242797852,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145696,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "nan",
+          "batch": 32
+        },
+        {
+          "status": "PASS",
+          "max_abs_diff": 0.015625,
+          "max_rel_diff": 0.24999995529651642,
+          "nan_mismatch": 0,
+          "inf_mismatch": 0,
+          "checked_elements": 3145696,
+          "atol": 0.03125,
+          "rtol": 1.5,
+          "case": "inf",
+          "batch": 32
+        }
+      ],
+      "all_pass": true
+    }
+  ],
+  "all_pass": true
+}

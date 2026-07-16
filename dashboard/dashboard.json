@@ -2,24 +2,240 @@
   "generated_from": "reports/release/current_release.json",
   "generated_at": "2026-07-16T23:45:00Z",
   "release": "v1.1",
-  "operator_count": 11,
+  "operator_count": 12,
   "batches": {
-    "arithmetic_ops_v1": {"count": 4, "profiler": "msprof"},
-    "logical_ops_v1": {"count": 4, "profiler": "torch.npu.Event (NOT_COMPARABLE)"},
-    "layout_reduce_v1": {"count": 3, "profiler": "msprof (expand, transpose, reduce_sum)"}
+    "arithmetic_ops_v1": {
+      "count": 4,
+      "profiler": "msprof"
+    },
+    "logical_ops_v1": {
+      "count": 4,
+      "profiler": "torch.npu.Event (NOT_COMPARABLE)"
+    },
+    "layout_reduce_v1": {
+      "count": 3,
+      "profiler": "msprof (expand, transpose, reduce_sum)"
+    }
   },
-  "status_summary": {"COMPLETE": 3, "COMPLETE_WITH_LIMITATION": 8},
+  "status_summary": {
+    "COMPLETE": 3,
+    "COMPLETE_WITH_LIMITATION": 8,
+    "INCOMPLETE": 0
+  },
   "operators": {
-    "relu":{"status":"COMPLETE","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PASS"},"profiler":{"torch":2.6,"ascendc":2.1,"pypto":51.9,"tool":"msprof"}},
-    "mul":{"status":"COMPLETE","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PASS"},"profiler":{"torch":9.0,"ascendc":11.2,"pypto":51.5,"tool":"msprof"}},
-    "not":{"status":"COMPLETE","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PASS"},"profiler":{"torch":127.5,"ascendc":6.4,"pypto":136.6,"tool":"torch.npu.Event"}},
-    "add":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PASS_B1_ONLY"},"profiler":{"torch":10.0,"ascendc":13.8,"pypto":136.0,"tool":"msprof"}},
-    "div":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"BLOCKED_BACKEND"},"profiler":{"torch":21.8,"ascendc":18.6,"pypto":"N/A","tool":"msprof"}},
-    "equal":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"BLOCKED_BACKEND_EQUAL"},"profiler":{"torch":12.2,"ascendc":41.8,"pypto":"N/A","tool":"torch.npu.Event"}},
-    "or":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"BITWISE_OR"},"profiler":{"torch":256.3,"ascendc":6.5,"pypto":148.8,"tool":"torch.npu.Event"}},
-    "where":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"BLOCKED_BACKEND_WHERE_SELECT"},"profiler":{"torch":131.9,"ascendc":238.6,"pypto":"N/A","tool":"torch.npu.Event"}},
-    "expand":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PASS"},"profiler":{"torch":13.0,"ascendc":15.0,"pypto":3084.5,"tool":"msprof(r3)","note":"PyPTO AICPU dispatch"}},
-    "transpose":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PARTIAL_SMALL"},"profiler":{"torch":14.1,"ascendc":106.2,"pypto":"N/A","tool":"msprof"}},
-    "reduce_sum":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"62/70","ascendc":"21/70","pypto":"21/70","note":"FP16 accum precision"},"profiler":{"torch":16.4,"ascendc":14.4,"pypto":"N/A","tool":"msprof"}}
+    "relu": {
+      "status": "COMPLETE",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
+      },
+      "profiler": {
+        "torch": 2.6,
+        "ascendc": 2.1,
+        "pypto": 51.9,
+        "tool": "msprof"
+      }
+    },
+    "mul": {
+      "status": "COMPLETE",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
+      },
+      "profiler": {
+        "torch": 9.0,
+        "ascendc": 11.2,
+        "pypto": 51.5,
+        "tool": "msprof"
+      }
+    },
+    "not": {
+      "status": "COMPLETE",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
+      },
+      "profiler": {
+        "torch": 127.5,
+        "ascendc": 6.4,
+        "pypto": 136.6,
+        "tool": "torch.npu.Event"
+      }
+    },
+    "add": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS_B1_ONLY"
+      },
+      "profiler": {
+        "torch": 10.0,
+        "ascendc": 13.8,
+        "pypto": 136.0,
+        "tool": "msprof"
+      }
+    },
+    "div": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "BLOCKED_BACKEND"
+      },
+      "profiler": {
+        "torch": 21.8,
+        "ascendc": 18.6,
+        "pypto": "N/A",
+        "tool": "msprof"
+      }
+    },
+    "equal": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "BLOCKED_BACKEND_EQUAL"
+      },
+      "profiler": {
+        "torch": 12.2,
+        "ascendc": 41.8,
+        "pypto": "N/A",
+        "tool": "torch.npu.Event"
+      }
+    },
+    "or": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "BITWISE_OR"
+      },
+      "profiler": {
+        "torch": 256.3,
+        "ascendc": 6.5,
+        "pypto": 148.8,
+        "tool": "torch.npu.Event"
+      }
+    },
+    "where": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "BLOCKED_BACKEND_WHERE_SELECT"
+      },
+      "profiler": {
+        "torch": 131.9,
+        "ascendc": 238.6,
+        "pypto": "N/A",
+        "tool": "torch.npu.Event"
+      }
+    },
+    "expand": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
+      },
+      "profiler": {
+        "torch": 13.0,
+        "ascendc": 15.0,
+        "pypto": 3084.5,
+        "tool": "msprof(r3)",
+        "note": "PyPTO AICPU dispatch"
+      }
+    },
+    "transpose": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PARTIAL_SMALL"
+      },
+      "profiler": {
+        "torch": 14.1,
+        "ascendc": 106.2,
+        "pypto": "N/A",
+        "tool": "msprof"
+      }
+    },
+    "reduce_sum": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "correctness": {
+        "torch": "62/70",
+        "ascendc": "21/70",
+        "pypto": "21/70",
+        "note": "FP16 accum precision"
+      },
+      "profiler": {
+        "torch": 16.4,
+        "ascendc": 14.4,
+        "pypto": "N/A",
+        "tool": "msprof"
+      }
+    },
+    "matmul": {
+      "status": "COMPLETE",
+      "formula": "Y[b,h,:,:] = A[b,h,:,:] @ B[b,h,:,:]",
+      "shape": "A [B,12,256,256], B [B,12,256,32], Y [B,12,256,32]",
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
+      ],
+      "precision": "atol=0.03125, rtol=1.5",
+      "cube_badge": "Cube v1",
+      "limitation": "",
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "N/A"
+      },
+      "profiler": {
+        "torch": {
+          "status": "COMPLETE",
+          "method": "msprof",
+          "kernel_type": "KERNEL_AIC_CUBE"
+        },
+        "ascendc": {
+          "status": "COMPLETE",
+          "method": "msprof",
+          "kernel_type": "KERNEL_AIC_CUBE",
+          "b1_us": 75.7,
+          "b32_us": 2381.0
+        },
+        "pypto": {
+          "status": "N/A"
+        }
+      },
+      "profiler_tool": "msprof",
+      "report_path": "operators/matmul/reports/final/final_comparison.md",
+      "archive": "archives/cannbot_ascendc_vs_pypto_matmul_v1.tar.gz",
+      "completeness_gates": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "cube_template": "templates/cube_operator_template/"
+    }
   }
 }

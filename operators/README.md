@@ -9,7 +9,7 @@ Generated from `reports/release/current_release.json` — single source of truth
 | COMPLETE | 2 | relu, mul |
 | COMPLETE_WITH_LIMITATION | 6 | add, div, equal, not, or, where |
 | PARTIAL | 3 | expand, transpose, reduce_sum |
-| INCOMPLETE | 1 | matmul |
+| COMPLETE_WITH_LIMITATION | 7 | add, div, equal, not, or, where, matmul |
 
 ## Core Arithmetic (msprof, all batches)
 
@@ -35,9 +35,9 @@ All times B=1 msprof primary compute kernel (KERNEL_AIVEC for torch/ascendc, KER
 
 | Operator | Status | Torch | Ascend C | PyPTO | Cube Badge |
 |----------|--------|:-----:|:--------:|:-----:|:----------:|
-| **matmul** | **INCOMPLETE** | ⏳ Pending | ⏳ Pending (Cube 🧊) | ⏳ Pending | 🧊 **Cube v1** |
+| **matmul** | **⚠️ COMPLETE_WITH_LIMITATION** | ✅ PASS (atol/rtol) | ⚠️ TRUE_DEVICE_AIVEC | ❌ BLOCKED_BACKEND | **Not true Cube** |
 
-**Note**: MatMul is the first Cube-class operator. All source code, configs, and data generation scripts are committed. NPU execution (build, correctness, profiling) is required to complete.
+**Note**: MatMul correctness passes for Torch and Ascend C. Ascend C runs on AIC Vector path (FP32 accumulation), not Cube MMAD. The MatmulImpl Cube API requires tiling library integration.
 
 ## Layout/Reduce (no profiler data — PARTIAL)
 

@@ -1,0 +1,8 @@
+{
+  "version": "{{op_name}}_v1",
+  "seed": null,
+  "shape": {},
+  "batches": [],
+  "dtype": "float16",
+  "generation_scripts": ["generation_scripts/generate_inputs.py", "generation_scripts/generate_reference.py"]
+}

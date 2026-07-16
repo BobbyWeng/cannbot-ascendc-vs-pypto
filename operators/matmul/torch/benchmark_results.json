@@ -1,0 +1,51 @@
+{
+  "results": [
+    {
+      "operator": "matmul",
+      "variant": "torch",
+      "batch": 1,
+      "shape": {
+        "A": [
+          1,
+          12,
+          256,
+          256
+        ],
+        "B": [
+          1,
+          12,
+          256,
+          32
+        ],
+        "Y": [
+          1,
+          12,
+          256,
+          32
+        ]
+      },
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 16.11299991607666,
+        "mean_us": 16.005640029907227,
+        "min_us": 15.2183997631073,
+        "max_us": 16.786799430847168,
+        "p90_us": 16.786799430847168,
+        "std_us": 0.5398301436286139,
+        "cv": 0.03372749497176733
+      },
+      "flops_per_op": 50331648,
+      "achieved_tflops": 3.1237,
+      "input_bytes": 1769472,
+      "output_bytes": 196608
+    }
+  ],
+  "framework": "torch",
+  "operator": "matmul"
+}

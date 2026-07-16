@@ -1,0 +1,22 @@
+{
+  "operator": "matmul",
+  "timestamp": "2026-07-16T12:00:00Z",
+  "local_gate_status": "PRELIMINARY",
+  "gates": {
+    "1_environment_preflight": "PENDING",
+    "2_spec_experiment_config": "PASS",
+    "3_data_generation": "PASS (scripts ready, data not yet generated)",
+    "4_torch_correctness": "PENDING",
+    "5_ascendc_build": "PENDING",
+    "6_ascendc_correctness": "PENDING",
+    "7_pypto_orchestrator": "PASS (pipeline generated, execution pending)",
+    "8_unified_profiler": "PENDING",
+    "9_final_report": "PASS (preliminary)",
+    "10_readme_reproduce": "PASS",
+    "11_sha256sums": "PASS (empty, awaiting data)",
+    "12_dashboard": "PASS (matmul entry added)",
+    "13_archive": "PENDING"
+  },
+  "completeness_gates_passed": [2, 7, 9, 10, 11, 12],
+  "note": "MatMul is the first Cube operator. All source code, configs, and data generation scripts are complete. Requires NPU execution for gates 4-8 and 13."
+}

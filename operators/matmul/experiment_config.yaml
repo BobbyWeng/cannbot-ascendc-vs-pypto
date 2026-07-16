@@ -1,0 +1,33 @@
+experiment_name: "MatMul — Cube kernel comparison: torch / Ascend C / PyPTO"
+operator: matmul
+shape:
+  M: 256
+  N: 32
+  K: 256
+dtype: float16
+batches: [1, 2, 4, 8, 16, 32]
+batch_count_factor: 12
+implementations:
+  torch:
+    type: torch.matmul (batched [B,12,256,256] @ [B,12,256,32])
+    kernel_type: KERNEL_AIC_CUBE (expected)
+    profiler_method: single msprof session
+  ascendc:
+    type: Ascend C Cube MMAD (GM→L1→L0A/B→MMAD→L0C→Fixpipe→GM)
+    kernel_type: KERNEL_AIC_CUBE
+    profiler_method: single msprof session
+  pypto:
+    type: "@pypto.frontend.jit pypto.matmul"
+    kernel_type: TBD
+    profiler_method: two-process (warmup no-profiler + msprof session)
+benchmark:
+  warmup: 200
+  profiled_loops: 100
+  repeat: 5
+  profiler: msprof
+  profiler_options: --ascendcl=on --ai-core=on --task-time=l0
+correctness:
+  rtol: 0.01
+  atol: 0.01
+  require_bitwise: false
+b64_note: "B=64 excluded due to resource limits: each batch requires ~60MB HBM for inputs/outputs/reference. B=1..32 uses ~240MB total. B=64 would exceed reasonable pre-evaluation budget. Marked RESOURCE_LIMITED."

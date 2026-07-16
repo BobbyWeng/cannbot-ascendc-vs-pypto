@@ -1,6 +1,6 @@
 {
   "release_version": "1.1",
-  "generated_at": "2026-07-16T23:45:00Z",
+  "generated_at": "2026-07-17T00:10:00Z",
   "git_commit": "3b3f10283aa49d66261e0184d579e4b9c693cf35",
   "environment": {
     "platform": "Ascend 910B",
@@ -12,7 +12,7 @@
     "repeat": "5 (expand used repeat=3 due to runtime >2h)",
     "primary_metric": "primary_compute_kernel_us"
   },
-  "operator_count": 11,
+  "operator_count": 12,
   "status_summary": {
     "COMPLETE": 3,
     "COMPLETE_WITH_LIMITATION": 8,
@@ -229,6 +229,70 @@
       "profiler_coverage": "FULL \u2014 msprof Torch+AscendC (B=1..64, repeat=5); PyPTO not profiled",
       "limitation": "FP16 accumulation for 384-element reduction exceeds atol=0.01 (max_abs~0.03). AscendC and PyPTO both use native FP16 accum. Torch uses FP32 accum.",
       "status_change": "PARTIAL \u2192 COMPLETE_WITH_LIMITATION"
+    },
+    "matmul": {
+      "final_status": "COMPLETE",
+      "shape": "A [B,12,256,256], B [B,12,256,32], Y [B,12,256,32]",
+      "formula": "Y[b,h,:,:] = A[b,h,:,:] @ B[b,h,:,:]",
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
+      ],
+      "precision": "atol=0.03125, rtol=1.5",
+      "cube_class": true,
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PASS (all 6 batches, atol=0.03125)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_AIC_CUBE"
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_CUBE_IMPLEMENTATION",
+          "cube_api": "AscendC::Matmul from lib/matmul_intf.h",
+          "correctness": "PASS (all 6 batches, max_abs=0.015625)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_AIC_CUBE",
+            "b1_primary_us": 75.7,
+            "b32_primary_us": 2381.0
+          }
+        },
+        "pypto": {
+          "implementation_status": "BLOCKED_BACKEND",
+          "correctness": "N/A",
+          "profiler": {
+            "status": "N/A"
+          }
+        }
+      },
+      "correctness_coverage": "FULL",
+      "profiler_coverage": "FULL",
+      "dashboard_synced": true,
+      "completeness_gates": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
     }
   },
   "known_limitations": [

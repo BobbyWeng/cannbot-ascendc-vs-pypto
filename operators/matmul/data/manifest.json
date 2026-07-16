@@ -1,0 +1,650 @@
+{
+  "version": "matmul_v1",
+  "seed": 20260716,
+  "shape": {
+    "B": "variable",
+    "heads": 12,
+    "M": 256,
+    "K": 256,
+    "N": 32
+  },
+  "batches": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32
+  ],
+  "dtype": "float16",
+  "inputs": [
+    {
+      "case": "perf",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_perf_fp16.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_perf_fp16.bin",
+      "A_sha256": "79552fe054f2b6c6314e772ac5cb945f25bb443782e7863d2419cce5c426fa03",
+      "B_sha256": "91a78cc0ee93865adbd37a60afe8df079f499978968999b3920e8fbb02b4dbc3"
+    },
+    {
+      "case": "zeros",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_zeros.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_zeros.bin",
+      "A_sha256": "106f0647ae10a6516b1ab2968038161e287ef40d1b22ca047531ed768e594ef1",
+      "B_sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    {
+      "case": "ones",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_ones.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_ones.bin",
+      "A_sha256": "e3cf2d4cf5f6130483e6889e37865956525f8cce40d6bca15597318dbc2f0e96",
+      "B_sha256": "394dcee7f58267b9149415f8e54dc4d1d293dd3ebd349ae62b55add7187ada67"
+    },
+    {
+      "case": "identity",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_identity.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_identity.bin",
+      "A_sha256": "b716cd5a7d687bcc5eb21dda5d44b2c159fc29dad0861b5c689a95f7ec8be053",
+      "B_sha256": "394dcee7f58267b9149415f8e54dc4d1d293dd3ebd349ae62b55add7187ada67"
+    },
+    {
+      "case": "sparse",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_sparse.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_sparse.bin",
+      "A_sha256": "4a8b48a90eebdc0d7eddef1f8e586ef19c7dfd8209fc9158313c9de5ed3f5d46",
+      "B_sha256": "4aec64911cca44f638bc14646bf4a678c291cc1cc0cb3c2fb60310bc2fefbf5b"
+    },
+    {
+      "case": "small_values",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_small_values.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_small_values.bin",
+      "A_sha256": "fadc043dfc337150f2e9e582fcdbcdc853b683740b4e7dc276d27734748d9338",
+      "B_sha256": "21ce7d0999260efc5b3e9a8d9b88cf4f38aa9035bd129984391d406e187fe2eb"
+    },
+    {
+      "case": "mixed_signs",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_mixed_signs.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_mixed_signs.bin",
+      "A_sha256": "3f40f8af3103a61592dfa2304cfc95a3486bf09cb4f1d3113b0611e246e30d81",
+      "B_sha256": "ca0854b9dab080f2419085c02835a51fdf7f6995b7818eb53cd9d05f4415c23a"
+    },
+    {
+      "case": "cancellation",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_cancellation.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_cancellation.bin",
+      "A_sha256": "2ff3fbb71b66a674706b61c01b62b6d1d3e14bb369725563f2bf8cdf3158d8a5",
+      "B_sha256": "394dcee7f58267b9149415f8e54dc4d1d293dd3ebd349ae62b55add7187ada67"
+    },
+    {
+      "case": "max_safe",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_max_safe.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_max_safe.bin",
+      "A_sha256": "77f4c831ab9ac177f4f65fafc0cdb34d2240203d15b16e72b1c98e13eecca0b8",
+      "B_sha256": "0a5c4270bcc8e9d53132e0b136e28d6e6826185ba5d638de1f85d42233e02f07"
+    },
+    {
+      "case": "underflow",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_underflow.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_underflow.bin",
+      "A_sha256": "40b8431794916fb69892c572de1fd189bed4835b3407ad3de62314e069a5d379",
+      "B_sha256": "f239436773568a069e8210aa2bb414bff031030eb8630c88abf7f6dea334834e"
+    },
+    {
+      "case": "overflow_risk",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_overflow_risk.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_overflow_risk.bin",
+      "A_sha256": "441097c254b92c9703b12cfded13b2e3553c1c2d56272870a2341e6bfc55b019",
+      "B_sha256": "3a6340834f4fd288ae27f293010249980fe4e4bf4a4ebc737d99d13f3465f94e"
+    },
+    {
+      "case": "nan",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_nan.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_nan.bin",
+      "A_sha256": "2f2ca91baf0b4390bebde27b7f8a99fa68c166bf6fb9de85061288e2869f10bd",
+      "B_sha256": "7ed81023aaf9c868efbb0fee67303905ce1d1f2be7120b6aa076ff8d93c240ee"
+    },
+    {
+      "case": "inf",
+      "batch": 1,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b1_inf.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b1_inf.bin",
+      "A_sha256": "30b12fd21c260ce161a040fd7528116d9f216192f1a4bd0f14068ec20f52997c",
+      "B_sha256": "865c34a24fc66d5f44e2482cbe5cb3f5a4ae00d7e0e03790a47677d89c52429b"
+    },
+    {
+      "case": "perf",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_perf_fp16.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_perf_fp16.bin",
+      "A_sha256": "feea26f8d29cf18000e3745cd5e24d495b5f9f9994ecbf101122bb0e654d7ddc",
+      "B_sha256": "d506f308c82dfa951cd33bfeeeff817df2d60e6138df3e1a007ac9dfb5b570dd"
+    },
+    {
+      "case": "zeros",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_zeros.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_zeros.bin",
+      "A_sha256": "bbd05cf6097ac9b1f89ea29d2542c1b7b67ee46848393895f5a9e43fa1f621e5",
+      "B_sha256": "a6619f482fee91a315f76cdcd8705d39b6ce11077c435ccc696142e130c27762"
+    },
+    {
+      "case": "ones",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_ones.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_ones.bin",
+      "A_sha256": "2e15a4a4e15ad2a3cfa17a0a672f08d617642fb2cb041e7a85d39a4e1382c08f",
+      "B_sha256": "a14f36395d7c65aefbf4376195ed216abfdd92db47337c305c3cc0c4c2e2b12a"
+    },
+    {
+      "case": "identity",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_identity.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_identity.bin",
+      "A_sha256": "fb5d13f9f74e31299db8033089722310b085de7cb0835034022ad75469fc75eb",
+      "B_sha256": "a14f36395d7c65aefbf4376195ed216abfdd92db47337c305c3cc0c4c2e2b12a"
+    },
+    {
+      "case": "sparse",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_sparse.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_sparse.bin",
+      "A_sha256": "2aed138c23c035f1f6e4ef3d95a568b464961765b20b04ecbc08fb61b921f709",
+      "B_sha256": "b29e715db22410a9c2450b38456154bdf2c39717ea6d0d4be31c6a05046c7061"
+    },
+    {
+      "case": "small_values",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_small_values.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_small_values.bin",
+      "A_sha256": "6c97d1d5c4db269a1638ca832636b285108f3dcf9d57a1340682f3992fb24ad3",
+      "B_sha256": "00ca15b8fad1b53b164843e361e91f36bc6b3d386645b6039ebef43ac773ab2b"
+    },
+    {
+      "case": "mixed_signs",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_mixed_signs.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_mixed_signs.bin",
+      "A_sha256": "2ccc8189789d2c48ff06bdddf3157f75c4081978f994a293665ceca087b80a42",
+      "B_sha256": "4bacc8d9ef458022885ff992980515f1841e85e910481ff50fd911e7ecec412a"
+    },
+    {
+      "case": "cancellation",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_cancellation.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_cancellation.bin",
+      "A_sha256": "41f2fc9a4dd2b34e34a3b24339a0d7566001c43a97b60cb7668f84b614313322",
+      "B_sha256": "a14f36395d7c65aefbf4376195ed216abfdd92db47337c305c3cc0c4c2e2b12a"
+    },
+    {
+      "case": "max_safe",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_max_safe.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_max_safe.bin",
+      "A_sha256": "3393f461f86ec2654fbfc2515c2ed4b95ee9630e5feadf6ebfad274bc263e868",
+      "B_sha256": "ec7ce315f35a8e2a4a0c530cc0a8d999cc1fe05f3fd1536b769c2284addadd60"
+    },
+    {
+      "case": "underflow",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_underflow.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_underflow.bin",
+      "A_sha256": "962cf621c4cd2a850d192349037da0bf1faab28587249c187c2d2352e5f84574",
+      "B_sha256": "ecd7059a219092a2ae61c3b23a81e887290dca471315e6fdae60a797632f45f4"
+    },
+    {
+      "case": "overflow_risk",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_overflow_risk.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_overflow_risk.bin",
+      "A_sha256": "76343f3c178d6b94e871e13fcb40067880f71ae4da0454127f8a9333572d321d",
+      "B_sha256": "dbe2c0c6f742cc06d8529569778a460a3b78d7ede3fedec9ceb166cae5162cbe"
+    },
+    {
+      "case": "nan",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_nan.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_nan.bin",
+      "A_sha256": "27ad3eba2521189b91eb341bd6958265cfc5a653fa6dad8eb656ade040dc5422",
+      "B_sha256": "40dbadecdc2d4cd774981da8dce3308239a62d856227d367095f96a5356c6dc8"
+    },
+    {
+      "case": "inf",
+      "batch": 2,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b2_inf.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b2_inf.bin",
+      "A_sha256": "d9fe784ec4ee4ae4c72c4e44fb4f24254993988b1c51170b446dfd663718294f",
+      "B_sha256": "ec293bd8ac07653744787ef3ecb3fac56b0b5b288e768576827f90d87b435ed6"
+    },
+    {
+      "case": "perf",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_perf_fp16.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_perf_fp16.bin",
+      "A_sha256": "d5736bc6df83017b085e4a0b720424496934d98fcc4df7c11f2781d2fea98826",
+      "B_sha256": "663bf82a61844da25211708ba0696652978cd5bbe3a8cf750099f8b6805bfc7c"
+    },
+    {
+      "case": "zeros",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_zeros.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_zeros.bin",
+      "A_sha256": "b69dae56a14d1a8314ed40664c4033ea0a550eea2673e04df42a66ac6b9faf2c",
+      "B_sha256": "599c1bb5ffd4b87229a81958f33f1060821cd01cd7aa7ccafa0d862f4522f3f6"
+    },
+    {
+      "case": "ones",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_ones.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_ones.bin",
+      "A_sha256": "ef58d423d8192b1dac5038643219ed0afb2b5a805a7f8aafbf7459e1af26de9d",
+      "B_sha256": "86c34fb324b8b5daac810d8bcc219425a725b8a2bfd4332d0371d06e01772325"
+    },
+    {
+      "case": "identity",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_identity.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_identity.bin",
+      "A_sha256": "c30b0fc756dad5af2c5d9693ab525f314f0addd63fbaca71ebaa1acc3858e2e5",
+      "B_sha256": "86c34fb324b8b5daac810d8bcc219425a725b8a2bfd4332d0371d06e01772325"
+    },
+    {
+      "case": "sparse",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_sparse.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_sparse.bin",
+      "A_sha256": "6af1edb2b6b77bc8dd93f8d6d3686f555a11eab355ff2adf8bfe7f6a69b7a722",
+      "B_sha256": "7cfafe08d8f7474900c96fc742e221cc672277c5ecf17ff0dee9eb61d8a49301"
+    },
+    {
+      "case": "small_values",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_small_values.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_small_values.bin",
+      "A_sha256": "50edd10e29daec8a05c16a0ee635150cc6a7eba11ec164c39a7f4bc25c9f6a59",
+      "B_sha256": "a1c2ecd12a1984d913866f78d949659b908bacc347b9ba50b687351c6111e438"
+    },
+    {
+      "case": "mixed_signs",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_mixed_signs.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_mixed_signs.bin",
+      "A_sha256": "0814639bdd2ea18fe31d9322b72889e91397336a052eaf5a22d8e3b6f8b544bf",
+      "B_sha256": "99983deeffe1805e07bf794ae1b61f11ee56af35906e7b2c606b3a86a19fdfe0"
+    },
+    {
+      "case": "cancellation",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_cancellation.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_cancellation.bin",
+      "A_sha256": "12f6057d53fd08cadd1ae934ba8c1665c175a68a88c04094503f32049a312aec",
+      "B_sha256": "86c34fb324b8b5daac810d8bcc219425a725b8a2bfd4332d0371d06e01772325"
+    },
+    {
+      "case": "max_safe",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_max_safe.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_max_safe.bin",
+      "A_sha256": "67ee5e8963e3e4c344ef32803b055256c299a4958953387f3d9da0d0fb5e8518",
+      "B_sha256": "84835b8822bf796761cdc54ec624138a13d1c5b48c97a8ba5d21e5e7eed3b592"
+    },
+    {
+      "case": "underflow",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_underflow.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_underflow.bin",
+      "A_sha256": "ca5b6a1f72cf95c1d0ae0d5b4a88448ad852160a2df0c6dccf081c95ee5f4cc8",
+      "B_sha256": "249a67e1ab209b478f8bdebf20f486c2300045f4d5519b113994ebbb5b32e36b"
+    },
+    {
+      "case": "overflow_risk",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_overflow_risk.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_overflow_risk.bin",
+      "A_sha256": "e7289c4d8ecfeaa6cf28437b3e71e10f1c66a8afc7b2eb6ecdd5ba10107b47cf",
+      "B_sha256": "0031b0a6491f694d4e8612794ca50c895a5aae9844fd333447683449b20fce3c"
+    },
+    {
+      "case": "nan",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_nan.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_nan.bin",
+      "A_sha256": "80b6c786730d1317d3c6e05db0aeaa95c6676c17e07d3420b1a8d0f1d5771de7",
+      "B_sha256": "40e6b27b0656acf8eacd86a6688d6f98e2a15741d74be90b55afd6b2d025a7b3"
+    },
+    {
+      "case": "inf",
+      "batch": 4,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b4_inf.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b4_inf.bin",
+      "A_sha256": "a596a1485d0d0a7a529c7dcb1483246e390c6687eec549707c0553fa427f1ef1",
+      "B_sha256": "cede33738dfe501552f12d26736d0029b91b9691c5fd15f4fa2f6fd396b5fe37"
+    },
+    {
+      "case": "perf",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_perf_fp16.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_perf_fp16.bin",
+      "A_sha256": "0409e2ad9499209927eb79e67e12e5ce7577a30586747ec6e95a910752ce5e59",
+      "B_sha256": "d6c1e9e4a30407c339986455a398d5f16e67fd5ec598a90ff03bbc2bb8fa2546"
+    },
+    {
+      "case": "zeros",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_zeros.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_zeros.bin",
+      "A_sha256": "cfadd44a103cbd6d5726fa07b27d7aad2f67ed3930ff96901c486a5beaf7e723",
+      "B_sha256": "106f0647ae10a6516b1ab2968038161e287ef40d1b22ca047531ed768e594ef1"
+    },
+    {
+      "case": "ones",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_ones.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_ones.bin",
+      "A_sha256": "5064d231bb0a84e485fb9f3ccc4372f5ff606c3b5356d2bd168354eb6c28e4ba",
+      "B_sha256": "e3cf2d4cf5f6130483e6889e37865956525f8cce40d6bca15597318dbc2f0e96"
+    },
+    {
+      "case": "identity",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_identity.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_identity.bin",
+      "A_sha256": "1011dd564fee24e2b4c3e238990cf2a45bcc5f1e871e146129a831f2c30b0a69",
+      "B_sha256": "e3cf2d4cf5f6130483e6889e37865956525f8cce40d6bca15597318dbc2f0e96"
+    },
+    {
+      "case": "sparse",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_sparse.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_sparse.bin",
+      "A_sha256": "3ce9a87d6ad05169412aacdad1120fe65587fb08683faa25d94747a2a2517d2e",
+      "B_sha256": "6ba4f280d838a3f3796fc71dd31b94566dcefe7262ea679c0c2056af289c53da"
+    },
+    {
+      "case": "small_values",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_small_values.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_small_values.bin",
+      "A_sha256": "66bebe2b12995a763dbf6c6fe12227a26156af4a45f2d78fab3929c1f8bc18d1",
+      "B_sha256": "9de502839151e7101d2793d4c3d452201314ce3255b825c4da7375d2d29409e8"
+    },
+    {
+      "case": "mixed_signs",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_mixed_signs.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_mixed_signs.bin",
+      "A_sha256": "c9cca65d29ee55179848e918206c5aa44d283128048e00d78bf821b5b0f6810f",
+      "B_sha256": "4b75e4a18766ae9a66e66b881331127e7a30b900b61b294a67e50b189394b0eb"
+    },
+    {
+      "case": "cancellation",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_cancellation.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_cancellation.bin",
+      "A_sha256": "4f1f6071e9833fbb305d5242018b054c969d2ddf31255568c93128924be1451b",
+      "B_sha256": "e3cf2d4cf5f6130483e6889e37865956525f8cce40d6bca15597318dbc2f0e96"
+    },
+    {
+      "case": "max_safe",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_max_safe.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_max_safe.bin",
+      "A_sha256": "d20a04cb2b2f9ff1908a1eae63306d9072c1f46754caa68775e649ec3692d27d",
+      "B_sha256": "77f4c831ab9ac177f4f65fafc0cdb34d2240203d15b16e72b1c98e13eecca0b8"
+    },
+    {
+      "case": "underflow",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_underflow.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_underflow.bin",
+      "A_sha256": "85801d5d8817cf0073510d529f2ff9a1833de3725f7a484924fe36dc0a3017ca",
+      "B_sha256": "c9ecb4534bec8955668de158f8bb46786469dd1917f6aeb10472bff108fbf074"
+    },
+    {
+      "case": "overflow_risk",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_overflow_risk.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_overflow_risk.bin",
+      "A_sha256": "ee925e5141f92056d2e0a252850925f325d316386d37c6cafc7ee848c00a2c66",
+      "B_sha256": "f5b3b92ceea9802d58e684b7895cd91c75fdb326a8bf6cd4db73c85186d45a68"
+    },
+    {
+      "case": "nan",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_nan.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_nan.bin",
+      "A_sha256": "c0459c6192c3b17a50bcb21fb42a21237d16ab06f351afa38c10e5d8915139b9",
+      "B_sha256": "01cf21ed25583f1593a0415d7966dde377f92f0cde03b04aa02b5ed945fe804f"
+    },
+    {
+      "case": "inf",
+      "batch": 8,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b8_inf.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b8_inf.bin",
+      "A_sha256": "1e4f2010893a7add360b8909829dc2de9cc0b9f3910d85f4dc462a837765cdd6",
+      "B_sha256": "465528451c162395312cdf02e378512f2231737bd8ed273cccdb75dcd9f99a28"
+    },
+    {
+      "case": "perf",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_perf_fp16.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_perf_fp16.bin",
+      "A_sha256": "95db387fa44dc9065c676a3be576a3628447f0940fe90b16029127c1ebb01e38",
+      "B_sha256": "31cb6a5b4681eadbbc70f7d354fd7e14b96662e2c6719af367e8e64edb581b67"
+    },
+    {
+      "case": "zeros",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_zeros.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_zeros.bin",
+      "A_sha256": "95aeaae03b56c171cf88753c821630a3c24f1fcf406cec3e17d56781aa3f8369",
+      "B_sha256": "bbd05cf6097ac9b1f89ea29d2542c1b7b67ee46848393895f5a9e43fa1f621e5"
+    },
+    {
+      "case": "ones",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_ones.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_ones.bin",
+      "A_sha256": "9cc1e094b93fbd03caa08ca4d29026f578334ca203aa1484250daad2c6ad7c82",
+      "B_sha256": "2e15a4a4e15ad2a3cfa17a0a672f08d617642fb2cb041e7a85d39a4e1382c08f"
+    },
+    {
+      "case": "identity",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_identity.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_identity.bin",
+      "A_sha256": "8662ba1326c6acbfd6f5ece8dff28db4512b5fe10042e832003b7866594c5f80",
+      "B_sha256": "2e15a4a4e15ad2a3cfa17a0a672f08d617642fb2cb041e7a85d39a4e1382c08f"
+    },
+    {
+      "case": "sparse",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_sparse.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_sparse.bin",
+      "A_sha256": "95d4be37f1ad947f9ed466d29f46a242f8c77b8312836004fef56336f6efa4d4",
+      "B_sha256": "b5c60039ab8a35eef03fcc0548a3987b23f2ff7c94576d3e5255e9c2c614e724"
+    },
+    {
+      "case": "small_values",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_small_values.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_small_values.bin",
+      "A_sha256": "25d8bf87722c4db600828da909187990de23ffcfd5a9b43dbcf55a5c5a608085",
+      "B_sha256": "ae4ea809709a085ad44a4a6ebb6e50c4ad0012225810483d150ec1b83e6ba2ea"
+    },
+    {
+      "case": "mixed_signs",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_mixed_signs.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_mixed_signs.bin",
+      "A_sha256": "6dadb91ffc6938ba72b080f3c50fc81a33aca5482b8d7c5d27935d8a6f144073",
+      "B_sha256": "ec908bd055006031c1d612192c509be2a30ae9250dcb1396cedc86e9d7f1c393"
+    },
+    {
+      "case": "cancellation",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_cancellation.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_cancellation.bin",
+      "A_sha256": "19a73ca43674ad5623b96ab72d10ef2140343c69eeb22506cdcdedecfd7ddcf4",
+      "B_sha256": "2e15a4a4e15ad2a3cfa17a0a672f08d617642fb2cb041e7a85d39a4e1382c08f"
+    },
+    {
+      "case": "max_safe",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_max_safe.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_max_safe.bin",
+      "A_sha256": "416d3ea10f504a66df1c989940faef92cb5f573b6108057d70a88d915ecc4d6f",
+      "B_sha256": "3393f461f86ec2654fbfc2515c2ed4b95ee9630e5feadf6ebfad274bc263e868"
+    },
+    {
+      "case": "underflow",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_underflow.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_underflow.bin",
+      "A_sha256": "23309209b2258204bb4a6a0a5a79cf750c3dd1a9dbb2ad43265629aae173ca43",
+      "B_sha256": "59bbfcd4dad4c1c5f5d638ebc1d9197f412b511dd048bd0beb00e55767958491"
+    },
+    {
+      "case": "overflow_risk",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_overflow_risk.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_overflow_risk.bin",
+      "A_sha256": "150086518cf208ff3ee69e34d223b69b2523b8d6e1273aa152e32addf41da4c6",
+      "B_sha256": "116b90803fcddee8b82f42ec096a1c6108adb47ae3c9de7125fb95b7aeb19f04"
+    },
+    {
+      "case": "nan",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_nan.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_nan.bin",
+      "A_sha256": "3a566deeba688265d542c3e0a52b1a1e02384978610151f53c16526c27d89e96",
+      "B_sha256": "186d1a02b4913e5c56283cd47f3390d5498d827ec5713a6b4073f389c597a018"
+    },
+    {
+      "case": "inf",
+      "batch": 16,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b16_inf.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b16_inf.bin",
+      "A_sha256": "8dbd659ddc97a2563d1caa2cdea6b7f66d6b7fd2643e64d1d9be7f44f2b7c852",
+      "B_sha256": "98a08f2e85ec459c34c82b38f42b42790046fd5220806c2350b20d9d5807e57c"
+    },
+    {
+      "case": "perf",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_perf_fp16.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_perf_fp16.bin",
+      "A_sha256": "0b191a8dd6387dbde33f4cf54e5ff52d65699e6cb802c9dbb189a05680922b7d",
+      "B_sha256": "77436358a9933d0a7b2780e511b65394cb00bfe8dd6e0e0e9ae4db9e6ba44fd2"
+    },
+    {
+      "case": "zeros",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_zeros.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_zeros.bin",
+      "A_sha256": "152ba99dbaf6c7dde5955a8484835194ed4fc0f20a0ea774667f148a25cb03c4",
+      "B_sha256": "b69dae56a14d1a8314ed40664c4033ea0a550eea2673e04df42a66ac6b9faf2c"
+    },
+    {
+      "case": "ones",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_ones.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_ones.bin",
+      "A_sha256": "8be112e257ab75112666bf9d2d37f3ea4568f57d90013917e966eb55f87c6fe8",
+      "B_sha256": "ef58d423d8192b1dac5038643219ed0afb2b5a805a7f8aafbf7459e1af26de9d"
+    },
+    {
+      "case": "identity",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_identity.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_identity.bin",
+      "A_sha256": "b1569009ac4a132f7bc42c5c347e35e75ab328c4d6855bbd1a9efbbd7797ebdb",
+      "B_sha256": "ef58d423d8192b1dac5038643219ed0afb2b5a805a7f8aafbf7459e1af26de9d"
+    },
+    {
+      "case": "sparse",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_sparse.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_sparse.bin",
+      "A_sha256": "3a5ec50309cd6114c34790827dded8f8dd709c029b239402447c21be25ae3eea",
+      "B_sha256": "bf10ca0374d2c850e6c02663fd64f7dbac51aeef8a9f5dd9bd6481f87b2b4e42"
+    },
+    {
+      "case": "small_values",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_small_values.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_small_values.bin",
+      "A_sha256": "0f5c83bf162d12f816fbd0b852dc1de314371ab276911de84085f3c7a50bfc04",
+      "B_sha256": "89727c8b2ee80ee4ff430dd5b1b00c6f688717eb2580c8590933215cbc5e2152"
+    },
+    {
+      "case": "mixed_signs",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_mixed_signs.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_mixed_signs.bin",
+      "A_sha256": "6572ade6bb30bf7e525a1ae784ddc7bfaa0fd4f1787d494a370084354e21ccd7",
+      "B_sha256": "4626f57c69923c2f0eca1c9c6f04a96ad0348c1a6d3f0259300ab4b2423b1f35"
+    },
+    {
+      "case": "cancellation",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_cancellation.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_cancellation.bin",
+      "A_sha256": "a7af3d7104d064930de30505d3c6bdc881a0b9e49e831675158861a6c0804ce9",
+      "B_sha256": "ef58d423d8192b1dac5038643219ed0afb2b5a805a7f8aafbf7459e1af26de9d"
+    },
+    {
+      "case": "max_safe",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_max_safe.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_max_safe.bin",
+      "A_sha256": "fff89298fc7f38658067ecf77fe290349e089e1ccdb85f97f8881ba792b72400",
+      "B_sha256": "67ee5e8963e3e4c344ef32803b055256c299a4958953387f3d9da0d0fb5e8518"
+    },
+    {
+      "case": "underflow",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_underflow.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_underflow.bin",
+      "A_sha256": "2691d4aa05adbe9c6fbb6e75443f1bb1dce582cfc7c4ddc72652142904ef8973",
+      "B_sha256": "399ebea789dfc4b098a825d3afb8004e7f46aa48f3dd209190565bf765800591"
+    },
+    {
+      "case": "overflow_risk",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_overflow_risk.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_overflow_risk.bin",
+      "A_sha256": "21b98f9ff5fbb506bbc3c1cfa94f3929c1f30349e34ec49f5ae57bc39ce19868",
+      "B_sha256": "2b6b07474a2681727df378b1d75d3bca8fb482bfc601d2b8393877744367170a"
+    },
+    {
+      "case": "nan",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_nan.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_nan.bin",
+      "A_sha256": "23771da5692448c413def1d1c99c210791162a855374c3e805ee8b35dd980510",
+      "B_sha256": "2542233e513ae2ad3da21d6641c7f7c8f2cac93f258477532f89abab634b2eb4"
+    },
+    {
+      "case": "inf",
+      "batch": 32,
+      "A": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/A_b32_inf.bin",
+      "B": "/mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/data/B_b32_inf.bin",
+      "A_sha256": "46d039ed20bee2dcd7eea397d7901de7b6b502a9c858247261558f07a4667177",
+      "B_sha256": "860306cc352deff80101d46b960f80c6536e81b2c6b075910d42aa31f9476bd6"
+    }
+  ],
+  "generation_scripts": [
+    "generate_inputs.py",
+    "generate_reference.py"
+  ]
+}

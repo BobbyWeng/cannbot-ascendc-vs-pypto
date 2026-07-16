@@ -1,0 +1,32 @@
+experiment_name: "{{op_name}} — Cube kernel comparison torch / Ascend C / PyPTO"
+operator: "{{op_name}}"
+shape:
+  M: {{M}}
+  N: {{N}}
+  K: {{K}}
+dtype: float16
+batches: [1, 2, 4, 8, 16, 32]
+batch_count_factor: 12
+implementations:
+  torch:
+    type: torch.matmul (batched)
+    kernel_type: KERNEL_AIC_CUBE
+    profiler_method: single msprof session
+  ascendc:
+    type: Ascend C Cube MMAD (GM→L1→L0A/B→MMAD→L0C→Fixpipe→GM)
+    kernel_type: KERNEL_AIC_CUBE
+    profiler_method: single msprof session
+  pypto:
+    type: "@pypto.frontend.jit matmul"
+    kernel_type: TBD
+    profiler_method: two-process (warmup no-profiler + msprof session)
+benchmark:
+  warmup: 200
+  profiled_loops: 100
+  repeat: 5
+  profiler: msprof
+  profiler_options: --ascendcl=on --ai-core=on --task-time=l0
+correctness:
+  rtol: 0.01
+  atol: 0.01
+  require_bitwise: false
