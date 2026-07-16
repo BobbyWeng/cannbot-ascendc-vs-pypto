@@ -1,0 +1,18 @@
+{
+  "operator": "div",
+  "language": "Ascend C",
+  "kernel_files": ["src/div_kernel.asc"],
+  "host_files": ["src/div_host.asc"],
+  "tiling_files": ["src/div_tiling.h"],
+  "build_system": "CMake",
+  "build_artifact": "build/div_ascendc",
+  "npu_arch": "dav-2201",
+  "tile_length": 8192,
+  "inner_loop_size": 256,
+  "broadcast_implementation": "UB-level broadcast + Div (native AscendC::Div)",
+  "double_buffer": 2,
+  "kernel_call_type": "<<<>>> direct invoke",
+  "kernel_type": "KERNEL_AIVEC (expected)",
+  "kernels_per_call": 1,
+  "note": "X2 broadcast performed in UB, X2 not expanded in GM. Single kernel handles broadcast + Div."
+}

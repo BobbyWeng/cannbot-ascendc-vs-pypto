@@ -1,0 +1,15 @@
+{
+  "operator": "expand",
+  "language": "Ascend C",
+  "kernel_files": ["src/expand_kernel.asc"],
+  "host_files": ["src/expand_host.asc"],
+  "tiling_files": ["src/expand_tiling.h"],
+  "build_system": "CMake",
+  "build_artifact": "build/expand_ascendc",
+  "npu_arch": "dav-2201",
+  "tile_length": 8192,
+  "double_buffer": 2,
+  "kernel_call_type": "<<<>>> direct invoke",
+  "kernel_type": "KERNEL_AIVEC",
+  "kernels_per_call": 1
+}

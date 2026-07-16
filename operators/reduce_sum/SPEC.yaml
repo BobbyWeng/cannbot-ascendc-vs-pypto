@@ -1,0 +1,20 @@
+operator_name: reduce_sum
+formula: "Y[b,i] = sum_j X[b,i,j] (reduce last dim 384, FP16)"
+category: reduction sum
+inputs:
+  - name: x
+    shape: "[B, 256, 384]"
+    dtype: float16
+    layout: ND contiguous
+outputs:
+  - name: y
+    shape: "[B, 256]"
+    dtype: float16
+    layout: ND contiguous
+batches: [1, 2, 4, 8, 16, 32, 64]
+precision:
+  rtol: 0.01
+  atol: 0.01
+  require_bitwise: false
+  note: "FP16 reduction may have accumulation differences. Atol=1e-2, rtol=1e-2. Report FP16-path and FP32-accum references separately."
+seed: 20260715

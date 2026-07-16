@@ -1,0 +1,20 @@
+operator_name: transpose
+formula: "Y[b,j,i] = X[b,i,j] (perm [0,2,1], materialized contiguous)"
+category: data-movement transpose
+inputs:
+  - name: x
+    shape: "[B, 256, 384]"
+    dtype: float16
+    layout: ND contiguous
+outputs:
+  - name: y
+    shape: "[B, 384, 256]"
+    dtype: float16
+    layout: ND contiguous
+batches: [1, 2, 4, 8, 16, 32, 64]
+precision:
+  rtol: 0
+  atol: 0
+  require_bitwise: true
+  note: "Transpose rearranges elements — must be bitwise identical. Signed-zero exempted."
+seed: 20260715

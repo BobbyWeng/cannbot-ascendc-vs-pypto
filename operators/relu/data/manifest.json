@@ -1,0 +1,31 @@
+{
+  "operator": "relu",
+  "seed": 20260715,
+  "dtype": "float16",
+  "shape": "[B, 12, 256, 32]",
+  "batches": [1, 2, 4, 8, 16, 32, 64],
+  "input_files": [
+    "input_b1_fp16.bin",
+    "input_b2_fp16.bin",
+    "input_b4_fp16.bin",
+    "input_b8_fp16.bin",
+    "input_b16_fp16.bin",
+    "input_b32_fp16.bin",
+    "input_b64_fp16.bin"
+  ],
+  "reference_files": [
+    "reference_b1_fp16.bin",
+    "reference_b2_fp16.bin",
+    "reference_b4_fp16.bin",
+    "reference_b8_fp16.bin",
+    "reference_b16_fp16.bin",
+    "reference_b32_fp16.bin",
+    "reference_b64_fp16.bin"
+  ],
+  "boundary_cases": ["all_positive", "all_negative", "all_zero", "alternating_sign"],
+  "generation_scripts": {
+    "inputs": "generation_scripts/generate_inputs.py",
+    "reference": "generation_scripts/generate_reference.py",
+    "correctness": "generation_scripts/correctness.py"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "operator": "relu",
+  "language": "PyPTO",
+  "framework": "pypto.frontend.jit",
+  "impl_file": "src/relu_impl.py",
+  "golden_file": "golden/relu_golden.py",
+  "test_file": "tests/test_relu.py",
+  "design_file": "DESIGN/DESIGN.md",
+  "spec_file": "SPEC/SPEC.md",
+  "api_report_file": "API_REPORT/API_REPORT.md",
+  "kernel_type": "KERNEL_MIX_AIC + KERNEL_AICPU",
+  "kernels_per_call": 3,
+  "primary_kernel_type": "KERNEL_MIX_AIC",
+  "orchestrator_state": ".orchestrator_state.json",
+  "jit_artifacts_dir": "src/output/",
+  "notes": "3 kernels per call: 1 MIX_AIC compute + 2 AICPU auxiliary. JIT artefacts in src/output/."
+}

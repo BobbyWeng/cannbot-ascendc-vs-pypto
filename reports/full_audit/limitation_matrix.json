@@ -1,0 +1,125 @@
+{
+  "generated_at": "2026-07-16T23:00:00Z",
+  "limitations": {
+    "divide": {
+      "operator": "div",
+      "route": "pypto",
+      "claimed": "backend limitation (CompileFunction)",
+      "verified": true,
+      "classification": "PYPTO_BACKEND_LIMITATION",
+      "detail": "Broadcast Div [3072,256]/[3072,1] fails at backend CompileFunction in libtile_fwk_interface.so. Minimal 2D Div [1,32]/[1,1] passes. API pypto.op.div() exists and works for non-broadcast cases. The failure is specifically at the backend compilation pass when handling broadcast pattern.",
+      "not_hardware_limit": true,
+      "has_minimal_repro": true,
+      "has_diagnostic": false,
+      "workaround_possible": "Use element-wise Div without broadcast, perform broadcast manually"
+    },
+    "equal": {
+      "operator": "equal",
+      "route": "pypto",
+      "claimed": "BLOCKED_BACKEND_EQUAL",
+      "verified": true,
+      "classification": "PYPTO_BACKEND_LIMITATION",
+      "detail": "pypto.eq in pypto.op.comparison fails to correctly lower comparison results. Even minimal [1,32] FP16->FP16 produces wrong results (sum=0.0002 vs expected 32.0). Full shape fails at CompileFunction Expand pass. The backend produces raw packed bitmask reinterpreted as FP16 instead of proper 0/1 output.",
+      "not_hardware_limit": true,
+      "has_minimal_repro": true,
+      "has_diagnostic": true,
+      "workaround_possible": "Not fixable from user code; requires PyPTO backend fix"
+    },
+    "where": {
+      "operator": "where",
+      "route": "pypto",
+      "claimed": "BLOCKED_BACKEND_WHERE_SELECT",
+      "verified": true,
+      "classification": "PYPTO_BACKEND_LIMITATION",
+      "detail": "pypto.where (condition, x1, x2) fails at CompileFunction with 'size of tensor a (384) must match size of tensor b (3072)'. Root cause: PyPTO tiling Expand pass misinterprets condition physical size when condition dtype (uint8) differs from data dtype (float16). Same-shape condition still fails.",
+      "not_hardware_limit": true,
+      "has_minimal_repro": true,
+      "has_diagnostic": true,
+      "workaround_possible": "Not fixable from user code; requires PyPTO backend fix for mixed-dtype where"
+    },
+    "ascendc_expand": {
+      "operator": "expand",
+      "route": "ascendc",
+      "claimed": "INCOMPLETE",
+      "verified": true,
+      "classification": "IMPLEMENTATION_BUG",
+      "detail": "The Ascend C kernel reads [B,256,1] input, expands to [B,256,384] in CPU memory, then copies to device. The actual expand logic is done on CPU, not in the kernel. The kernel is essentially a data-movement copy kernel.",
+      "not_hardware_limit": true,
+      "has_minimal_repro": false,
+      "has_diagnostic": false,
+      "workaround_possible": "Rewrite kernel to perform broadcast on-device using Duplicate API"
+    },
+    "ascendc_transpose": {
+      "operator": "transpose",
+      "route": "ascendc",
+      "claimed": "INCOMPLETE",
+      "verified": true,
+      "classification": "IMPLEMENTATION_BUG",
+      "detail": "The host code performs the actual transpose on CPU then copies to device. The kernel copies already-transposed data as identity. The transpose is not done on device.",
+      "not_hardware_limit": true,
+      "has_minimal_repro": false,
+      "has_diagnostic": false,
+      "workaround_possible": "Rewrite kernel to perform transpose on-device using 16x16 tile-based approach"
+    },
+    "ascendc_reduce_sum": {
+      "operator": "reduce_sum",
+      "route": "ascendc",
+      "claimed": "INCOMPLETE",
+      "verified": true,
+      "classification": "IMPLEMENTATION_BUG",
+      "detail": "The host code performs FP32 pre-reduction on CPU and copies pre-reduced data to the kernel input buffer. The kernel then reduces already-reduced data. Actual compute is duplicated on CPU and device.",
+      "not_hardware_limit": true,
+      "has_minimal_repro": false,
+      "has_diagnostic": false,
+      "workaround_possible": "Remove CPU pre-reduction; let kernel handle full reduce from raw FP16 data"
+    },
+    "ascendc_where_scalar": {
+      "operator": "where",
+      "route": "ascendc",
+      "claimed": "COMPLETE_WITH_LIMITATION",
+      "verified": true,
+      "classification": "ASCENDC_COMPILER_LIMITATION",
+      "detail": "The kernel uses per-element scalar loop for ternary select because vectorized arithmetic approach (cond*x1+(1-cond)*x2) failed due to Cast<uint8,half> not producing exact 0.0/1.0 and NaN propagation. The scalar loop is 37x slower than vectorized Not/Or kernels.",
+      "not_hardware_limit": false,
+      "has_minimal_repro": true,
+      "has_diagnostic": true,
+      "workaround_possible": "Investigate vectorized Select API availability on dav-2201"
+    },
+    "pypto_or_bitwise": {
+      "operator": "or",
+      "route": "pypto",
+      "claimed": "PASS",
+      "verified": false,
+      "classification": "IMPLEMENTATION_BUG",
+      "detail": "PyPTO Or uses pypto.bitwise_or(x1, x2) instead of pypto.op.logical_or(x1, x2). For strict 0/1 inputs, results are identical. For non-0/1 uint8 values, bitwise_or gives different results (e.g., uint8 2|3=3 instead of logical 1). Spec requires logical OR semantics. Current test data happens to be strictly 0/1.",
+      "not_hardware_limit": true,
+      "has_minimal_repro": false,
+      "has_diagnostic": false,
+      "workaround_possible": "Change to pypto.op.logical_or if available, or ensure inputs are 0/1 normalized first"
+    },
+    "pypto_not_flat_latency": {
+      "operator": "not",
+      "route": "pypto",
+      "claimed": "PASS",
+      "verified": false,
+      "classification": "MEASUREMENT_LIMITATION",
+      "detail": "PyPTO Not latency is flat (~130-137 us) across all batch sizes B=1..64. This is inconsistent with a device kernel processing varying data volumes. Likely measuring host dispatch overhead, not actual kernel time. No msprof data to verify.",
+      "not_hardware_limit": true,
+      "has_minimal_repro": false,
+      "has_diagnostic": false,
+      "workaround_possible": "Collect msprof data to verify kernel timing vs host dispatch"
+    },
+    "pypto_or_flat_latency": {
+      "operator": "or",
+      "route": "pypto",
+      "claimed": "PASS",
+      "verified": false,
+      "classification": "MEASUREMENT_LIMITATION",
+      "detail": "PyPTO Or latency is flat (~142-149 us) across all batch sizes B=1..64. Same suspicious pattern as Not. No msprof data. Measurement uses torch.npu.Event timing, not msprof.",
+      "not_hardware_limit": true,
+      "has_minimal_repro": false,
+      "has_diagnostic": false,
+      "workaround_possible": "Collect msprof data to verify kernel timing vs host dispatch"
+    }
+  }
+}

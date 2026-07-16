@@ -1,0 +1,14 @@
+{
+  "operator": "where",
+  "variant": "ascendc",
+  "results": [
+    {"batch": 1, "status": "PASS", "bitwise_equal": true, "mismatch_count": 0},
+    {"batch": 2, "status": "PASS", "bitwise_equal": true, "mismatch_count": 0},
+    {"batch": 4, "status": "PASS", "bitwise_equal": true, "mismatch_count": 0},
+    {"batch": 8, "status": "PASS", "bitwise_equal": true, "mismatch_count": 0},
+    {"batch": 16, "status": "PASS", "bitwise_equal": true, "mismatch_count": 0},
+    {"batch": 32, "status": "PASS", "bitwise_equal": true, "mismatch_count": 0},
+    {"batch": 64, "status": "PASS", "bitwise_equal": true, "mismatch_count": 0}
+  ],
+  "all_pass": true
+}

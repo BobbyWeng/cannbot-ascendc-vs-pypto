@@ -1,0 +1,1 @@
+{"operator":"transpose","report_type":"provisional","status":"INCOMPLETE","correctness":{"torch":"PASS B=1..64","pypto":"PARTIAL (small PASS, large BLOCKED_BACKEND)","ascendc":"PASS (host fallback, not device-side)"},"pypto_blocker":"BLOCKED_BACKEND — CompileFunction pass failure for [256,384]","note":"Ascend C needs device-side kernel; PyPTO blocked for production shape"}

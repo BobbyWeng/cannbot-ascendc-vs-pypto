@@ -1,0 +1,53 @@
+{
+  "project": "cannbot_ascendc_vs_pypto",
+  "source_project": "relu_ascendc_vs_ptodsl",
+  "cleanup_time": "2026-07-15T15:15:00Z",
+  "old_project_size": "449 MB (4035 files, 512 dirs)",
+  "new_project_size": "464 KB (58 files, 34 dirs)",
+  "size_reduction": "~99.9%",
+  "retained_files": 58,
+  "moved_files": [],
+  "deleted_files_count": 0,
+  "not_copied_from_old": {
+    "description": "Files from old project NOT brought into new project",
+    "categories": {
+      "aclnnRelu": "All aclnnRelu references removed (36 files)",
+      "manual_vmaxs": "All manual_vmaxs files removed (28 files + build artifacts)",
+      "build_cache": "Ascend C build cache (CMakeCache, .o files, autogen) removed",
+      "jit_cache": "PyPTO JIT output in custom/relu/output/ removed",
+      "profiler_raw": "Large msprof raw traces (1588 files, 26MB) not copied",
+      "old_reports": "Old reports with hardcoded paths or outdated data regenerated",
+      "virtualenv": "Python virtualenv not copied",
+      "profiler_output": "Large output_* directories (409MB) removed",
+      "__pycache__": "All __pycache__ directories removed"
+    }
+  },
+  "regenerated_files": {
+    "operators/relu/reports/final/final_comparison.md": "Generated from unified_summary.json",
+    "operators/relu/reports/final/final_comparison.json": "Generated from unified_summary.json",
+    "operators/relu/reports/final/final_comparison.csv": "Generated from unified_summary.json",
+    "operators/relu/ascendc/src/relu_host.asc": "Updated with new relative paths",
+    "operators/relu/pypto/README.md": "Fixed shape [B,3,4,256,32] -> [B,12,256,32]",
+    "operators/relu/data/generation_scripts/generate_inputs.py": "Updated DATA_DIR path",
+    "operators/relu/data/generation_scripts/generate_reference.py": "Updated DATA_DIR path",
+    "operators/relu/pypto/tests/test_relu.py": "Updated import paths"
+  },
+  "path_mapping": {
+    "old_path": "new_path",
+    "relu_ascendc_vs_ptodsl/": "cannbot_ascendc_vs_pypto/",
+    "relu_ascendc_vs_ptodsl/ascendc/": "cannbot_ascendc_vs_pypto/operators/relu/ascendc/",
+    "relu_ascendc_vs_ptodsl/custom/relu/": "cannbot_ascendc_vs_pypto/operators/relu/pypto/",
+    "relu_ascendc_vs_ptodsl/common/generate_inputs.py": "cannbot_ascendc_vs_pypto/operators/relu/data/generation_scripts/generate_inputs.py",
+    "relu_ascendc_vs_ptodsl/common/generate_reference.py": "cannbot_ascendc_vs_pypto/operators/relu/data/generation_scripts/generate_reference.py",
+    "relu_ascendc_vs_ptodsl/common/correctness.py": "cannbot_ascendc_vs_pypto/operators/relu/data/generation_scripts/correctness.py",
+    "relu_ascendc_vs_ptodsl/common/benchmark_config.json": "cannbot_ascendc_vs_pypto/operators/relu/data/benchmark_config.json",
+    "relu_ascendc_vs_ptodsl/reports/": "cannbot_ascendc_vs_pypto/operators/relu/reports/ (regenerated)",
+    "relu_ascendc_vs_ptodsl/data/": "cannbot_ascendc_vs_pypto/operators/relu/data/ (not copied, regenerable)"
+  },
+  "remaining_limitations": {
+    "empty_scripts_dirs": "ascendc/scripts/, pypto/scripts/, scripts/ are empty",
+    "empty_report_dirs": "reports/correctness/, reports/parsed/ are empty (need profiler run to populate)",
+    "data_files_not_copied": "Input binary files (.bin) not in new project; must be regenerated via generation_scripts",
+    "profiler_raw_not_present": "Profiler raw data must be collected by running benchmark/run_all.sh"
+  }
+}

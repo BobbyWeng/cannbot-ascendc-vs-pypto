@@ -1,0 +1,22 @@
+{
+  "operator": "or",
+  "torch": {
+    "status": "PENDING",
+    "correctness": "PENDING",
+    "profiler": "PENDING"
+  },
+  "ascendc": {
+    "status": "PENDING",
+    "correctness": "PENDING",
+    "profiler": "PENDING"
+  },
+  "pypto": {
+    "status": "PENDING",
+    "correctness": "PENDING",
+    "profiler": "PENDING"
+  },
+  "reports": {
+    "final": "PENDING"
+  },
+  "last_updated": "2026-07-16"
+}

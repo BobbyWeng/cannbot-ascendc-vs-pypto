@@ -1,0 +1,24 @@
+operator_name: equal
+formula: "Y = Equal(X1, X2)"
+category: element-wise comparison
+inputs:
+  - name: x1
+    shape: "[B, 256, 384]"
+    dtype: float16
+    layout: ND contiguous
+  - name: x2
+    shape: "[B, 256, 384]"
+    dtype: float16
+    layout: ND contiguous
+outputs:
+  - name: y
+    shape: "[B, 256, 384]"
+    dtype: bool
+    layout: ND contiguous
+batches: [1, 2, 4, 8, 16, 32, 64]
+precision:
+  rtol: 0
+  atol: 0
+  require_bitwise: true
+  note: "Equal returns BOOL. +0 vs -0 considered equal per IEEE 754. NaN != NaN per torch.eq semantics."
+seed: 20260715

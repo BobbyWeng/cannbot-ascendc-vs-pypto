@@ -1,0 +1,68 @@
+# SHA256 checksums for Where operator artifacts
+# Generated: 2026-07-16
+# Use: sha256sum -c SHA256SUMS
+
+# Config
+SPEC.yaml
+experiment_config.yaml
+
+# Data
+data/condition_b1_bool.bin
+data/condition_b2_bool.bin
+data/condition_b4_bool.bin
+data/condition_b8_bool.bin
+data/condition_b16_bool.bin
+data/condition_b32_bool.bin
+data/condition_b64_bool.bin
+data/x1_b1_fp16.bin
+data/x1_b2_fp16.bin
+data/x1_b4_fp16.bin
+data/x1_b8_fp16.bin
+data/x1_b16_fp16.bin
+data/x1_b32_fp16.bin
+data/x1_b64_fp16.bin
+data/x2_b1_fp16.bin
+data/x2_b2_fp16.bin
+data/x2_b4_fp16.bin
+data/x2_b8_fp16.bin
+data/x2_b16_fp16.bin
+data/x2_b32_fp16.bin
+data/x2_b64_fp16.bin
+data/reference_b1_fp16.bin
+data/reference_b2_fp16.bin
+data/reference_b4_fp16.bin
+data/reference_b8_fp16.bin
+data/reference_b16_fp16.bin
+data/reference_b32_fp16.bin
+data/reference_b64_fp16.bin
+data/manifest.json
+data/generation_scripts/generate_inputs.py
+
+# Torch
+torch/correctness.py
+torch/benchmark.py
+
+# Ascend C
+ascendc/src/where_kernel.asc
+ascendc/src/where_host.asc
+ascendc/src/where_tiling.h
+ascendc/src/data_utils.h
+ascendc/CMakeLists.txt
+ascendc/artifact_manifest.json
+
+# PyPTO
+pypto/SPEC/SPEC.md
+pypto/API_REPORT/API_REPORT.md
+pypto/DESIGN/DESIGN.md
+pypto/golden/where_golden.py
+pypto/src/where_impl.py
+pypto/src/__init__.py
+pypto/tests/test_where.py
+pypto/correctness.py
+pypto/artifact_manifest.json
+
+# Reports
+README.md
+REPRODUCE.md
+local_gate.json
+reports/final/final_comparison.md

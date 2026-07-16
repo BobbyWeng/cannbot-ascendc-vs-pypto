@@ -1,0 +1,10 @@
+operator,implementation,profiler_status,note,target_batches
+expand,torch,PENDING,needs msprof run (warmup=200 loops=100 repeat=5),1,2,4,8,16,32,64
+expand,pypto,PENDING,needs msprof run; per-row dispatch tracked separately,1,2,4,8,16,32,64
+expand,ascendc,HOST_FALLBACK_NOT_COMPARABLE,identity kernel only; not entering device-kernel ranking,1,2,4,8,16,32,64
+transpose,torch,PENDING,needs msprof run,1,2,4,8,16,32,64
+transpose,pypto,BLOCKED_BACKEND,CompileFunction pass failure at [256,384]; diagnostic only for [16,32],N/A (diagnostic)
+transpose,ascendc,HOST_FALLBACK_NOT_COMPARABLE,identity kernel only,1,2,4,8,16,32,64
+reduce_sum,torch,PENDING,needs msprof run,1,2,4,8,16,32,64
+reduce_sum,pypto,PENDING,needs msprof run,1,2,4,8,16,32,64
+reduce_sum,ascendc,HOST_FALLBACK_NOT_COMPARABLE,identity kernel only,1,2,4,8,16,32,64

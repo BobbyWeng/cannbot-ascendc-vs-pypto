@@ -1,0 +1,53 @@
+experiment_name: "Div broadcast device kernel comparison — torch / Ascend C / PyPTO"
+operator: div
+shape:
+  logical: "[B, 3, 4, 256, 256]"
+  kernel: "[B, 12, 256, 256]"
+dtype: float16
+broadcast:
+  type: "last-dim broadcast (256 -> 256)"
+  x2_shape_logical: "[B, 3, 4, 256, 1]"
+  x2_shape_kernel: "[B, 12, 256, 1]"
+  broadcast_axis: 4
+batches: [1, 2, 4, 8, 16, 32]
+implementations:
+  torch:
+    type: torch.div (NPU)
+    kernel_type: TBD (determined by profiling)
+    kernels_per_call: TBD
+    profiler_method: single msprof session
+  ascendc:
+    type: "Ascend C <<<>>> direct invoke, in-kernel broadcast via Div or Reciprocal+Mul"
+    kernel_type: TBD (expected KERNEL_AIVEC)
+    kernels_per_call: 1
+    profiler_method: single msprof session
+  pypto:
+    type: "@pypto.frontend.jit"
+    kernel_type: TBD (determined by profiling)
+    kernels_per_call: TBD
+    profiler_method: two-process (warmup no-profiler + msprof session)
+benchmark:
+  warmup: 200
+  profiled_loops: 100
+  repeat: 5
+  profiler: msprof
+  profiler_options: --ascendcl=on --ai-core=on --task-time=l0
+correctness:
+  rtol: 0.001
+  atol: 0.001
+  require_bitwise: false
+  signed_zero_exempted: false
+  special_values: true
+special_cases:
+  - "positive / +0"
+  - "positive / -0"
+  - "negative / +0"
+  - "negative / -0"
+  - "0 / 0"
+  - "finite / Inf"
+  - "Inf / finite"
+  - "NaN input"
+  - "max FP16 (65504) / finite"
+  - "min normal / finite"
+  - "subnormal / finite"
+  - "tiny non-zero divisor"

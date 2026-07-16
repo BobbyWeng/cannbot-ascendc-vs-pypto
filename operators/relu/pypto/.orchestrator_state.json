@@ -1,0 +1,29 @@
+{
+  "operator_name": "relu",
+  "shape": "[B, 12, 256, 32]",
+  "current_stage": 7,
+  "stage_status": {
+    "1": "completed",
+    "2": "completed",
+    "3": "completed",
+    "4": "completed",
+    "5": "completed",
+    "6": "completed",
+    "7": "completed"
+  },
+  "stage_retry_count": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0
+  },
+  "perf_iteration": {
+    "count": 1,
+    "last_improvement": 0.0,
+    "consecutive_no_improvement": 0
+  },
+  "last_updated": "2026-07-15T17:35:00Z",
+  "note": "Unified 4D shape [B,12,256,32]. All 7 batch sizes bitwise PASS. Ascend C ~6-9 us kernel, PyPTO ~102-150 us (includes JIT dispatch). Reports in reports/final_ascendc_vs_pypto.{md,json,csv}"
+}

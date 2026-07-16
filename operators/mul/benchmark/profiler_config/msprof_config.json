@@ -1,0 +1,8 @@
+{
+  "profiler": "msprof",
+  "profiler_options": "--ascendcl=on --ai-core=on --task-time=l0",
+  "warmup": 200,
+  "loops": 100,
+  "repeat": 5,
+  "note": "PyPTO uses two-process method: warmup without profiler, then msprof session for measurement only."
+}

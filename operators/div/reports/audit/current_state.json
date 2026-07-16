@@ -1,0 +1,89 @@
+{
+  "operator": "div",
+  "audit_date": "2026-07-16",
+  "overall_status": "INCOMPLETE",
+  "source_code": {
+    "kernel_formula_correct": true,
+    "no_buggy_formula_residue": true,
+    "broadcast_logic_correct": true,
+    "x1_address_correct": true,
+    "x2_address_correct": true,
+    "tile_config": {
+      "tile_length": 8192,
+      "rows_per_tile": 32,
+      "elements_per_row": 256,
+      "double_buffer": true,
+      "default_block_dim": 20,
+      "x2_buffer_bytes": 128
+    },
+    "ub_buffer_estimate_kb": 80,
+    "pipeline_double_buffering": true,
+    "scalar_loop_count_per_tile": 32
+  },
+  "correctness_coverage": {
+    "ascendc_b1": "PASS",
+    "ascendc_b2": "PASS",
+    "ascendc_b4": "UNVERIFIED",
+    "ascendc_b8": "UNVERIFIED",
+    "ascendc_b16": "UNVERIFIED",
+    "ascendc_b32": "UNVERIFIED",
+    "torch_b1": "PASS",
+    "torch_b2": "PASS",
+    "torch_b4": "SKIP (missing reference file)",
+    "torch_b8": "SKIP (missing reference file)",
+    "torch_b16": "SKIP (missing reference file)",
+    "torch_b32": "SKIP (missing reference file)",
+    "special_values": "UNVERIFIED",
+    "finite_range": "UNVERIFIED"
+  },
+  "performance_baseline": {
+    "source": "final_comparison.json (aclrtEvent timing)",
+    "units": "microseconds",
+    "ascendc_b1": 12.8,
+    "ascendc_b2": 25.8,
+    "ascendc_b4": 46.2,
+    "ascendc_b8": 77.1,
+    "ascendc_b16": 164.4,
+    "ascendc_b32": 327.6,
+    "torch_b1": 14.84,
+    "torch_b2": 14.07,
+    "torch_b4": 18.9,
+    "torch_b8": 31.49,
+    "torch_b16": 57.66,
+    "torch_b32": 112.8,
+    "ratio_b32_ascendc_vs_torch": 2.9
+  },
+  "profiler_data": {
+    "exists": true,
+    "session_id": "PROF_000001_20260716110804431_00158189IBLAGBEL",
+    "batch_profiled": 32,
+    "kernel_time_us": 375.7,
+    "aiv_vec_time_us": 159.7,
+    "aiv_scalar_time_us": 362.7,
+    "aiv_mte2_time_us": 74.8,
+    "aiv_mte3_time_us": 28.9,
+    "parsed_aggregate_exists": false,
+    "per_batch_profiler_data": "NOT COLLECTED"
+  },
+  "bottleneck_analysis": {
+    "primary_bottleneck": "Per-row Duplicate+Div loop (32 rows/tile)",
+    "scalar_overhead_percent": 96,
+    "scalar_overhead_note": "Overlaps with vector compute; not pure overhead",
+    "root_cause": "Each 256-element row requires independent Duplicate and Div call. 32 Duplicate+Div pairs per tile vs potential 1 vectorized operation.",
+    "estimated_improvement_from_batching": "2-5x reduced scalar operations"
+  },
+  "archive_status": {
+    "v1_exists": true,
+    "v1_path": "cannbot_ascendc_vs_pypto_div_v1.tar.gz",
+    "v1_contains_profiler": true,
+    "v1_contains_build_artifacts": true,
+    "v1_contains_multiple_profiler_runs": false
+  },
+  "report_quality_issues": [
+    "Correctness only B=1,2 verified",
+    "Profiler parsed data not in reports/parsed/",
+    "BW calculation inconsistent (different byte counts used)",
+    "No per-batch profiler breakdown",
+    "No optimization candidate comparison"
+  ]
+}

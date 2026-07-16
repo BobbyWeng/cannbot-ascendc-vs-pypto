@@ -1,0 +1,4 @@
+operator,torch_correctness,ascendc_impl,ascendc_correctness,pypto_correctness,pypto_blocker,status,b1_torch_us,b1_ascendc_us,b1_pypto_us,profiler_repeat
+expand,PASS B=1..64,Duplicate scalar per row,PASS B=1..64,PASS B=1..64,none,COMPLETE,11.2,16.9,29400,3
+transpose,PASS B=1..64,16x16 tile element swap,PASS B=1..64,PARTIAL (small PASS),BLOCKED_BACKEND (large shape),COMPLETE_WITH_LIMITATION,23.5,105.4,-,3
+reduce_sum,PASS B=1..64,Level 2 ReduceSum per row,PASS B=1..64 (FP16 accum),PASS B=1..64 (FP16 accum),none,COMPLETE,27.8,20.8,118.2,3

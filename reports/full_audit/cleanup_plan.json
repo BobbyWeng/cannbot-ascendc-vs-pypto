@@ -1,0 +1,54 @@
+{
+  "generated_at": "2026-07-16T23:00:00Z",
+  "delete": [
+    {
+      "path": "cannbot_ascendc_vs_pypto_equal_v2.tar.gz",
+      "size_bytes": 20881,
+      "reason": "Superseded by v4; contains __pycache__",
+      "replacement": "archives/cannbot_ascendc_vs_pypto_equal_v4.tar.gz"
+    },
+    {
+      "path": "cannbot_ascendc_vs_pypto_not_v2.tar.gz",
+      "size_bytes": 13804,
+      "reason": "Superseded by v4; contains __pycache__",
+      "replacement": "archives/cannbot_ascendc_vs_pypto_not_v4.tar.gz"
+    },
+    {
+      "path": "cannbot_ascendc_vs_pypto_or_v2.tar.gz",
+      "size_bytes": 16561,
+      "reason": "Superseded by v4; contains __pycache__",
+      "replacement": "archives/cannbot_ascendc_vs_pypto_or_v4.tar.gz"
+    },
+    {
+      "path": "cannbot_ascendc_vs_pypto_where_v2.tar.gz",
+      "size_bytes": 15431,
+      "reason": "Superseded by v4; contains __pycache__",
+      "replacement": "archives/cannbot_ascendc_vs_pypto_where_v4.tar.gz"
+    },
+    {
+      "path": "reports/runtime/npu.lock",
+      "size_bytes": 260,
+      "reason": "Stale lock from Jul 16 07:35 UTC; PID 311096 no longer running"
+    },
+    {
+      "path": "operators/expand/reports/final/final_comparison.md.bak",
+      "size_bytes": 2014,
+      "reason": "Identical backup of live file"
+    }
+  ],
+  "remove_if_empty": [
+    "operators/relu/ascendc/build/",
+    "operators/relu/pypto/src/output/",
+    "operators/div/output/",
+    "operators/relu/ascendc/scripts/",
+    "operators/relu/pypto/scripts/",
+    "operators/mul/pypto/scripts/",
+    "scripts/"
+  ],
+  "keep": {
+    "archives/v4_archives": "KEEP - current slim archives for equal/not/or/where",
+    "archives/v4_sha256": "KEEP - current integrity verification",
+    "div_v2_archive": "KEEP - only div archive until v4 is created"
+  },
+  "total_size_estimate_bytes": 68951
+}

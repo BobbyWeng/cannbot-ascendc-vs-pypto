@@ -1,0 +1,27 @@
+{
+  "operator": "not",
+  "implementation": "ascendc",
+  "batch": 4,
+  "warmup": 200,
+  "loops": 100,
+  "repeat": 5,
+  "median_us": 7.7,
+  "mean_us": 7.2,
+  "min_us": 6.3,
+  "p90_us": 7.8,
+  "std_us": 0.64,
+  "cv": 8.88888888888889,
+  "raw_repeat_latency_us": [
+    6.3,
+    6.4,
+    7.7,
+    7.7,
+    7.8
+  ],
+  "kernel_info": {
+    "kernel_names": [
+      "not_kernel"
+    ],
+    "kernel_count": 1
+  }
+}

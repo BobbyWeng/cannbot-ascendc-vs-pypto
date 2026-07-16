@@ -1,0 +1,28 @@
+{
+  "kernel_count": 700,
+  "logical_calls": 100,
+  "kernels_per_logical_call": 7.0,
+  "all_device_kernels_us_per_call": 403.688,
+  "primary_compute_kernel_us": 75.341,
+  "primary_kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
+  "primary_kernel_type": "KERNEL_AIVEC",
+  "kernel_names": [
+    "aclnnDiv_RealDivAiCore_RealDiv"
+  ],
+  "kernel_types": [
+    "KERNEL_AIVEC"
+  ],
+  "kernel_type_breakdown": {
+    "KERNEL_AIVEC": {
+      "count": 700,
+      "total_us": 40368.79,
+      "mean_us": 57.67,
+      "per_call_us": 403.688
+    }
+  },
+  "compute_kernel_types": [
+    "KERNEL_AIVEC"
+  ],
+  "executor_kernel_types": [],
+  "total_kernel_duration_all_iters_us": 40368.79
+}

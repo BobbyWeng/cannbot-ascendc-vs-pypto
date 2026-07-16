@@ -1,0 +1,1547 @@
+{
+  "operator": "reduce_sum",
+  "variant": "pypto",
+  "all_pass": false,
+  "results": [
+    {
+      "batch": 1,
+      "case": "random_finite",
+      "status": "FAIL",
+      "shape_in": [
+        1,
+        256,
+        384
+      ],
+      "shape_out": [
+        1,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.03125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 1.8
+    },
+    {
+      "batch": 1,
+      "case": "all_zero",
+      "status": "PASS",
+      "shape_in": [
+        1,
+        256,
+        384
+      ],
+      "shape_out": [
+        1,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 1,
+      "case": "all_one",
+      "status": "PASS",
+      "shape_in": [
+        1,
+        256,
+        384
+      ],
+      "shape_out": [
+        1,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 1,
+      "case": "pos_neg_cancel",
+      "status": "FAIL",
+      "shape_in": [
+        1,
+        256,
+        384
+      ],
+      "shape_out": [
+        1,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 1,
+      "case": "small_values",
+      "status": "PASS",
+      "shape_in": [
+        1,
+        256,
+        384
+      ],
+      "shape_out": [
+        1,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 4e-06,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 1,
+      "case": "large_values",
+      "status": "FAIL",
+      "shape_in": [
+        1,
+        256,
+        384
+      ],
+      "shape_out": [
+        1,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 96.0,
+      "nan_actual": 75,
+      "nan_ref": 0,
+      "inf_actual": 158,
+      "inf_ref": 145,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 1,
+      "case": "overflow_risk",
+      "status": "FAIL",
+      "shape_in": [
+        1,
+        256,
+        384
+      ],
+      "shape_out": [
+        1,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 3,
+      "nan_ref": 0,
+      "inf_actual": 253,
+      "inf_ref": 256,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 1,
+      "case": "underflow_risk",
+      "status": "PASS",
+      "shape_in": [
+        1,
+        256,
+        384
+      ],
+      "shape_out": [
+        1,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 1,
+      "case": "nan",
+      "status": "PASS",
+      "shape_in": [
+        1,
+        256,
+        384
+      ],
+      "shape_out": [
+        1,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 256,
+      "nan_ref": 256,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 1,
+      "case": "inf",
+      "status": "PASS",
+      "shape_in": [
+        1,
+        256,
+        384
+      ],
+      "shape_out": [
+        1,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 256,
+      "inf_ref": 256,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 2,
+      "case": "random_finite",
+      "status": "FAIL",
+      "shape_in": [
+        2,
+        256,
+        384
+      ],
+      "shape_out": [
+        2,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.03125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 1.78
+    },
+    {
+      "batch": 2,
+      "case": "all_zero",
+      "status": "PASS",
+      "shape_in": [
+        2,
+        256,
+        384
+      ],
+      "shape_out": [
+        2,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 2,
+      "case": "all_one",
+      "status": "PASS",
+      "shape_in": [
+        2,
+        256,
+        384
+      ],
+      "shape_out": [
+        2,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 2,
+      "case": "pos_neg_cancel",
+      "status": "FAIL",
+      "shape_in": [
+        2,
+        256,
+        384
+      ],
+      "shape_out": [
+        2,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 2,
+      "case": "small_values",
+      "status": "PASS",
+      "shape_in": [
+        2,
+        256,
+        384
+      ],
+      "shape_out": [
+        2,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 4e-06,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 2,
+      "case": "large_values",
+      "status": "FAIL",
+      "shape_in": [
+        2,
+        256,
+        384
+      ],
+      "shape_out": [
+        2,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 104.0,
+      "nan_actual": 148,
+      "nan_ref": 0,
+      "inf_actual": 311,
+      "inf_ref": 282,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 2,
+      "case": "overflow_risk",
+      "status": "FAIL",
+      "shape_in": [
+        2,
+        256,
+        384
+      ],
+      "shape_out": [
+        2,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 7,
+      "nan_ref": 0,
+      "inf_actual": 505,
+      "inf_ref": 512,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 2,
+      "case": "underflow_risk",
+      "status": "PASS",
+      "shape_in": [
+        2,
+        256,
+        384
+      ],
+      "shape_out": [
+        2,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 2,
+      "case": "nan",
+      "status": "PASS",
+      "shape_in": [
+        2,
+        256,
+        384
+      ],
+      "shape_out": [
+        2,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 512,
+      "nan_ref": 512,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 2,
+      "case": "inf",
+      "status": "PASS",
+      "shape_in": [
+        2,
+        256,
+        384
+      ],
+      "shape_out": [
+        2,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 512,
+      "inf_ref": 512,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 4,
+      "case": "random_finite",
+      "status": "FAIL",
+      "shape_in": [
+        4,
+        256,
+        384
+      ],
+      "shape_out": [
+        4,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.03125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 1.779
+    },
+    {
+      "batch": 4,
+      "case": "all_zero",
+      "status": "PASS",
+      "shape_in": [
+        4,
+        256,
+        384
+      ],
+      "shape_out": [
+        4,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 4,
+      "case": "all_one",
+      "status": "PASS",
+      "shape_in": [
+        4,
+        256,
+        384
+      ],
+      "shape_out": [
+        4,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 4,
+      "case": "pos_neg_cancel",
+      "status": "FAIL",
+      "shape_in": [
+        4,
+        256,
+        384
+      ],
+      "shape_out": [
+        4,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 4,
+      "case": "small_values",
+      "status": "PASS",
+      "shape_in": [
+        4,
+        256,
+        384
+      ],
+      "shape_out": [
+        4,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 4e-06,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 4,
+      "case": "large_values",
+      "status": "FAIL",
+      "shape_in": [
+        4,
+        256,
+        384
+      ],
+      "shape_out": [
+        4,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 128.0,
+      "nan_actual": 285,
+      "nan_ref": 0,
+      "inf_actual": 630,
+      "inf_ref": 568,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 4,
+      "case": "overflow_risk",
+      "status": "FAIL",
+      "shape_in": [
+        4,
+        256,
+        384
+      ],
+      "shape_out": [
+        4,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 11,
+      "nan_ref": 0,
+      "inf_actual": 1013,
+      "inf_ref": 1024,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 4,
+      "case": "underflow_risk",
+      "status": "PASS",
+      "shape_in": [
+        4,
+        256,
+        384
+      ],
+      "shape_out": [
+        4,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 4,
+      "case": "nan",
+      "status": "PASS",
+      "shape_in": [
+        4,
+        256,
+        384
+      ],
+      "shape_out": [
+        4,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 1024,
+      "nan_ref": 1024,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 4,
+      "case": "inf",
+      "status": "PASS",
+      "shape_in": [
+        4,
+        256,
+        384
+      ],
+      "shape_out": [
+        4,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 1024,
+      "inf_ref": 1024,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 8,
+      "case": "random_finite",
+      "status": "FAIL",
+      "shape_in": [
+        8,
+        256,
+        384
+      ],
+      "shape_out": [
+        8,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.03125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 1.778
+    },
+    {
+      "batch": 8,
+      "case": "all_zero",
+      "status": "PASS",
+      "shape_in": [
+        8,
+        256,
+        384
+      ],
+      "shape_out": [
+        8,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 8,
+      "case": "all_one",
+      "status": "PASS",
+      "shape_in": [
+        8,
+        256,
+        384
+      ],
+      "shape_out": [
+        8,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 8,
+      "case": "pos_neg_cancel",
+      "status": "FAIL",
+      "shape_in": [
+        8,
+        256,
+        384
+      ],
+      "shape_out": [
+        8,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 8,
+      "case": "small_values",
+      "status": "PASS",
+      "shape_in": [
+        8,
+        256,
+        384
+      ],
+      "shape_out": [
+        8,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 4e-06,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 8,
+      "case": "large_values",
+      "status": "FAIL",
+      "shape_in": [
+        8,
+        256,
+        384
+      ],
+      "shape_out": [
+        8,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 164.0,
+      "nan_actual": 603,
+      "nan_ref": 0,
+      "inf_actual": 1214,
+      "inf_ref": 1130,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 8,
+      "case": "overflow_risk",
+      "status": "FAIL",
+      "shape_in": [
+        8,
+        256,
+        384
+      ],
+      "shape_out": [
+        8,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 30,
+      "nan_ref": 0,
+      "inf_actual": 2018,
+      "inf_ref": 2048,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 8,
+      "case": "underflow_risk",
+      "status": "PASS",
+      "shape_in": [
+        8,
+        256,
+        384
+      ],
+      "shape_out": [
+        8,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 8,
+      "case": "nan",
+      "status": "PASS",
+      "shape_in": [
+        8,
+        256,
+        384
+      ],
+      "shape_out": [
+        8,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 2048,
+      "nan_ref": 2048,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 8,
+      "case": "inf",
+      "status": "PASS",
+      "shape_in": [
+        8,
+        256,
+        384
+      ],
+      "shape_out": [
+        8,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 2048,
+      "inf_ref": 2048,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 16,
+      "case": "random_finite",
+      "status": "FAIL",
+      "shape_in": [
+        16,
+        256,
+        384
+      ],
+      "shape_out": [
+        16,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.03125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 1.782
+    },
+    {
+      "batch": 16,
+      "case": "all_zero",
+      "status": "PASS",
+      "shape_in": [
+        16,
+        256,
+        384
+      ],
+      "shape_out": [
+        16,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 16,
+      "case": "all_one",
+      "status": "PASS",
+      "shape_in": [
+        16,
+        256,
+        384
+      ],
+      "shape_out": [
+        16,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 16,
+      "case": "pos_neg_cancel",
+      "status": "FAIL",
+      "shape_in": [
+        16,
+        256,
+        384
+      ],
+      "shape_out": [
+        16,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 16,
+      "case": "small_values",
+      "status": "PASS",
+      "shape_in": [
+        16,
+        256,
+        384
+      ],
+      "shape_out": [
+        16,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 4e-06,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 16,
+      "case": "large_values",
+      "status": "FAIL",
+      "shape_in": [
+        16,
+        256,
+        384
+      ],
+      "shape_out": [
+        16,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 192.0,
+      "nan_actual": 1186,
+      "nan_ref": 0,
+      "inf_actual": 2456,
+      "inf_ref": 2287,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 16,
+      "case": "overflow_risk",
+      "status": "FAIL",
+      "shape_in": [
+        16,
+        256,
+        384
+      ],
+      "shape_out": [
+        16,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 45,
+      "nan_ref": 0,
+      "inf_actual": 4051,
+      "inf_ref": 4096,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 16,
+      "case": "underflow_risk",
+      "status": "PASS",
+      "shape_in": [
+        16,
+        256,
+        384
+      ],
+      "shape_out": [
+        16,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 16,
+      "case": "nan",
+      "status": "PASS",
+      "shape_in": [
+        16,
+        256,
+        384
+      ],
+      "shape_out": [
+        16,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 4096,
+      "nan_ref": 4096,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 16,
+      "case": "inf",
+      "status": "PASS",
+      "shape_in": [
+        16,
+        256,
+        384
+      ],
+      "shape_out": [
+        16,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 4096,
+      "inf_ref": 4096,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 32,
+      "case": "random_finite",
+      "status": "FAIL",
+      "shape_in": [
+        32,
+        256,
+        384
+      ],
+      "shape_out": [
+        32,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.03125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 1.801
+    },
+    {
+      "batch": 32,
+      "case": "all_zero",
+      "status": "PASS",
+      "shape_in": [
+        32,
+        256,
+        384
+      ],
+      "shape_out": [
+        32,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 32,
+      "case": "all_one",
+      "status": "PASS",
+      "shape_in": [
+        32,
+        256,
+        384
+      ],
+      "shape_out": [
+        32,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 32,
+      "case": "pos_neg_cancel",
+      "status": "FAIL",
+      "shape_in": [
+        32,
+        256,
+        384
+      ],
+      "shape_out": [
+        32,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 32,
+      "case": "small_values",
+      "status": "PASS",
+      "shape_in": [
+        32,
+        256,
+        384
+      ],
+      "shape_out": [
+        32,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 4e-06,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 32,
+      "case": "large_values",
+      "status": "FAIL",
+      "shape_in": [
+        32,
+        256,
+        384
+      ],
+      "shape_out": [
+        32,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 192.0,
+      "nan_actual": 2396,
+      "nan_ref": 0,
+      "inf_actual": 4909,
+      "inf_ref": 4593,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 32,
+      "case": "overflow_risk",
+      "status": "FAIL",
+      "shape_in": [
+        32,
+        256,
+        384
+      ],
+      "shape_out": [
+        32,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 96,
+      "nan_ref": 0,
+      "inf_actual": 8096,
+      "inf_ref": 8192,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 32,
+      "case": "underflow_risk",
+      "status": "PASS",
+      "shape_in": [
+        32,
+        256,
+        384
+      ],
+      "shape_out": [
+        32,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 32,
+      "case": "nan",
+      "status": "PASS",
+      "shape_in": [
+        32,
+        256,
+        384
+      ],
+      "shape_out": [
+        32,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 8192,
+      "nan_ref": 8192,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 32,
+      "case": "inf",
+      "status": "PASS",
+      "shape_in": [
+        32,
+        256,
+        384
+      ],
+      "shape_out": [
+        32,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 8192,
+      "inf_ref": 8192,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 64,
+      "case": "random_finite",
+      "status": "FAIL",
+      "shape_in": [
+        64,
+        256,
+        384
+      ],
+      "shape_out": [
+        64,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.03125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 1.852
+    },
+    {
+      "batch": 64,
+      "case": "all_zero",
+      "status": "PASS",
+      "shape_in": [
+        64,
+        256,
+        384
+      ],
+      "shape_out": [
+        64,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 64,
+      "case": "all_one",
+      "status": "PASS",
+      "shape_in": [
+        64,
+        256,
+        384
+      ],
+      "shape_out": [
+        64,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 64,
+      "case": "pos_neg_cancel",
+      "status": "FAIL",
+      "shape_in": [
+        64,
+        256,
+        384
+      ],
+      "shape_out": [
+        64,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.125,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "FP16_accum_precision",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 64,
+      "case": "small_values",
+      "status": "PASS",
+      "shape_in": [
+        64,
+        256,
+        384
+      ],
+      "shape_out": [
+        64,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 4e-06,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 64,
+      "case": "large_values",
+      "status": "FAIL",
+      "shape_in": [
+        64,
+        256,
+        384
+      ],
+      "shape_out": [
+        64,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 192.0,
+      "nan_actual": 4824,
+      "nan_ref": 0,
+      "inf_actual": 9741,
+      "inf_ref": 9200,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 64,
+      "case": "overflow_risk",
+      "status": "FAIL",
+      "shape_in": [
+        64,
+        256,
+        384
+      ],
+      "shape_out": [
+        64,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 207,
+      "nan_ref": 0,
+      "inf_actual": 16177,
+      "inf_ref": 16384,
+      "failure_type": "Inf_mismatch",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 64,
+      "case": "underflow_risk",
+      "status": "PASS",
+      "shape_in": [
+        64,
+        256,
+        384
+      ],
+      "shape_out": [
+        64,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 64,
+      "case": "nan",
+      "status": "PASS",
+      "shape_in": [
+        64,
+        256,
+        384
+      ],
+      "shape_out": [
+        64,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 16384,
+      "nan_ref": 16384,
+      "inf_actual": 0,
+      "inf_ref": 0,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    },
+    {
+      "batch": 64,
+      "case": "inf",
+      "status": "PASS",
+      "shape_in": [
+        64,
+        256,
+        384
+      ],
+      "shape_out": [
+        64,
+        256
+      ],
+      "accumulation_dtype": "FP16 via pypto.sum",
+      "max_abs_diff_vs_torch": 0.0,
+      "nan_actual": 0,
+      "nan_ref": 0,
+      "inf_actual": 16384,
+      "inf_ref": 16384,
+      "failure_type": "none",
+      "elapsed_sec": 0.0
+    }
+  ]
+}

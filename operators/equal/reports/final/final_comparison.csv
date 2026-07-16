@@ -1,0 +1,8 @@
+Batch,torch_median_us,torch_mean_us,torch_cv,ascendc_median_us,ascendc_mean_us,ascendc_cv,pypto_median_us,pypto_mean_us,pypto_cv
+1,12.2,12.4,3.0,41.8,41.7,0.1,N/A,N/A,N/A
+2,12.2,12.1,4.5,81.9,81.9,0.0,N/A,N/A,N/A
+4,12.8,12.7,4.1,122.2,122.2,0.1,N/A,N/A,N/A
+8,12.0,12.0,4.0,202.5,202.5,0.0,N/A,N/A,N/A
+16,12.1,12.2,4.5,403.2,403.3,0.0,N/A,N/A,N/A
+32,12.7,11.8,16.4,804.6,804.6,0.0,N/A,N/A,N/A
+64,12.9,12.7,2.7,1567.4,1567.4,0.0,N/A,N/A,N/A

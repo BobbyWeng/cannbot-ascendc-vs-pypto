@@ -1,0 +1,21 @@
+{
+  "operator": "reduce_sum",
+  "implementation": "ascendc",
+  "source_files": [
+    "src/reduce_sum_kernel.asc",
+    "src/reduce_sum_host.asc",
+    "src/reduce_sum_tiling.h",
+    "src/data_utils.h"
+  ],
+  "config_files": [
+    "CMakeLists.txt"
+  ],
+  "build_policy": "cmake -S . -B build && cmake --build build -j",
+  "target_binary": "build/reduce_sum_ascendc",
+  "output_pattern": "build/output/output_b{batch}_{case}.bin",
+  "kernel_type": "KERNEL_AIVEC",
+  "kernels_per_call": 1,
+  "accumulation_dtype": "FP32 (preferred), falls back to FP16 per element",
+  "reduce_len": 384,
+  "last_updated": "2026-07-16"
+}

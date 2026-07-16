@@ -1,0 +1,29 @@
+{
+  "operator_name": "expand",
+  "current_stage": 5,
+  "stage_status": {
+    "1": "completed",
+    "2": "completed",
+    "3": "completed",
+    "4": "completed",
+    "5": "completed",
+    "6": "not_started",
+    "7": "not_started"
+  },
+  "stage_retry_count": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 2,
+    "6": 0
+  },
+  "perf_iteration": {
+    "count": 0,
+    "last_improvement": 0.0,
+    "consecutive_no_improvement": 0
+  },
+  "last_updated": "2026-07-16",
+  "pypto_status": "PASS B=1 (per-row JIT dispatch, bitwise correct)",
+  "note": "JIT fix: DT_FP16 rename, plain list target, per-row 1D expand. B=1 correctness PASS (max_diff=0.0). Ascend C still host fallback."
+}

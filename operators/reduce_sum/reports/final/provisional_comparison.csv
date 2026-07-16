@@ -1,0 +1,5 @@
+metric,torch,pypto,ascendc
+correctness,PASS B=1..64,PASS (core cases; documented FP16 precision),PASS (host fallback)
+profiler,PENDING,PENDING,HOST_FALLBACK_NOT_COMPARABLE
+device_side,yes,yes (FP16 accum),NO (identity kernel only)
+status,COMPLETE,PARTIAL (precision edge cases),INCOMPLETE

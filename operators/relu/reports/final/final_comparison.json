@@ -1,0 +1,559 @@
+{
+  "experiment": {
+    "operator": "relu",
+    "formula": "y = max(x, 0)",
+    "shape": "[B, 12, 256, 32]",
+    "dtype": "float16",
+    "batches": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64
+    ],
+    "seed": 20260715,
+    "profiler": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+    "warmup": 200,
+    "profiled_loops": 100,
+    "correctness_standard": "FP16 bitwise (signed-zero exempted)"
+  },
+  "correctness": {
+    "all_batches_pass": true,
+    "signed_zero_exempted": true,
+    "note": "All three implementations produce bitwise-identical results (signed-zero exempted) across all 7 batches"
+  },
+  "profiler_data": {
+    "1": {
+      "torch": {
+        "primary_compute_kernel_us": 2.635,
+        "all_kernel_dur_sum_us": 2.635,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "aclnnRelu_Relu_Relu"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 2.142,
+        "all_kernel_dur_sum_us": 2.142,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "relu_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 51.887,
+        "primary_compute_per_call_us": 51.887,
+        "aicpu_executor_per_call_us": 111.08,
+        "all_device_kernels_per_call_us": 162.966,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "executor_kernel_type": "KERNEL_AICPU",
+        "kernels_per_call": {
+          "total": 3,
+          "primary_compute_KERNEL_MIX_AIC": 1,
+          "executor_KERNEL_AICPU": 2
+        },
+        "kernel_names": [
+          "PYPTO_relu_kernel_2d"
+        ],
+        "one_time_init_aicpu_us": 3022.8,
+        "note_primary": "KERNEL_MIX_AIC is the AI Core compute kernel. Used for pure device-kernel comparison.",
+        "note_aicpu": "2x KERNEL_AICPU per call are PyPTO runtime executor on AI CPU \u2014 NOT compute kernels. Excluded from primary comparison.",
+        "note_total": "Sum of all device events (primary + executor). Upper bound due to possible pipeline overlap."
+      }
+    },
+    "2": {
+      "torch": {
+        "primary_compute_kernel_us": 2.709,
+        "all_kernel_dur_sum_us": 2.709,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "aclnnRelu_Relu_Relu"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 2.373,
+        "all_kernel_dur_sum_us": 2.373,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "relu_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 49.546,
+        "primary_compute_per_call_us": 49.546,
+        "aicpu_executor_per_call_us": 105.146,
+        "all_device_kernels_per_call_us": 154.692,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "executor_kernel_type": "KERNEL_AICPU",
+        "kernels_per_call": {
+          "total": 3,
+          "primary_compute_KERNEL_MIX_AIC": 1,
+          "executor_KERNEL_AICPU": 2
+        },
+        "kernel_names": [
+          "PYPTO_relu_kernel_2d"
+        ],
+        "one_time_init_aicpu_us": 3088.5,
+        "note_primary": "KERNEL_MIX_AIC is the AI Core compute kernel. Used for pure device-kernel comparison.",
+        "note_aicpu": "2x KERNEL_AICPU per call are PyPTO runtime executor on AI CPU \u2014 NOT compute kernels. Excluded from primary comparison.",
+        "note_total": "Sum of all device events (primary + executor). Upper bound due to possible pipeline overlap."
+      }
+    },
+    "4": {
+      "torch": {
+        "primary_compute_kernel_us": 2.828,
+        "all_kernel_dur_sum_us": 2.828,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "aclnnRelu_Relu_Relu"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 2.657,
+        "all_kernel_dur_sum_us": 2.657,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "relu_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 52.504,
+        "primary_compute_per_call_us": 52.504,
+        "aicpu_executor_per_call_us": 113.0,
+        "all_device_kernels_per_call_us": 165.504,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "executor_kernel_type": "KERNEL_AICPU",
+        "kernels_per_call": {
+          "total": 3,
+          "primary_compute_KERNEL_MIX_AIC": 1,
+          "executor_KERNEL_AICPU": 2
+        },
+        "kernel_names": [
+          "PYPTO_relu_kernel_2d"
+        ],
+        "one_time_init_aicpu_us": 3490.0,
+        "note_primary": "KERNEL_MIX_AIC is the AI Core compute kernel. Used for pure device-kernel comparison.",
+        "note_aicpu": "2x KERNEL_AICPU per call are PyPTO runtime executor on AI CPU \u2014 NOT compute kernels. Excluded from primary comparison.",
+        "note_total": "Sum of all device events (primary + executor). Upper bound due to possible pipeline overlap."
+      }
+    },
+    "8": {
+      "torch": {
+        "primary_compute_kernel_us": 3.154,
+        "all_kernel_dur_sum_us": 3.154,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "aclnnRelu_Relu_Relu"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 3.042,
+        "all_kernel_dur_sum_us": 3.042,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "relu_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 61.278,
+        "primary_compute_per_call_us": 61.278,
+        "aicpu_executor_per_call_us": 125.862,
+        "all_device_kernels_per_call_us": 187.139,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "executor_kernel_type": "KERNEL_AICPU",
+        "kernels_per_call": {
+          "total": 3,
+          "primary_compute_KERNEL_MIX_AIC": 1,
+          "executor_KERNEL_AICPU": 2
+        },
+        "kernel_names": [
+          "PYPTO_relu_kernel_2d"
+        ],
+        "one_time_init_aicpu_us": 2885.6,
+        "note_primary": "KERNEL_MIX_AIC is the AI Core compute kernel. Used for pure device-kernel comparison.",
+        "note_aicpu": "2x KERNEL_AICPU per call are PyPTO runtime executor on AI CPU \u2014 NOT compute kernels. Excluded from primary comparison.",
+        "note_total": "Sum of all device events (primary + executor). Upper bound due to possible pipeline overlap."
+      }
+    },
+    "16": {
+      "torch": {
+        "primary_compute_kernel_us": 3.658,
+        "all_kernel_dur_sum_us": 3.658,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "aclnnRelu_Relu_Relu"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 4.02,
+        "all_kernel_dur_sum_us": 4.02,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "relu_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 79.691,
+        "primary_compute_per_call_us": 79.691,
+        "aicpu_executor_per_call_us": 152.095,
+        "all_device_kernels_per_call_us": 231.785,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "executor_kernel_type": "KERNEL_AICPU",
+        "kernels_per_call": {
+          "total": 3,
+          "primary_compute_KERNEL_MIX_AIC": 1,
+          "executor_KERNEL_AICPU": 2
+        },
+        "kernel_names": [
+          "PYPTO_relu_kernel_2d"
+        ],
+        "one_time_init_aicpu_us": 3119.5,
+        "note_primary": "KERNEL_MIX_AIC is the AI Core compute kernel. Used for pure device-kernel comparison.",
+        "note_aicpu": "2x KERNEL_AICPU per call are PyPTO runtime executor on AI CPU \u2014 NOT compute kernels. Excluded from primary comparison.",
+        "note_total": "Sum of all device events (primary + executor). Upper bound due to possible pipeline overlap."
+      }
+    },
+    "32": {
+      "torch": {
+        "primary_compute_kernel_us": 4.674,
+        "all_kernel_dur_sum_us": 4.674,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "aclnnRelu_Relu_Relu"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 6.021,
+        "all_kernel_dur_sum_us": 6.021,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "relu_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 103.909,
+        "primary_compute_per_call_us": 103.909,
+        "aicpu_executor_per_call_us": 177.816,
+        "all_device_kernels_per_call_us": 281.725,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "executor_kernel_type": "KERNEL_AICPU",
+        "kernels_per_call": {
+          "total": 3,
+          "primary_compute_KERNEL_MIX_AIC": 1,
+          "executor_KERNEL_AICPU": 2
+        },
+        "kernel_names": [
+          "PYPTO_relu_kernel_2d"
+        ],
+        "one_time_init_aicpu_us": 2805.7,
+        "note_primary": "KERNEL_MIX_AIC is the AI Core compute kernel. Used for pure device-kernel comparison.",
+        "note_aicpu": "2x KERNEL_AICPU per call are PyPTO runtime executor on AI CPU \u2014 NOT compute kernels. Excluded from primary comparison.",
+        "note_total": "Sum of all device events (primary + executor). Upper bound due to possible pipeline overlap."
+      }
+    },
+    "64": {
+      "torch": {
+        "primary_compute_kernel_us": 6.623,
+        "all_kernel_dur_sum_us": 6.623,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "aclnnRelu_Relu_Relu"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 9.705,
+        "all_kernel_dur_sum_us": 9.705,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1.0,
+        "kernel_names": [
+          "relu_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 150.819,
+        "primary_compute_per_call_us": 150.819,
+        "aicpu_executor_per_call_us": 227.697,
+        "all_device_kernels_per_call_us": 378.516,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "executor_kernel_type": "KERNEL_AICPU",
+        "kernels_per_call": {
+          "total": 3,
+          "primary_compute_KERNEL_MIX_AIC": 1,
+          "executor_KERNEL_AICPU": 2
+        },
+        "kernel_names": [
+          "PYPTO_relu_kernel_2d"
+        ],
+        "one_time_init_aicpu_us": 2852.5,
+        "note_primary": "KERNEL_MIX_AIC is the AI Core compute kernel. Used for pure device-kernel comparison.",
+        "note_aicpu": "2x KERNEL_AICPU per call are PyPTO runtime executor on AI CPU \u2014 NOT compute kernels. Excluded from primary comparison.",
+        "note_total": "Sum of all device events (primary + executor). Upper bound due to possible pipeline overlap."
+      }
+    }
+  },
+  "comparison_summary": [
+    {
+      "batch": 1,
+      "torch_primary_us": 2.635,
+      "ascendc_primary_us": 2.142,
+      "pypto_primary_us": 51.887,
+      "pypto_executor_us": 111.08,
+      "pypto_total_dev_us": 162.966,
+      "torch_kernel_type": "KERNEL_AIVEC",
+      "ascendc_kernel_type": "KERNEL_AIVEC",
+      "pypto_primary_type": "KERNEL_MIX_AIC"
+    },
+    {
+      "batch": 2,
+      "torch_primary_us": 2.709,
+      "ascendc_primary_us": 2.373,
+      "pypto_primary_us": 49.546,
+      "pypto_executor_us": 105.146,
+      "pypto_total_dev_us": 154.692,
+      "torch_kernel_type": "KERNEL_AIVEC",
+      "ascendc_kernel_type": "KERNEL_AIVEC",
+      "pypto_primary_type": "KERNEL_MIX_AIC"
+    },
+    {
+      "batch": 4,
+      "torch_primary_us": 2.828,
+      "ascendc_primary_us": 2.657,
+      "pypto_primary_us": 52.504,
+      "pypto_executor_us": 113.0,
+      "pypto_total_dev_us": 165.504,
+      "torch_kernel_type": "KERNEL_AIVEC",
+      "ascendc_kernel_type": "KERNEL_AIVEC",
+      "pypto_primary_type": "KERNEL_MIX_AIC"
+    },
+    {
+      "batch": 8,
+      "torch_primary_us": 3.154,
+      "ascendc_primary_us": 3.042,
+      "pypto_primary_us": 61.278,
+      "pypto_executor_us": 125.862,
+      "pypto_total_dev_us": 187.139,
+      "torch_kernel_type": "KERNEL_AIVEC",
+      "ascendc_kernel_type": "KERNEL_AIVEC",
+      "pypto_primary_type": "KERNEL_MIX_AIC"
+    },
+    {
+      "batch": 16,
+      "torch_primary_us": 3.658,
+      "ascendc_primary_us": 4.02,
+      "pypto_primary_us": 79.691,
+      "pypto_executor_us": 152.095,
+      "pypto_total_dev_us": 231.785,
+      "torch_kernel_type": "KERNEL_AIVEC",
+      "ascendc_kernel_type": "KERNEL_AIVEC",
+      "pypto_primary_type": "KERNEL_MIX_AIC"
+    },
+    {
+      "batch": 32,
+      "torch_primary_us": 4.674,
+      "ascendc_primary_us": 6.021,
+      "pypto_primary_us": 103.909,
+      "pypto_executor_us": 177.816,
+      "pypto_total_dev_us": 281.725,
+      "torch_kernel_type": "KERNEL_AIVEC",
+      "ascendc_kernel_type": "KERNEL_AIVEC",
+      "pypto_primary_type": "KERNEL_MIX_AIC"
+    },
+    {
+      "batch": 64,
+      "torch_primary_us": 6.623,
+      "ascendc_primary_us": 9.705,
+      "pypto_primary_us": 150.819,
+      "pypto_executor_us": 227.697,
+      "pypto_total_dev_us": 378.516,
+      "torch_kernel_type": "KERNEL_AIVEC",
+      "ascendc_kernel_type": "KERNEL_AIVEC",
+      "pypto_primary_type": "KERNEL_MIX_AIC"
+    }
+  ],
+  "device_kernel_comparison_primary": {
+    "description": "Primary compute kernel only \u2014 pure device kernel comparison. PyPTO KERNEL_AICPU executor events excluded per requirement.",
+    "metric": "primary_compute_kernel_duration_us (mean of profiled loop events)",
+    "table": {
+      "1": {
+        "torch": 2.635,
+        "ascendc": 2.142,
+        "pypto": 51.887,
+        "fastest": "ascendc",
+        "ascendc_vs_torch_ratio": 1.23,
+        "pypto_vs_ascendc_ratio": 24.2
+      },
+      "2": {
+        "torch": 2.709,
+        "ascendc": 2.373,
+        "pypto": 49.546,
+        "fastest": "ascendc",
+        "ascendc_vs_torch_ratio": 1.14,
+        "pypto_vs_ascendc_ratio": 20.9
+      },
+      "4": {
+        "torch": 2.828,
+        "ascendc": 2.657,
+        "pypto": 52.504,
+        "fastest": "ascendc",
+        "ascendc_vs_torch_ratio": 1.06,
+        "pypto_vs_ascendc_ratio": 19.8
+      },
+      "8": {
+        "torch": 3.154,
+        "ascendc": 3.042,
+        "pypto": 61.278,
+        "fastest": "ascendc",
+        "ascendc_vs_torch_ratio": 1.04,
+        "pypto_vs_ascendc_ratio": 20.1
+      },
+      "16": {
+        "torch": 3.658,
+        "ascendc": 4.02,
+        "pypto": 79.691,
+        "fastest": "torch",
+        "ascendc_vs_torch_ratio": 0.91,
+        "pypto_vs_ascendc_ratio": 19.8
+      },
+      "32": {
+        "torch": 4.674,
+        "ascendc": 6.021,
+        "pypto": 103.909,
+        "fastest": "torch",
+        "ascendc_vs_torch_ratio": 0.78,
+        "pypto_vs_ascendc_ratio": 17.3
+      },
+      "64": {
+        "torch": 6.623,
+        "ascendc": 9.705,
+        "pypto": 150.819,
+        "fastest": "torch",
+        "ascendc_vs_torch_ratio": 0.68,
+        "pypto_vs_ascendc_ratio": 15.5
+      }
+    }
+  },
+  "all_device_kernels_comparison": {
+    "description": "Sum of ALL KERNEL_* device events per logical call. Includes PyPTO 2x AICPU executor events (runtime overhead on AI CPU).",
+    "metric": "all_device_kernels_duration_sum_us_per_logical_call",
+    "table": {
+      "1": {
+        "torch": 2.635,
+        "ascendc": 2.142,
+        "pypto_total": 162.966,
+        "pypto_breakdown": "51.887us_compute + 111.08us_executor"
+      },
+      "2": {
+        "torch": 2.709,
+        "ascendc": 2.373,
+        "pypto_total": 154.692,
+        "pypto_breakdown": "49.546us_compute + 105.146us_executor"
+      },
+      "4": {
+        "torch": 2.828,
+        "ascendc": 2.657,
+        "pypto_total": 165.504,
+        "pypto_breakdown": "52.504us_compute + 113.0us_executor"
+      },
+      "8": {
+        "torch": 3.154,
+        "ascendc": 3.042,
+        "pypto_total": 187.139,
+        "pypto_breakdown": "61.278us_compute + 125.862us_executor"
+      },
+      "16": {
+        "torch": 3.658,
+        "ascendc": 4.02,
+        "pypto_total": 231.785,
+        "pypto_breakdown": "79.691us_compute + 152.095us_executor"
+      },
+      "32": {
+        "torch": 4.674,
+        "ascendc": 6.021,
+        "pypto_total": 281.725,
+        "pypto_breakdown": "103.909us_compute + 177.816us_executor"
+      },
+      "64": {
+        "torch": 6.623,
+        "ascendc": 9.705,
+        "pypto_total": 378.516,
+        "pypto_breakdown": "150.819us_compute + 227.697us_executor"
+      }
+    }
+  },
+  "pypto_breakdown": {
+    "description": "PyPTO per-call latency fully decomposed",
+    "per_batch": {
+      "1": {
+        "primary_compute_KERNEL_MIX_AIC_us": 51.887,
+        "executor_AICPU_x2_us": 111.08,
+        "all_device_events_sum_us": 162.966,
+        "composition": "51.9us (compute) + 111.1us (executor) = 163.0us (total)"
+      },
+      "2": {
+        "primary_compute_KERNEL_MIX_AIC_us": 49.546,
+        "executor_AICPU_x2_us": 105.146,
+        "all_device_events_sum_us": 154.692,
+        "composition": "49.5us (compute) + 105.1us (executor) = 154.7us (total)"
+      },
+      "4": {
+        "primary_compute_KERNEL_MIX_AIC_us": 52.504,
+        "executor_AICPU_x2_us": 113.0,
+        "all_device_events_sum_us": 165.504,
+        "composition": "52.5us (compute) + 113.0us (executor) = 165.5us (total)"
+      },
+      "8": {
+        "primary_compute_KERNEL_MIX_AIC_us": 61.278,
+        "executor_AICPU_x2_us": 125.862,
+        "all_device_events_sum_us": 187.139,
+        "composition": "61.3us (compute) + 125.9us (executor) = 187.1us (total)"
+      },
+      "16": {
+        "primary_compute_KERNEL_MIX_AIC_us": 79.691,
+        "executor_AICPU_x2_us": 152.095,
+        "all_device_events_sum_us": 231.785,
+        "composition": "79.7us (compute) + 152.1us (executor) = 231.8us (total)"
+      },
+      "32": {
+        "primary_compute_KERNEL_MIX_AIC_us": 103.909,
+        "executor_AICPU_x2_us": 177.816,
+        "all_device_events_sum_us": 281.725,
+        "composition": "103.9us (compute) + 177.8us (executor) = 281.7us (total)"
+      },
+      "64": {
+        "primary_compute_KERNEL_MIX_AIC_us": 150.819,
+        "executor_AICPU_x2_us": 227.697,
+        "all_device_events_sum_us": 378.516,
+        "composition": "150.8us (compute) + 227.7us (executor) = 378.5us (total)"
+      }
+    },
+    "one_time_init": {
+      "description": "A single KERNEL_AICPU event (~3ms) occurs once per PyPTO process. This is cache load/runtime init, NOT per-call cost.",
+      "duration_us": 3022.8,
+      "duration_ms": 3.0
+    },
+    "terminology_correction": {
+      "old_report_error": "Previous report claimed \"PyPTO kernel latency ~100 us\". This was INCORRECT \u2014 it was torch.npu.Event operation-level latency including PyPTO runtime dispatch.",
+      "corrected_facts": [
+        "PyPTO primary compute kernel (KERNEL_MIX_AIC) per call: ~52-151 us depending on batch size",
+        "PyPTO also produces 2x KERNEL_AICPU executor events per call (~111-228 us total) \u2014 these are PyPTO runtime running on AI CPU",
+        "The ~100 us operation latency from torch.npu.Event = primary compute kernel + some executor overlap + PyPTO host dispatch",
+        "ALL device kernel events sum per call: ~163-379 us (upper bound, may include pipeline overlap)"
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "warmup": 100,
+  "loops": 1000,
+  "repeat": 10,
+  "sync_method": "aclrtSynchronizeStream",
+  "batches": [1, 2, 4, 8, 16, 32, 64],
+  "tile_sizes": [128, 256, 512, 1024, 2048, 4096, 8192],
+  "block_dims": [1, 2, 4, 8, 16, 20],
+  "device_ids": [0, 1],
+  "default_device_id": 0,
+  "measurement": "kernel-only",
+  "shape_template": [12, 256, 32],
+  "shape_4d_prefix": "B",
+  "dtype": "float16",
+  "dtype_bytes": 2
+}

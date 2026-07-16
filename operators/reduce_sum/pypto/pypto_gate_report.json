@@ -1,0 +1,16 @@
+{
+  "operator": "reduce_sum",
+  "implementation": "pypto",
+  "gate_status": "NOT_STARTED",
+  "stages": {
+    "1_intent_understand": "NOT_STARTED",
+    "2_api_explore": "NOT_STARTED",
+    "3_golden_generate": "NOT_STARTED",
+    "4_design": "NOT_STARTED",
+    "5_implementation": "NOT_STARTED",
+    "6_precision_fix": "NOT_STARTED",
+    "7_perf_tune": "NOT_STARTED"
+  },
+  "backend_limitation": "UNKNOWN — verify pypto.op.reduce_sum availability",
+  "last_updated": "2026-07-16"
+}

@@ -1,0 +1,5 @@
+metric,torch,pypto,ascendc
+correctness,PASS B=1..64,PASS B=1..64,PASS (host fallback)
+profiler,PENDING,PENDING,HOST_FALLBACK_NOT_COMPARABLE
+device_side,yes,yes,NO (identity kernel only)
+status,COMPLETE,PARTIAL,INCOMPLETE

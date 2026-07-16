@@ -1,0 +1,42 @@
+{
+  "operator": "not",
+  "variant": "ascendc",
+  "results": [
+    {
+      "batch": 1,
+      "status": "FAIL",
+      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/not/data/reference_b1_bool.bin'"
+    },
+    {
+      "batch": 2,
+      "status": "FAIL",
+      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/not/data/reference_b2_bool.bin'"
+    },
+    {
+      "batch": 4,
+      "status": "FAIL",
+      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/not/data/reference_b4_bool.bin'"
+    },
+    {
+      "batch": 8,
+      "status": "FAIL",
+      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/not/data/reference_b8_bool.bin'"
+    },
+    {
+      "batch": 16,
+      "status": "FAIL",
+      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/not/data/reference_b16_bool.bin'"
+    },
+    {
+      "batch": 32,
+      "status": "FAIL",
+      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/not/data/reference_b32_bool.bin'"
+    },
+    {
+      "batch": 64,
+      "status": "FAIL",
+      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/not/data/reference_b64_bool.bin'"
+    }
+  ],
+  "all_pass": false
+}

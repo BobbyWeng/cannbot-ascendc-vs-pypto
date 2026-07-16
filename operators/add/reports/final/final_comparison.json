@@ -1,0 +1,166 @@
+{
+  "operator": "Add (4-input)",
+  "formula": "Y = ((X1+X2)+X3)+X4",
+  "shape": "[B, 256, 384]",
+  "dtype": "float16",
+  "precision": "bitwise (rtol=0, atol=0)",
+  "profiler": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+  "warmup": 200,
+  "loops": 100,
+  "repeat": 5,
+  "generated": "2026-07-16",
+  "correctness": {
+    "torch": "PASS (all 7 batches)",
+    "ascendc": "PASS (all 7 batches)",
+    "pypto": "PASS (all 7 batches)"
+  },
+  "performance": {
+    "1": {
+      "torch": {
+        "primary_compute_kernel_us": 10.04,
+        "all_device_kernels_us": 57.793,
+        "kernels_per_call": 21.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 13.78,
+        "all_device_kernels_us": 18.944,
+        "kernels_per_call": 7.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 136.03,
+        "all_device_kernels_us": 462.9,
+        "kernels_per_call": 9.01,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "aicpu_executor_us": 326.871
+      }
+    },
+    "2": {
+      "torch": {
+        "primary_compute_kernel_us": 11.08,
+        "all_device_kernels_us": 58.601,
+        "kernels_per_call": 21.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 19.26,
+        "all_device_kernels_us": 22.919,
+        "kernels_per_call": 7.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 139.345,
+        "all_device_kernels_us": 471.404,
+        "kernels_per_call": 9.01,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "aicpu_executor_us": 332.058
+      }
+    },
+    "4": {
+      "torch": {
+        "primary_compute_kernel_us": 10.86,
+        "all_device_kernels_us": 62.929,
+        "kernels_per_call": 21.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 17.68,
+        "all_device_kernels_us": 26.264,
+        "kernels_per_call": 7.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 144.892,
+        "all_device_kernels_us": 485.146,
+        "kernels_per_call": 9.01,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "aicpu_executor_us": 340.254
+      }
+    },
+    "8": {
+      "torch": {
+        "primary_compute_kernel_us": 10.42,
+        "all_device_kernels_us": 72.519,
+        "kernels_per_call": 21.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 14.94,
+        "all_device_kernels_us": 33.378,
+        "kernels_per_call": 7.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 156.495,
+        "all_device_kernels_us": 528.198,
+        "kernels_per_call": 9.01,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "aicpu_executor_us": 371.703
+      }
+    },
+    "16": {
+      "torch": {
+        "primary_compute_kernel_us": 12.68,
+        "all_device_kernels_us": 89.853,
+        "kernels_per_call": 21.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 22.54,
+        "all_device_kernels_us": 50.342,
+        "kernels_per_call": 7.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 176.376,
+        "all_device_kernels_us": 569.455,
+        "kernels_per_call": 9.01,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "aicpu_executor_us": 393.08
+      }
+    },
+    "32": {
+      "torch": {
+        "primary_compute_kernel_us": 20.56,
+        "all_device_kernels_us": 122.557,
+        "kernels_per_call": 21.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 33.381,
+        "all_device_kernels_us": 83.864,
+        "kernels_per_call": 7.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 210.826,
+        "all_device_kernels_us": 645.057,
+        "kernels_per_call": 9.01,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "aicpu_executor_us": 434.231
+      }
+    },
+    "64": {
+      "torch": {
+        "primary_compute_kernel_us": 27.541,
+        "all_device_kernels_us": 229.447,
+        "kernels_per_call": 21.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 54.601,
+        "all_device_kernels_us": 150.813,
+        "kernels_per_call": 7.0,
+        "kernel_type": "KERNEL_AIVEC"
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 260.94,
+        "all_device_kernels_us": 778.684,
+        "kernels_per_call": 9.01,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "aicpu_executor_us": 517.744
+      }
+    }
+  }
+}

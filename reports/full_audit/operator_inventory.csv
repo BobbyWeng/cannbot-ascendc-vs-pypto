@@ -1,0 +1,12 @@
+operator,formula,category,logical_shape,dtype,broadcast,reduction,permutation,batch_sweep,reported_status,ascendc_status,pypto_status,has_archive
+relu,Y = max(X,0),element-wise activation,"[B, 12, 256, 32]",float16,false,false,false,"1,2,4,8,16,32,64",COMPLETE,COMPLETE,SUCCESS,false
+mul,Y = X1 * X2,element-wise arithmetic,"[B, 3, 4, 256, 32]",float16,false,false,false,"1,2,4,8,16,32,64",COMPLETE,COMPLETE,SUCCESS,false
+add,Y = ((X1+X2)+X3)+X4,element-wise arithmetic,"[B, 256, 384]",float16,false,false,false,"1,2,4,8,16,32,64",COMPLETE,COMPLETE,SUCCESS,false
+div,Y = X1/X2 (broadcast last dim),broadcast arithmetic,"X1: [B,12,256,256], X2: [B,12,256,1]",float16,true,false,false,"1,2,4,8,16,32",COMPLETE_WITH_LIMITATION,COMPLETE,BLOCKED_BACKEND,true
+equal,Y = Equal(X1,X2),element-wise comparison,"[B, 256, 384]",float16->bool uint8,false,false,false,"1,2,4,8,16,32,64",COMPLETE_WITH_LIMITATION,COMPLETE,BLOCKED_BACKEND,true
+not,Y = LogicalNot(X) (0->1, nonzero->0),element-wise logical,"[B, 256, 384]",uint8->uint8,false,false,false,"1,2,4,8,16,32,64",COMPLETE,COMPLETE,PASS,true
+or,Y = LogicalOr(X1,X2),element-wise logical,"[B, 256, 384]",uint8->uint8,false,false,false,"1,2,4,8,16,32,64",COMPLETE,COMPLETE,PASS,true
+where,Y = cond ? X1 : X2,element-wise select,"[B, 256, 384]",uint8 cond+fp16 x,false,false,false,"1,2,4,8,16,32,64",COMPLETE_WITH_LIMITATION,COMPLETE_WITH_LIMITATION,BLOCKED_BACKEND,true
+expand,Y[b,i,j]=X[b,i,0] (broadcast dim2),broadcast/reshape,"X: [B,256,1], Y: [B,256,384]",float16,true,false,false,"1,2,4,8,16,32,64",INCOMPLETE,INCOMPLETE,INCOMPLETE,false
+transpose,Y[b,j,i]=X[b,i,j],permutation,"X: [B,256,384], Y: [B,384,256]",float16,false,false,true,"1,2,4,8,16,32,64",INCOMPLETE,INCOMPLETE,INCOMPLETE,false
+reduce_sum,Y[b,i]=Sum_j X[b,i,j],reduction,"X: [B,256,384], Y: [B,256]",float16,false,true,false,"1,2,4,8,16,32,64",INCOMPLETE,INCOMPLETE,NOT_STARTED,false

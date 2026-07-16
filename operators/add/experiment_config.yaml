@@ -1,0 +1,32 @@
+experiment_name: "Add (4-input) device kernel comparison — torch / Ascend C / PyPTO"
+operator: add
+shape: "[B, 256, 384]"
+dtype: float16
+batches: [1, 2, 4, 8, 16, 32, 64]
+implementations:
+  torch:
+    type: "((X1 + X2) + X3) + X4 (three torch.add calls)"
+    kernel_type: "TBD (profiler reveals actual count)"
+    kernels_per_call: "TBD (expect 3 if no fusion)"
+    profiler_method: single msprof session
+  ascendc:
+    type: Ascend C direct <<<>>> invoke (fused 4-input add)
+    kernel_type: KERNEL_AIVEC (expected)
+    kernels_per_call: 1
+    profiler_method: single msprof session
+  pypto:
+    type: "@pypto.frontend.jit"
+    kernel_type: "TBD (determined by profiling)"
+    kernels_per_call: "TBD"
+    profiler_method: two-process (warmup no-profiler + msprof session)
+benchmark:
+  warmup: 200
+  profiled_loops: 100
+  repeat: 5
+  profiler: msprof
+  profiler_options: --ascendcl=on --ai-core=on --task-time=l0
+correctness:
+  rtol: 0
+  atol: 0
+  require_bitwise: true
+  signed_zero_exempted: false

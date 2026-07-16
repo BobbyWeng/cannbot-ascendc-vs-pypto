@@ -1,0 +1,1968 @@
+{
+  "operator": "mul",
+  "seed": 20260715,
+  "shape_template": [
+    3,
+    4,
+    256,
+    32
+  ],
+  "dtype": "float16",
+  "files": [
+    {
+      "batch": 1,
+      "file": "x1_b1_fp16.bin",
+      "shape": [
+        1,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 98304,
+      "byte_size": 196608,
+      "seed": 20260717,
+      "sha256": "dc7758be2c830f3afcde082cdd83a3df01b142e7ef3a916e7f17414ec67bf702"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_fp16.bin",
+      "shape": [
+        1,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 98304,
+      "byte_size": 196608,
+      "seed": 20260718,
+      "sha256": "c7937df5d0507386d4aa8b6ca937cea583b882773dc7bacd4022517912fe1982"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "a533c36b37acf2375333b4040c7fb1c5245146252868285b98a3da5ecb92c468"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "755028f288e0f029bb3dee03d89952bfc87c03dd1a2050d7b92ef59466c847f4"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "0a61ad0c8f1aba02f206e15e5e67e8975096dfe92d67d15e4e0900b40d17f211"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "b01a70e4988d5faadca796dc9ed81818cda083567805e0fa5f56f92b64e8f8df"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "08a9200a4a19bd3b81fef9567ab47b3d3c1a9eaa0cb742225c828b9a53a251d4"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "6b25ccf24f9b1284272504cbd4d5338d708fba3a92dec82a17b7da4b2b6ccc8b"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "0ca2fe2d1ea1051cfc04b2b214691f70c896d7ce0ece1ef582fb6be496fe9e0a"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "0ca2fe2d1ea1051cfc04b2b214691f70c896d7ce0ece1ef582fb6be496fe9e0a"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "394dcee7f58267b9149415f8e54dc4d1d293dd3ebd349ae62b55add7187ada67"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "e1d31983d7587c27b72b9101cb80872419ababcb96943cbed3007925e13c6ea9"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "39631271ae54cdc69fec84e2cb113eaa3431d13ca24ac118ea00f05f0cb0213f"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "394dcee7f58267b9149415f8e54dc4d1d293dd3ebd349ae62b55add7187ada67"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "7621430e8945156ab45898aceae48721ede27ee0c4a02670c9d99e5e11efab91"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "7621430e8945156ab45898aceae48721ede27ee0c4a02670c9d99e5e11efab91"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "9d22254a5025aa40a012d513da14870c1a256f5f01b70186bb52a474bbadec57"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "9d22254a5025aa40a012d513da14870c1a256f5f01b70186bb52a474bbadec57"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "08a9200a4a19bd3b81fef9567ab47b3d3c1a9eaa0cb742225c828b9a53a251d4"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "a940aae458919c024bbd5924fcc3b2483fdf4874788d16e54473208b625f38dd"
+    },
+    {
+      "batch": 1,
+      "file": "x1_b1_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "4ab2cf604e1d13e25f9fbf8ea22041cbbee5fddf68232c72b4b80e0f0df6f5eb"
+    },
+    {
+      "batch": 1,
+      "file": "x2_b1_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "a940aae458919c024bbd5924fcc3b2483fdf4874788d16e54473208b625f38dd"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_fp16.bin",
+      "shape": [
+        2,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 196608,
+      "byte_size": 393216,
+      "seed": 20260719,
+      "sha256": "50d5508fca1e58b16bd4944d23e6c5b6844ecf83012714dc63053c6ddd317a78"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_fp16.bin",
+      "shape": [
+        2,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 196608,
+      "byte_size": 393216,
+      "seed": 20260720,
+      "sha256": "c5aa6f1ea0b434bdfb0ca02c8c3c295ff1678f3291dd2e1d9f4658ecb85c0dc4"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "5709d5fd42c652131918462ea29b294efd8a6d38ba07106ec28f6eb4d6491cd2"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "7c7a6d37639611ebd54a4f41fd76d761228858d17001136c5ec50d6f7d13a393"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "69e48aae483227ac00476550ee391878448955abfaf4a9b440f4d48ed1817627"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "d1015d06c9cb81ccafbe4ca682df5a421805f010c60fe2bb60ae67d0094c2218"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "23d5ca79047817beed05276e40315c659de82df5aaa2eb76f98f5a5ab9da80d0"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "04b95778f30021bd8b5ccc4c26a197d89ced9a43ad1d710668a5bf4048128071"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "a6619f482fee91a315f76cdcd8705d39b6ce11077c435ccc696142e130c27762"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "a83a4cd349890dacb78050e35e78986a22f73dcbd4ac18670bd9429b763b0722"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "a83a4cd349890dacb78050e35e78986a22f73dcbd4ac18670bd9429b763b0722"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "a6619f482fee91a315f76cdcd8705d39b6ce11077c435ccc696142e130c27762"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "a6619f482fee91a315f76cdcd8705d39b6ce11077c435ccc696142e130c27762"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "a6619f482fee91a315f76cdcd8705d39b6ce11077c435ccc696142e130c27762"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "a14f36395d7c65aefbf4376195ed216abfdd92db47337c305c3cc0c4c2e2b12a"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "08820c34b16c5e07a4d1cd683a84b2076be6fb9fd096cb956a52c1ef28317175"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "832e6a6388437f26e17ac2f9726ac772cf9a094a289a76fb30e8b101ba756dae"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "a14f36395d7c65aefbf4376195ed216abfdd92db47337c305c3cc0c4c2e2b12a"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "9833a9216cc40e4c7f87829bc9e7933f27c920bdab157fca7c8333d61522ef92"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "9833a9216cc40e4c7f87829bc9e7933f27c920bdab157fca7c8333d61522ef92"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "6baa6eb389069f26d558fe7a5ee13ecce8aaef4ae68586116618e463376b370a"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "6baa6eb389069f26d558fe7a5ee13ecce8aaef4ae68586116618e463376b370a"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "23d5ca79047817beed05276e40315c659de82df5aaa2eb76f98f5a5ab9da80d0"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "6342a24c962df9e1919befc98c6ffac576477b443bb3afa9726cbd7f900f8a17"
+    },
+    {
+      "batch": 2,
+      "file": "x1_b2_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "4558eafa3d504fac944da726c905cc07f72045f04e8ea9ede8bd1d607ea9b6e9"
+    },
+    {
+      "batch": 2,
+      "file": "x2_b2_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "6342a24c962df9e1919befc98c6ffac576477b443bb3afa9726cbd7f900f8a17"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_fp16.bin",
+      "shape": [
+        4,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 393216,
+      "byte_size": 786432,
+      "seed": 20260723,
+      "sha256": "c273c7b201a522b62bf91f4b3baaff87c5c8412690205e1d4837428ba449b3e5"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_fp16.bin",
+      "shape": [
+        4,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 393216,
+      "byte_size": 786432,
+      "seed": 20260724,
+      "sha256": "d9a51a629702e529476915d475240cc10ada4e900f3ea1b2e432b9e5e40e255e"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "8f5b4e77594fad423856dc6fb570a68f236e7c6bee287d1d5490eb5967202422"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "58680189dedcebb793fda46801904eafb48adaaddf420e840f6fbbda79687509"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "6508f36fd5dcf406cd151b2b8dc05b4f9f2c65741b32b3554d1b5e120d39b299"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "14e8ee3853c593d3d7816f4b2903c0ce85f7ec99cdad4d39ff6872dc40b9ce47"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "d3db46c4973f3a84cf16f698068d2fb16dd3e594f90cbfc21373f5713a3f5269"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "0f6ed575d5f7d099759988e723ae08685e0c95c49966d6c349341b8da1468666"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "599c1bb5ffd4b87229a81958f33f1060821cd01cd7aa7ccafa0d862f4522f3f6"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "2064c76c89bd89ca4c99addeb8e0cb6337d40852029db9f2bcd2b782f934e038"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "2064c76c89bd89ca4c99addeb8e0cb6337d40852029db9f2bcd2b782f934e038"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "599c1bb5ffd4b87229a81958f33f1060821cd01cd7aa7ccafa0d862f4522f3f6"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "599c1bb5ffd4b87229a81958f33f1060821cd01cd7aa7ccafa0d862f4522f3f6"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "599c1bb5ffd4b87229a81958f33f1060821cd01cd7aa7ccafa0d862f4522f3f6"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "86c34fb324b8b5daac810d8bcc219425a725b8a2bfd4332d0371d06e01772325"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "9c4784541512294acaab14d2c5b5bf2aaba8aa377846a892d2f124beaf05cd68"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "b637a56c5eae4dd1f265af1bd09b9cf7cd6b39fc42ca2cd1ba60ad37055f7849"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "86c34fb324b8b5daac810d8bcc219425a725b8a2bfd4332d0371d06e01772325"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "e4743fab415d1f9068a8652f20815307173ee9cd60e7d50d96bdb0f900fc1dcc"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "e4743fab415d1f9068a8652f20815307173ee9cd60e7d50d96bdb0f900fc1dcc"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "79ef4b52d95750824f62e442c11c26594ced0b6f17129c70193d93b58d125422"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "79ef4b52d95750824f62e442c11c26594ced0b6f17129c70193d93b58d125422"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "d3db46c4973f3a84cf16f698068d2fb16dd3e594f90cbfc21373f5713a3f5269"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "50397f7078c7ab506692f9d2fed4b8553be8e83afb5d9fd66a5187512d3fc673"
+    },
+    {
+      "batch": 4,
+      "file": "x1_b4_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "9a229c36ebe2fae9f821dd681573ca7b490ea75768bc81abc5bb48ea358d3aac"
+    },
+    {
+      "batch": 4,
+      "file": "x2_b4_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "50397f7078c7ab506692f9d2fed4b8553be8e83afb5d9fd66a5187512d3fc673"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_fp16.bin",
+      "shape": [
+        8,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 786432,
+      "byte_size": 1572864,
+      "seed": 20260731,
+      "sha256": "7de7c64680257336bbd10d43f5a39134c73b3574ab191f12566639a96b891fe7"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_fp16.bin",
+      "shape": [
+        8,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 786432,
+      "byte_size": 1572864,
+      "seed": 20260732,
+      "sha256": "d21c1cba2975d9b958439efea520ac76965f3e5ad8dfb8976af723e6e03f3939"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "4401e1664a024aca4fcc21828f13a5e443f2a336e5cb6d8e09cdacc6f952cc47"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "b4c14cbdf6b7f5f8443cf88e84b1983b5a0782fbff70be19658c7081aaae5b2b"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "519a620d4127bf57a774420451c503828b6da29818874da9a72c0d4e056891d8"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "e1df8e5e2bdb862cdac257afdc2d67b3ff50cc7762ece114026e7ec8a7405161"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "47c37a79d29501bf12b29476ec5ae3bd5692b6901e709f3ca11306961a2938f4"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "45f48205aa413cb360fa34f1cb38512b850ebfa03e75209b450503922984e581"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "106f0647ae10a6516b1ab2968038161e287ef40d1b22ca047531ed768e594ef1"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "a5247899127c32996e2ad0e388d6965a7d6d1ef29b60117ecfc7d776d607978d"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "a5247899127c32996e2ad0e388d6965a7d6d1ef29b60117ecfc7d776d607978d"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "106f0647ae10a6516b1ab2968038161e287ef40d1b22ca047531ed768e594ef1"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "106f0647ae10a6516b1ab2968038161e287ef40d1b22ca047531ed768e594ef1"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "106f0647ae10a6516b1ab2968038161e287ef40d1b22ca047531ed768e594ef1"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "e3cf2d4cf5f6130483e6889e37865956525f8cce40d6bca15597318dbc2f0e96"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "3852445d2a78ed6cc36a436a1c6c1c948d1112dd97a37f5ea4ab49b58962ae2b"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "030e13647514fc5f75e171d40b88805cc5a2edb98c5dc7788a73781820867824"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "e3cf2d4cf5f6130483e6889e37865956525f8cce40d6bca15597318dbc2f0e96"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "62c68d72bcc77b4023d87609a5a036f3947674c790fa1f08028a11a9734eb8be"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "62c68d72bcc77b4023d87609a5a036f3947674c790fa1f08028a11a9734eb8be"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "80743ca1ab49e75605904132bebb5797a7e2e3c921c01ce9191aa6fd2673a323"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "80743ca1ab49e75605904132bebb5797a7e2e3c921c01ce9191aa6fd2673a323"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "47c37a79d29501bf12b29476ec5ae3bd5692b6901e709f3ca11306961a2938f4"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "39ecc36bcab40c8c30bdc83bc9f79f33131814df544f351dd4886b4e1903b05a"
+    },
+    {
+      "batch": 8,
+      "file": "x1_b8_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "ef115dc2e5af5816ec21e34af595c969ede8eb0949d6531668b69080cdbb8780"
+    },
+    {
+      "batch": 8,
+      "file": "x2_b8_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "39ecc36bcab40c8c30bdc83bc9f79f33131814df544f351dd4886b4e1903b05a"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_fp16.bin",
+      "shape": [
+        16,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 1572864,
+      "byte_size": 3145728,
+      "seed": 20260747,
+      "sha256": "908f332ba506147043ff65078d2dbdb41ae7d25f5becfaf284767901482b0dce"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_fp16.bin",
+      "shape": [
+        16,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 1572864,
+      "byte_size": 3145728,
+      "seed": 20260748,
+      "sha256": "fa7acf5509a1fb9d4cc987b517da8d72d00e4e45756a5d36e326ecf283bde970"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "a2afc8d68e759f74a1b9f9d60e3b29166deab695e3501ccb4c3e5f35454c51b9"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "5e4a8cd6d603480cbc4fb7899928f7ef3c3895d2ea1de2997477e2ce5e1e939f"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "97dfbb7e95c4527ef92106b937c97e278f3eff9359044c9118b16761b881ac0b"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "6d91724ae264aec4f17a3d2d76df687106c77f0d5e2f1cca999daa1bc866bf91"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "3bf5de24d15c0702faa2d090fbdc3fd88d7e3c8d476316910fcf1393b9b87a41"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "b773e2b4b217a4eca5a89a43e67b10e7d5e1ab14d739dc33a6ee54c3f1171664"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "bbd05cf6097ac9b1f89ea29d2542c1b7b67ee46848393895f5a9e43fa1f621e5"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "871c33c62f4459fce50fe6621cfb6c315ea107187dd0eae8181dab7de063b9ad"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "871c33c62f4459fce50fe6621cfb6c315ea107187dd0eae8181dab7de063b9ad"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "bbd05cf6097ac9b1f89ea29d2542c1b7b67ee46848393895f5a9e43fa1f621e5"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "bbd05cf6097ac9b1f89ea29d2542c1b7b67ee46848393895f5a9e43fa1f621e5"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "bbd05cf6097ac9b1f89ea29d2542c1b7b67ee46848393895f5a9e43fa1f621e5"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "2e15a4a4e15ad2a3cfa17a0a672f08d617642fb2cb041e7a85d39a4e1382c08f"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "277aa8441fafadce0c4e05737e7ceeec34dc562e561904b13bd1a6e9c0bc6910"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "f9e5e9228c125b3a2f3d9bc7282ed971bd5ebd4e35bd0678e123e295e668192c"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "2e15a4a4e15ad2a3cfa17a0a672f08d617642fb2cb041e7a85d39a4e1382c08f"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "d3566fa81f7174f2a71292c40823fe00ac005c39af32de910748c84075c42019"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "d3566fa81f7174f2a71292c40823fe00ac005c39af32de910748c84075c42019"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "b291639db9007d72373b898e6be3586ae7048ae39f34ad3fcedf2be31bb5697b"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "b291639db9007d72373b898e6be3586ae7048ae39f34ad3fcedf2be31bb5697b"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "3bf5de24d15c0702faa2d090fbdc3fd88d7e3c8d476316910fcf1393b9b87a41"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "d61fb3943cdfdf925f391cf43a800450c2b75ab57ca28bddeb47d0db6748d146"
+    },
+    {
+      "batch": 16,
+      "file": "x1_b16_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "03a08d40e3749d9d6515dc618f7add7a36fe48cfa686126b109d47af4db2a82e"
+    },
+    {
+      "batch": 16,
+      "file": "x2_b16_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "d61fb3943cdfdf925f391cf43a800450c2b75ab57ca28bddeb47d0db6748d146"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_fp16.bin",
+      "shape": [
+        32,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 3145728,
+      "byte_size": 6291456,
+      "seed": 20260779,
+      "sha256": "1c16ea787908fcc1a1262f7c287246786daf023fd0c9f278663040594399a7d7"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_fp16.bin",
+      "shape": [
+        32,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 3145728,
+      "byte_size": 6291456,
+      "seed": 20260780,
+      "sha256": "38aa866aca1c1a65bdac2da85b562adc45917a07a4fc9110ccee0db0ac3ed201"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "67a65fe6ade1bb9099f450580a76af71c634972a9fa8c3d2d1d17b2e3816a27f"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "7021660a234e427d1b5bc3a36dea0e56949222065a708f5bc279d73840e401c2"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "03fb0d6f5feaa0c79a9708e16112c35a833bb2d6a63b8d0dcc7a4190a97efbb3"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "666c0494b833c17815e9ffc8017e6fdf9c01e201f97af0e7203007074eaa5d92"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "07d401954fc0413f2540fd878b86aefd204ca8996366b938b7861d1812c092d9"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "48ea0e95d6093413956b483e31919f11219092d5da1abd055838bc5a17917642"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "b69dae56a14d1a8314ed40664c4033ea0a550eea2673e04df42a66ac6b9faf2c"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "d8bb33f0460f8c9ab19a402788e93878656e82af7c32fc78df447d0c781ce98a"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "d8bb33f0460f8c9ab19a402788e93878656e82af7c32fc78df447d0c781ce98a"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "b69dae56a14d1a8314ed40664c4033ea0a550eea2673e04df42a66ac6b9faf2c"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "b69dae56a14d1a8314ed40664c4033ea0a550eea2673e04df42a66ac6b9faf2c"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "b69dae56a14d1a8314ed40664c4033ea0a550eea2673e04df42a66ac6b9faf2c"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "ef58d423d8192b1dac5038643219ed0afb2b5a805a7f8aafbf7459e1af26de9d"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "eb753b9d77229d8af0114736c3f9fbe51c96f1474feb99348eb8a149d707cd6e"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "5ceff7abfcc4a83456f1af6a7244c4397f8c8f01c0e45dc7a41d1a0fbcc16fc4"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "ef58d423d8192b1dac5038643219ed0afb2b5a805a7f8aafbf7459e1af26de9d"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "7faf66a12d5c9a61b86d8fdcd2cd5378b4a529183348706f02a927de080f39d1"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "7faf66a12d5c9a61b86d8fdcd2cd5378b4a529183348706f02a927de080f39d1"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "a3e1fd410c8bd2789c96af637980dae02f11ee1c261ffc8c6144f8d2d596d09d"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "a3e1fd410c8bd2789c96af637980dae02f11ee1c261ffc8c6144f8d2d596d09d"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "07d401954fc0413f2540fd878b86aefd204ca8996366b938b7861d1812c092d9"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "5754da4f5b252df8bdf4782c9c8aa0f6b85a31f26891776732affda3b4b9b175"
+    },
+    {
+      "batch": 32,
+      "file": "x1_b32_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "4a916a9565d299e9477b2ff6c2944c5eeb6d52b7ca69e76e0a9ff547cdc60280"
+    },
+    {
+      "batch": 32,
+      "file": "x2_b32_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "5754da4f5b252df8bdf4782c9c8aa0f6b85a31f26891776732affda3b4b9b175"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_fp16.bin",
+      "shape": [
+        64,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 6291456,
+      "byte_size": 12582912,
+      "seed": 20260843,
+      "sha256": "472c1d87d00d92421a4fb0cd80274f233f68dc1489ee9d74e859e29c36ce9b34"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_fp16.bin",
+      "shape": [
+        64,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16",
+      "element_count": 6291456,
+      "byte_size": 12582912,
+      "seed": 20260844,
+      "sha256": "892e71fe8634bd5b21eb8e881a7137abba95b70ee7be7f460b6edaf70e9f0ccc"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "52e9280e820133c8aed4c18f57cf4545e20e75e92f029a4c4202414c3a14be00"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_all_positive.bin",
+      "boundary": "all_positive",
+      "dtype": "float16",
+      "sha256": "9e76ba326fb87eef573cfb4320fdbb1a3015438a7cff4e61b3cf9c08394035b4"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "5c79b521c1b69021eda048398969f14ba399be40042bbd7274c97dde01a4c856"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_all_negative.bin",
+      "boundary": "all_negative",
+      "dtype": "float16",
+      "sha256": "d13023bcb44a2e5b4e6bdd27110f472ae6fe9eb4b40f138606a21cb055ccdd06"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "9cd8f2232865086d195e243284a9ade14bcd08c8264ade1c9bd1de03ba125666"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_mixed_sign.bin",
+      "boundary": "mixed_sign",
+      "dtype": "float16",
+      "sha256": "4bc286cf1c2cf6559d162906c96e3cd3528ba75b2184e20cdf99cf6958511486"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "cfadd44a103cbd6d5726fa07b27d7aad2f67ed3930ff96901c486a5beaf7e723"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_x1_zero.bin",
+      "boundary": "x1_zero",
+      "dtype": "float16",
+      "sha256": "0c4195ca36e5037731fe8dec87c48a0aae7f0244b4ca7b3142bf350e9060a83c"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "0c4195ca36e5037731fe8dec87c48a0aae7f0244b4ca7b3142bf350e9060a83c"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_x2_zero.bin",
+      "boundary": "x2_zero",
+      "dtype": "float16",
+      "sha256": "cfadd44a103cbd6d5726fa07b27d7aad2f67ed3930ff96901c486a5beaf7e723"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "cfadd44a103cbd6d5726fa07b27d7aad2f67ed3930ff96901c486a5beaf7e723"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_both_zero.bin",
+      "boundary": "both_zero",
+      "dtype": "float16",
+      "sha256": "cfadd44a103cbd6d5726fa07b27d7aad2f67ed3930ff96901c486a5beaf7e723"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "5064d231bb0a84e485fb9f3ccc4372f5ff606c3b5356d2bd168354eb6c28e4ba"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_x1_one.bin",
+      "boundary": "x1_one",
+      "dtype": "float16",
+      "sha256": "5ef28ab6b5f1c77ad5f0dbc296d8c709994dc8f8e3da90cc7280bf98ef3da7c4"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "86f8aec4562e92ccf6e836947827799e73c0ac34600170cdd30938f121a0375f"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_x2_one.bin",
+      "boundary": "x2_one",
+      "dtype": "float16",
+      "sha256": "5064d231bb0a84e485fb9f3ccc4372f5ff606c3b5356d2bd168354eb6c28e4ba"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "1a21f184371e5013cbe8a7cb55b9861112dba35b10ee0b41d46e848ab0ff33e7"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_overflow.bin",
+      "boundary": "overflow",
+      "dtype": "float16",
+      "sha256": "1a21f184371e5013cbe8a7cb55b9861112dba35b10ee0b41d46e848ab0ff33e7"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "e1627e13d360a00530c96277ce9092df2680c290e33a0931b9e16ff9ebf0294f"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_underflow.bin",
+      "boundary": "underflow",
+      "dtype": "float16",
+      "sha256": "e1627e13d360a00530c96277ce9092df2680c290e33a0931b9e16ff9ebf0294f"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "9cd8f2232865086d195e243284a9ade14bcd08c8264ade1c9bd1de03ba125666"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_pos_x_neg.bin",
+      "boundary": "pos_x_neg",
+      "dtype": "float16",
+      "sha256": "47779dc6c4bbde3b248f200b8f8a5b32e5a229a0d2138f43699c3ecb812eecca"
+    },
+    {
+      "batch": 64,
+      "file": "x1_b64_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "e92bec6a08f476d9a65110a18e9e68420186cc85b99132a490053b113f45fd08"
+    },
+    {
+      "batch": 64,
+      "file": "x2_b64_neg_x_neg.bin",
+      "boundary": "neg_x_neg",
+      "dtype": "float16",
+      "sha256": "47779dc6c4bbde3b248f200b8f8a5b32e5a229a0d2138f43699c3ecb812eecca"
+    }
+  ],
+  "references": [
+    {
+      "batch": 1,
+      "file": "reference_b1_fp16.bin",
+      "sha256": "52c28f45883fb82fe396ec8143ba4e0bd6937fbd4b044d2a941c00ccb116d365",
+      "pos_zero_count": 48,
+      "neg_zero_count": 48
+    },
+    {
+      "batch": 2,
+      "file": "reference_b2_fp16.bin",
+      "sha256": "a56a623ad17a6723a7d4f43af40ac252d721b2e0b9751d89317ed3da4e9ba2a2",
+      "pos_zero_count": 48,
+      "neg_zero_count": 48
+    },
+    {
+      "batch": 4,
+      "file": "reference_b4_fp16.bin",
+      "sha256": "b344f54be3768c0c37bfaeeb056831cc50c31cf58e60cd6f1c258b61cb6d19ec",
+      "pos_zero_count": 48,
+      "neg_zero_count": 48
+    },
+    {
+      "batch": 8,
+      "file": "reference_b8_fp16.bin",
+      "sha256": "9e8ea6c8c4ef0f4f721f78924514113db9277c419fbf0d5f807ca9c09f20836e",
+      "pos_zero_count": 48,
+      "neg_zero_count": 48
+    },
+    {
+      "batch": 16,
+      "file": "reference_b16_fp16.bin",
+      "sha256": "6f125314895c35ed6790a5b19fb410eeab1500c33417ac6c3586b882ec6a4210",
+      "pos_zero_count": 48,
+      "neg_zero_count": 48
+    },
+    {
+      "batch": 32,
+      "file": "reference_b32_fp16.bin",
+      "sha256": "7fdd3f42061f94e8a645b9c48e8715d19eb45acd2aa3a46d76aaa5bf29218e8c",
+      "pos_zero_count": 48,
+      "neg_zero_count": 48
+    },
+    {
+      "batch": 64,
+      "file": "reference_b64_fp16.bin",
+      "sha256": "e2ab8264f640dcebfb02f03fe1c4a6ffd3316f87be06eb9ac58ca09ff6c33f48",
+      "pos_zero_count": 48,
+      "neg_zero_count": 48
+    },
+    {
+      "batch": 1,
+      "boundary": "all_positive",
+      "file": "reference_b1_all_positive.bin",
+      "sha256": "0956ee2b88641c85c8e8714975caad751c0e9dc4af1895b65ed9952c872b0f5a"
+    },
+    {
+      "batch": 1,
+      "boundary": "all_negative",
+      "file": "reference_b1_all_negative.bin",
+      "sha256": "0956ee2b88641c85c8e8714975caad751c0e9dc4af1895b65ed9952c872b0f5a"
+    },
+    {
+      "batch": 1,
+      "boundary": "mixed_sign",
+      "file": "reference_b1_mixed_sign.bin",
+      "sha256": "e69019129551ac0d1cf6ad94f3a2ed655d073d1d27a17521fb054f4b106d5330"
+    },
+    {
+      "batch": 1,
+      "boundary": "x1_zero",
+      "file": "reference_b1_x1_zero.bin",
+      "sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    {
+      "batch": 1,
+      "boundary": "x2_zero",
+      "file": "reference_b1_x2_zero.bin",
+      "sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    {
+      "batch": 1,
+      "boundary": "both_zero",
+      "file": "reference_b1_both_zero.bin",
+      "sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    {
+      "batch": 1,
+      "boundary": "x1_one",
+      "file": "reference_b1_x1_one.bin",
+      "sha256": "e1d31983d7587c27b72b9101cb80872419ababcb96943cbed3007925e13c6ea9"
+    },
+    {
+      "batch": 1,
+      "boundary": "x2_one",
+      "file": "reference_b1_x2_one.bin",
+      "sha256": "39631271ae54cdc69fec84e2cb113eaa3431d13ca24ac118ea00f05f0cb0213f"
+    },
+    {
+      "batch": 1,
+      "boundary": "overflow",
+      "file": "reference_b1_overflow.bin",
+      "sha256": "ea2c84f3262ee788074afcfb50b77465b4b9f2d46661eca946a9dd2444c8ebc5"
+    },
+    {
+      "batch": 1,
+      "boundary": "underflow",
+      "file": "reference_b1_underflow.bin",
+      "sha256": "3381de4ca9f3a477f25989dfc8b744e7916046b7aa369f61a9a2f7dc0963ec9e"
+    },
+    {
+      "batch": 1,
+      "boundary": "pos_x_neg",
+      "file": "reference_b1_pos_x_neg.bin",
+      "sha256": "d6dce2ac7cb05a9edb7cc6c54a2be2af2775964d47c92d974d6f4c3bab613a97"
+    },
+    {
+      "batch": 1,
+      "boundary": "neg_x_neg",
+      "file": "reference_b1_neg_x_neg.bin",
+      "sha256": "d2d157ba66974a181789d3b97608c5eefa14982c68dc912d5f85f7206ec5e564"
+    },
+    {
+      "batch": 2,
+      "boundary": "all_positive",
+      "file": "reference_b2_all_positive.bin",
+      "sha256": "704046041d539a2952b6b514fb49eb51a5f07bee780d26f10e27cd1b15cf699f"
+    },
+    {
+      "batch": 2,
+      "boundary": "all_negative",
+      "file": "reference_b2_all_negative.bin",
+      "sha256": "704046041d539a2952b6b514fb49eb51a5f07bee780d26f10e27cd1b15cf699f"
+    },
+    {
+      "batch": 2,
+      "boundary": "mixed_sign",
+      "file": "reference_b2_mixed_sign.bin",
+      "sha256": "b517ebf1919ee3e468151d723900746029164b21dd272eaa0be9cb2df56595ce"
+    },
+    {
+      "batch": 2,
+      "boundary": "x1_zero",
+      "file": "reference_b2_x1_zero.bin",
+      "sha256": "a6619f482fee91a315f76cdcd8705d39b6ce11077c435ccc696142e130c27762"
+    },
+    {
+      "batch": 2,
+      "boundary": "x2_zero",
+      "file": "reference_b2_x2_zero.bin",
+      "sha256": "a6619f482fee91a315f76cdcd8705d39b6ce11077c435ccc696142e130c27762"
+    },
+    {
+      "batch": 2,
+      "boundary": "both_zero",
+      "file": "reference_b2_both_zero.bin",
+      "sha256": "a6619f482fee91a315f76cdcd8705d39b6ce11077c435ccc696142e130c27762"
+    },
+    {
+      "batch": 2,
+      "boundary": "x1_one",
+      "file": "reference_b2_x1_one.bin",
+      "sha256": "08820c34b16c5e07a4d1cd683a84b2076be6fb9fd096cb956a52c1ef28317175"
+    },
+    {
+      "batch": 2,
+      "boundary": "x2_one",
+      "file": "reference_b2_x2_one.bin",
+      "sha256": "832e6a6388437f26e17ac2f9726ac772cf9a094a289a76fb30e8b101ba756dae"
+    },
+    {
+      "batch": 2,
+      "boundary": "overflow",
+      "file": "reference_b2_overflow.bin",
+      "sha256": "ee8f909a4376bb1ee566b196c0a78be53ddb10f168ff4230f90ba5acf3cf3e34"
+    },
+    {
+      "batch": 2,
+      "boundary": "underflow",
+      "file": "reference_b2_underflow.bin",
+      "sha256": "a6619f482fee91a315f76cdcd8705d39b6ce11077c435ccc696142e130c27762"
+    },
+    {
+      "batch": 2,
+      "boundary": "pos_x_neg",
+      "file": "reference_b2_pos_x_neg.bin",
+      "sha256": "35748b5f597e4781fbcaf7aa4598a0d75ce8c235c10e1ef1f86fb10b4dfb184d"
+    },
+    {
+      "batch": 2,
+      "boundary": "neg_x_neg",
+      "file": "reference_b2_neg_x_neg.bin",
+      "sha256": "cfce149313d4fe2afe72083ce4f6242af04c59fda307405372e3525ca336b311"
+    },
+    {
+      "batch": 4,
+      "boundary": "all_positive",
+      "file": "reference_b4_all_positive.bin",
+      "sha256": "2552d6daa62d9e59345b464c54cde0c740fff6d7d8b6d3f53fe85034ccd3cc92"
+    },
+    {
+      "batch": 4,
+      "boundary": "all_negative",
+      "file": "reference_b4_all_negative.bin",
+      "sha256": "2552d6daa62d9e59345b464c54cde0c740fff6d7d8b6d3f53fe85034ccd3cc92"
+    },
+    {
+      "batch": 4,
+      "boundary": "mixed_sign",
+      "file": "reference_b4_mixed_sign.bin",
+      "sha256": "da22176fe1d0022c3b4f27d2f1587df663f9d96eaa4b35949156bc7e949fe53e"
+    },
+    {
+      "batch": 4,
+      "boundary": "x1_zero",
+      "file": "reference_b4_x1_zero.bin",
+      "sha256": "599c1bb5ffd4b87229a81958f33f1060821cd01cd7aa7ccafa0d862f4522f3f6"
+    },
+    {
+      "batch": 4,
+      "boundary": "x2_zero",
+      "file": "reference_b4_x2_zero.bin",
+      "sha256": "599c1bb5ffd4b87229a81958f33f1060821cd01cd7aa7ccafa0d862f4522f3f6"
+    },
+    {
+      "batch": 4,
+      "boundary": "both_zero",
+      "file": "reference_b4_both_zero.bin",
+      "sha256": "599c1bb5ffd4b87229a81958f33f1060821cd01cd7aa7ccafa0d862f4522f3f6"
+    },
+    {
+      "batch": 4,
+      "boundary": "x1_one",
+      "file": "reference_b4_x1_one.bin",
+      "sha256": "9c4784541512294acaab14d2c5b5bf2aaba8aa377846a892d2f124beaf05cd68"
+    },
+    {
+      "batch": 4,
+      "boundary": "x2_one",
+      "file": "reference_b4_x2_one.bin",
+      "sha256": "b637a56c5eae4dd1f265af1bd09b9cf7cd6b39fc42ca2cd1ba60ad37055f7849"
+    },
+    {
+      "batch": 4,
+      "boundary": "overflow",
+      "file": "reference_b4_overflow.bin",
+      "sha256": "5550c4300d73b36f825cdbd0d48373ed7bfa0af08f0dfaaf24159d85733a5eb0"
+    },
+    {
+      "batch": 4,
+      "boundary": "underflow",
+      "file": "reference_b4_underflow.bin",
+      "sha256": "599c1bb5ffd4b87229a81958f33f1060821cd01cd7aa7ccafa0d862f4522f3f6"
+    },
+    {
+      "batch": 4,
+      "boundary": "pos_x_neg",
+      "file": "reference_b4_pos_x_neg.bin",
+      "sha256": "73b33d0a3546699be33d70464780123700c499e6d4a0608a0bb91567121b7bef"
+    },
+    {
+      "batch": 4,
+      "boundary": "neg_x_neg",
+      "file": "reference_b4_neg_x_neg.bin",
+      "sha256": "44cd21431ca38f91dac42cf21f57773dfaba12f7f0100e0b90ade592da027a96"
+    },
+    {
+      "batch": 8,
+      "boundary": "all_positive",
+      "file": "reference_b8_all_positive.bin",
+      "sha256": "291062d48e8ae9a0346a76d2348882b8d4a8cfd774d549a067b0f9679ac7562b"
+    },
+    {
+      "batch": 8,
+      "boundary": "all_negative",
+      "file": "reference_b8_all_negative.bin",
+      "sha256": "291062d48e8ae9a0346a76d2348882b8d4a8cfd774d549a067b0f9679ac7562b"
+    },
+    {
+      "batch": 8,
+      "boundary": "mixed_sign",
+      "file": "reference_b8_mixed_sign.bin",
+      "sha256": "a2289f31e9438204d5f5d6b932eceb91c3aebc2f1028cad9898297b60eecb00c"
+    },
+    {
+      "batch": 8,
+      "boundary": "x1_zero",
+      "file": "reference_b8_x1_zero.bin",
+      "sha256": "106f0647ae10a6516b1ab2968038161e287ef40d1b22ca047531ed768e594ef1"
+    },
+    {
+      "batch": 8,
+      "boundary": "x2_zero",
+      "file": "reference_b8_x2_zero.bin",
+      "sha256": "106f0647ae10a6516b1ab2968038161e287ef40d1b22ca047531ed768e594ef1"
+    },
+    {
+      "batch": 8,
+      "boundary": "both_zero",
+      "file": "reference_b8_both_zero.bin",
+      "sha256": "106f0647ae10a6516b1ab2968038161e287ef40d1b22ca047531ed768e594ef1"
+    },
+    {
+      "batch": 8,
+      "boundary": "x1_one",
+      "file": "reference_b8_x1_one.bin",
+      "sha256": "3852445d2a78ed6cc36a436a1c6c1c948d1112dd97a37f5ea4ab49b58962ae2b"
+    },
+    {
+      "batch": 8,
+      "boundary": "x2_one",
+      "file": "reference_b8_x2_one.bin",
+      "sha256": "030e13647514fc5f75e171d40b88805cc5a2edb98c5dc7788a73781820867824"
+    },
+    {
+      "batch": 8,
+      "boundary": "overflow",
+      "file": "reference_b8_overflow.bin",
+      "sha256": "1ea3198358d7fe53b2601bc1fb8148337600bccc3825d0c2add08069c5f560f3"
+    },
+    {
+      "batch": 8,
+      "boundary": "underflow",
+      "file": "reference_b8_underflow.bin",
+      "sha256": "106f0647ae10a6516b1ab2968038161e287ef40d1b22ca047531ed768e594ef1"
+    },
+    {
+      "batch": 8,
+      "boundary": "pos_x_neg",
+      "file": "reference_b8_pos_x_neg.bin",
+      "sha256": "964f7d8362be5ab55761ac0b7aa2043edfc2337b890549aa5cf3272627f3ce59"
+    },
+    {
+      "batch": 8,
+      "boundary": "neg_x_neg",
+      "file": "reference_b8_neg_x_neg.bin",
+      "sha256": "a3dd1465403c86264b0a6638d0723e64005f5a0255eb8ea11b188e9c0c7cd9ac"
+    },
+    {
+      "batch": 16,
+      "boundary": "all_positive",
+      "file": "reference_b16_all_positive.bin",
+      "sha256": "375e2286598af54a9daf273aac5a8520c49c3fc13bc9b66cb04e7b0a6f65ad01"
+    },
+    {
+      "batch": 16,
+      "boundary": "all_negative",
+      "file": "reference_b16_all_negative.bin",
+      "sha256": "375e2286598af54a9daf273aac5a8520c49c3fc13bc9b66cb04e7b0a6f65ad01"
+    },
+    {
+      "batch": 16,
+      "boundary": "mixed_sign",
+      "file": "reference_b16_mixed_sign.bin",
+      "sha256": "e47293994f2202ba83875e802bdd737644f47f67c7c9145183e53cef23f35090"
+    },
+    {
+      "batch": 16,
+      "boundary": "x1_zero",
+      "file": "reference_b16_x1_zero.bin",
+      "sha256": "bbd05cf6097ac9b1f89ea29d2542c1b7b67ee46848393895f5a9e43fa1f621e5"
+    },
+    {
+      "batch": 16,
+      "boundary": "x2_zero",
+      "file": "reference_b16_x2_zero.bin",
+      "sha256": "bbd05cf6097ac9b1f89ea29d2542c1b7b67ee46848393895f5a9e43fa1f621e5"
+    },
+    {
+      "batch": 16,
+      "boundary": "both_zero",
+      "file": "reference_b16_both_zero.bin",
+      "sha256": "bbd05cf6097ac9b1f89ea29d2542c1b7b67ee46848393895f5a9e43fa1f621e5"
+    },
+    {
+      "batch": 16,
+      "boundary": "x1_one",
+      "file": "reference_b16_x1_one.bin",
+      "sha256": "277aa8441fafadce0c4e05737e7ceeec34dc562e561904b13bd1a6e9c0bc6910"
+    },
+    {
+      "batch": 16,
+      "boundary": "x2_one",
+      "file": "reference_b16_x2_one.bin",
+      "sha256": "f9e5e9228c125b3a2f3d9bc7282ed971bd5ebd4e35bd0678e123e295e668192c"
+    },
+    {
+      "batch": 16,
+      "boundary": "overflow",
+      "file": "reference_b16_overflow.bin",
+      "sha256": "dfd0f263fe1b72c2e479b164627955be85117c6367985086cf3335dc89c527f7"
+    },
+    {
+      "batch": 16,
+      "boundary": "underflow",
+      "file": "reference_b16_underflow.bin",
+      "sha256": "bbd05cf6097ac9b1f89ea29d2542c1b7b67ee46848393895f5a9e43fa1f621e5"
+    },
+    {
+      "batch": 16,
+      "boundary": "pos_x_neg",
+      "file": "reference_b16_pos_x_neg.bin",
+      "sha256": "3b0ad89cf5d88c9f55187434dadc8a9c7aab7a25e6949b16df37ff7105ae1813"
+    },
+    {
+      "batch": 16,
+      "boundary": "neg_x_neg",
+      "file": "reference_b16_neg_x_neg.bin",
+      "sha256": "16c35b1d9ece99e323609ca310ebd732d5a6709000b212582b3848e74463e780"
+    },
+    {
+      "batch": 32,
+      "boundary": "all_positive",
+      "file": "reference_b32_all_positive.bin",
+      "sha256": "552bc88e49c7eed6035f5c96882957f4396fc805cbd8167cd854cc5f662549b6"
+    },
+    {
+      "batch": 32,
+      "boundary": "all_negative",
+      "file": "reference_b32_all_negative.bin",
+      "sha256": "552bc88e49c7eed6035f5c96882957f4396fc805cbd8167cd854cc5f662549b6"
+    },
+    {
+      "batch": 32,
+      "boundary": "mixed_sign",
+      "file": "reference_b32_mixed_sign.bin",
+      "sha256": "ce1c4668bfef4916b80095bb92085ab1a41db475b693dd07d6ef941d0e6378a4"
+    },
+    {
+      "batch": 32,
+      "boundary": "x1_zero",
+      "file": "reference_b32_x1_zero.bin",
+      "sha256": "b69dae56a14d1a8314ed40664c4033ea0a550eea2673e04df42a66ac6b9faf2c"
+    },
+    {
+      "batch": 32,
+      "boundary": "x2_zero",
+      "file": "reference_b32_x2_zero.bin",
+      "sha256": "b69dae56a14d1a8314ed40664c4033ea0a550eea2673e04df42a66ac6b9faf2c"
+    },
+    {
+      "batch": 32,
+      "boundary": "both_zero",
+      "file": "reference_b32_both_zero.bin",
+      "sha256": "b69dae56a14d1a8314ed40664c4033ea0a550eea2673e04df42a66ac6b9faf2c"
+    },
+    {
+      "batch": 32,
+      "boundary": "x1_one",
+      "file": "reference_b32_x1_one.bin",
+      "sha256": "eb753b9d77229d8af0114736c3f9fbe51c96f1474feb99348eb8a149d707cd6e"
+    },
+    {
+      "batch": 32,
+      "boundary": "x2_one",
+      "file": "reference_b32_x2_one.bin",
+      "sha256": "5ceff7abfcc4a83456f1af6a7244c4397f8c8f01c0e45dc7a41d1a0fbcc16fc4"
+    },
+    {
+      "batch": 32,
+      "boundary": "overflow",
+      "file": "reference_b32_overflow.bin",
+      "sha256": "3dca92fc198f7af14e1100b53d367fcd80abed34a0c101c4575d9f26377fb972"
+    },
+    {
+      "batch": 32,
+      "boundary": "underflow",
+      "file": "reference_b32_underflow.bin",
+      "sha256": "b69dae56a14d1a8314ed40664c4033ea0a550eea2673e04df42a66ac6b9faf2c"
+    },
+    {
+      "batch": 32,
+      "boundary": "pos_x_neg",
+      "file": "reference_b32_pos_x_neg.bin",
+      "sha256": "3ec35ef701678776f8818cfb0763942fec754e78c23826659d6daec06b56e96e"
+    },
+    {
+      "batch": 32,
+      "boundary": "neg_x_neg",
+      "file": "reference_b32_neg_x_neg.bin",
+      "sha256": "ccff17f02ffa434a749835c2c4716f008eabce58220b87a9a03298c86bede23a"
+    },
+    {
+      "batch": 64,
+      "boundary": "all_positive",
+      "file": "reference_b64_all_positive.bin",
+      "sha256": "2b95759797bf5a774b4e8d667ad0c4d235055aa570e9c446dbe3666b7bfc445b"
+    },
+    {
+      "batch": 64,
+      "boundary": "all_negative",
+      "file": "reference_b64_all_negative.bin",
+      "sha256": "2b95759797bf5a774b4e8d667ad0c4d235055aa570e9c446dbe3666b7bfc445b"
+    },
+    {
+      "batch": 64,
+      "boundary": "mixed_sign",
+      "file": "reference_b64_mixed_sign.bin",
+      "sha256": "773f57c5bf94f9189e270f2e72c49a3269ad1502b57b2506f99c608273f84e9e"
+    },
+    {
+      "batch": 64,
+      "boundary": "x1_zero",
+      "file": "reference_b64_x1_zero.bin",
+      "sha256": "cfadd44a103cbd6d5726fa07b27d7aad2f67ed3930ff96901c486a5beaf7e723"
+    },
+    {
+      "batch": 64,
+      "boundary": "x2_zero",
+      "file": "reference_b64_x2_zero.bin",
+      "sha256": "cfadd44a103cbd6d5726fa07b27d7aad2f67ed3930ff96901c486a5beaf7e723"
+    },
+    {
+      "batch": 64,
+      "boundary": "both_zero",
+      "file": "reference_b64_both_zero.bin",
+      "sha256": "cfadd44a103cbd6d5726fa07b27d7aad2f67ed3930ff96901c486a5beaf7e723"
+    },
+    {
+      "batch": 64,
+      "boundary": "x1_one",
+      "file": "reference_b64_x1_one.bin",
+      "sha256": "5ef28ab6b5f1c77ad5f0dbc296d8c709994dc8f8e3da90cc7280bf98ef3da7c4"
+    },
+    {
+      "batch": 64,
+      "boundary": "x2_one",
+      "file": "reference_b64_x2_one.bin",
+      "sha256": "86f8aec4562e92ccf6e836947827799e73c0ac34600170cdd30938f121a0375f"
+    },
+    {
+      "batch": 64,
+      "boundary": "overflow",
+      "file": "reference_b64_overflow.bin",
+      "sha256": "22286736607622411677507146d05790ae8033c9b4dece9d975297c1ad16ba04"
+    },
+    {
+      "batch": 64,
+      "boundary": "underflow",
+      "file": "reference_b64_underflow.bin",
+      "sha256": "cfadd44a103cbd6d5726fa07b27d7aad2f67ed3930ff96901c486a5beaf7e723"
+    },
+    {
+      "batch": 64,
+      "boundary": "pos_x_neg",
+      "file": "reference_b64_pos_x_neg.bin",
+      "sha256": "437cbf835965ff5178f1cb8f9acfd2c8ea6ae163bd8686b230c9d7ebf9ca2aee"
+    },
+    {
+      "batch": 64,
+      "boundary": "neg_x_neg",
+      "file": "reference_b64_neg_x_neg.bin",
+      "sha256": "888ef193db18133550cabbc61ae886cbb0f433c9ccc4abb878174c20e4770dd7"
+    }
+  ]
+}

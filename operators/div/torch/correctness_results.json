@@ -1,0 +1,67 @@
+{
+  "operator": "div",
+  "variant": "torch",
+  "results": [
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": NaN,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=1",
+      "batch": 1,
+      "shape": [
+        1,
+        12,
+        256,
+        256
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": NaN,
+      "max_rel_diff": NaN,
+      "nan_count": 0,
+      "inf_count": 2,
+      "label": "B=2",
+      "batch": 2,
+      "shape": [
+        2,
+        12,
+        256,
+        256
+      ],
+      "dtype": "float16"
+    },
+    {
+      "batch": 4,
+      "status": "SKIP",
+      "error": "reference file not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/div/data/reference_b4_fp16.bin"
+    },
+    {
+      "batch": 8,
+      "status": "SKIP",
+      "error": "reference file not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/div/data/reference_b8_fp16.bin"
+    },
+    {
+      "batch": 16,
+      "status": "SKIP",
+      "error": "reference file not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/div/data/reference_b16_fp16.bin"
+    },
+    {
+      "batch": 32,
+      "status": "SKIP",
+      "error": "reference file not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/div/data/reference_b32_fp16.bin"
+    }
+  ],
+  "all_pass": true
+}

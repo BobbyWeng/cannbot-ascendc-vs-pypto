@@ -1,0 +1,8 @@
+{
+  "operator": "where",
+  "torch": {"correctness": "PASS", "profiler": "NOT_RUN", "status": "COMPLETE"},
+  "ascendc": {"correctness": "PASS", "profiler": "NOT_RUN", "status": "COMPLETE_WITH_LIMITATION"},
+  "pypto": {"correctness": "BLOCKED_BACKEND", "profiler": "N/A", "status": "BLOCKED_BACKEND_WHERE_SELECT"},
+  "overall": "COMPLETE_WITH_LIMITATION",
+  "note": "Ascend C PASS all batches after scalar ternary fix. PyPTO BLOCKED_BACKEND_WHERE_SELECT - shape expansion error."
+}

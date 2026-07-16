@@ -1,0 +1,34 @@
+operator,implementation,batch,cases,status,checked_elements,mismatch_count,max_abs_diff,max_rel_diff,notes
+relu,torch,1-64,"all_negative,all_positive,all_zero,fp16,large_fp16,overflow,pos_neg_mixed,small_values,underflow,x1_ones_all,x1_zero_all",PASS,N/A,N/A,N/A,N/A,Signed-zero exempted per spec
+relu,ascendc,1-64,same as torch,PASS,N/A,N/A,N/A,N/A,msprof confirms KERNEL_AIVEC
+relu,pypto,1-64,same as torch,PASS,N/A,N/A,N/A,N/A,orchestrator Stage 7 completed
+mul,torch,1-64,"all_negative,all_positive,all_zero,fp16,large_fp16,overflow,pos_neg_mixed,small_values,underflow,x1_ones_all,x1_zero_all",PASS,N/A,N/A,N/A,N/A,Strict bitwise
+mul,ascendc,1-64,same as torch,PASS,N/A,N/A,N/A,N/A,msprof confirms KERNEL_AIVEC
+mul,pypto,1-64,same as torch,PASS,N/A,N/A,N/A,N/A,orchestrator Stage 7 completed
+add,torch,1-64,same as relu,PASS,N/A,N/A,N/A,N/A,Strict bitwise
+add,ascendc,1-64,same as relu,PASS,N/A,N/A,N/A,N/A,msprof confirms KERNEL_AIVEC
+add,pypto,1-64,same as relu,PASS,N/A,N/A,N/A,N/A,orchestrator Stage 7 completed
+div,torch,1-32,"regular,special_values",PASS,78643200,0,N/A,N/A,atol=1e-3 rtol=1e-3; B=4+ refs regenerated
+div,ascendc,1-32,regular,PASS,78643200,0,N/A,N/A,bitwise exact with FP32-FP16 reference
+div,pypto,N/A,N/A,BLOCKED_BACKEND,N/A,N/A,N/A,N/A,Broadcast Div fails at CompileFunction
+equal,torch,1-64,"all_diff,all_inf_vs_inf,all_inf_vs_neginf,all_nan_vs_nan,all_nan_vs_normal,bool,fp16,identical_all_neg,identical_all_ones,identical_all_zero,pos_vs_neg",PASS,N/A,N/A,N/A,N/A,All batches PASS
+equal,ascendc,1-64,same as torch,PASS,N/A,N/A,N/A,N/A,Compare + scalar bit expansion; all batches PASS
+equal,pypto,N/A,N/A,BLOCKED_BACKEND_EQUAL,N/A,N/A,N/A,N/A,Compare result lowering broken; even [1,32] fails
+not,torch,1-64,"all_false,all_true,alternating,dense_true,random_mask,sparse_true",PASS,N/A,N/A,N/A,N/A,All batches PASS
+not,ascendc,1-64,same as torch,CORRECTNESS_FAIL,N/A,N/A,N/A,N/A,Script bug: wrong filename pattern -> all FAIL; stored JSON all_fail
+not,pypto,1-64,same as torch,PASS,N/A,N/A,N/A,N/A,Flat ~130us latency across batch sizes suggests host dispatch overhead
+or,torch,1-64,"dense,false_false,false_true,random_mask,sparse,true_false,true_true",PASS,N/A,N/A,N/A,N/A,All batches PASS
+or,ascendc,1-64,same as torch,CORRECTNESS_FAIL,N/A,N/A,N/A,N/A,Same script bug as Not -> all FAIL
+or,pypto,1-64,same as torch,PARTIAL,N/A,N/A,N/A,N/A,Uses bitwise_or instead of logical_or; passes only because test data is 0/1
+where,torch,1-64,"condition.x1.x2 variants",PASS,N/A,N/A,N/A,N/A,All batches PASS
+where,ascendc,1-64,same as torch,PASS,N/A,N/A,N/A,N/A,Per-element scalar loop for Select; 37x slower than vectorized
+where,pypto,N/A,N/A,BLOCKED_BACKEND_WHERE_SELECT,N/A,N/A,N/A,N/A,Expand pass dtype mismatch; same-shape condition fails
+expand,torch,1,standard,PASS,N/A,N/A,N/A,N/A,Only B=1 tested; B=2..64 missing
+expand,ascendc,N/A,N/A,NOT_RUN,N/A,N/A,N/A,N/A,Host precompute + identity copy
+expand,pypto,N/A,N/A,NOT_RUN,N/A,N/A,N/A,N/A,Per-row dispatch exists but correctness not run
+transpose,torch,1,standard,PASS,N/A,N/A,N/A,N/A,Only B=1 tested; B=2..64 missing
+transpose,ascendc,N/A,N/A,NOT_RUN,N/A,N/A,N/A,N/A,Host precompute + identity copy
+transpose,pypto,N/A,N/A,NOT_RUN,N/A,N/A,N/A,N/A,Small shape PASS; production shape BLOCKED_BACKEND
+reduce_sum,torch,1,standard,PASS,N/A,N/A,N/A,N/A,Only B=1 tested; B=2..64 missing
+reduce_sum,ascendc,N/A,N/A,NOT_RUN,N/A,N/A,N/A,N/A,Host precompute + identity copy
+reduce_sum,pypto,N/A,N/A,NOT_RUN,N/A,N/A,N/A,N/A,FP16 accumulation; orchestrator completed but correctness not run

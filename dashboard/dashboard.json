@@ -1,0 +1,25 @@
+{
+  "operators": {
+    "relu": {"status": "COMPLETE", "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"}, "profiler": {"torch": {"complete": true, "b1_us": 2.635}, "ascendc": {"complete": true, "b1_us": 2.142}, "pypto": {"complete": true, "b1_us": 51.887, "aicpu_executor_us": 111.08}, "tool": "msprof"}},
+    "mul": {"status": "COMPLETE", "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"}, "profiler": {"torch": {"complete": true, "b1_us": 9.0}, "ascendc": {"complete": true, "b1_us": 11.16}, "pypto": {"complete": true, "b1_us": 51.532, "aicpu_executor_us": 150.523}, "tool": "msprof"}},
+    "add": {"status": "COMPLETE", "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"}, "profiler": {"torch": {"complete": true, "b1_us": 10.04}, "ascendc": {"complete": true, "b1_us": 13.78}, "pypto": {"complete": true, "b1_us": 136.03, "aicpu_executor_us": 326.871}, "tool": "msprof"}},
+    "div": {"status": "COMPLETE_WITH_LIMITATION", "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "BLOCKED_BACKEND_BROADCAST_DIV"}, "profiler": {"torch": {"complete": true, "b1_us": 21.8}, "ascendc": {"complete": true, "b1_us": 18.64}, "pypto": {"complete": false, "blocked": true}, "tool": "msprof"}},
+    "equal": {"status": "COMPLETE_WITH_LIMITATION", "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "BLOCKED_BACKEND_EQUAL"}, "profiler": {"torch": {"complete": false, "b1_us": 12.18, "method": "torch.npu.Event"}, "ascendc": {"complete": false, "b1_us": 41.8, "method": "aclrtEvent"}, "pypto": {"complete": false, "blocked": true}, "tool": "NO_MSPROF", "not_comparable": true}},
+    "not": {"status": "REPORT_OUTDATED", "correctness": {"torch": "PASS", "ascendc": "FAIL_SCRIPT_BUG", "pypto": "PASS"}, "profiler": {"torch": {"complete": false, "b1_us": 127.53, "method": "torch.npu.Event"}, "ascendc": {"complete": false, "b1_us": 6.4, "method": "aclrtEvent"}, "pypto": {"complete": false, "b1_us": 136.57, "method": "torch.npu.Event"}, "tool": "NO_MSPROF", "not_comparable": true}},
+    "or": {"status": "REPORT_OUTDATED", "correctness": {"torch": "PASS", "ascendc": "FAIL_SCRIPT_BUG", "pypto": "PARTIAL_BITWISE_OR"}, "profiler": {"torch": {"complete": false, "b1_us": 256.27, "method": "torch.npu.Event"}, "ascendc": {"complete": false, "b1_us": 6.5, "method": "aclrtEvent"}, "pypto": {"complete": false, "b1_us": 148.82, "method": "torch.npu.Event"}, "tool": "NO_MSPROF", "not_comparable": true}},
+    "where": {"status": "COMPLETE_WITH_LIMITATION", "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "BLOCKED_BACKEND_WHERE_SELECT"}, "profiler": {"torch": {"complete": false, "b1_us": 131.86, "method": "torch.npu.Event"}, "ascendc": {"complete": false, "b1_us": 238.6, "method": "aclrtEvent"}, "pypto": {"complete": false, "blocked": true}, "tool": "NO_MSPROF", "not_comparable": true}},
+    "expand": {"status": "INCOMPLETE", "correctness": {"torch": "PARTIAL_B1_ONLY", "ascendc": "NOT_RUN", "pypto": "NOT_RUN"}, "profiler": {"torch": {"complete": false}, "ascendc": {"complete": false, "note": "host_precompute_fallback"}, "pypto": {"complete": false}, "tool": "NONE"}},
+    "transpose": {"status": "INCOMPLETE", "correctness": {"torch": "PARTIAL_B1_ONLY", "ascendc": "NOT_RUN", "pypto": "NOT_RUN"}, "profiler": {"torch": {"complete": false}, "ascendc": {"complete": false, "note": "host_precompute_fallback"}, "pypto": {"complete": false}, "tool": "NONE"}},
+    "reduce_sum": {"status": "INCOMPLETE", "correctness": {"torch": "PARTIAL_B1_ONLY", "ascendc": "NOT_RUN", "pypto": "NOT_RUN"}, "profiler": {"torch": {"complete": false}, "ascendc": {"complete": false, "note": "host_precompute_fallback"}, "pypto": {"complete": false}, "tool": "NONE"}}
+  },
+  "batches": {
+    "arithmetic_ops_v1": {"relu": "COMPLETE", "mul": "COMPLETE", "add": "COMPLETE", "div": "COMPLETE_WITH_LIMITATION"},
+    "logical_ops_v1": {"equal": "COMPLETE_WITH_LIMITATION", "where": "COMPLETE_WITH_LIMITATION", "not": "REPORT_OUTDATED", "or": "REPORT_OUTDATED"},
+    "layout_reduce_v1": {"expand": "INCOMPLETE", "transpose": "INCOMPLETE", "reduce_sum": "INCOMPLETE"}
+  },
+  "archive_references": {
+    "relu": "MISSING", "mul": "MISSING", "add": "MISSING", "div": "v2 OUTDATED",
+    "equal": "v4 CURRENT", "not": "v4 CURRENT", "or": "v4 CURRENT", "where": "v4 CURRENT",
+    "expand": "MISSING", "transpose": "MISSING", "reduce_sum": "MISSING"
+  }
+}

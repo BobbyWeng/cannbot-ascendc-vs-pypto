@@ -1,0 +1,27 @@
+{
+  "operator": "equal",
+  "implementation": "ascendc",
+  "batch": 2,
+  "warmup": 200,
+  "loops": 100,
+  "repeat": 5,
+  "median_us": 81.9,
+  "mean_us": 81.9,
+  "min_us": 81.8,
+  "p90_us": 81.9,
+  "std_us": 0.03,
+  "cv": 0.036630036630036625,
+  "raw_repeat_latency_us": [
+    81.8,
+    81.9,
+    81.9,
+    81.9,
+    81.9
+  ],
+  "kernel_info": {
+    "kernel_names": [
+      "equal_kernel"
+    ],
+    "kernel_count": 1
+  }
+}

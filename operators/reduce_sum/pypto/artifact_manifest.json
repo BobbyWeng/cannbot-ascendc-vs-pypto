@@ -1,0 +1,16 @@
+{
+  "operator": "reduce_sum",
+  "implementation": "pypto",
+  "spec": "SPEC/SPEC.md",
+  "api_report": "API_REPORT/API_REPORT.md",
+  "design": "DESIGN/DESIGN.md",
+  "golden": "golden/reduce_sum_golden.py",
+  "implementation": "src/reduce_sum_impl.py",
+  "tests": "tests/test_reduce_sum.py",
+  "orchestrator_state": ".orchestrator_state.json",
+  "kernel_type": "KERNEL_MIX_AIC + KERNEL_AICPU (expected)",
+  "kernels_per_call": "TBD",
+  "backend_limitation": "BLOCKED if pypto.op.reduce_sum not available; document as BLOCKED_BACKEND",
+  "accumulation_dtype": "FP32 preferred, FP16 fallback",
+  "last_updated": "2026-07-16"
+}

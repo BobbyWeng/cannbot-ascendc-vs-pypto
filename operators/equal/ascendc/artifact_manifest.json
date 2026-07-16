@@ -1,0 +1,19 @@
+{
+  "operator": "equal",
+  "implementation": "ascendc",
+  "source_files": [
+    "src/equal_kernel.asc",
+    "src/equal_host.asc",
+    "src/equal_tiling.h",
+    "src/data_utils.h"
+  ],
+  "config_files": [
+    "CMakeLists.txt"
+  ],
+  "build_policy": "cmake -S . -B build && cmake --build build -j",
+  "target_binary": "build/equal_ascendc",
+  "output_pattern": "build/output/output_b{batch}.bin",
+  "kernel_type": "KERNEL_AIVEC",
+  "kernels_per_call": 1,
+  "last_updated": "2026-07-16"
+}

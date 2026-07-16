@@ -1,0 +1,14 @@
+{
+  "operator": "where",
+  "implementation": "pypto",
+  "spec": "SPEC/SPEC.md",
+  "api_report": "API_REPORT/API_REPORT.md",
+  "design": "DESIGN/DESIGN.md",
+  "golden": "golden/where_golden.py",
+  "implementation": "src/where_impl.py",
+  "tests": "tests/test_where.py",
+  "orchestrator_state": ".orchestrator_state.json",
+  "kernel_type": "KERNEL_MIX_AIC + KERNEL_AICPU",
+  "kernels_per_call": 3,
+  "last_updated": "2026-07-16"
+}

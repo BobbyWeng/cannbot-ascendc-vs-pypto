@@ -1,0 +1,27 @@
+{
+  "operator": "or",
+  "implementation": "ascendc",
+  "batch": 16,
+  "warmup": 200,
+  "loops": 100,
+  "repeat": 5,
+  "median_us": 6.4,
+  "mean_us": 6.4,
+  "min_us": 6.4,
+  "p90_us": 6.6,
+  "std_us": 0.08,
+  "cv": 1.25,
+  "raw_repeat_latency_us": [
+    6.4,
+    6.4,
+    6.4,
+    6.4,
+    6.6
+  ],
+  "kernel_info": {
+    "kernel_names": [
+      "or_kernel"
+    ],
+    "kernel_count": 1
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "operator": "expand",
+  "variant": "pypto",
+  "all_pass": true,
+  "results": [
+    {
+      "batch": 1,
+      "status": "PASS",
+      "shape_in": [
+        1,
+        256,
+        1
+      ],
+      "shape_out": [
+        1,
+        256,
+        384
+      ],
+      "row_count": 256,
+      "bitwise": false,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_actual": 3072,
+      "nan_ref": 3072,
+      "inf_actual": 6144,
+      "inf_ref": 6144,
+      "nan_match": true,
+      "inf_match": true,
+      "finite_match": true,
+      "elapsed_sec": 1.665
+    },
+    {
+      "batch": 2,
+      "status": "PASS",
+      "shape_in": [
+        2,
+        256,
+        1
+      ],
+      "shape_out": [
+        2,
+        256,
+        384
+      ],
+      "row_count": 512,
+      "bitwise": false,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_actual": 3072,
+      "nan_ref": 3072,
+      "inf_actual": 6144,
+      "inf_ref": 6144,
+      "nan_match": true,
+      "inf_match": true,
+      "finite_match": true,
+      "elapsed_sec": 0.063
+    },
+    {
+      "batch": 4,
+      "status": "PASS",
+      "shape_in": [
+        4,
+        256,
+        1
+      ],
+      "shape_out": [
+        4,
+        256,
+        384
+      ],
+      "row_count": 1024,
+      "bitwise": false,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_actual": 3072,
+      "nan_ref": 3072,
+      "inf_actual": 6144,
+      "inf_ref": 6144,
+      "nan_match": true,
+      "inf_match": true,
+      "finite_match": true,
+      "elapsed_sec": 0.12
+    },
+    {
+      "batch": 8,
+      "status": "PASS",
+      "shape_in": [
+        8,
+        256,
+        1
+      ],
+      "shape_out": [
+        8,
+        256,
+        384
+      ],
+      "row_count": 2048,
+      "bitwise": false,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_actual": 3072,
+      "nan_ref": 3072,
+      "inf_actual": 6144,
+      "inf_ref": 6144,
+      "nan_match": true,
+      "inf_match": true,
+      "finite_match": true,
+      "elapsed_sec": 0.228
+    },
+    {
+      "batch": 16,
+      "status": "PASS",
+      "shape_in": [
+        16,
+        256,
+        1
+      ],
+      "shape_out": [
+        16,
+        256,
+        384
+      ],
+      "row_count": 4096,
+      "bitwise": false,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_actual": 3072,
+      "nan_ref": 3072,
+      "inf_actual": 6144,
+      "inf_ref": 6144,
+      "nan_match": true,
+      "inf_match": true,
+      "finite_match": true,
+      "elapsed_sec": 0.443
+    },
+    {
+      "batch": 32,
+      "status": "PASS",
+      "shape_in": [
+        32,
+        256,
+        1
+      ],
+      "shape_out": [
+        32,
+        256,
+        384
+      ],
+      "row_count": 8192,
+      "bitwise": false,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_actual": 3072,
+      "nan_ref": 3072,
+      "inf_actual": 6144,
+      "inf_ref": 6144,
+      "nan_match": true,
+      "inf_match": true,
+      "finite_match": true,
+      "elapsed_sec": 0.863
+    },
+    {
+      "batch": 64,
+      "status": "PASS",
+      "shape_in": [
+        64,
+        256,
+        1
+      ],
+      "shape_out": [
+        64,
+        256,
+        384
+      ],
+      "row_count": 16384,
+      "bitwise": false,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_actual": 3072,
+      "nan_ref": 3072,
+      "inf_actual": 6144,
+      "inf_ref": 6144,
+      "nan_match": true,
+      "inf_match": true,
+      "finite_match": true,
+      "elapsed_sec": 1.7
+    }
+  ]
+}

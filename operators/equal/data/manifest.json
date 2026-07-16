@@ -1,0 +1,265 @@
+{
+  "operator": "equal",
+  "seed": 20260715,
+  "dtype_input": "float16",
+  "dtype_output": "bool",
+  "shape": "[B, 256, 384]",
+  "element_count_per_batch": 98304,
+  "byte_size_per_input_per_batch": 196608,
+  "byte_size_per_output_per_batch": 98304,
+  "batches": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64
+  ],
+  "boundary_cases": [
+    "identical_all_ones",
+    "identical_all_neg",
+    "identical_all_zero",
+    "all_diff",
+    "pos_vs_neg",
+    "all_nan_vs_nan",
+    "all_nan_vs_normal",
+    "all_inf_vs_inf",
+    "all_inf_vs_neginf"
+  ],
+  "input_files": [
+    {
+      "name": "x1_b1_fp16.bin",
+      "batch": 1,
+      "input_index": 1,
+      "shape": "[1, 256, 384]",
+      "dtype": "float16",
+      "element_count": 98304,
+      "byte_size": 196608,
+      "seed": 20260715,
+      "sha256": "31fb44a8554c1c6246f698ea22fb7ef7f03af6ab7952f0b233a46af7cfde185b"
+    },
+    {
+      "name": "x2_b1_fp16.bin",
+      "batch": 1,
+      "input_index": 2,
+      "shape": "[1, 256, 384]",
+      "dtype": "float16",
+      "element_count": 98304,
+      "byte_size": 196608,
+      "seed": 20260715,
+      "sha256": "5b01627d1151e9f7f029dda3933495dcffc8fcdfae44bb083f0496ba2fd8c827"
+    },
+    {
+      "name": "x1_b2_fp16.bin",
+      "batch": 2,
+      "input_index": 1,
+      "shape": "[2, 256, 384]",
+      "dtype": "float16",
+      "element_count": 196608,
+      "byte_size": 393216,
+      "seed": 20260715,
+      "sha256": "02433074f9bd67386d4930862841ccb5c1469977a81ee9500ff78f6ef2cd5179"
+    },
+    {
+      "name": "x2_b2_fp16.bin",
+      "batch": 2,
+      "input_index": 2,
+      "shape": "[2, 256, 384]",
+      "dtype": "float16",
+      "element_count": 196608,
+      "byte_size": 393216,
+      "seed": 20260715,
+      "sha256": "e6278ce25693aa04d922c8561108328212019bafc96555ccfd9901a096c55103"
+    },
+    {
+      "name": "x1_b4_fp16.bin",
+      "batch": 4,
+      "input_index": 1,
+      "shape": "[4, 256, 384]",
+      "dtype": "float16",
+      "element_count": 393216,
+      "byte_size": 786432,
+      "seed": 20260715,
+      "sha256": "7cbb1b8a8f3d9e62215f4077b752b2148c6169b1da391fb4bc1019b4be72164b"
+    },
+    {
+      "name": "x2_b4_fp16.bin",
+      "batch": 4,
+      "input_index": 2,
+      "shape": "[4, 256, 384]",
+      "dtype": "float16",
+      "element_count": 393216,
+      "byte_size": 786432,
+      "seed": 20260715,
+      "sha256": "201204731085a98f3b9c4cd5dd7f980ae4cdb34cb428148561345a70c3374e92"
+    },
+    {
+      "name": "x1_b8_fp16.bin",
+      "batch": 8,
+      "input_index": 1,
+      "shape": "[8, 256, 384]",
+      "dtype": "float16",
+      "element_count": 786432,
+      "byte_size": 1572864,
+      "seed": 20260715,
+      "sha256": "a6e850d63b402363e303c6e94950c2fba691c7534f75bcbdfea64c31d837570f"
+    },
+    {
+      "name": "x2_b8_fp16.bin",
+      "batch": 8,
+      "input_index": 2,
+      "shape": "[8, 256, 384]",
+      "dtype": "float16",
+      "element_count": 786432,
+      "byte_size": 1572864,
+      "seed": 20260715,
+      "sha256": "b6f713a8e3ae34f3da3bf8207c8f9d6b51b96a8920543718795ebd996af4b1de"
+    },
+    {
+      "name": "x1_b16_fp16.bin",
+      "batch": 16,
+      "input_index": 1,
+      "shape": "[16, 256, 384]",
+      "dtype": "float16",
+      "element_count": 1572864,
+      "byte_size": 3145728,
+      "seed": 20260715,
+      "sha256": "03903d19204b6bc8d858ff93e40f2489ac2f7a3d981c5fc24130bc37246a0e0d"
+    },
+    {
+      "name": "x2_b16_fp16.bin",
+      "batch": 16,
+      "input_index": 2,
+      "shape": "[16, 256, 384]",
+      "dtype": "float16",
+      "element_count": 1572864,
+      "byte_size": 3145728,
+      "seed": 20260715,
+      "sha256": "71b7b3b8709441449a6857055bd498c7b095d77c1e9b178596a6de9cd5186fdd"
+    },
+    {
+      "name": "x1_b32_fp16.bin",
+      "batch": 32,
+      "input_index": 1,
+      "shape": "[32, 256, 384]",
+      "dtype": "float16",
+      "element_count": 3145728,
+      "byte_size": 6291456,
+      "seed": 20260715,
+      "sha256": "da488f28310a75c6c896ff6ef66255c91ece00ed2de18a166bb813370e3b30cf"
+    },
+    {
+      "name": "x2_b32_fp16.bin",
+      "batch": 32,
+      "input_index": 2,
+      "shape": "[32, 256, 384]",
+      "dtype": "float16",
+      "element_count": 3145728,
+      "byte_size": 6291456,
+      "seed": 20260715,
+      "sha256": "9064058e1f507095cebe5bdc8224b19e76adad6297b9f9d100f164e2f102f6a7"
+    },
+    {
+      "name": "x1_b64_fp16.bin",
+      "batch": 64,
+      "input_index": 1,
+      "shape": "[64, 256, 384]",
+      "dtype": "float16",
+      "element_count": 6291456,
+      "byte_size": 12582912,
+      "seed": 20260715,
+      "sha256": "bfe4f8f36f3937dce98279d7de1808d933f782ef0a9c2ae3c6c3f6ba08096765"
+    },
+    {
+      "name": "x2_b64_fp16.bin",
+      "batch": 64,
+      "input_index": 2,
+      "shape": "[64, 256, 384]",
+      "dtype": "float16",
+      "element_count": 6291456,
+      "byte_size": 12582912,
+      "seed": 20260715,
+      "sha256": "bff3d63b3e3c16041c8abce598197dfdf7b973bda1a882a38c4978238499b14d"
+    }
+  ],
+  "reference_files": [
+    {
+      "name": "reference_b1_bool.bin",
+      "batch": 1,
+      "shape": "[1, 256, 384]",
+      "dtype": "bool",
+      "element_count": 98304,
+      "byte_size": 98304,
+      "seed": 20260715,
+      "computation_order": "torch.eq(X1, X2) in FP16 -> BOOL",
+      "sha256": "8f48daa12955a977c154107ff8c63b4e1006b08899c04e793742c962ea3b8526"
+    },
+    {
+      "name": "reference_b2_bool.bin",
+      "batch": 2,
+      "shape": "[2, 256, 384]",
+      "dtype": "bool",
+      "element_count": 196608,
+      "byte_size": 196608,
+      "seed": 20260715,
+      "computation_order": "torch.eq(X1, X2) in FP16 -> BOOL",
+      "sha256": "30c7cc3d17df1df406fa9da9a4c7691aac73b7ae216ea136e78fccdd1d0791a5"
+    },
+    {
+      "name": "reference_b4_bool.bin",
+      "batch": 4,
+      "shape": "[4, 256, 384]",
+      "dtype": "bool",
+      "element_count": 393216,
+      "byte_size": 393216,
+      "seed": 20260715,
+      "computation_order": "torch.eq(X1, X2) in FP16 -> BOOL",
+      "sha256": "f8e4b9c558b5741c9ee65a4fd9150fe56ecd461966179a8868030c412855db93"
+    },
+    {
+      "name": "reference_b8_bool.bin",
+      "batch": 8,
+      "shape": "[8, 256, 384]",
+      "dtype": "bool",
+      "element_count": 786432,
+      "byte_size": 786432,
+      "seed": 20260715,
+      "computation_order": "torch.eq(X1, X2) in FP16 -> BOOL",
+      "sha256": "fd8a3e2cf2bf17c6b1bfbffeaca6d4521afe32746dc7e454ec10fa35e3fea2eb"
+    },
+    {
+      "name": "reference_b16_bool.bin",
+      "batch": 16,
+      "shape": "[16, 256, 384]",
+      "dtype": "bool",
+      "element_count": 1572864,
+      "byte_size": 1572864,
+      "seed": 20260715,
+      "computation_order": "torch.eq(X1, X2) in FP16 -> BOOL",
+      "sha256": "bc88cc7000c1f2be6dbd30c1afdf226df6e51b3b31722557429db4e710aca7ac"
+    },
+    {
+      "name": "reference_b32_bool.bin",
+      "batch": 32,
+      "shape": "[32, 256, 384]",
+      "dtype": "bool",
+      "element_count": 3145728,
+      "byte_size": 3145728,
+      "seed": 20260715,
+      "computation_order": "torch.eq(X1, X2) in FP16 -> BOOL",
+      "sha256": "d17aed61abbf08a31b02b011f6fd65bc02e4c0cdb98a2abda6808d8b5132224e"
+    },
+    {
+      "name": "reference_b64_bool.bin",
+      "batch": 64,
+      "shape": "[64, 256, 384]",
+      "dtype": "bool",
+      "element_count": 6291456,
+      "byte_size": 6291456,
+      "seed": 20260715,
+      "computation_order": "torch.eq(X1, X2) in FP16 -> BOOL",
+      "sha256": "bdf5d4902755b47c2e700c296f3ceed9dee89ef22949169319816a58c036a46e"
+    }
+  ]
+}

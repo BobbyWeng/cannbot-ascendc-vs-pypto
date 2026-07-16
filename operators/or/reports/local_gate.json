@@ -1,0 +1,8 @@
+{
+  "operator": "or",
+  "torch": {"correctness": "PASS", "profiler": "NOT_RUN", "status": "COMPLETE"},
+  "ascendc": {"correctness": "PASS", "profiler": "NOT_RUN", "status": "COMPLETE"},
+  "pypto": {"correctness": "PASS", "profiler": "NOT_RUN", "status": "COMPLETE"},
+  "overall": "COMPLETE",
+  "note": "All three implementations PASS correctness. Profiler not yet run."
+}

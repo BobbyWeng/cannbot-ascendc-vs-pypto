@@ -1,0 +1,19 @@
+{
+  "operator": "add",
+  "implementation": "ascendc",
+  "source_files": [
+    "src/add_kernel.asc",
+    "src/add_host.asc",
+    "src/add_tiling.h",
+    "src/data_utils.h"
+  ],
+  "config_files": [
+    "CMakeLists.txt"
+  ],
+  "build_policy": "cmake -S . -B build && cmake --build build -j",
+  "target_binary": "build/add_ascendc",
+  "output_pattern": "build/output/output_b{batch}.bin",
+  "kernel_type": "KERNEL_AIVEC",
+  "kernels_per_call": 1,
+  "last_updated": "2026-07-16"
+}

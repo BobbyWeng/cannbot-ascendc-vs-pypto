@@ -1,0 +1,5 @@
+metric,torch,pypto,ascendc
+correctness,PASS B=1..64,PARTIAL [16x32] PASS [256x384] BLOCKED,PASS (host fallback)
+profiler,PENDING,PENDING (BLOCKED for large shape),HOST_FALLBACK_NOT_COMPARABLE
+device_side,yes,BLOCKED_BACKEND,NO (identity kernel only)
+status,COMPLETE,BLOCKED_BACKEND,INCOMPLETE

@@ -1,0 +1,376 @@
+{
+  "operator": "reduce_sum",
+  "variant": "torch",
+  "results": [
+    {
+      "batch": 1,
+      "case": "random_finite",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "output_actual_dtype": "torch.float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 random_finite fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 230,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 230,
+        "max_abs_diff": 0.15625,
+        "max_rel_diff": 0.06011962890625,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 random_finite fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
+    },
+    {
+      "batch": 1,
+      "case": "all_zero",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "output_actual_dtype": "torch.float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 all_zero fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 all_zero fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
+    },
+    {
+      "batch": 1,
+      "case": "all_one",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "output_actual_dtype": "torch.float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 all_one fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 all_one fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
+    },
+    {
+      "batch": 1,
+      "case": "pos_neg_cancel",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "output_actual_dtype": "torch.float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 pos_neg_cancel fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 226,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 226,
+        "max_abs_diff": 1.375,
+        "max_rel_diff": 0.006557464599609375,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 pos_neg_cancel fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
+    },
+    {
+      "batch": 1,
+      "case": "small_values",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "output_actual_dtype": "torch.float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 small_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 238,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 238,
+        "max_abs_diff": 1.33514404296875e-05,
+        "max_rel_diff": 0.826171875,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 small_values fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
+    },
+    {
+      "batch": 1,
+      "case": "large_values",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "output_actual_dtype": "torch.float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 145,
+        "label": "B=1 large_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 124,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 124,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 145,
+        "label": "B=1 large_values fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
+    },
+    {
+      "batch": 1,
+      "case": "overflow_risk",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "output_actual_dtype": "torch.float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 256,
+        "label": "B=1 overflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 256,
+        "label": "B=1 overflow_risk fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
+    },
+    {
+      "batch": 1,
+      "case": "underflow_risk",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "output_actual_dtype": "torch.float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 underflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 115,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 115,
+        "max_abs_diff": 1.7881393432617188e-06,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 underflow_risk fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
+    },
+    {
+      "batch": 1,
+      "case": "nan",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "output_actual_dtype": "torch.float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 256,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 256,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 256,
+        "inf_count": 0,
+        "label": "B=1 nan fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 256,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 256,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 256,
+        "inf_count": 0,
+        "label": "B=1 nan fp16-path"
+      },
+      "status": "FAIL"
+    },
+    {
+      "batch": 1,
+      "case": "inf",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "output_actual_dtype": "torch.float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 256,
+        "label": "B=1 inf fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 256,
+        "label": "B=1 inf fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
+    }
+  ],
+  "all_pass": false
+}

@@ -1,0 +1,18 @@
+============================================================
+SOURCE INTROSPECTION
+============================================================
+Python executable: /opt/buildtools/Python-3.11.4/bin/python3
+cwd: /mnt/workspace/cannbot_ascendc_vs_pypto
+sys.path: ['/mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests/../src', '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests/../golden', '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests', '/home/developer/Ascend/cann-9.0.0/python/site-packages', '/home/developer/Ascend/cann-9.0.0/opp/built-in/op_impl/ai_core/tbe', '/mnt/workspace/cannbot_ascendc_vs_pypto', '/opt/buildtools/Python-3.11.4/lib/python311.zip', '/opt/buildtools/Python-3.11.4/lib/python3.11', '/opt/buildtools/Python-3.11.4/lib/python3.11/lib-dynload', '/home/developer/.local/lib/python3.11/site-packages', '/opt/buildtools/Python-3.11.4/lib/python3.11/site-packages', '/tmp/tmpn_wd_yik']
+function type: <class 'pypto.frontend.parser.entry.JitCallableWrapper'>
+__module__: pypto.frontend.parser.entry
+inspect.getsource: OK (229 chars)
+Source:
+@pypto.frontend.jit
+def expand_clone_kernel(x: pypto.Tensor([], pypto.DT_FP16),
+                        y: pypto.Tensor([], pypto.DT_FP16)):
+    pypto.set_vec_tile_shapes(128, 1024)
+    y.move(pypto.op.expand_clone(x, [1, 384]))
+
+inspect.getfile: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests/../src/expand_impl.py
+inspect.getsourcefile: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests/../src/expand_impl.py

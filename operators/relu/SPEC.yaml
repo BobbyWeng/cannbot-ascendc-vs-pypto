@@ -1,0 +1,20 @@
+operator_name: relu
+formula: "y = max(x, 0)"
+category: element-wise activation
+inputs:
+  - name: x
+    shape: "[B, 12, 256, 32]"
+    dtype: float16
+    layout: ND contiguous
+outputs:
+  - name: y
+    shape: "[B, 12, 256, 32]"
+    dtype: float16
+    layout: ND contiguous
+batches: [1, 2, 4, 8, 16, 32, 64]
+precision:
+  rtol: 0
+  atol: 0
+  require_bitwise: true
+  note: "Signed-zero mismatches are exempted (max(-0.0, +0.0) is implementation-defined)"
+seed: 20260715

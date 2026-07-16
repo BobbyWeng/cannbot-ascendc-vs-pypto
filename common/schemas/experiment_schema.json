@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "common.schemas.experiment_schema",
+  "title": "ExperimentConfig",
+  "description": "Configuration schema for a single PyPTO vs Ascend C operator experiment.",
+  "type": "object",
+  "required": [
+    "operator_name",
+    "shape",
+    "dtype",
+    "implementations"
+  ],
+  "properties": {
+    "operator_name": {
+      "type": "string",
+      "description": "Name of the operator under test, e.g. rms_norm, gelu, softmax."
+    },
+    "shape": {
+      "type": "object",
+      "description": "Tensor shape descriptor.",
+      "required": ["dims"],
+      "properties": {
+        "dims": {
+          "type": "array",
+          "description": "Dimension sizes.  May use -1 for dynamic axes.",
+          "items": {
+            "type": "integer",
+            "minimum": -1
+          },
+          "minItems": 1
+        },
+        "optional_kwargs": {
+          "type": "object",
+          "description": "Additional operator-specific keyword arguments (e.g. axis, normalized_shape).",
+          "default": {}
+        }
+      },
+      "additionalProperties": false
+    },
+    "dtype": {
+      "type": "string",
+      "description": "Data type for input tensors.",
+      "enum": ["float16", "float32", "bfloat16", "int8", "int32"]
+    },
+    "implementations": {
+      "type": "array",
+      "description": "List of implementations to benchmark.",
+      "items": {
+        "type": "string",
+        "enum": ["ascendc", "pypto", "torch_npu"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "precision": {
+      "type": "object",
+      "description": "Precision tolerance configuration.",
+      "properties": {
+        "require_bitwise": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether correctness requires exact bitwise equality."
+        },
+        "rtol": {
+          "type": "number",
+          "default": 0.0,
+          "minimum": 0.0,
+          "description": "Relative tolerance for numeric comparison."
+        },
+        "atol": {
+          "type": "number",
+          "default": 0.0,
+          "minimum": 0.0,
+          "description": "Absolute tolerance for numeric comparison."
+        }
+      },
+      "additionalProperties": false
+    },
+    "benchmark": {
+      "type": "object",
+      "description": "Benchmark parameters.",
+      "properties": {
+        "warmup_iters": {
+          "type": "integer",
+          "default": 10,
+          "minimum": 0,
+          "description": "Number of warmup iterations."
+        },
+        "bench_iters": {
+          "type": "integer",
+          "default": 100,
+          "minimum": 1,
+          "description": "Number of timed iterations."
+        },
+        "sync": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to synchronise device after each iteration."
+        }
+      },
+      "additionalProperties": false
+    },
+    "profiling": {
+      "type": "object",
+      "description": "Profiling configuration.",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to collect msprof traces."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

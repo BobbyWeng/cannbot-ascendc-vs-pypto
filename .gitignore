@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Build artifacts
+build/
+build_out/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+*.o
+*.so
+*.whl
+
+# Archives (leave only SHA256 files if needed)
+*.tar.gz
+*.zip
+
+# JIT and framework caches
+output/
+output_*/
+jit_cache/
+cache/
+tmp/
+temp/
+
+# msprof raw profiler data (parsed data IS tracked)
+msprof_*/
+profiler_raw/
+**/reports/raw/PROF_*/
+
+# Core dumps
+core
+core.*
+
+# IDE
+.DS_Store
+.idea/
+.vscode/
+
+# NPU runtime lock
+reports/runtime/npu.lock
+
+# Large binaries
+*.bin

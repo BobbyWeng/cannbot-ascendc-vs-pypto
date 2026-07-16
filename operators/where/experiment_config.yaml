@@ -1,0 +1,32 @@
+experiment_name: "Where device kernel comparison — torch / Ascend C / PyPTO"
+operator: where
+shape: "[B, 256, 384]"
+dtype: float16 (condition: uint8)
+batches: [1, 2, 4, 8, 16, 32, 64]
+implementations:
+  torch:
+    type: torch.where(condition, x1, x2)
+    kernel_type: KERNEL_AIVEC (expected)
+    kernels_per_call: 1
+    profiler_method: single msprof session
+  ascendc:
+    type: Ascend C direct <<<>>> invoke (Sel fused)
+    kernel_type: KERNEL_AIVEC (expected)
+    kernels_per_call: 1
+    profiler_method: single msprof session
+  pypto:
+    type: "@pypto.frontend.jit"
+    kernel_type: KERNEL_MIX_AIC + KERNEL_AICPU (expected)
+    kernels_per_call: 3
+    profiler_method: two-process (warmup no-profiler + msprof session)
+benchmark:
+  warmup: 200
+  profiled_loops: 100
+  repeat: 5
+  profiler: msprof
+  profiler_options: --ascendcl=on --ai-core=on --task-time=l0
+correctness:
+  rtol: 0
+  atol: 0
+  require_bitwise: true
+  signed_zero_exempted: false

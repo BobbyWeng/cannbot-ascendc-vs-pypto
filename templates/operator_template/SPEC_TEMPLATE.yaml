@@ -1,0 +1,19 @@
+operator_name: "{{ operator_name }}"
+formula: "{{ formula }}"
+category: "{{ category }}"
+inputs:
+  - name: "{{ input_name }}"
+    shape: "{{ input_shape }}"
+    dtype: "{{ dtype }}"
+    layout: ND contiguous
+outputs:
+  - name: "{{ output_name }}"
+    shape: "{{ output_shape }}"
+    dtype: "{{ dtype }}"
+    layout: ND contiguous
+batches: [1, 2, 4, 8, 16, 32, 64]
+precision:
+  rtol: {{ rtol | default(0) }}
+  atol: {{ atol | default(0) }}
+  require_bitwise: {{ require_bitwise | default(false) }}
+seed: 20260715

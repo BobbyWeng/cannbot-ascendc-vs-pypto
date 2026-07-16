@@ -1,0 +1,15 @@
+{
+  "operator": "mul",
+  "language": "PyPTO",
+  "framework": "pypto.frontend.jit",
+  "impl_file": "src/mul_impl.py",
+  "golden_file": "golden/mul_golden.py",
+  "test_file": "tests/test_mul.py",
+  "design_file": "DESIGN/DESIGN.md",
+  "spec_file": "SPEC/SPEC.md",
+  "api_report_file": "API_REPORT/API_REPORT.md",
+  "kernel_type": "TBD (determined by profiling)",
+  "kernels_per_call": "TBD",
+  "orchestrator_state": ".orchestrator_state.json",
+  "jit_artifacts_dir": "src/output/"
+}

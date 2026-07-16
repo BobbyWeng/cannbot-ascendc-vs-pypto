@@ -1,0 +1,15 @@
+{
+  "operator": "add",
+  "description": "4-input FP16 Add: Y = ((X1+X2)+X3)+X4, shape [B,256,384]",
+  "batches": [1, 2, 4, 8, 16, 32, 64],
+  "data_files": {
+    "inputs": ["x1", "x2", "x3", "x4"],
+    "reference": "reference"
+  },
+  "pattern": "{name}_b{batch}_{variant}.bin",
+  "variants": ["fp16", "fp32", "all_negative", "all_positive", "all_zero",
+               "large_fp16", "overflow", "pos_neg_mixed", "small_values",
+               "underflow", "x1_ones_all", "x1_zero_all"],
+  "seed": 20260715,
+  "generated": "2026-07-16"
+}

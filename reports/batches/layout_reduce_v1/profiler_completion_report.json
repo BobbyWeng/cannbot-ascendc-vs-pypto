@@ -1,0 +1,26 @@
+{
+  "batch": "layout_reduce_v1",
+  "report": "profiler_completion_report",
+  "correctness": {
+    "expand_pypto": {"status": "PASS", "batches": "1..64", "detail": "bitwise on finite elements", "file": "operators/expand/pypto/correctness_results.json"},
+    "reduce_sum_pypto": {"status": "42/70 strict PASS; 70/70 core PASS", "batches": "1..64", "precision_notes": {"FP16_accum_precision": "0.031-0.125 max_diff", "overflow_behavior": "NaN vs Inf"}, "file": "operators/reduce_sum/pypto/correctness_results.json"},
+    "transpose_pypto": {"status": "PARTIAL", "small_shape": "PASS [16,32]", "large_shape": "BLOCKED_BACKEND CompileFunction pass failure"}
+  },
+  "profiler": {
+    "status": "DEFERRED",
+    "torch_expand": "PENDING", "torch_transpose": "PENDING", "torch_reduce_sum": "PENDING",
+    "pypto_expand": "PENDING", "pypto_reduce_sum": "PENDING",
+    "ascendc_all": "HOST_FALLBACK_NOT_COMPARABLE"
+  },
+  "status_changes": {
+    "expand": {"before": "COMPLETE_WITH_LIMITATION", "after": "INCOMPLETE"},
+    "transpose": {"before": "COMPLETE_WITH_LIMITATION", "after": "INCOMPLETE"},
+    "reduce_sum": {"before": "COMPLETE_WITH_LIMITATION", "after": "INCOMPLETE"}
+  },
+  "remaining_blockers": [
+    "Ascend C device-side Expand",
+    "Ascend C device-side Transpose",
+    "Ascend C device-side ReduceSum",
+    "Full msprof profiling for all 3 operators"
+  ]
+}

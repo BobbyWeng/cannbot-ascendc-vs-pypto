@@ -1,0 +1,17 @@
+{
+  "operator": "div",
+  "description": "Broadcast Div: X1 [B,12,256,256] / X2 [B,12,256,1], FP16",
+  "batches": [1, 2, 4, 8, 16, 32],
+  "data_files": {
+    "inputs": ["x1", "x2"],
+    "reference": "reference"
+  },
+  "pattern": "{name}_b{batch}_{variant}.bin",
+  "variants": ["fp16", "all_negative", "all_positive", "both_zero", "mixed_sign",
+               "neg_x_neg", "overflow", "pos_x_neg", "underflow", "x1_one", "x1_zero",
+               "x2_one", "x2_zero"],
+  "seed": 20260715,
+  "x1_range": [-4, 4],
+  "x2_range": "[-4,-0.25] U [0.25,4]",
+  "generated": "2026-07-16"
+}

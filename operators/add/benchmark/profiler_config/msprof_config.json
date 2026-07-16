@@ -1,0 +1,8 @@
+{
+  "profiler": "msprof",
+  "options": "--ascendcl=on --ai-core=on --task-time=l0",
+  "warmup": 200,
+  "loops": 100,
+  "repeat": 5,
+  "experiment": "Add 4-input FP16 comparison"
+}

@@ -1,0 +1,28 @@
+operator,implementation,batch,metric,parsed_value,report_value,dashboard_value,consistent,source_of_truth,correction
+relu,torch,1,primary_compute_kernel_us,10.08,10.08,N/A,TRUE,parsed,N/A
+relu,ascendc,1,primary_compute_kernel_us,2.009,2.142,N/A,PARTIAL,parsed,Minor diff in decimal precision
+relu,pypto,1,primary_compute_kernel_us,51.128,51.887,N/A,PARTIAL,parsed,AICPU init was mislabeled as primary in release_summary
+mul,torch,1,primary_compute_kernel_us,9.0,3.88,N/A,PARTIAL,parsed,Report uses all_device_kernels not primary
+mul,ascendc,1,primary_compute_kernel_us,11.16,3.14,N/A,PARTIAL,parsed,Report uses all_device_kernels not primary
+mul,pypto,1,primary_compute_kernel_us,51.532,51.532,N/A,TRUE,parsed,N/A
+add,torch,1,primary_compute_kernel_us,10.04,10.04,N/A,TRUE,parsed,N/A
+add,ascendc,1,primary_compute_kernel_us,13.78,13.78,N/A,TRUE,parsed,N/A
+add,pypto,1,primary_compute_kernel_us,136.03,3161.403,N/A,FALSE,parsed,release_summary used KERNEL_AICPU init instead of KERNEL_MIX_AIC
+div,torch,32,primary_compute_kernel_us,126.203,126.203,N/A,TRUE,parsed,N/A
+div,ascendc,32,primary_compute_kernel_us,306.526,306.526,N/A,TRUE,parsed,N/A
+not,torch,1,host_sync_us,N/A,127.53,N/A,N/A,report,No msprof; torch.npu.Event
+not,ascendc,1,host_sync_us,N/A,6.4,N/A,N/A,report,No msprof; aclrtEvent
+not,pypto,1,host_sync_us,N/A,136.57,N/A,N/A,report,No msprof; torch.npu.Event
+or,torch,1,host_sync_us,N/A,256.27,N/A,N/A,report,No msprof
+or,ascendc,1,host_sync_us,N/A,6.5,N/A,N/A,report,No msprof
+or,pypto,1,host_sync_us,N/A,148.82,N/A,N/A,report,No msprof
+equal,torch,1,host_sync_us,N/A,12.18,N/A,N/A,report,No msprof
+equal,ascendc,1,host_sync_us,N/A,41.8,N/A,N/A,report,No msprof
+where,torch,1,host_sync_us,N/A,131.86,N/A,N/A,report,No msprof
+where,ascendc,1,host_sync_us,N/A,238.6,N/A,N/A,report,No msprof
+expand,torch,1,host_sync_us,N/A,11.2,N/A,N/A,report,No profiler
+expand,ascendc,1,N/A,N/A,16.9,N/A,N/A,report,Host precompute - not comparable
+transpose,torch,1,host_sync_us,N/A,23.5,N/A,N/A,report,No profiler
+transpose,ascendc,1,N/A,N/A,105.4,N/A,N/A,report,Host precompute - not comparable
+reduce_sum,torch,1,host_sync_us,N/A,27.8,N/A,N/A,report,No profiler
+reduce_sum,ascendc,1,N/A,N/A,20.8,N/A,N/A,report,Host precompute - not comparable

@@ -1,0 +1,14 @@
+{
+  "operator": "or",
+  "implementation": "pypto",
+  "spec": "SPEC/SPEC.md",
+  "api_report": "API_REPORT/API_REPORT.md",
+  "design": "DESIGN/DESIGN.md",
+  "golden": "golden/or_golden.py",
+  "implementation": "src/or_impl.py",
+  "tests": "tests/test_or.py",
+  "orchestrator_state": ".orchestrator_state.json",
+  "kernel_type": "TBD",
+  "kernels_per_call": "TBD",
+  "last_updated": "2026-07-16"
+}

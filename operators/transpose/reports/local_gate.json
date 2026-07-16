@@ -1,0 +1,15 @@
+{
+  "operator": "transpose",
+  "source_readiness": true,
+  "build_readiness": true,
+  "data_readiness": true,
+  "torch_correctness": "PASS",
+  "ascendc_correctness": "PASS (host fallback)",
+  "pypto_correctness": "PARTIAL (small PASS, large BLOCKED_BACKEND)",
+  "profiler_status": "pending",
+  "report_status": "provisional",
+  "archive_status": "pending",
+  "blocker": "Ascend C device-side kernel not implemented; PyPTO BLOCKED_BACKEND large shape",
+  "ready_for_integration": false,
+  "status": "INCOMPLETE"
+}

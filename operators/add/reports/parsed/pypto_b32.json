@@ -1,0 +1,39 @@
+{
+  "kernel_count": 901,
+  "logical_calls": 100,
+  "kernels_per_logical_call": 9.01,
+  "all_device_kernels_us_per_call": 645.057,
+  "primary_compute_kernel_us": 3220.444,
+  "primary_kernel_name": "KERNEL_AICPU",
+  "primary_kernel_type": "KERNEL_AICPU",
+  "kernel_names": [
+    "KERNEL_AICPU",
+    "PYPTO_add_binary_kernel"
+  ],
+  "kernel_types": [
+    "KERNEL_AICPU",
+    "KERNEL_MIX_AIC"
+  ],
+  "kernel_type_breakdown": {
+    "KERNEL_AICPU": {
+      "count": 601,
+      "total_us": 43423.07,
+      "mean_us": 72.251,
+      "per_call_us": 434.231
+    },
+    "KERNEL_MIX_AIC": {
+      "count": 300,
+      "total_us": 21082.62,
+      "mean_us": 70.275,
+      "per_call_us": 210.826
+    }
+  },
+  "compute_kernel_types": [
+    "KERNEL_MIX_AIC"
+  ],
+  "executor_kernel_types": [
+    "KERNEL_AICPU"
+  ],
+  "total_kernel_duration_all_iters_us": 64505.69,
+  "aicpu_executor_us_per_call": 434.231
+}

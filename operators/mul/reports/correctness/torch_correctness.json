@@ -1,0 +1,154 @@
+{
+  "operator": "mul",
+  "variant": "torch",
+  "results": [
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": NaN,
+      "max_rel_diff": NaN,
+      "nan_count": 0,
+      "inf_count": 47,
+      "label": "B=1",
+      "batch": 1,
+      "shape": [
+        1,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": NaN,
+      "max_rel_diff": NaN,
+      "nan_count": 0,
+      "inf_count": 46,
+      "label": "B=2",
+      "batch": 2,
+      "shape": [
+        2,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": NaN,
+      "max_rel_diff": NaN,
+      "nan_count": 0,
+      "inf_count": 46,
+      "label": "B=4",
+      "batch": 4,
+      "shape": [
+        4,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": NaN,
+      "max_rel_diff": NaN,
+      "nan_count": 0,
+      "inf_count": 44,
+      "label": "B=8",
+      "batch": 8,
+      "shape": [
+        8,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": NaN,
+      "max_rel_diff": NaN,
+      "nan_count": 0,
+      "inf_count": 47,
+      "label": "B=16",
+      "batch": 16,
+      "shape": [
+        16,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": NaN,
+      "max_rel_diff": NaN,
+      "nan_count": 0,
+      "inf_count": 47,
+      "label": "B=32",
+      "batch": 32,
+      "shape": [
+        32,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": NaN,
+      "max_rel_diff": NaN,
+      "nan_count": 0,
+      "inf_count": 45,
+      "label": "B=64",
+      "batch": 64,
+      "shape": [
+        64,
+        3,
+        4,
+        256,
+        32
+      ],
+      "dtype": "float16"
+    }
+  ],
+  "all_pass": true
+}

@@ -1,0 +1,47 @@
+{
+  "operator": "where",
+  "gates": {
+    "spec": {
+      "status": "PASS",
+      "artifacts": ["SPEC.yaml", "experiment_config.yaml"],
+      "note": "Spec and config written"
+    },
+    "data_generation": {
+      "status": "PASS",
+      "artifacts": ["data/condition_b*_bool.bin", "data/x1_b*_fp16.bin", "data/x2_b*_fp16.bin", "data/reference_b*_fp16.bin", "data/manifest.json"],
+      "note": "All 7 batches generated with NaN non-propagation coverage"
+    },
+    "torch_correctness": {
+      "status": "PENDING",
+      "artifacts": ["torch/correctness.py"],
+      "note": "Requires NPU to run"
+    },
+    "ascendc_build": {
+      "status": "PENDING",
+      "artifacts": ["ascendc/src/where_kernel.asc", "ascendc/src/where_host.asc", "ascendc/CMakeLists.txt"],
+      "note": "Requires NPU+CANN to build"
+    },
+    "ascendc_correctness": {
+      "status": "PENDING",
+      "artifacts": [],
+      "note": "Requires Ascend C binary"
+    },
+    "pypto_orchestrator": {
+      "status": "PENDING",
+      "artifacts": ["pypto/SPEC/SPEC.md", "pypto/API_REPORT/API_REPORT.md", "pypto/golden/where_golden.py", "pypto/DESIGN/DESIGN.md", "pypto/src/where_impl.py", "pypto/tests/test_where.py"],
+      "note": "PyPTO artifacts created"
+    },
+    "reports": {
+      "status": "PENDING",
+      "artifacts": ["reports/final/final_comparison.md"],
+      "note": "Report template created, requires profiler data"
+    },
+    "readme_reproduce": {
+      "status": "PASS",
+      "artifacts": ["README.md", "REPRODUCE.md"],
+      "note": "Documentation written"
+    }
+  },
+  "overall_status": "INCOMPLETE",
+  "last_updated": "2026-07-16"
+}

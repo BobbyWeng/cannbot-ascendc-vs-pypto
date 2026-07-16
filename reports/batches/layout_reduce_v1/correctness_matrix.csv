@@ -1,0 +1,7 @@
+operator,implementation,batch,total_cases,passed,failed,critical_failures,accuracy_note
+expand,torch,1..64,7 (per batch),7,0,0,bitwise PASS
+expand,pypto,1..64,7 (per batch),7,0,0,bitwise PASS on finite elements; nan/inf match ref
+transpose,torch,1..64,7 (per batch),7,0,0,bitwise PASS
+transpose,pypto,1,1 (small shape [16x32]),1 (small),0,0,small shape PASS; large shape BLOCKED_BACKEND
+reduce_sum,torch,1..64,70,70,0,0,FP32 accum ref PASS
+reduce_sum,pypto,1..64,70,42,28,14x FP16_precision + 14x Inf_mismatch,core cases (all_zero,all_one,small_values,underflow,inf,nan) ALL PASS; overflow/FP16-accum differences documented

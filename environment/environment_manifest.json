@@ -1,0 +1,32 @@
+{
+  "project": "cannbot_ascendc_vs_pypto",
+  "archive_version": "v1",
+  "description": "Structured comparison framework for Ascend C vs PyPTO operators",
+  "operators": ["relu"],
+  "created": "2026-07-15T00:00:00Z",
+  "last_updated": "2026-07-15T15:00:00Z",
+  "environment": {
+    "device": {
+      "model": "Ascend 910B",
+      "count": 2,
+      "chip": "ascend910b",
+      "npu_arch": "dav-2201"
+    },
+    "software": {
+      "driver_version": "25.5.5",
+      "firmware_version": "unknown",
+      "cann_toolkit_version": "9.0.0",
+      "torch_version": "2.x",
+      "torch_npu_version": "2.x",
+      "pypto_version": "unknown",
+      "python_version": "3.8+"
+    },
+    "dates": {
+      "execution_date": "2026-07-15",
+      "hostname": "unknown"
+    }
+  },
+  "source_hashes": {
+    "note": "SHA256SUMS files in each operator directory contain per-file hashes"
+  }
+}

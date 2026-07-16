@@ -1,0 +1,36 @@
+batch,impl,metric,value_us,unit,note
+1,torch,primary_compute_kernel,2.635,us,KERNEL_AIVEC
+1,ascendc,primary_compute_kernel,2.142,us,KERNEL_AIVEC
+1,pypto,primary_compute_kernel,51.887,us,KERNEL_MIX_AIC (AI Core compute only)
+1,pypto,executor_overhead,111.08,us,2x KERNEL_AICPU (not compute)
+1,pypto,all_device_events,162.966,us,3 events: 1 MIX_AIC + 2 AICPU
+2,torch,primary_compute_kernel,2.709,us,KERNEL_AIVEC
+2,ascendc,primary_compute_kernel,2.373,us,KERNEL_AIVEC
+2,pypto,primary_compute_kernel,49.546,us,KERNEL_MIX_AIC (AI Core compute only)
+2,pypto,executor_overhead,105.146,us,2x KERNEL_AICPU (not compute)
+2,pypto,all_device_events,154.692,us,3 events: 1 MIX_AIC + 2 AICPU
+4,torch,primary_compute_kernel,2.828,us,KERNEL_AIVEC
+4,ascendc,primary_compute_kernel,2.657,us,KERNEL_AIVEC
+4,pypto,primary_compute_kernel,52.504,us,KERNEL_MIX_AIC (AI Core compute only)
+4,pypto,executor_overhead,113.0,us,2x KERNEL_AICPU (not compute)
+4,pypto,all_device_events,165.504,us,3 events: 1 MIX_AIC + 2 AICPU
+8,torch,primary_compute_kernel,3.154,us,KERNEL_AIVEC
+8,ascendc,primary_compute_kernel,3.042,us,KERNEL_AIVEC
+8,pypto,primary_compute_kernel,61.278,us,KERNEL_MIX_AIC (AI Core compute only)
+8,pypto,executor_overhead,125.862,us,2x KERNEL_AICPU (not compute)
+8,pypto,all_device_events,187.139,us,3 events: 1 MIX_AIC + 2 AICPU
+16,torch,primary_compute_kernel,3.658,us,KERNEL_AIVEC
+16,ascendc,primary_compute_kernel,4.02,us,KERNEL_AIVEC
+16,pypto,primary_compute_kernel,79.691,us,KERNEL_MIX_AIC (AI Core compute only)
+16,pypto,executor_overhead,152.095,us,2x KERNEL_AICPU (not compute)
+16,pypto,all_device_events,231.785,us,3 events: 1 MIX_AIC + 2 AICPU
+32,torch,primary_compute_kernel,4.674,us,KERNEL_AIVEC
+32,ascendc,primary_compute_kernel,6.021,us,KERNEL_AIVEC
+32,pypto,primary_compute_kernel,103.909,us,KERNEL_MIX_AIC (AI Core compute only)
+32,pypto,executor_overhead,177.816,us,2x KERNEL_AICPU (not compute)
+32,pypto,all_device_events,281.725,us,3 events: 1 MIX_AIC + 2 AICPU
+64,torch,primary_compute_kernel,6.623,us,KERNEL_AIVEC
+64,ascendc,primary_compute_kernel,9.705,us,KERNEL_AIVEC
+64,pypto,primary_compute_kernel,150.819,us,KERNEL_MIX_AIC (AI Core compute only)
+64,pypto,executor_overhead,227.697,us,2x KERNEL_AICPU (not compute)
+64,pypto,all_device_events,378.516,us,3 events: 1 MIX_AIC + 2 AICPU

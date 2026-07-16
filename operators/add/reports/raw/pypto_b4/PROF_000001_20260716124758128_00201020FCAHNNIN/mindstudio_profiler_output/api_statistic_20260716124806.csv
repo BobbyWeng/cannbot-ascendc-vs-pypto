@@ -1,0 +1,20 @@
+Device_id,Level,API Name,Time(us),Count,Avg(us),Min(us),Max(us),Variance
+host,acl,aclmdlRICaptureGetInfo,134.58,300,0.449,0.34,1.59,0.006
+host,acl,aclmdlRICaptureThreadExchangeMode,3.05,2,1.525,1.52,1.53,0
+host,acl,aclrtCreateEventExWithFlag,7.6,1,7.6,7.6,7.6,0
+host,acl,aclrtCreateStreamWithConfig,3188.63,2,1594.315,742.44,2446.19,725691.016
+host,acl,aclrtCtxSetSysParamOpt,11.41,1,11.41,11.41,11.41,0
+host,acl,aclrtDestroyStreamForce,1836.79,1,1836.79,1836.79,1836.79,0
+host,acl,aclrtFree,7.72,1,7.72,7.72,7.72,0
+host,acl,aclrtGetCurrentContext,1.25,1,1.25,1.25,1.25,0
+host,acl,aclrtGetStreamResLimit,285.3,604,0.472,0.29,2.27,0.031
+host,acl,aclrtMemcpy,286.42,4,71.605,63.95,85.72,73.415
+host,acl,aclrtRecordEvent,3382.36,300,11.275,6.76,151.06,289.739
+host,acl,aclrtResetDevice,2.68,1,2.68,2.68,2.68,0
+host,acl,aclrtSetDevice,38.51,1,38.51,38.51,38.51,0
+host,acl,aclrtSetOpExecuteTimeOutV2,1198.24,1,1198.24,1198.24,1198.24,0
+host,acl,aclrtSetStreamFailureMode,4.58,2,2.29,2.21,2.37,0.006
+host,acl,aclrtStreamWaitEvent,2499.97,600,4.167,0.74,14.41,2.568
+host,acl,aclrtSynchronizeDeviceWithTimeout,37.4,3,12.467,9.11,17.9,15.034
+host,acl,aclrtSynchronizeStream,18.45,4,4.613,2.87,8.54,5.227
+host,node,launch,6909.53,900,7.677,2.18,160,49.824

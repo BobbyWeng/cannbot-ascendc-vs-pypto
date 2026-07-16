@@ -1,0 +1,27 @@
+{
+  "operator": "where",
+  "implementation": "ascendc",
+  "batch": 32,
+  "warmup": 200,
+  "loops": 100,
+  "repeat": 5,
+  "median_us": 4742.3,
+  "mean_us": 4742.4,
+  "min_us": 4742.2,
+  "p90_us": 4742.5,
+  "std_us": 0.09,
+  "cv": 0.0018977732793522268,
+  "raw_repeat_latency_us": [
+    4742.2,
+    4742.3,
+    4742.3,
+    4742.3,
+    4742.5
+  ],
+  "kernel_info": {
+    "kernel_names": [
+      "where_kernel"
+    ],
+    "kernel_count": 1
+  }
+}

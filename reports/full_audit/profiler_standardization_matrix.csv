@@ -1,0 +1,12 @@
+operator,method,warmup,loops,repeat,msprof_raw,msprof_parsed,jit_excluded,primary_kernel_metric,device_timing,host_timing,all_device_kernels
+relu,msprof,200,100,5,PARTIAL,PASS,TRUE,TRUE,TRUE,TRUE
+mul,msprof,200,100,5,PARTIAL,PASS,TRUE,TRUE,TRUE,TRUE
+add,msprof,200,100,5,PASS,PASS,TRUE,TRUE,TRUE,TRUE
+div,msprof,200,100,5,PARTIAL,PARTIAL,N/A,TRUE,TRUE,TRUE
+equal,torch.npu.Event+aclrtEvent,N/A,N/A,N/A,FAIL,FAIL,N/A,FALSE,TRUE,TRUE
+not,torch.npu.Event+aclrtEvent,N/A,N/A,N/A,FAIL,FAIL,UNKNOWN,FALSE,TRUE,TRUE
+or,torch.npu.Event+aclrtEvent,N/A,N/A,N/A,FAIL,FAIL,UNKNOWN,FALSE,TRUE,TRUE
+where,torch.npu.Event+aclrtEvent,N/A,N/A,N/A,FAIL,FAIL,N/A,FALSE,TRUE,TRUE
+expand,N/A,N/A,N/A,N/A,MISSING,MISSING,N/A,N/A,N/A,N/A
+transpose,N/A,N/A,N/A,N/A,MISSING,MISSING,N/A,N/A,N/A,N/A
+reduce_sum,N/A,N/A,N/A,N/A,MISSING,MISSING,N/A,N/A,N/A,N/A

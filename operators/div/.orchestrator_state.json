@@ -1,0 +1,30 @@
+{
+  "operator_name": "div",
+  "current_stage": 7,
+  "stage_status": {
+    "1": "completed",
+    "2": "completed",
+    "3": "completed",
+    "4": "completed",
+    "5": "completed",
+    "6": "completed",
+    "7": "completed"
+  },
+  "stage_retry_count": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0
+  },
+  "perf_iteration": {
+    "count": 1,
+    "last_improvement": 6.3,
+    "consecutive_no_improvement": 0
+  },
+  "last_updated": "2026-07-16T11:28:00Z",
+  "implementation_strategy": "Ascend C: native Div with in-place Duplicate+Div at VECOUT. PyPTO: native Div works for minimal shapes; broadcast lowering fails at backend CompileFunction.",
+  "broadcast_strategy": "X2 broadcast performed in UB only (GM data stays at [B,12,256,1]). No GM expansion.",
+  "note": "V2 completed: full audit, all-batch correctness, optimized kernel (6% improvement), PyPTO diagnosis."
+}

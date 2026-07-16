@@ -1,0 +1,88 @@
+{
+  "experiment": {
+    "operator": "mul",
+    "formula": "Y = X1 * X2",
+    "shape": "[B, 3, 4, 256, 32]",
+    "dtype": "float16",
+    "batches": [1, 2, 4, 8, 16, 32, 64],
+    "seed": 20260715,
+    "profiler": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+    "warmup": 200,
+    "profiled_loops": 100,
+    "correctness_standard": "FP16 strict bitwise (no signed-zero exemption)"
+  },
+  "correctness": {
+    "all_batches_pass": true,
+    "strict_bitwise": true,
+    "signed_zero_exempted": false,
+    "note": "All three implementations produce strict bitwise-identical results across all 7 batches, including signed-zero"
+  },
+  "profiler_data": {
+    "1": {
+      "torch": {
+        "primary_compute_kernel_us": 3.876,
+        "all_device_kernels_us": 3.876,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1,
+        "kernel_names": ["aclnnMul_MulAiCore_Mul"]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 3.14,
+        "all_device_kernels_us": 3.14,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 1,
+        "kernel_names": ["mul_kernel"]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 57.703,
+        "mix_aic_compute_us": 57.703,
+        "aicpu_executor_us": 119.691,
+        "all_device_kernels_us": 177.394,
+        "primary_kernel_type": "KERNEL_MIX_AIC",
+        "executor_kernel_type": "KERNEL_AICPU",
+        "kernels_per_call": {"total": 3, "primary_compute_KERNEL_MIX_AIC": 1, "executor_KERNEL_AICPU": 2},
+        "kernel_names": ["PYPTO_mul_kernel_2d"],
+        "one_time_init_aicpu_us": 3083.1
+      }
+    },
+    "2": {
+      "torch": {"primary_compute_kernel_us": 3.952, "all_device_kernels_us": 3.952, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["aclnnMul_MulAiCore_Mul"]},
+      "ascendc": {"primary_compute_kernel_us": 3.533, "all_device_kernels_us": 3.533, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["mul_kernel"]},
+      "pypto": {"primary_compute_kernel_us": 57.072, "mix_aic_compute_us": 57.072, "aicpu_executor_us": 117.112, "all_device_kernels_us": 174.185, "primary_kernel_type": "KERNEL_MIX_AIC", "executor_kernel_type": "KERNEL_AICPU", "kernels_per_call": {"total": 3, "primary_compute_KERNEL_MIX_AIC": 1, "executor_KERNEL_AICPU": 2}, "kernel_names": ["PYPTO_mul_kernel_2d"], "one_time_init_aicpu_us": 2915.3}
+    },
+    "4": {
+      "torch": {"primary_compute_kernel_us": 4.225, "all_device_kernels_us": 4.225, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["aclnnMul_MulAiCore_Mul"]},
+      "ascendc": {"primary_compute_kernel_us": 4.035, "all_device_kernels_us": 4.035, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["mul_kernel"]},
+      "pypto": {"primary_compute_kernel_us": 59.594, "mix_aic_compute_us": 59.594, "aicpu_executor_us": 117.355, "all_device_kernels_us": 176.95, "primary_kernel_type": "KERNEL_MIX_AIC", "executor_kernel_type": "KERNEL_AICPU", "kernels_per_call": {"total": 3, "primary_compute_KERNEL_MIX_AIC": 1, "executor_KERNEL_AICPU": 2}, "kernel_names": ["PYPTO_mul_kernel_2d"], "one_time_init_aicpu_us": 3041.1}
+    },
+    "8": {
+      "torch": {"primary_compute_kernel_us": 4.843, "all_device_kernels_us": 4.843, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["aclnnMul_MulAiCore_Mul"]},
+      "ascendc": {"primary_compute_kernel_us": 4.866, "all_device_kernels_us": 4.866, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["mul_kernel"]},
+      "pypto": {"primary_compute_kernel_us": 66.751, "mix_aic_compute_us": 66.751, "aicpu_executor_us": 125.865, "all_device_kernels_us": 192.616, "primary_kernel_type": "KERNEL_MIX_AIC", "executor_kernel_type": "KERNEL_AICPU", "kernels_per_call": {"total": 3, "primary_compute_KERNEL_MIX_AIC": 1, "executor_KERNEL_AICPU": 2}, "kernel_names": ["PYPTO_mul_kernel_2d"], "one_time_init_aicpu_us": 3134.2}
+    },
+    "16": {
+      "torch": {"primary_compute_kernel_us": 6.039, "all_device_kernels_us": 6.039, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["aclnnMul_MulAiCore_Mul"]},
+      "ascendc": {"primary_compute_kernel_us": 6.687, "all_device_kernels_us": 6.687, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["mul_kernel"]},
+      "pypto": {"primary_compute_kernel_us": 93.186, "mix_aic_compute_us": 93.186, "aicpu_executor_us": 161.424, "all_device_kernels_us": 254.61, "primary_kernel_type": "KERNEL_MIX_AIC", "executor_kernel_type": "KERNEL_AICPU", "kernels_per_call": {"total": 3, "primary_compute_KERNEL_MIX_AIC": 1, "executor_KERNEL_AICPU": 2}, "kernel_names": ["PYPTO_mul_kernel_2d"], "one_time_init_aicpu_us": 3059.4}
+    },
+    "32": {
+      "torch": {"primary_compute_kernel_us": 8.184, "all_device_kernels_us": 8.184, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["aclnnMul_MulAiCore_Mul"]},
+      "ascendc": {"primary_compute_kernel_us": 10.432, "all_device_kernels_us": 10.432, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["mul_kernel"]},
+      "pypto": {"primary_compute_kernel_us": 136.389, "mix_aic_compute_us": 136.389, "aicpu_executor_us": 202.189, "all_device_kernels_us": 338.578, "primary_kernel_type": "KERNEL_MIX_AIC", "executor_kernel_type": "KERNEL_AICPU", "kernels_per_call": {"total": 3, "primary_compute_KERNEL_MIX_AIC": 1, "executor_KERNEL_AICPU": 2}, "kernel_names": ["PYPTO_mul_kernel_2d"], "one_time_init_aicpu_us": 3094.3}
+    },
+    "64": {
+      "torch": {"primary_compute_kernel_us": 12.523, "all_device_kernels_us": 12.523, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["aclnnMul_MulAiCore_Mul"]},
+      "ascendc": {"primary_compute_kernel_us": 17.643, "all_device_kernels_us": 17.643, "kernel_type": "KERNEL_AIVEC", "kernels_per_call": 1, "kernel_names": ["mul_kernel"]},
+      "pypto": {"primary_compute_kernel_us": 207.025, "mix_aic_compute_us": 207.025, "aicpu_executor_us": 289.043, "all_device_kernels_us": 496.068, "primary_kernel_type": "KERNEL_MIX_AIC", "executor_kernel_type": "KERNEL_AICPU", "kernels_per_call": {"total": 3, "primary_compute_KERNEL_MIX_AIC": 1, "executor_KERNEL_AICPU": 2}, "kernel_names": ["PYPTO_mul_kernel_2d"], "one_time_init_aicpu_us": 3064.1}
+    }
+  },
+  "comparison_summary": [
+    {"batch": 1, "torch_us": 3.876, "ascendc_us": 3.14, "pypto_compute_us": 57.703, "pypto_total_us": 177.394, "fastest": "ascendc"},
+    {"batch": 2, "torch_us": 3.952, "ascendc_us": 3.533, "pypto_compute_us": 57.072, "pypto_total_us": 174.185, "fastest": "ascendc"},
+    {"batch": 4, "torch_us": 4.225, "ascendc_us": 4.035, "pypto_compute_us": 59.594, "pypto_total_us": 176.95, "fastest": "ascendc"},
+    {"batch": 8, "torch_us": 4.843, "ascendc_us": 4.866, "pypto_compute_us": 66.751, "pypto_total_us": 192.616, "fastest": "torch"},
+    {"batch": 16, "torch_us": 6.039, "ascendc_us": 6.687, "pypto_compute_us": 93.186, "pypto_total_us": 254.61, "fastest": "torch"},
+    {"batch": 32, "torch_us": 8.184, "ascendc_us": 10.432, "pypto_compute_us": 136.389, "pypto_total_us": 338.578, "fastest": "torch"},
+    {"batch": 64, "torch_us": 12.523, "ascendc_us": 17.643, "pypto_compute_us": 207.025, "pypto_total_us": 496.068, "fastest": "torch"}
+  ]
+}

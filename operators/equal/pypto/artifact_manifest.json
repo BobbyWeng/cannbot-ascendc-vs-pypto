@@ -1,0 +1,14 @@
+{
+  "operator": "equal",
+  "implementation": "pypto",
+  "spec": "SPEC/SPEC.md",
+  "api_report": "API_REPORT/API_REPORT.md",
+  "design": "DESIGN/DESIGN.md",
+  "golden": "golden/equal_golden.py",
+  "implementation": "src/equal_impl.py",
+  "tests": "tests/test_equal.py",
+  "orchestrator_state": ".orchestrator_state.json",
+  "kernel_type": "KERNEL_MIX_AIC + KERNEL_AICPU",
+  "kernels_per_call": "TBD",
+  "last_updated": "2026-07-16"
+}

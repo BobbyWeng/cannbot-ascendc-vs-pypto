@@ -1,0 +1,30 @@
+experiment_name: "Transpose device kernel comparison — torch / Ascend C / PyPTO"
+operator: transpose
+shape: "[B, 256, 384] -> [B, 384, 256]"
+dtype: float16
+batches: [1, 2, 4, 8, 16, 32, 64]
+implementations:
+  torch:
+    type: torch_npu native .transpose(1,2).contiguous()
+    kernel_type: KERNEL_AIVEC
+    kernels_per_call: 1
+    profiler_method: single msprof session
+  ascendc:
+    type: Ascend C direct <<<>>> invoke
+    kernel_type: KERNEL_AIVEC
+    kernels_per_call: 1
+    profiler_method: single msprof session
+  pypto:
+    type: "@pypto.frontend.jit"
+    kernel_type: KERNEL_MIX_AIC + KERNEL_AICPU
+    kernels_per_call: 3
+    profiler_method: two-process (warmup no-profiler + msprof session)
+benchmark:
+  warmup: 200
+  profiled_loops: 100
+  profiler: msprof
+  profiler_options: --ascendcl=on --ai-core=on --task-time=l0
+correctness:
+  rtol: 0
+  atol: 0
+  require_bitwise: true

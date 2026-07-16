@@ -1,0 +1,20 @@
+operator_name: not
+formula: "Y = LogicalNot(X)"
+category: element-wise logical
+inputs:
+  - name: x
+    shape: "[B, 256, 384]"
+    dtype: bool
+    layout: ND contiguous
+outputs:
+  - name: y
+    shape: "[B, 256, 384]"
+    dtype: bool
+    layout: ND contiguous
+batches: [1, 2, 4, 8, 16, 32, 64]
+precision:
+  rtol: 0
+  atol: 0
+  require_bitwise: true
+  note: "BOOL stored as uint8 (0=False, 1=True). Logical NOT maps: 0->1, nonzero->0."
+seed: 20260715

@@ -1,0 +1,7 @@
+operator,batch,ascendc_aclrtEvent_us,ascendc_msprof_primary_kernel_us,torch_torchEvent_us,torch_msprof_primary_kernel_us,pypto_status,ratio_ascendc_vs_torch_host
+div,1,12.6,,14.84,,N/A,0.85
+div,2,21.4,,14.07,,N/A,1.52
+div,4,43.4,,18.9,,N/A,2.3
+div,8,75.1,,31.49,,N/A,2.39
+div,16,176.2,,57.66,,N/A,3.06
+div,32,328.6,306.5,112.8,126.2,N/A,2.91

@@ -1,0 +1,14 @@
+{
+  "operator": "add",
+  "implementation": "pypto",
+  "spec": "SPEC/SPEC.md",
+  "api_report": "API_REPORT/API_REPORT.md",
+  "design": "DESIGN/DESIGN.md",
+  "golden": "golden/add_golden.py",
+  "implementation": "src/add_impl.py",
+  "tests": "tests/test_add.py",
+  "orchestrator_state": ".orchestrator_state.json",
+  "kernel_type": "KERNEL_MIX_AIC + 2xKERNEL_AICPU",
+  "kernels_per_call": 9,
+  "last_updated": "2026-07-16"
+}

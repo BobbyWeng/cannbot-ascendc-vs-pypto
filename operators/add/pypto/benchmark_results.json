@@ -1,0 +1,195 @@
+{
+  "results": [
+    {
+      "operator": "add",
+      "variant": "pypto",
+      "batch": 1,
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 397.2637939453125,
+        "mean_us": 397.32328033447266,
+        "min_us": 390.6867980957031,
+        "max_us": 407.4898147583008,
+        "p90_us": 407.4898147583008,
+        "std_us": 5.789861173389447,
+        "cv": 0.014572166948071745,
+        "effective_bandwidth_gbps": 4.61
+      }
+    },
+    {
+      "operator": "add",
+      "variant": "pypto",
+      "batch": 2,
+      "shape": [
+        2,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 392.51258850097656,
+        "mean_us": 392.2305145263672,
+        "min_us": 390.4861831665039,
+        "max_us": 393.7984085083008,
+        "p90_us": 393.7984085083008,
+        "std_us": 1.1262602466820575,
+        "cv": 0.002871424340969642,
+        "effective_bandwidth_gbps": 9.33
+      }
+    },
+    {
+      "operator": "add",
+      "variant": "pypto",
+      "batch": 4,
+      "shape": [
+        4,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 389.1429901123047,
+        "mean_us": 388.12652587890625,
+        "min_us": 385.56861877441406,
+        "max_us": 389.8320007324219,
+        "p90_us": 389.8320007324219,
+        "std_us": 1.6555479104847217,
+        "cv": 0.004265485093387421,
+        "effective_bandwidth_gbps": 18.82
+      }
+    },
+    {
+      "operator": "add",
+      "variant": "pypto",
+      "batch": 8,
+      "shape": [
+        8,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 386.67301177978516,
+        "mean_us": 386.6630859375,
+        "min_us": 385.32901763916016,
+        "max_us": 387.55859375,
+        "p90_us": 387.55859375,
+        "std_us": 0.8225122800207161,
+        "cv": 0.0021272066300988103,
+        "effective_bandwidth_gbps": 37.88
+      }
+    },
+    {
+      "operator": "add",
+      "variant": "pypto",
+      "batch": 16,
+      "shape": [
+        16,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 390.7817840576172,
+        "mean_us": 390.36915588378906,
+        "min_us": 387.9964065551758,
+        "max_us": 392.5973892211914,
+        "p90_us": 392.5973892211914,
+        "std_us": 1.7390304966208685,
+        "cv": 0.004454835814791088,
+        "effective_bandwidth_gbps": 74.97
+      }
+    },
+    {
+      "operator": "add",
+      "variant": "pypto",
+      "batch": 32,
+      "shape": [
+        32,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 391.0929870605469,
+        "mean_us": 390.9978332519531,
+        "min_us": 389.4541931152344,
+        "max_us": 391.99878692626953,
+        "p90_us": 391.99878692626953,
+        "std_us": 0.8841652058542904,
+        "cv": 0.002261304617728016,
+        "effective_bandwidth_gbps": 149.82
+      }
+    },
+    {
+      "operator": "add",
+      "variant": "pypto",
+      "batch": 64,
+      "shape": [
+        64,
+        256,
+        384
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 385.74100494384766,
+        "mean_us": 386.81507873535156,
+        "min_us": 384.89078521728516,
+        "max_us": 389.0958023071289,
+        "p90_us": 389.0958023071289,
+        "std_us": 1.8779835799260942,
+        "cv": 0.004854990622562984,
+        "effective_bandwidth_gbps": 303.8
+      }
+    }
+  ],
+  "framework": "pypto",
+  "operator": "add"
+}

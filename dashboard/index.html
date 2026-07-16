@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head><title>Cannbot Dashboard</title>
+<style>body{font-family:monospace;margin:20px}table{border-collapse:collapse}
+th,td{border:1px solid #ccc;padding:8px;text-align:center}
+.pass{background:#dfd}.fail{background:#fdd}.blocked{background:#ffd}
+.limited{background:#ffe0b0}</style></head><body>
+<h1>Cannbot: Ascend C vs PyPTO — Dashboard</h1>
+<h2>logical_ops_v1</h2>
+<table>
+<tr><th>Operator</th><th>Overall</th><th>torch</th><th>ascendc</th><th>pypto</th><th>B1 median (us)</th></tr>
+<tr><td>equal</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">BLOCKED_BACKEND_EQUAL</td><td>Torch: 12.2<br>AscendC: 41.8</td></tr>
+<tr><td>where</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">BLOCKED_BACKEND_WHERE_SELECT</td><td>Torch: 131.9<br>AscendC: 238.6</td></tr>
+<tr><td>not</td><td class="pass">COMPLETE</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="pass">PASS</td><td>Torch: 127.5<br>AscendC: 6.4</td></tr>
+<tr><td>or</td><td class="pass">COMPLETE</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="pass">PASS</td><td>Torch: 256.3<br>AscendC: 6.5</td></tr>
+</table>
+<h2>Archives</h2>
+<ul>
+<li>cannbot_ascendc_vs_pypto_equal_v4.tar.gz</li>
+<li>cannbot_ascendc_vs_pypto_where_v4.tar.gz</li>
+<li>cannbot_ascendc_vs_pypto_not_v4.tar.gz</li>
+<li>cannbot_ascendc_vs_pypto_or_v4.tar.gz</li>
+</ul>
+</body></html>
