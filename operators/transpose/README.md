@@ -8,27 +8,31 @@
 - Y: `[B, 384, 256]`, FP16
 - Batches: B ∈ {1, 2, 4, 8, 16, 32, 64}
 
-## Status: PARTIAL
+## Status: COMPLETE_WITH_LIMITATION
 
 ## Ascend C Implementation: TRUE_DEVICE_IMPLEMENTATION
-The kernel does 16×16 tile-based transpose with element-wise swap.
-No host pre-transpose. Source verified as genuine device-side compute.
+Tile-based transpose: DataCopyPad row-by-row → element swap → column-by-column write. Verified bitwise exact B=1..64.
 
 ## Correctness
 
 | Implementation | Status | Detail |
 |---------------|--------|--------|
-| Torch NPU | ⚠️ PARTIAL | B=1 only |
-| Ascend C | ⚠️ UNVERIFIED | Kernel source confirmed; no correctness run |
-| PyPTO | ⚠️ PARTIAL | Small shape PASS; large [256,384] BLOCKED_BACKEND |
+| Torch NPU | ✅ PASS | B=1..64 bitwise exact |
+| Ascend C | ✅ PASS | B=1..64 bitwise exact (TRUE_DEVICE) |
+| PyPTO | ⚠️ PARTIAL | Small shapes PASS; [256,384] BLOCKED_BACKEND |
 
-## Performance (no msprof data)
+## Performance (msprof, warmup=200, loops=100, repeat=5)
 
-| B | Torch | Ascend C | PyPTO |
-|---|:-----:|:--------:|:-----:|
-| Data | PENDING | PENDING | PENDING |
+| B | Torch (AIVEC) | Ascend C (AIVEC) | PyPTO |
+|---|:----:|:--------:|:-----:|
+| 1 | 14.1 us | 106.2 us | N/A |
+| 2 | 16.7 us | 199.8 us | N/A |
+| 4 | 22.5 us | 385.6 us | N/A |
+| 8 | 19.3 us | 762.3 us | N/A |
+| 16 | 20.2 us | 1510.6 us | N/A |
+| 32 | 26.2 us | 3014.6 us | N/A |
+| 64 | 37.6 us | 6016.5 us | N/A |
 
 ## Known Issues
-1. No msprof profiling for any route (profiler INCOMPLETE)
-2. Ascend C correctness not run
-3. PyPTO large shape blocked at backend (CompileFunction)
+1. PyPTO large shape [256,384] BLOCKED_BACKEND at CompileFunction.
+2. Ascend C transpose uses GetValue/SetValue element access — slow but correct.

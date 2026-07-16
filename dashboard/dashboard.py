@@ -1,17 +1,133 @@
 #!/usr/bin/env python3
-"""PyPTO Operator Dashboard — Auto-scan & Static HTML Generator."""
+"""PyPTO Operator Dashboard.
 
+Development mode:
+    python dashboard.py
+
+    Scans operators/*/ for live data. Generates dashboard/index.html + dashboard/dashboard.json.
+
+Release mode:
+    python dashboard.py --release reports/release/current_release.json
+
+    Reads only the release JSON — does NOT scan operators/. Generates dashboard/index.html + dashboard/dashboard.json.
+"""
+
+import argparse
 import json
 import os
 import re
-import glob as glob_mod
-from pathlib import Path
+import sys
 from datetime import datetime
+from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
 OPERATORS = BASE / "operators"
 OUT = BASE / "dashboard"
 
+# ---------------------------------------------------------------------------
+# Release-mode data loader
+# ---------------------------------------------------------------------------
+
+def load_release(path):
+    """Load release JSON and convert to dashboard format.
+
+    Everything must come from the release JSON — no operator directory scanning.
+    """
+    raw = json.loads(Path(path).read_text())
+    ops = {}
+    for name, op in raw.get("operators", {}).items():
+        routes = op.get("routes", {})
+        torch_r = routes.get("torch", {})
+        ascendc_r = routes.get("ascendc", {})
+        pypto_r = routes.get("pypto", {})
+
+        # Correctness
+        correctness = {}
+        for route_key, label in [("torch", "torch"), ("ascendc", "ascendc"), ("pypto", "pypto")]:
+            r = routes.get(route_key, {})
+            c = r.get("correctness", "N/A")
+            correctness[label] = c
+
+        # Profiler summary
+        profiler = {}
+        for route_key, label in [("torch", "torch"), ("ascendc", "ascendc"), ("pypto", "pypto")]:
+            p = r.get("profiler", {})
+            pstat = {
+                "status": p.get("status", "N/A"),
+                "method": p.get("method", "N/A"),
+            }
+            if p.get("not_comparable"):
+                pstat["not_comparable"] = True
+            if p.get("b1_primary_us") is not None:
+                pstat["b1_us"] = p["b1_primary_us"]
+            elif p.get("b1_host_sync_us") is not None:
+                pstat["b1_us"] = p["b1_host_sync_us"]
+            profiler[label] = pstat
+
+        # Profiler tool detection from batches
+        profiler_tool = "NONE"
+        for batch_key, batch in raw.get("batches", {}).items():
+            if op.get("shape", "") and any(
+                kw in op.get("shape", "").lower() for kw in batch.get("operators", [name])
+            ):
+                pass
+            if name in batch.get("operators", []):
+                p = batch.get("profiler", "none")
+                profiler_tool = p if p != "none" else "NONE"
+                break
+        else:
+            profiler_tool = "NONE"
+
+        ops[name] = {
+            "status": op.get("final_status", "UNKNOWN"),
+            "formula": op.get("formula", ""),
+            "shape": op.get("shape", ""),
+            "dtype": op.get("dtype", ""),
+            "batches": op.get("batches", []),
+            "precision": op.get("precision", ""),
+            "limitation": op.get("limitation", ""),
+            "correctness": correctness,
+            "profiler": profiler,
+            "profiler_tool": profiler_tool,
+            "report_path": op.get("report_path", ""),
+            "archive": op.get("archive", "none"),
+            "completeness_gates": op.get("completeness_gates", []),
+        }
+
+    # Compute summary
+    total = len(ops)
+    status_counts = {}
+    for op in ops.values():
+        s = op["status"]
+        status_counts[s] = status_counts.get(s, 0) + 1
+
+    # Batch group info
+    batches_info = {}
+    for bk, bv in raw.get("batches", {}).items():
+        batches_info[bk] = {
+            "operators": bv.get("operators", []),
+            "profiler": bv.get("profiler", "none"),
+            "not_comparable": bv.get("not_comparable_with_arithmetic", False),
+        }
+
+    return {
+        "mode": "release",
+        "release_version": raw.get("release_version", "unknown"),
+        "generated_at": raw.get("generated_at", datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+        "environment": raw.get("environment", {}),
+        "operator_count": total,
+        "status_summary": status_counts,
+        "batches": batches_info,
+        "operators": ops,
+        "known_limitations": raw.get("known_limitations", []),
+        "ascendc_implementation_audit": raw.get("ascendc_implementation_audit", {}),
+        "archive_references": {k: v["archive"] for k, v in ops.items()},
+    }
+
+
+# ---------------------------------------------------------------------------
+# Development-mode data loader (preserved from original)
+# ---------------------------------------------------------------------------
 
 def load_json(path):
     try:
@@ -115,7 +231,6 @@ def get(op_name):
         data["dtype"] = final.get("dtype", data["dtype"])
         data["batches"] = final.get("experiment", final).get("batches", data["batches"])
 
-        # correctness
         corr = final.get("correctness", {})
         if isinstance(corr, dict):
             all_pass = corr.get("all_batches_pass")
@@ -129,7 +244,6 @@ def get(op_name):
         elif isinstance(corr, str):
             data["correctness_all_pass"] = "PASS" in corr.upper()
             data["correctness"]["note"] = corr
-        # Check per-implementation correctness (add comparison_results.json style)
         if data["correctness_all_pass"] is None and "results" in final:
             results = final["results"]
             impl_statuses = []
@@ -141,7 +255,6 @@ def get(op_name):
                     impl_statuses.append(False)
             if impl_statuses:
                 data["correctness_all_pass"] = all(impl_statuses)
-        # Check div style: per-implementation dict
         if data["correctness_all_pass"] is None:
             for impl_name in ("torch", "ascendc", "pypto"):
                 c = final.get("correctness", {}).get(impl_name, {})
@@ -152,7 +265,6 @@ def get(op_name):
                     elif st == "FAIL":
                         data["correctness_all_pass"] = False
 
-        # perf data
         pdata = final.get("profiler_data", {})
         summary = final.get("comparison_summary", [])
         if not pdata and "results" in final:
@@ -247,7 +359,7 @@ def get(op_name):
                 "inf_count": c.get("inf_count"),
             }
 
-    # parsed reports (profiler detail — summary only, skip raw events to keep JSON small)
+    # parsed reports
     parsed_dir = d / "reports" / "parsed"
     if parsed_dir.exists():
         parsed_files = sorted(parsed_dir.glob("*.json"))
@@ -256,7 +368,6 @@ def get(op_name):
             pdata_parsed = load_json(pf)
             if pdata_parsed:
                 stem = pf.stem
-                # Only keep summary stats, drop raw kernel_events
                 summary = {
                     "kernel_count": pdata_parsed.get("kernel", {}).get("kernel_count", 0),
                     "total_kernel_dur_us": pdata_parsed.get("kernel", {}).get("total_kernel_dur_us", 0),
@@ -297,7 +408,6 @@ def get(op_name):
     elif st >= 1:
         data["status"] = "in_progress"
     else:
-        # No orchestrator: infer from artifact existence
         has_torch = bool(load_json(d / "torch" / "benchmark_results.json"))
         has_ascendc = (d / "ascendc" / "build").exists() and any((d / "ascendc" / "build").iterdir())
         has_pypto_golden = (d / "pypto" / "golden").exists()
@@ -336,7 +446,7 @@ def get(op_name):
     return data
 
 
-def build():
+def build_dev():
     ops_dirs = sorted([
         d.name for d in OPERATORS.iterdir()
         if d.is_dir() and not d.name.startswith(".") and d.name != "__pycache__"
@@ -346,7 +456,6 @@ def build():
     for name in ops_dirs:
         operators.append(get(name))
 
-    # Project summary
     total = len(operators)
     completed = sum(1 for o in operators if o["status"] == "completed")
     torch_done = sum(1 for o in operators if "KERNEL_AIVEC" in str(o["kernel_types"].get("torch", [])))
@@ -357,6 +466,7 @@ def build():
     blocked = sum(1 for o in operators if o["status"] == "blocked")
 
     dashboard = {
+        "mode": "development",
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "summary": {
             "total": total,
@@ -370,32 +480,149 @@ def build():
         },
         "operators": operators,
     }
+    return dashboard
 
-    # Write dashboard.json
-    out_json = OUT / "dashboard.json"
-    OUT.mkdir(parents=True, exist_ok=True)
-    out_json.write_text(json.dumps(dashboard, indent=2, ensure_ascii=False, default=str))
-    print(f"[OK] Written {out_json}")
 
-    # Generate index.html
-    html = generate_html(dashboard)
-    out_html = OUT / "index.html"
-    out_html.write_text(html, encoding="utf-8")
-    print(f"[OK] Written {out_html}")
+# ---------------------------------------------------------------------------
+# HTML generation
+# ---------------------------------------------------------------------------
 
-    # Write CSS/JS inline in HTML, but also keep standalone files
+def generate_html(dashboard):
+    s = dashboard.get("summary", {})
+    mode = dashboard.get("mode", "development")
+    total = s.get("total", dashboard.get("operator_count", 0))
+    completed = s.get("completed", 0)
+
+    # Release mode source info
+    release_info = ""
+    if mode == "release":
+        release_info = f'<p>Release v{dashboard.get("release_version", "?")} — {dashboard["generated_at"]}</p>'
+
+    ops_json = json.dumps(dashboard, ensure_ascii=False)
     css = generate_css()
-    (OUT / "dashboard.css").write_text(css, encoding="utf-8")
     js = generate_js()
-    (OUT / "dashboard.js").write_text(js, encoding="utf-8")
 
-    print(f"\nDashboard ready: {OUT / 'index.html'}")
-    print(f"  Total operators: {total}")
-    print(f"  Completed: {completed}")
-    print(f"  In progress: {total - completed - blocked}")
-    print(f"  Blocked: {blocked}")
-    print(f"  Correctness PASS: {pass_count}")
-    print(f"  Correctness FAIL: {fail_count}")
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyPTO Operator Dashboard{f' v{dashboard.get("release_version", "")}' if mode == 'release' else ''}</title>
+<style>{css}</style>
+</head>
+<body>
+<div id="loading" style="display:flex;align-items:center;justify-content:center;min-height:100vh;color:var(--text-muted);font-size:18px">
+  Loading dashboard...
+</div>
+
+<div id="app" style="display:none">
+  <div class="header">
+    <div>
+      <h1>PyPTO Operator Dashboard</h1>
+      <div class="subtitle">{'Release Mode — Source: reports/release/current_release.json' if mode == 'release' else 'Development Mode — Scanning operators/*/'}</div>
+    </div>
+    <div class="header-right">
+      <span class="badge">{completed}/{total} completed</span>
+      <span class="update-time" id="update-time"></span>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" id="search" placeholder="Search operators...">
+    <label style="color:var(--text-muted);font-size:13px">Sort by: click table headers</label>
+  </div>
+
+  <div class="container">
+    {release_info}
+
+    <div class="summary-cards" id="summary-cards"></div>
+
+    <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:13px;color:var(--text-secondary)">Overall Completion</span>
+        <span style="font-size:13px;font-weight:600" id="progress-text"></span>
+      </div>
+      <div class="progress-bar">
+        <div class="fill" id="progress-fill" style="background:var(--accent-green)"></div>
+      </div>
+    </div>
+
+    <table id="op-table">
+      <thead>
+        <tr>
+          <th data-sort="name">Operator <span class="sort-arrow">▲</span></th>
+          <th data-sort="status">Status <span class="sort-arrow"></span></th>
+          <th>Torch</th>
+          <th>Ascend C</th>
+          <th>PyPTO</th>
+          <th>Correctness</th>
+          {"<th>B1 Perf</th>" if mode == 'release' else '<th>Performance (B=1)</th>'}
+          {"<th>Profiler</th>" if mode == 'release' else '<th>Last Update</th>'}
+        </tr>
+      </thead>
+      <tbody id="op-table-body"></tbody>
+    </table>
+
+    <div class="detail-view" id="detail-view">
+      <div class="detail-header">
+        <h2 id="detail-title">Operator Detail</h2>
+        <button class="detail-close" onclick="closeDetail()">Close</button>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item"><div class="label">Formula</div><div class="value" id="info-formula">-</div></div>
+        <div class="info-item"><div class="label">Shape</div><div class="value" id="info-shape">-</div></div>
+        <div class="info-item"><div class="label">Dtype</div><div class="value" id="info-dtype">-</div></div>
+        <div class="info-item"><div class="label">Batches</div><div class="value" id="info-batches">-</div></div>
+        <div class="info-item"><div class="label">Precision</div><div class="value" id="info-precision">-</div></div>
+        <div class="info-item"><div class="label">Status</div><div class="value" id="info-status">-</div></div>
+        <div class="info-item"><div class="label">Limitation</div><div class="value" id="info-limitation">-</div></div>
+        <div class="info-item"><div class="label">Archive</div><div class="value" id="info-archive">-</div></div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" data-tab="correctness" onclick="switchTab('correctness')">Correctness</div>
+        <div class="tab" data-tab="performance" onclick="switchTab('performance')">Performance</div>
+        <div class="tab" data-tab="limitations" onclick="switchTab('limitations')">Limitations</div>
+      </div>
+
+      <div class="tab-content active" id="tab-correctness">
+        <div class="section">
+          <h3>Correctness Summary</h3>
+          <div id="corr-status" style="margin-bottom:12px"></div>
+        </div>
+        <div class="section">
+          <h3>Per-Route Results</h3>
+          <table>
+            <thead><tr><th>Route</th><th>Result</th><th>Tool</th></tr></thead>
+            <tbody id="corr-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-performance">
+        <div class="section">
+          <h3>Profiler Metrics</h3>
+          <table>
+            <thead><tr><th>Route</th><th>Method</th><th>B1 Latency</th></tr></thead>
+            <tbody id="perf-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-limitations">
+        <div class="section">
+          <h3>Known Limitations</h3>
+          <div id="limitations-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>{js}</script>
+</body>
+</html>"""
 
 
 def generate_css():
@@ -431,7 +658,6 @@ body {
 a { color: var(--accent-blue); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* Header */
 .header {
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border);
@@ -443,34 +669,12 @@ a:hover { text-decoration: underline; }
   top: 0;
   z-index: 100;
 }
-.header h1 {
-  font-size: 20px;
-  font-weight: 600;
-}
-.header .subtitle {
-  color: var(--text-secondary);
-  font-size: 13px;
-  margin-top: 2px;
-}
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.header-right .update-time {
-  color: var(--text-muted);
-  font-size: 12px;
-}
-.header-right .badge {
-  background: var(--accent-blue);
-  color: #fff;
-  padding: 2px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-}
+.header h1 { font-size: 20px; font-weight: 600; }
+.header .subtitle { color: var(--text-secondary); font-size: 13px; margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.header-right .update-time { color: var(--text-muted); font-size: 12px; }
+.header-right .badge { background: var(--accent-blue); color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
 
-/* Search & Sort bar */
 .toolbar {
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border);
@@ -490,117 +694,34 @@ a:hover { text-decoration: underline; }
   width: 240px;
   outline: none;
 }
-.toolbar input:focus {
-  border-color: var(--accent-blue);
-}
-.toolbar select {
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 6px 12px;
-  color: var(--text-primary);
-  font-size: 14px;
-  outline: none;
-  cursor: pointer;
-}
+.toolbar input:focus { border-color: var(--accent-blue); }
 
-/* Container */
-.container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 24px;
-}
+.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
 
-/* Summary Cards */
-.summary-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.summary-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-  text-align: center;
-}
-.summary-card .value {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-.summary-card .label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+.summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.summary-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
+.summary-card .value { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.summary-card .label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
 .summary-card.color-blue .value { color: var(--accent-blue); }
 .summary-card.color-green .value { color: var(--accent-green); }
 .summary-card.color-red .value { color: var(--accent-red); }
 .summary-card.color-yellow .value { color: var(--accent-yellow); }
 .summary-card.color-purple .value { color: var(--accent-purple); }
 .summary-card.color-orange .value { color: var(--accent-orange); }
-.summary-card.color-cyan .value { color: var(--accent-cyan); }
 
-/* Progress Bar */
-.progress-bar {
-  background: var(--bg-tertiary);
-  border-radius: 6px;
-  height: 8px;
-  overflow: hidden;
-  margin-top: 8px;
-}
-.progress-bar .fill {
-  height: 100%;
-  border-radius: 6px;
-  transition: width 0.3s;
-}
+.progress-bar { background: var(--bg-tertiary); border-radius: 6px; height: 8px; overflow: hidden; margin-top: 8px; }
+.progress-bar .fill { height: 100%; border-radius: 6px; transition: width 0.3s; }
 
-/* Table */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--bg-secondary);
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 24px;
-}
-th {
-  background: var(--bg-tertiary);
-  padding: 10px 14px;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  user-select: none;
-  white-space: nowrap;
-}
+table { width: 100%; border-collapse: collapse; background: var(--bg-secondary); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+th { background: var(--bg-tertiary); padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); cursor: pointer; user-select: none; white-space: nowrap; }
 th:hover { color: var(--text-primary); }
 th .sort-arrow { margin-left: 4px; opacity: 0.5; }
 th.sorted .sort-arrow { opacity: 1; }
-td {
-  padding: 10px 14px;
-  border-top: 1px solid var(--border);
-  font-size: 14px;
-}
+td { padding: 10px 14px; border-top: 1px solid var(--border); font-size: 14px; }
 tr { cursor: pointer; }
 tr:hover { background: var(--bg-hover); }
 
-/* Status badges */
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-}
+.status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; }
 .status-badge.completed { background: rgba(63,185,80,0.15); color: var(--accent-green); }
 .status-badge.in_progress { background: rgba(210,153,34,0.15); color: var(--accent-yellow); }
 .status-badge.planned { background: rgba(110,118,129,0.15); color: var(--text-muted); }
@@ -609,264 +730,40 @@ tr:hover { background: var(--bg-hover); }
 .status-badge.fail { background: rgba(248,81,73,0.15); color: var(--accent-red); }
 .status-badge.unknown { background: rgba(110,118,129,0.15); color: var(--text-muted); }
 
-/* Detail view */
-.detail-view {
-  display: none;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 24px;
-  margin-bottom: 24px;
-}
+.detail-view { display: none; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px; }
 .detail-view.visible { display: block; }
-.detail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
+.detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .detail-header h2 { font-size: 24px; }
-.detail-close {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 4px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
+.detail-close { background: none; border: 1px solid var(--border); color: var(--text-secondary); padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; }
 .detail-close:hover { background: var(--bg-hover); color: var(--text-primary); }
 
-/* Info grid */
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.info-item {
-  background: var(--bg-tertiary);
-  border-radius: 6px;
-  padding: 12px 16px;
-}
-.info-item .label {
-  font-size: 11px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
-}
-.info-item .value {
-  font-size: 15px;
-  font-weight: 500;
-}
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.info-item { background: var(--bg-tertiary); border-radius: 6px; padding: 12px 16px; }
+.info-item .label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.info-item .value { font-size: 15px; font-weight: 500; }
 
-/* Section */
-.section {
-  margin-bottom: 24px;
-}
-.section h3 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
-}
+.section { margin-bottom: 24px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 
-/* Comparison table within detail */
-.comparison-table th, .comparison-table td {
-  font-size: 13px;
-  text-align: center;
-}
-.comparison-table td:first-child {
-  text-align: left;
-  font-weight: 500;
-}
-.comparison-table .fastest {
-  color: var(--accent-green);
-  font-weight: 600;
-}
-
-/* Kernel timeline */
-.kernel-timeline { margin-bottom: 24px; }
-.kernel-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-.kernel-label {
-  width: 100px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  text-align: right;
-}
-.kernel-bar-wrapper {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.kernel-bar {
-  height: 24px;
-  border-radius: 4px;
-  min-width: 4px;
-  transition: width 0.3s;
-  position: relative;
-}
-.kernel-bar .bar-label {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 11px;
-  white-space: nowrap;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-}
-.kernel-bar.torch { background: var(--accent-blue); }
-.kernel-bar.ascendc { background: var(--accent-green); }
-.kernel-bar.pypto { background: var(--accent-orange); }
-.kernel-dur {
-  width: 80px;
-  font-size: 12px;
-  color: var(--text-secondary);
-  text-align: right;
-}
-
-/* Charts */
-.chart-container {
-  background: var(--bg-tertiary);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-.chart-container canvas {
-  max-height: 300px;
-}
-
-/* Correctness heatmap */
-.heatmap {
-  display: inline-grid;
-  gap: 2px;
-}
-.heatmap-cell {
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 600;
-}
-.heatmap-cell.pass { background: rgba(63,185,80,0.3); color: var(--accent-green); }
-.heatmap-cell.fail { background: rgba(248,81,73,0.3); color: var(--accent-red); }
-.heatmap-cell.na { background: rgba(110,118,129,0.15); color: var(--text-muted); }
-
-/* Dev status pipeline */
-.pipeline {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.pipeline .step {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 500;
-}
-.pipeline .step.completed { background: rgba(63,185,80,0.15); color: var(--accent-green); }
-.pipeline .step.in_progress { background: rgba(210,153,34,0.15); color: var(--accent-yellow); }
-.pipeline .step.pending { background: rgba(110,118,129,0.1); color: var(--text-muted); }
-.pipeline .step.failed { background: rgba(248,81,73,0.15); color: var(--accent-red); }
-.pipeline .arrow { color: var(--text-muted); font-size: 11px; }
-
-/* Kernel type tag */
-.kernel-tag {
-  display: inline-block;
-  padding: 1px 6px;
-  border-radius: 3px;
-  font-size: 11px;
-  font-weight: 500;
-  margin: 1px;
-}
-.kernel-tag.aivec { background: rgba(88,166,255,0.2); color: var(--accent-blue); }
-.kernel-tag.aicpu { background: rgba(240,136,62,0.2); color: var(--accent-orange); }
-.kernel-tag.mix { background: rgba(188,140,255,0.2); color: var(--accent-purple); }
-.kernel-tag.aic { background: rgba(57,210,192,0.2); color: var(--accent-cyan); }
-.kernel-tag.default { background: rgba(110,118,129,0.15); color: var(--text-muted); }
-
-/* Tab system */
-.tabs {
-  display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 16px;
-}
-.tab {
-  padding: 8px 16px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
-}
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.tab { padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); border-bottom: 2px solid transparent; transition: all 0.2s; }
 .tab:hover { color: var(--text-primary); }
 .tab.active { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 
-/* History timeline */
-.history-item {
-  background: var(--bg-tertiary);
-  border-radius: 6px;
-  padding: 12px 16px;
-  margin-bottom: 8px;
-}
-.history-item .version {
-  font-weight: 600;
-  color: var(--accent-blue);
-}
+.limitation-item { background: var(--bg-tertiary); border-radius: 6px; padding: 12px 16px; margin-bottom: 8px; }
+.limitation-item .sev-p0 { color: var(--accent-red); font-weight: 600; }
+.limitation-item .sev-p1 { color: var(--accent-yellow); font-weight: 600; }
+.limitation-item .sev-p2 { color: var(--accent-orange); font-weight: 600; }
 
-/* Responsive */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.summary-card, .detail-view.visible { animation: fadeIn 0.3s ease-out; }
+
 @media (max-width: 768px) {
   .summary-cards { grid-template-columns: repeat(2, 1fr); }
   .info-grid { grid-template-columns: repeat(2, 1fr); }
   .toolbar input { width: 160px; }
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.summary-card, .detail-view.visible { animation: fadeIn 0.3s ease-out; }
-
-/* Pie chart legend */
-.legend {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-.legend-item .dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
 }
 """
 
@@ -897,6 +794,32 @@ function init() {
 }
 
 function renderSummary(data) {
+  if (data.mode === 'release') {
+    const s = data.status_summary || {};
+    const total = data.operator_count || 0;
+    const cards = [
+      { label: 'Total Operators', value: total, cls: 'color-blue' },
+    ];
+    for (const [status, count] of Object.entries(s)) {
+      const cls = status.startsWith('COMPLETE') ? 'color-green' : status === 'PARTIAL' ? 'color-yellow' : 'color-red';
+      cards.push({ label: status, value: count, cls: cls });
+    }
+    const container = document.getElementById('summary-cards');
+    container.innerHTML = cards.map(c => `
+      <div class="summary-card ${c.cls}">
+        <div class="value">${c.value}</div>
+        <div class="label">${c.label}</div>
+      </div>
+    `).join('');
+
+    const compl = (s['COMPLETE'] || 0) + (s['COMPLETE_WITH_LIMITATION'] || 0);
+    const pct = total > 0 ? Math.round(compl / total * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = pct + '% (' + compl + '/' + total + ')';
+    document.getElementById('update-time').textContent = 'Release: ' + data.generated_at;
+    return;
+  }
+
   const s = data.summary;
   const cards = [
     { label: 'Total Operators', value: s.total, cls: 'color-blue' },
@@ -916,7 +839,6 @@ function renderSummary(data) {
     </div>
   `).join('');
 
-  // Progress bar
   const pct = s.total > 0 ? Math.round(s.completed / s.total * 100) : 0;
   document.getElementById('progress-fill').style.width = pct + '%';
   document.getElementById('progress-text').textContent = pct + '% (' + s.completed + '/' + s.total + ')';
@@ -924,19 +846,71 @@ function renderSummary(data) {
 }
 
 function renderTable(data) {
-  const ops = [...data.operators];
+  if (data.mode === 'release') {
+    renderReleaseTable(data);
+    return;
+  }
+  renderDevTable(data);
+}
+
+function renderReleaseTable(data) {
+  const ops = Object.entries(data.operators).map(([name, op]) => ({ name: name, ...op }));
+  ops.sort((a, b) => {
+    const order = { 'COMPLETE': 0, 'COMPLETE_WITH_LIMITATION': 1, 'PARTIAL': 2, 'INCOMPLETE': 3 };
+    let va = (order[a.status] ?? 99);
+    let vb = (order[b.status] ?? 99);
+    return sortAsc ? va - vb : vb - va;
+  });
+
+  const tbody = document.getElementById('op-table-body');
+  tbody.innerHTML = ops.map(op => {
+    const statusCls = op.status.startsWith('COMPLETE') ? 'completed' : op.status === 'PARTIAL' ? 'in_progress' : 'unknown';
+    const torchC = op.correctness?.torch || 'N/A';
+    const ascendcC = op.correctness?.ascendc || 'N/A';
+    const pyptoC = op.correctness?.pypto || 'N/A';
+
+    const corrStr = [torchC, ascendcC, pyptoC].every(c => c.startsWith('PASS'))
+      ? '<span class="status-badge pass">PASS</span>'
+      : [torchC, ascendcC, pyptoC].some(c => c.startsWith('FAIL'))
+        ? '<span class="status-badge fail">FAIL</span>'
+        : '<span class="status-badge unknown">MIXED</span>';
+
+    const torchP = op.profiler?.torch || {};
+    const ascendcP = op.profiler?.ascendc || {};
+    const pyptoP = op.profiler?.pypto || {};
+    const b1 = torchP.b1_us != null ? 'T:' + Number(torchP.b1_us).toFixed(1) + 'us' : '';
+    const b1a = ascendcP.b1_us != null ? ' A:' + Number(ascendcP.b1_us).toFixed(1) + 'us' : '';
+    const b1p = pyptoP.b1_us != null ? ' P:' + Number(pyptoP.b1_us).toFixed(1) + 'us' : '';
+    const b1Str = (b1 + b1a + b1p) || 'N/A';
+
+    const profilerTool = op.profiler_tool || 'N/A';
+
+    return `<tr onclick="showDetail('${op.name}')">
+      <td><strong>${op.name}</strong></td>
+      <td><span class="status-badge ${statusCls}">${op.status}</span></td>
+      <td style="font-size:12px">${torchC}</td>
+      <td style="font-size:12px">${ascendcC}</td>
+      <td style="font-size:12px">${pyptoC}</td>
+      <td>${corrStr}</td>
+      <td style="font-size:12px">${b1Str}</td>
+      <td style="font-size:12px">${profilerTool}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderDevTable(data) {
+  const ops = [...(data.operators || [])];
   ops.sort((a, b) => {
     let va = String(a[sortField] || '').toLowerCase();
     let vb = String(b[sortField] || '').toLowerCase();
-    if (sortField === 'name') {
-      return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
-    }
-    // For status
     if (sortField === 'status') {
       const order = { completed: 0, in_progress: 1, planned: 2, blocked: 3 };
       const da = order[a.status] || 99;
       const db = order[b.status] || 99;
       return sortAsc ? da - db : db - da;
+    }
+    if (sortField === 'name') {
+      return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
     }
     return 0;
   });
@@ -946,64 +920,20 @@ function renderTable(data) {
     const corr = op.correctness_all_pass === true ? '<span class="status-badge pass">PASS</span>' :
                  op.correctness_all_pass === false ? '<span class="status-badge fail">FAIL</span>' :
                  '<span class="status-badge unknown">N/A</span>';
-
     const torchKt = op.kernel_types?.torch?.join(', ') || 'N/A';
     const ascendcKt = op.kernel_types?.ascendc?.join(', ') || 'N/A';
     const pyptoKt = op.kernel_types?.pypto?.join(', ') || 'N/A';
-
-    const ktc = op.kernel_count || {};
-    const kcTorch = ktc.torch ?? 'N/A';
-    const kcAscendc = ktc.ascendc ?? 'N/A';
-    const kcPypto = ktc.pypto ?? 'N/A';
-
-    // Benchmark table data
-    let tb = op.torch?.benchmark;
-    let ab = op.ascendc?.benchmark;
-    let pb = op.pypto?.benchmark;
-    let perf1 = '';
-    if (op.batches && op.batches.length > 0) {
-      const b1 = String(op.batches[0]);
-      const tLat = tb?.[b1]?.median_us != null ? tb[b1].median_us.toFixed(1) + 'μs' : '';
-      const aLat = ab?.[b1]?.median_us != null ? ab[b1].median_us.toFixed(1) + 'μs' : '';
-      const pLat = pb?.[b1]?.median_us != null ? pb[b1].median_us.toFixed(1) + 'μs' : '';
-      // Try profiler data
-      const pd = op.profiler_data?.[b1];
-      if (pd) {
-        const tf = pd.torch?.primary_compute_kernel_us;
-        const af = pd.ascendc?.primary_compute_kernel_us;
-        const pf = pd.pypto?.primary_compute_kernel_us;
-        if (tf != null) perf1 += 'T:' + tf.toFixed(1) + 'μs ';
-        if (af != null) perf1 += 'A:' + af.toFixed(1) + 'μs ';
-        if (pf != null) perf1 += 'P:' + pf.toFixed(1) + 'μs';
-      } else {
-        if (tLat) perf1 += 'T:' + tLat + ' ';
-        if (aLat) perf1 += 'A:' + aLat + ' ';
-        if (pLat) perf1 += 'P:' + pLat;
-      }
-    } else if (op.comparison_summary && op.comparison_summary[0]) {
-      const s0 = op.comparison_summary[0];
-      const tf = s0.torch_primary_us || s0.torch_us;
-      const af = s0.ascendc_primary_us || s0.ascendc_us;
-      const pf = s0.pypto_primary_us || s0.pypto_compute_us;
-      if (tf != null) perf1 += 'T:' + Number(tf).toFixed(1) + 'μs ';
-      if (af != null) perf1 += 'A:' + Number(af).toFixed(1) + 'μs ';
-      if (pf != null) perf1 += 'P:' + Number(pf).toFixed(1) + 'μs';
-    }
-    if (!perf1) perf1 = 'N/A';
-
-    return `<tr onclick="showDetail('${op.name}')">
+    return `<tr onclick="showDevDetail('${op.name}')">
       <td><strong>${op.name}</strong></td>
       <td><span class="status-badge ${op.status}">${op.status}</span></td>
       <td>${torchKt}</td>
       <td>${ascendcKt}</td>
       <td>${pyptoKt}</td>
       <td>${corr}</td>
-      <td style="font-size:12px">${perf1}</td>
       <td style="font-size:12px">${op.last_update}</td>
     </tr>`;
   }).join('');
 
-  // Update sort arrows
   document.querySelectorAll('#op-table th').forEach(th => {
     const field = th.dataset.sort;
     th.classList.toggle('sorted', field === sortField);
@@ -1042,30 +972,83 @@ function setupSort() {
 }
 
 function showDetail(opName) {
-  const op = dashboardData.operators.find(o => o.name === opName);
+  if (dashboardData.mode === 'release') {
+    showReleaseDetail(opName);
+  } else {
+    showDevDetail(opName);
+  }
+}
+
+function showReleaseDetail(opName) {
+  const op = dashboardData.operators[opName];
   if (!op) return;
   currentOp = op;
-  currentTab = 'correctness';
 
   document.getElementById('detail-view').classList.add('visible');
-  document.getElementById('detail-title').textContent = op.name + ' — Operator Detail';
-  renderBasicInfo(op);
-  renderDevStatus(op);
-  renderCorrectness(op);
-  renderPerformance(op);
-  renderComparison(op);
-  renderKernelTimeline(op);
-  renderKernelTypeChart(op);
-  renderProfiler(op);
-  renderHistory(op);
+  document.getElementById('detail-title').textContent = opName + ' — Operator Detail';
 
-  // Activate default tab
+  document.getElementById('info-formula').textContent = op.formula || 'N/A';
+  document.getElementById('info-shape').textContent = op.shape || 'N/A';
+  document.getElementById('info-dtype').textContent = op.dtype || 'N/A';
+  document.getElementById('info-batches').textContent = (op.batches || []).join(', ') || 'N/A';
+  document.getElementById('info-precision').textContent = op.precision || 'N/A';
+  const statusCls = op.status.startsWith('COMPLETE') ? 'completed' : op.status === 'PARTIAL' ? 'in_progress' : 'unknown';
+  document.getElementById('info-status').innerHTML = '<span class="status-badge ' + statusCls + '">' + op.status + '</span>';
+  document.getElementById('info-limitation').textContent = op.limitation || 'None';
+  document.getElementById('info-archive').textContent = op.archive || 'none';
+
+  renderReleaseCorrectness(op);
+  renderReleasePerformance(op);
+
+  if (dashboardData.known_limitations) {
+    const opLimits = dashboardData.known_limitations.filter(l => l.operator === opName);
+    const container = document.getElementById('limitations-content');
+    if (opLimits.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-muted)">No known limitations for this operator.</p>';
+    } else {
+      container.innerHTML = opLimits.map(l => {
+        const sevClass = 'sev-' + l.severity.toLowerCase();
+        return '<div class="limitation-item"><span class="' + sevClass + '">[' + l.severity + ']</span> ' + l.route + ': ' + l.description + ' <span style="color:var(--text-muted);font-size:12px">(' + l.blocker_type + ')</span></div>';
+      }).join('');
+    }
+  }
+
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelector('[data-tab="correctness"]').classList.add('active');
   document.getElementById('tab-correctness').classList.add('active');
-
   document.getElementById('detail-view').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderReleaseCorrectness(op) {
+  const corr = op.correctness || {};
+  const allPass = Object.values(corr).every(c => String(c).startsWith('PASS'));
+  const allFail = Object.values(corr).every(c => String(c).startsWith('FAIL'));
+  const statusHtml = allPass ? '<span class="status-badge pass" style="font-size:16px;padding:4px 16px">ALL PASS</span>' :
+                     allFail ? '<span class="status-badge fail" style="font-size:16px;padding:4px 16px">ALL FAIL</span>' :
+                     '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">MIXED</span>';
+  document.getElementById('corr-status').innerHTML = statusHtml;
+
+  const impls = ['torch', 'ascendc', 'pypto'];
+  let html = '';
+  for (const impl of impls) {
+    const c = corr[impl] || 'N/A';
+    html += '<tr><td>' + impl + '</td><td>' + c + '</td><td style="font-size:12px">' + (op.profiler?.[impl]?.method || 'N/A') + '</td></tr>';
+  }
+  document.getElementById('corr-table-body').innerHTML = html;
+}
+
+function renderReleasePerformance(op) {
+  const profiler = op.profiler || {};
+  const impls = ['torch', 'ascendc', 'pypto'];
+  let html = '';
+  for (const impl of impls) {
+    const p = profiler[impl] || {};
+    const method = p.method || 'N/A';
+    const lat = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
+    html += '<tr><td>' + impl + '</td><td>' + method + '</td><td>' + lat + '</td></tr>';
+  }
+  document.getElementById('perf-table-body').innerHTML = html;
 }
 
 function closeDetail() {
@@ -1077,613 +1060,55 @@ function switchTab(tab) {
   currentTab = tab;
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-  document.getElementById(`tab-${tab}`).classList.add('active');
-}
-
-function kernelTag(type) {
-  if (!type) return '<span class="kernel-tag default">N/A</span>';
-  const t = type.toUpperCase();
-  if (t.includes('AIVEC')) return '<span class="kernel-tag aivec">AIVEC</span>';
-  if (t.includes('MIX_AIC') || t.includes('MIX') || t === 'MIX_AIC') return '<span class="kernel-tag mix">MIX_AIC</span>';
-  if (t.includes('AICPU')) return '<span class="kernel-tag aicpu">AICPU</span>';
-  if (t.includes('AIC')) return '<span class="kernel-tag aic">AIC</span>';
-  return `<span class="kernel-tag default">${type}</span>`;
-}
-
-function renderBasicInfo(op) {
-  document.getElementById('info-formula').textContent = op.formula || 'N/A';
-  document.getElementById('info-shape').textContent = op.shape || 'N/A';
-  document.getElementById('info-dtype').textContent = op.dtype || 'N/A';
-  document.getElementById('info-batches').textContent = (op.batches || []).join(', ') || 'N/A';
-  document.getElementById('info-broadcast').textContent = op.broadcast ? 'Yes' : 'No';
-  document.getElementById('info-kernel-shape').textContent = op.kernel_shape || 'N/A';
-  document.getElementById('info-logical-shape').textContent = op.logical_shape || 'N/A';
-  document.getElementById('info-precision').textContent = op.precision || 'N/A';
-  document.getElementById('info-fastest').textContent = op.fastest || 'N/A';
-  document.getElementById('info-status').innerHTML = `<span class="status-badge ${op.status}">${op.status}</span>`;
-}
-
-function renderDevStatus(op) {
-  const sd = op.dev_status_detail || {};
-  const steps = ['Intent', 'API', 'Golden', 'Design', 'Implementation', 'Correctness', 'Benchmark', 'Archive'];
-  const html = steps.map(s => {
-    const st = sd[s] || 'pending';
-    return `<span class="step ${st}">${st === 'completed' ? '✓' : st === 'failed' ? '✗' : '○'} ${s}</span>`;
-  }).join('<span class="arrow">→</span>');
-  document.getElementById('dev-pipeline').innerHTML = html;
-}
-
-function renderCorrectness(op) {
-  const corr = op.correctness || {};
-  const allPass = op.correctness_all_pass;
-  const statusHtml = allPass === true ? '<span class="status-badge pass" style="font-size:16px;padding:4px 16px">ALL PASS</span>' :
-                     allPass === false ? '<span class="status-badge fail" style="font-size:16px;padding:4px 16px">FAIL</span>' :
-                     '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">UNKNOWN</span>';
-  document.getElementById('corr-status').innerHTML = statusHtml;
-
-  // Per-batch per-impl table
-  const batches = op.batches || [];
-  if (batches.length === 0) {
-    document.getElementById('corr-table-body').innerHTML = '<tr><td colspan="6">No correctness data</td></tr>';
-    return;
-  }
-
-  const impls = ['torch', 'ascendc', 'pypto'];
-  let html = '';
-  for (const bk of batches) {
-    const sk = String(bk);
-    html += `<tr><td>B=${bk}</td>`;
-    for (const impl of impls) {
-      const c = corr[impl]?.[sk];
-      const s = c?.status || 'N/A';
-      const cls = s === 'PASS' ? 'pass' : s === 'FAIL' ? 'fail' : 'unknown';
-      const md = c?.max_abs_diff != null ? Number(c.max_abs_diff).toExponential(2) : '-';
-      html += `<td><span class="status-badge ${cls}">${s}</span></td>
-               <td style="font-size:12px">md=${md}</td>`;
-    }
-    html += '</tr>';
-  }
-  document.getElementById('corr-table-body').innerHTML = html;
-
-  // Heatmap
-  const heatmapContainer = document.getElementById('corr-heatmap');
-  let hm = '<div class="heatmap" style="grid-template-columns:repeat(' + impls.length + ', 28px)">';
-  for (const impl of impls) {
-    hm += `<div style="font-size:10px;color:var(--text-muted);text-align:center">${impl[0].toUpperCase() + impl.slice(1,3)}</div>`;
-  }
-  for (const bk of batches) {
-    const sk = String(bk);
-    for (const impl of impls) {
-      const c = corr[impl]?.[sk];
-      const s = c?.status || 'N/A';
-      const cls = s === 'PASS' ? 'pass' : s === 'FAIL' ? 'fail' : 'na';
-      hm += `<div class="heatmap-cell ${cls}">${s === 'PASS' ? '✓' : s === 'FAIL' ? '✗' : '?'}</div>`;
-    }
-  }
-  hm += '</div>';
-  heatmapContainer.innerHTML = hm;
-
-  // Note
-  document.getElementById('corr-note').textContent = corr.note || '';
-}
-
-function renderPerformance(op) {
-  const pdata = op.profiler_data || {};
-  const summary = op.comparison_summary || [];
-  const batches = op.batches || [];
-  const container = document.getElementById('perf-table-body');
-
-  if (summary.length > 0) {
-    let html = '';
-    for (const s of summary) {
-      const bk = s.batch;
-      const t = s.torch_primary_us ?? s.torch_us ?? 'N/A';
-      const a = s.ascendc_primary_us ?? s.ascendc_us ?? 'N/A';
-      const pc = s.pypto_primary_us ?? s.pypto_compute_us ?? 'N/A';
-      const pt = s.pypto_total_dev_us ?? s.pypto_total_us ?? 'N/A';
-      const f = s.fastest || '';
-      const tStr = t !== 'N/A' ? Number(t).toFixed(1) : 'N/A';
-      const aStr = a !== 'N/A' ? Number(a).toFixed(1) : 'N/A';
-      const pcStr = pc !== 'N/A' ? Number(pc).toFixed(1) : 'N/A';
-      const ptStr = pt !== 'N/A' ? Number(pt).toFixed(1) : 'N/A';
-      html += `<tr>
-        <td>B=${bk}</td>
-        <td class="${f === 'torch' ? 'fastest' : ''}">${tStr} μs</td>
-        <td class="${f === 'ascendc' ? 'fastest' : ''}">${aStr} μs</td>
-        <td class="${f === 'pypto' ? 'fastest' : ''}">${pcStr} μs</td>
-        <td>${ptStr} μs</td>
-      </tr>`;
-    }
-    container.innerHTML = html;
-  } else if (Object.keys(pdata).length > 0) {
-    let html = '';
-    for (const [bk, bv] of Object.entries(pdata)) {
-      const t = bv.torch?.primary_compute_kernel_us;
-      const a = bv.ascendc?.primary_compute_kernel_us;
-      const p = bv.pypto?.primary_compute_kernel_us;
-      const pt = bv.pypto?.all_device_kernels_per_call_us ?? bv.pypto?.all_device_kernels_us;
-      html += `<tr>
-        <td>B=${bk}</td>
-        <td>${t != null ? t.toFixed(1) + ' μs' : 'N/A'}</td>
-        <td>${a != null ? a.toFixed(1) + ' μs' : 'N/A'}</td>
-        <td>${p != null ? p.toFixed(1) + ' μs' : 'N/A'}</td>
-        <td>${pt != null ? pt.toFixed(1) + ' μs' : 'N/A'}</td>
-      </tr>`;
-    }
-    container.innerHTML = html;
-  } else {
-    // Try benchmark data
-    const impls = ['torch', 'ascendc', 'pypto'];
-    let html = '';
-    for (const bk of batches) {
-      const sk = String(bk);
-      html += `<tr><td>B=${bk}</td>`;
-      for (const impl of impls) {
-        const bm = op[impl]?.benchmark?.[sk];
-        const v = bm?.median_us;
-        html += `<td>${v != null ? v.toFixed(1) + ' μs' : 'N/A'}</td>`;
-      }
-      html += '</tr>';
-    }
-    container.innerHTML = html || '<tr><td colspan="5">No performance data</td></tr>';
-  }
-}
-
-function renderComparison(op) {
-  const summary = op.comparison_summary || [];
-  const pdata = op.profiler_data || {};
-  const container = document.getElementById('comparison-body');
-  const batches = op.batches || [];
-
-  if (summary.length > 0) {
-    const ref = summary[0];
-    cellL = document.getElementById('comp-ktype-torch');
-    cellL.textContent = ref.torch_kernel_type || 'N/A';
-    cellL = document.getElementById('comp-ktype-ascendc');
-    cellL.textContent = ref.ascendc_kernel_type || 'N/A';
-    cellL = document.getElementById('comp-ktype-pypto');
-    cellL.textContent = ref.pypto_primary_type || 'N/A';
-
-    const kc = op.kernel_count || {};
-    document.getElementById('comp-kcount-torch').textContent = kc.torch ?? 'N/A';
-    document.getElementById('comp-kcount-ascendc').textContent = kc.ascendc ?? 'N/A';
-    document.getElementById('comp-kcount-pypto').textContent = kc.pypto ?? 'N/A';
-
-    const latencies = ['torch_primary_us', 'ascendc_primary_us', 'pypto_primary_us'].map(k => {
-      const v = ref[k] || ref[k.replace('_primary_us', '_us')];
-      return v != null ? Number(v).toFixed(1) + ' μs' : 'N/A';
-    });
-    document.getElementById('comp-latency-torch').textContent = latencies[0];
-    document.getElementById('comp-latency-ascendc').textContent = latencies[1];
-    document.getElementById('comp-latency-pypto').textContent = latencies[2];
-
-    // BW, GFLOPS from summary
-    const bw = [ref.torch_bw_gbs, ref.ascendc_bw_gbs, ref.pypto_bw_gbs];
-    document.getElementById('comp-bw-torch').textContent = bw[0] != null ? bw[0].toFixed(1) + ' GB/s' : 'N/A';
-    document.getElementById('comp-bw-ascendc').textContent = bw[1] != null ? bw[1].toFixed(1) + ' GB/s' : 'N/A';
-    document.getElementById('comp-bw-pypto').textContent = bw[2] != null ? bw[2].toFixed(1) + ' GB/s' : 'N/A';
-  } else {
-    // Try to get from pdata
-    const firstKey = Object.keys(pdata)[0];
-    if (firstKey) {
-      const bv = pdata[firstKey];
-      document.getElementById('comp-ktype-torch').textContent = bv.torch?.kernel_type || 'N/A';
-      document.getElementById('comp-ktype-ascendc').textContent = bv.ascendc?.kernel_type || 'N/A';
-      document.getElementById('comp-ktype-pypto').textContent = bv.pypto?.primary_kernel_type || bv.pypto?.kernel_type || 'N/A';
-
-      const kc = op.kernel_count || {};
-      document.getElementById('comp-kcount-torch').textContent = kc.torch ?? bv.torch?.kernels_per_call ?? 'N/A';
-      document.getElementById('comp-kcount-ascendc').textContent = kc.ascendc ?? bv.ascendc?.kernels_per_call ?? 'N/A';
-      document.getElementById('comp-kcount-pypto').textContent = kc.pypto ?? 'N/A';
-
-      const getLat = (d) => d?.primary_compute_kernel_us != null ? d.primary_compute_kernel_us.toFixed(1) + ' μs' : 'N/A';
-      document.getElementById('comp-latency-torch').textContent = getLat(bv.torch);
-      document.getElementById('comp-latency-ascendc').textContent = getLat(bv.ascendc);
-      document.getElementById('comp-latency-pypto').textContent = getLat(bv.pypto);
-    }
-  }
-
-  // Correctness
-  const allPass = op.correctness_all_pass;
-  const corrStatus = allPass === true ? 'PASS' : allPass === false ? 'FAIL' : 'UNKNOWN';
-  document.getElementById('comp-corr-torch').textContent = corrStatus;
-  document.getElementById('comp-corr-ascendc').textContent = corrStatus;
-  document.getElementById('comp-corr-pypto').textContent = corrStatus;
-}
-
-function renderKernelTimeline(op) {
-  const pdata = op.profiler_data || {};
-  const firstKey = Object.keys(pdata)[0];
-  const container = document.getElementById('kernel-timeline');
-
-  if (!firstKey) {
-    container.innerHTML = '<div class="section"><h3>Kernel Timeline</h3><p class="text-secondary">No profiler data</p></div>';
-    return;
-  }
-
-  const bv = pdata[firstKey];
-  const tk = bv.torch?.primary_compute_kernel_us || 0;
-  const ak = bv.ascendc?.primary_compute_kernel_us || 0;
-  const pk = bv.pypto?.primary_compute_kernel_us || 0;
-  const pt = bv.pypto?.all_device_kernels_per_call_us || bv.pypto?.all_device_kernels_us || 0;
-
-  const maxDur = Math.max(tk, ak, pt, 1);
-  const scale = 400 / maxDur;
-
-  const tBar = (tk * scale).toFixed(0);
-  const aBar = (ak * scale).toFixed(0);
-  const pBar = (pk * scale).toFixed(0);
-  const ptBar = (pt * scale).toFixed(0);
-
-  const tn = bv.torch?.kernel_names?.[0] || 'torch_kernel';
-  const an = bv.ascendc?.kernel_names?.[0] || 'ascendc_kernel';
-  const pn = bv.pypto?.kernel_names?.[0] || 'pypto_kernel';
-
-  container.innerHTML = `
-    <div class="section">
-      <h3>Kernel Timeline <span style="font-size:12px;color:var(--text-muted)">(B=${firstKey})</span></h3>
-      <div class="kernel-timeline">
-        <div class="kernel-row">
-          <div class="kernel-label">Torch</div>
-          <div class="kernel-bar-wrapper">
-            <div class="kernel-bar torch" style="width:${tBar}px"><span class="bar-label">${tn}</span></div>
-          </div>
-          <div class="kernel-dur">${tk.toFixed(1)} μs</div>
-        </div>
-        <div class="kernel-row">
-          <div class="kernel-label">Ascend C</div>
-          <div class="kernel-bar-wrapper">
-            <div class="kernel-bar ascendc" style="width:${aBar}px"><span class="bar-label">${an}</span></div>
-          </div>
-          <div class="kernel-dur">${ak.toFixed(1)} μs</div>
-        </div>
-        <div class="kernel-row">
-          <div class="kernel-label">PyPTO<br><span style="font-size:11px;color:var(--text-muted)">compute</span></div>
-          <div class="kernel-bar-wrapper">
-            <div class="kernel-bar pypto" style="width:${pBar}px"><span class="bar-label">${pn}</span></div>
-          </div>
-          <div class="kernel-dur">${pk.toFixed(1)} μs</div>
-        </div>
-        <div class="kernel-row">
-          <div class="kernel-label">PyPTO<br><span style="font-size:11px;color:var(--text-muted)">total</span></div>
-          <div class="kernel-bar-wrapper">
-            <div class="kernel-bar pypto" style="width:${ptBar}px"><span class="bar-label">+ executor</span></div>
-          </div>
-          <div class="kernel-dur">${pt.toFixed(1)} μs</div>
-        </div>
-      </div>
-    </div>`;
-}
-
-function renderKernelTypeChart(op) {
-  const container = document.getElementById('kernel-type-chart');
-  const types = op.kernel_types || {};
-  const count = op.kernel_count || {};
-
-  const allTypes = {};
-  for (const [impl, kts] of Object.entries(types)) {
-    for (const kt of (Array.isArray(kts) ? kts : [kts])) {
-      if (kt && kt !== 'N/A') {
-        allTypes[kt] = (allTypes[kt] || 0) + 1;
-      }
-    }
-  }
-
-  if (Object.keys(allTypes).length === 0) {
-    container.innerHTML = '<p class="text-secondary">No kernel type data</p>';
-    return;
-  }
-
-  const colors = {
-    'KERNEL_AIVEC': '#58a6ff',
-    'KERNEL_MIX_AIC': '#bc8cff',
-    'KERNEL_AICPU': '#f0883e',
-    'KERNEL_AIC': '#39d2c0',
-  };
-
-  const total = Object.values(allTypes).reduce((a, b) => a + b, 0);
-  let html = '<div style="display:flex;align-items:center;gap:24px"><div style="position:relative;width:200px;height:200px">';
-  html += '<canvas id="kernel-pie" width="200" height="200"></canvas></div><div>';
-
-  // Legend
-  html += '<div class="legend">';
-  for (const [kt, cnt] of Object.entries(allTypes)) {
-    const pct = Math.round(cnt / total * 100);
-    const c = colors[kt] || '#6e7681';
-    html += `<div class="legend-item"><span class="dot" style="background:${c}"></span>${kt}: ${cnt} (${pct}%)</div>`;
-  }
-  html += '</div></div></div>';
-  container.innerHTML = html;
-
-  // Draw pie
-  setTimeout(() => {
-    const canvas = document.getElementById('kernel-pie');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const entries = Object.entries(allTypes);
-    let startAngle = -Math.PI / 2;
-    entries.forEach(([kt, cnt]) => {
-      const sliceAngle = (cnt / total) * 2 * Math.PI;
-      const c = colors[kt] || '#6e7681';
-      ctx.beginPath();
-      ctx.moveTo(100, 100);
-      ctx.arc(100, 100, 90, startAngle, startAngle + sliceAngle);
-      ctx.closePath();
-      ctx.fillStyle = c;
-      ctx.fill();
-      startAngle += sliceAngle;
-    });
-  }, 50);
-}
-
-function renderProfiler(op) {
-  const parsed = op.parsed || {};
-  const container = document.getElementById('profiler-body');
-
-  const entries = Object.entries(parsed).slice(0, 5);
-  if (entries.length === 0) {
-    container.innerHTML = '<tr><td colspan="7">No profiler data</td></tr>';
-    return;
-  }
-
-  let html = '';
-  for (const [key, pdata] of entries) {
-    const events = pdata.kernel?.kernel_events || [];
-    const byType = pdata.kernel?.by_type || {};
-    const byName = pdata.kernel?.by_name || {};
-    const totalDur = pdata.kernel?.total_kernel_dur_us || 0;
-    const kernelCount = pdata.kernel?.kernel_count || 0;
-
-    for (const [name, info] of Object.entries(byName)) {
-      html += `<tr>
-        <td style="font-size:12px">${key}</td>
-        <td style="font-size:12px">${name}</td>
-        <td>${info.mean_dur_us != null ? info.mean_dur_us.toFixed(2) + ' μs' : 'N/A'}</td>
-        <td>${info.count}</td>
-        <td>N/A</td>
-        <td>N/A</td>
-        <td>N/A</td>
-      </tr>`;
-    }
-
-    for (const [type, info] of Object.entries(byType)) {
-      html += `<tr>
-        <td style="font-size:12px">${key}</td>
-        <td style="font-size:12px"><span class="kernel-tag ${type.toLowerCase().includes('aivec') ? 'aivec' : type.toLowerCase().includes('aicpu') ? 'aicpu' : type.toLowerCase().includes('mix') ? 'mix' : 'default'}">${type}</span></td>
-        <td>${info.mean_dur_us != null ? info.mean_dur_us.toFixed(2) + ' μs' : 'N/A'}</td>
-        <td>${info.count}</td>
-        <td>N/A</td>
-        <td>N/A</td>
-        <td>N/A</td>
-      </tr>`;
-    }
-  }
-  container.innerHTML = html;
-}
-
-function renderHistory(op) {
-  const history = op.history || [];
-  const container = document.getElementById('history-content');
-
-  if (history.length === 0) {
-    container.innerHTML = '<p class="text-secondary">No history data</p>';
-    return;
-  }
-
-  let html = '';
-  for (const h of history) {
-    const hd = h.data;
-    const corr = hd.correctness?.all_batches_pass !== undefined ? (hd.correctness.all_batches_pass ? 'PASS' : 'FAIL') : 'N/A';
-    const perfStr = hd.comparison_summary?.[0] ? 'B1 torch=' + hd.comparison_summary[0].torch_primary_us?.toFixed(1) + 'μs' : 'N/A';
-    html += `<div class="history-item">
-      <div class="version">${h.version}</div>
-      <div style="display:flex;gap:24px;margin-top:4px;font-size:13px">
-        <span>Correctness: <span class="status-badge ${corr === 'PASS' ? 'pass' : 'fail'}">${corr}</span></span>
-        <span>Latency: ${perfStr}</span>
-      </div>
-    </div>`;
-  }
-  container.innerHTML = html;
+  document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
 }
 
 document.addEventListener('DOMContentLoaded', init);
 """
 
 
-def generate_html(dashboard):
-    s = dashboard["summary"]
-    ops_json = json.dumps(dashboard, ensure_ascii=False)
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+def main():
+    parser = argparse.ArgumentParser(description="PyPTO Operator Dashboard Generator")
+    parser.add_argument("--release", type=str, default=None,
+                        help="Release mode: path to reports/release/current_release.json")
+    args = parser.parse_args()
+
+    OUT.mkdir(parents=True, exist_ok=True)
+
+    if args.release:
+        path = Path(args.release)
+        if not path.exists():
+            print(f"[ERR] Release file not found: {path}", file=sys.stderr)
+            sys.exit(1)
+        dashboard = load_release(path)
+        total = dashboard.get("operator_count", 0)
+        print(f"[OK] Loaded release ({dashboard.get('release_version', '?')}) — {total} operators")
+    else:
+        print("[INFO] Development mode — scanning operators/*/")
+        dashboard = build_dev()
+
+    # Write dashboard.json
+    out_json = OUT / "dashboard.json"
+    out_json.write_text(json.dumps(dashboard, indent=2, ensure_ascii=False, default=str))
+    print(f"[OK] Written {out_json}")
+
+    # Generate index.html
+    html = generate_html(dashboard)
+    out_html = OUT / "index.html"
+    out_html.write_text(html, encoding="utf-8")
+    print(f"[OK] Written {out_html}")
+
+    # Write CSS (standalone, also embedded in HTML)
     css = generate_css()
-    js = generate_js()
+    (OUT / "dashboard.css").write_text(css, encoding="utf-8")
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyPTO Operator Dashboard</title>
-<style>{css}</style>
-</head>
-<body>
-<div id="loading" style="display:flex;align-items:center;justify-content:center;min-height:100vh;color:var(--text-muted);font-size:18px">
-  Loading dashboard...
-</div>
-
-<div id="app" style="display:none">
-  <div class="header">
-    <div>
-      <h1>PyPTO Operator Dashboard</h1>
-      <div class="subtitle">Ascend C vs PyPTO — Development & Performance Tracking</div>
-    </div>
-    <div class="header-right">
-      <span class="badge">{s["completed"]}/{s["total"]} completed</span>
-      <span class="update-time" id="update-time"></span>
-    </div>
-  </div>
-
-  <div class="toolbar">
-    <input type="text" id="search" placeholder="Search operators...">
-    <label style="color:var(--text-muted);font-size:13px">Sort by: click table headers</label>
-  </div>
-
-  <div class="container">
-    <!-- Summary Cards -->
-    <div class="summary-cards" id="summary-cards"></div>
-
-    <!-- Progress Bar -->
-    <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-        <span style="font-size:13px;color:var(--text-secondary)">Overall Completion</span>
-        <span style="font-size:13px;font-weight:600" id="progress-text"></span>
-      </div>
-      <div class="progress-bar">
-        <div class="fill" id="progress-fill" style="background:var(--accent-green)"></div>
-      </div>
-    </div>
-
-    <!-- Operator Table -->
-    <table id="op-table">
-      <thead>
-        <tr>
-          <th data-sort="name">Operator <span class="sort-arrow">▲</span></th>
-          <th data-sort="status">Status <span class="sort-arrow"></span></th>
-          <th>Torch</th>
-          <th>Ascend C</th>
-          <th>PyPTO</th>
-          <th>Correctness</th>
-          <th>Performance (B=1)</th>
-          <th>Last Update</th>
-        </tr>
-      </thead>
-      <tbody id="op-table-body"></tbody>
-    </table>
-
-    <!-- Detail View -->
-    <div class="detail-view" id="detail-view">
-      <div class="detail-header">
-        <h2 id="detail-title">Operator Detail</h2>
-        <button class="detail-close" onclick="closeDetail()">Close</button>
-      </div>
-
-      <!-- Basic Info -->
-      <div class="info-grid">
-        <div class="info-item"><div class="label">Formula</div><div class="value" id="info-formula">-</div></div>
-        <div class="info-item"><div class="label">Shape</div><div class="value" id="info-shape">-</div></div>
-        <div class="info-item"><div class="label">Dtype</div><div class="value" id="info-dtype">-</div></div>
-        <div class="info-item"><div class="label">Batches</div><div class="value" id="info-batches">-</div></div>
-        <div class="info-item"><div class="label">Broadcast</div><div class="value" id="info-broadcast">-</div></div>
-        <div class="info-item"><div class="label">Kernel Shape</div><div class="value" id="info-kernel-shape">-</div></div>
-        <div class="info-item"><div class="label">Logical Shape</div><div class="value" id="info-logical-shape">-</div></div>
-        <div class="info-item"><div class="label">Precision</div><div class="value" id="info-precision">-</div></div>
-        <div class="info-item"><div class="label">Fastest</div><div class="value" id="info-fastest">-</div></div>
-        <div class="info-item"><div class="label">Status</div><div class="value" id="info-status">-</div></div>
-      </div>
-
-      <!-- Dev Status Pipeline -->
-      <div class="section">
-        <h3>Development Status</h3>
-        <div class="pipeline" id="dev-pipeline"></div>
-      </div>
-
-      <!-- Tabs -->
-      <div class="tabs">
-        <div class="tab active" data-tab="correctness" onclick="switchTab('correctness')">Correctness</div>
-        <div class="tab" data-tab="performance" onclick="switchTab('performance')">Performance</div>
-        <div class="tab" data-tab="comparison" onclick="switchTab('comparison')">Comparison</div>
-        <div class="tab" data-tab="kernel" onclick="switchTab('kernel')">Kernel Timeline</div>
-        <div class="tab" data-tab="ktype" onclick="switchTab('ktype')">Kernel Type</div>
-        <div class="tab" data-tab="profiler" onclick="switchTab('profiler')">Profiler</div>
-        <div class="tab" data-tab="history" onclick="switchTab('history')">History</div>
-      </div>
-
-      <!-- Tab: Correctness -->
-      <div class="tab-content active" id="tab-correctness">
-        <div class="section">
-          <h3>Correctness Summary</h3>
-          <div id="corr-status" style="margin-bottom:12px"></div>
-          <div id="corr-note" style="font-size:13px;color:var(--text-secondary);margin-bottom:12px"></div>
-        </div>
-        <div class="section">
-          <h3>Per-Batch Results</h3>
-          <table>
-            <thead><tr><th>Batch</th><th>Torch</th><th>Diff</th><th>AscendC</th><th>Diff</th><th>PyPTO</th><th>Diff</th></tr></thead>
-            <tbody id="corr-table-body"></tbody>
-          </table>
-        </div>
-        <div class="section">
-          <h3>Correctness Heatmap</h3>
-          <div id="corr-heatmap"></div>
-        </div>
-      </div>
-
-      <!-- Tab: Performance -->
-      <div class="tab-content" id="tab-performance">
-        <div class="section">
-          <h3>Latency Comparison (μs)</h3>
-          <table>
-            <thead><tr><th>Batch</th><th>Torch</th><th>Ascend C</th><th>PyPTO Compute</th><th>PyPTO Total</th></tr></thead>
-            <tbody id="perf-table-body"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tab: Comparison -->
-      <div class="tab-content" id="tab-comparison">
-        <div class="section">
-          <h3>Side-by-Side Comparison</h3>
-          <table class="comparison-table">
-            <thead><tr><th>Metric</th><th>Torch</th><th>Ascend C</th><th>PyPTO</th></tr></thead>
-            <tbody id="comparison-body">
-              <tr><td>Kernel Type</td><td id="comp-ktype-torch">-</td><td id="comp-ktype-ascendc">-</td><td id="comp-ktype-pypto">-</td></tr>
-              <tr><td>Kernel Count</td><td id="comp-kcount-torch">-</td><td id="comp-kcount-ascendc">-</td><td id="comp-kcount-pypto">-</td></tr>
-              <tr><td>Latency (B=1)</td><td id="comp-latency-torch">-</td><td id="comp-latency-ascendc">-</td><td id="comp-latency-pypto">-</td></tr>
-              <tr><td>Bandwidth</td><td id="comp-bw-torch">-</td><td id="comp-bw-ascendc">-</td><td id="comp-bw-pypto">-</td></tr>
-              <tr><td>Correctness</td><td id="comp-corr-torch">-</td><td id="comp-corr-ascendc">-</td><td id="comp-corr-pypto">-</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tab: Kernel Timeline -->
-      <div class="tab-content" id="tab-kernel">
-        <div id="kernel-timeline"></div>
-      </div>
-
-      <!-- Tab: Kernel Type -->
-      <div class="tab-content" id="tab-ktype">
-        <div class="section">
-          <h3>Kernel Type Distribution</h3>
-          <div id="kernel-type-chart"></div>
-        </div>
-      </div>
-
-      <!-- Tab: Profiler -->
-      <div class="tab-content" id="tab-profiler">
-        <div class="section">
-          <h3>Profiler Data</h3>
-          <table>
-            <thead><tr><th>Run</th><th>Kernel Name</th><th>Duration</th><th>Calls</th><th>Core Type</th><th>BlockDim</th><th>Tile</th></tr></thead>
-            <tbody id="profiler-body"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tab: History -->
-      <div class="tab-content" id="tab-history">
-        <div class="section">
-          <h3>Version History</h3>
-          <div id="history-content"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>{js}</script>
-</body>
-</html>"""
+    print(f"\nDashboard ready: {OUT / 'index.html'}")
 
 
 if __name__ == "__main__":
-    build()
+    main()

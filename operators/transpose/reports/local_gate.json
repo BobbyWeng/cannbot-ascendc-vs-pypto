@@ -3,13 +3,14 @@
   "source_readiness": true,
   "build_readiness": true,
   "data_readiness": true,
-  "torch_correctness": "PASS B=1 only",
-  "ascendc_correctness": "UNVERIFIED_RESULT — kernel source is TRUE_DEVICE_IMPLEMENTATION (tile-based transpose) but correctness not run",
-  "pypto_correctness": "PARTIAL (small PASS, large BLOCKED_BACKEND)",
-  "profiler_status": "INCOMPLETE",
-  "report_status": "provisional",
+  "torch_correctness": "PASS B=1..64 (bitwise exact)",
+  "ascendc_correctness": "PASS B=1..64 (bitwise exact, TRUE_DEVICE tile-based transpose kernel)",
+  "pypto_correctness": "PARTIAL (small shape PASS, large [256,384] BLOCKED_BACKEND CompileFunction)",
+  "profiler_status": "COMPLETE — msprof Torch+AscendC all batches (repeat=5, warmup=200, loops=100). PyPTO N/A.",
+  "report_status": "validated",
   "archive_status": "pending",
-  "blocker": "Missing hardware verification: need correctness run + msprof for Torch+AscendC; PyPTO large shape BLOCKED_BACKEND",
-  "ready_for_integration": false,
-  "status": "PARTIAL"
+  "blocker": "PyPTO large shape [256,384] BLOCKED_BACKEND at CompileFunction. Excluded from three-way ranking.",
+  "ready_for_integration": true,
+  "status": "COMPLETE_WITH_LIMITATION",
+  "last_updated": "2026-07-16T23:30:00Z"
 }

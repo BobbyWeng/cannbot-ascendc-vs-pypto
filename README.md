@@ -53,8 +53,9 @@ cannbot_ascendc_vs_pypto/
 | expand | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ✅ PASS (dispatch) | ⚠️ Major gaps | ❌ No msprof |
 | transpose | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ⚠️ Partial (small PASS) | ⚠️ Major gaps | ❌ No msprof |
 | reduce_sum | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ✅ SUCCESS (unverified) | ⚠️ Major gaps | ❌ No msprof |
+| **matmul** | **🧊 INCOMPLETE** | ⏳ Pending | ⏳ Pending (Cube 🧊) | ⏳ Pending | ⏳ Pending | ⏳ Pending |
 
-**Summary**: 2 COMPLETE, 6 COMPLETE_WITH_LIMITATION, 3 PARTIAL
+**Summary**: 2 COMPLETE, 6 COMPLETE_WITH_LIMITATION, 3 PARTIAL, 1 INCOMPLETE (matmul Cube)
 
 ## Key Corrections vs Previous Reports
 
@@ -70,6 +71,40 @@ All arithmetic operators use **unified profiler-based measurement**:
 3. **Profiled iterations**: 100 iterations
 4. **Key metric**: `primary_compute_kernel_us` — device kernel duration
 5. **PyPTO**: Two-process method (warmup no-profiler, then msprof) to exclude JIT compilation
+
+## Standalone Dashboard
+
+The dashboard can be used independently from the full repository.
+
+### Sparse Checkout
+
+```bash
+# Download only dashboard/ + reports/release/ (no operator directories)
+./dashboard/download_dashboard.sh https://github.com/your-org/cannbot_ascendc_vs_pypto.git
+cd cannbot-dashboard
+```
+
+Or manually:
+
+```bash
+git clone --filter=blob:none --no-checkout <repo-url> dashboard-solo
+cd dashboard-solo
+git sparse-checkout init --cone
+git sparse-checkout set dashboard/ reports/release/
+git checkout main
+```
+
+### Generate Dashboard
+
+```bash
+python dashboard/dashboard.py --release reports/release/current_release.json
+```
+
+### Open
+
+Open `dashboard/index.html` in any browser (no server required).
+
+---
 
 ## Requirements
 

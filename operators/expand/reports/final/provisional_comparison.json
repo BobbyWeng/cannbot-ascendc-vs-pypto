@@ -1,1 +1,244 @@
-{"operator":"expand","report_type":"provisional","status":"INCOMPLETE","correctness":{"torch":"PASS B=1..64","pypto":"PASS B=1..64 (bitwise on finite)","ascendc":"PASS (host fallback, not device-side)"},"profiler":"PENDING","pypto_impl":{"jit_func":"expand_row (1D [1]->[384])","api":"pypto.op.expand_clone","dispatch_per_call":"B*256 per-row calls","correctness":"bitwise on finite elements"},"blocker":"Ascend C needs device-side kernel","note":"Full msprof profiling deferred to batch completion"}
+{
+  "operator": "expand",
+  "report_type": "provisional",
+  "status": "COMPLETE",
+  "experiment": {
+    "operator": "expand",
+    "shape": "[B, 256, 384]",
+    "dtype": "float16",
+    "warmup": 200,
+    "loops": 100,
+    "repeat": 3,
+    "benchmark": "msprof"
+  },
+  "correctness": {
+    "torch": "PASS B=1..64 (bitwise exact)",
+    "ascendc": "PASS B=1..64 (bitwise exact, device-side expand kernel)",
+    "pypto": "PASS B=1..64 (finite elements match, per-row JIT)"
+  },
+  "profiler": {
+    "1": {
+      "torch": {
+        "primary_compute_kernel_us": 13.02,
+        "all_device_kernels_us": 20.188,
+        "kernel_count": 500,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 15.04,
+        "all_device_kernels_us": 3048.827,
+        "kernel_count": 28192,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "expand_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 3084.48,
+        "all_device_kernels_us": 39083.833,
+        "kernel_count": 79105,
+        "primary_compute_type": "KERNEL_AICPU",
+        "kernel_names": [
+          "KERNEL_AICPU",
+          "PYPTO_expand_row"
+        ]
+      }
+    },
+    "2": {
+      "torch": {
+        "primary_compute_kernel_us": 14.48,
+        "all_device_kernels_us": 21.557,
+        "kernel_count": 500,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 16.32,
+        "all_device_kernels_us": 3140.123,
+        "kernel_count": 28192,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "expand_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 2965.24,
+        "all_device_kernels_us": 76812.663,
+        "kernel_count": 158209,
+        "primary_compute_type": "KERNEL_AICPU",
+        "kernel_names": [
+          "KERNEL_AICPU",
+          "PYPTO_expand_row"
+        ]
+      }
+    },
+    "4": {
+      "torch": {
+        "primary_compute_kernel_us": 13.36,
+        "all_device_kernels_us": 22.026,
+        "kernel_count": 500,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 19.84,
+        "all_device_kernels_us": 3501.027,
+        "kernel_count": 28192,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "expand_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 3172.16,
+        "all_device_kernels_us": 155007.229,
+        "kernel_count": 316417,
+        "primary_compute_type": "KERNEL_AICPU",
+        "kernel_names": [
+          "KERNEL_AICPU",
+          "PYPTO_expand_row"
+        ]
+      }
+    },
+    "8": {
+      "torch": {
+        "primary_compute_kernel_us": 14.38,
+        "all_device_kernels_us": 23.64,
+        "kernel_count": 500,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 27.72,
+        "all_device_kernels_us": 6275.942,
+        "kernel_count": 28192,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "expand_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 3721.78,
+        "all_device_kernels_us": 311213.719,
+        "kernel_count": 632833,
+        "primary_compute_type": "KERNEL_AICPU",
+        "kernel_names": [
+          "KERNEL_AICPU",
+          "PYPTO_expand_row"
+        ]
+      }
+    },
+    "16": {
+      "torch": {
+        "primary_compute_kernel_us": 11.94,
+        "all_device_kernels_us": 25.052,
+        "kernel_count": 500,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 49.66,
+        "all_device_kernels_us": 12284.831,
+        "kernel_count": 28192,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "expand_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 3082.56,
+        "all_device_kernels_us": 625020.655,
+        "kernel_count": 1265665,
+        "primary_compute_type": "KERNEL_AICPU",
+        "kernel_names": [
+          "KERNEL_AICPU",
+          "PYPTO_expand_row"
+        ]
+      }
+    },
+    "32": {
+      "torch": {
+        "primary_compute_kernel_us": 14.42,
+        "all_device_kernels_us": 33.485,
+        "kernel_count": 500,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 91.8,
+        "all_device_kernels_us": 23963.338,
+        "kernel_count": 28192,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "expand_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 2918.7,
+        "all_device_kernels_us": 1265597.514,
+        "kernel_count": 2531329,
+        "primary_compute_type": "KERNEL_AICPU",
+        "kernel_names": [
+          "KERNEL_AICPU",
+          "PYPTO_expand_row"
+        ]
+      }
+    },
+    "64": {
+      "torch": {
+        "primary_compute_kernel_us": 17.5,
+        "all_device_kernels_us": 47.357,
+        "kernel_count": 500,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 177.86,
+        "all_device_kernels_us": 48298.528,
+        "kernel_count": 28192,
+        "primary_compute_type": "KERNEL_AIVEC",
+        "kernel_names": [
+          "expand_kernel"
+        ]
+      },
+      "pypto": {
+        "primary_compute_kernel_us": 2796.34,
+        "all_device_kernels_us": 2507501.139,
+        "kernel_count": 5062657,
+        "primary_compute_type": "KERNEL_AICPU",
+        "kernel_names": [
+          "KERNEL_AICPU",
+          "PYPTO_expand_row"
+        ]
+      }
+    }
+  },
+  "summary": {
+    "b1_primary_compute_kernel_us": {
+      "torch": 13.02,
+      "ascendc": 15.04,
+      "pypto": 3084.48
+    },
+    "b1_all_device_kernels_us": {
+      "torch": 20.188,
+      "ascendc": 3048.827,
+      "pypto": 39083.833
+    },
+    "note": "PyPTO uses per-row 1D expand_clone JIT dispatch (B*256 kernel calls per iteration). Ascend C uses device-side Duplicate kernel. Torch uses native expand."
+  }
+}

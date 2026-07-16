@@ -1,0 +1,1337 @@
+{
+  "operator": "reduce_sum",
+  "variant": "ascendc",
+  "all_pass": false,
+  "results": {
+    "b1_random_finite": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 256,
+        "mismatch_count": 54,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 0.09021323174238205
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 256,
+        "mismatch_count": 167,
+        "max_abs_diff": 0.171875,
+        "max_rel_diff": 0.14491264522075653
+      },
+      "overall": "FAIL"
+    },
+    "b1_all_zero": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b1_all_one": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b1_pos_neg_cancel": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 256,
+        "mismatch_count": 92,
+        "max_abs_diff": 0.125,
+        "max_rel_diff": 0.0006430867942981422
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 256,
+        "mismatch_count": 230,
+        "max_abs_diff": 1.375,
+        "max_rel_diff": 0.006559332367032766
+      },
+      "overall": "FAIL"
+    },
+    "b1_small_values": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": 1.9073486328125e-06,
+        "max_rel_diff": 0.1428571194410324
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": 1.430511474609375e-05,
+        "max_rel_diff": 1.086956262588501
+      },
+      "overall": "PASS"
+    },
+    "b1_large_values": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 256,
+        "mismatch_count": 59,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 256,
+        "mismatch_count": 51,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b1_overflow_risk": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b1_underflow_risk": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": 0.02941175177693367
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": 1.7881393432617188e-06,
+        "max_rel_diff": 0.1249999850988388
+      },
+      "overall": "PASS"
+    },
+    "b1_nan": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b1_inf": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 256,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b2_random_finite": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 512,
+        "mismatch_count": 97,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 0.15326252579689026
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 512,
+        "mismatch_count": 341,
+        "max_abs_diff": 0.171875,
+        "max_rel_diff": 1.0
+      },
+      "overall": "FAIL"
+    },
+    "b2_all_zero": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b2_all_one": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b2_pos_neg_cancel": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 512,
+        "mismatch_count": 198,
+        "max_abs_diff": 0.25,
+        "max_rel_diff": 0.0011976048117503524
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 512,
+        "mismatch_count": 455,
+        "max_abs_diff": 1.375,
+        "max_rel_diff": 0.006769230589270592
+      },
+      "overall": "FAIL"
+    },
+    "b2_small_values": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 0.1428571194410324
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": 1.52587890625e-05,
+        "max_rel_diff": 1.086956262588501
+      },
+      "overall": "PASS"
+    },
+    "b2_large_values": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 512,
+        "mismatch_count": 135,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 512,
+        "mismatch_count": 109,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b2_overflow_risk": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b2_underflow_risk": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": 0.02941175177693367
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": 1.9073486328125e-06,
+        "max_rel_diff": 0.49999791383743286
+      },
+      "overall": "PASS"
+    },
+    "b2_nan": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b2_inf": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 512,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b4_random_finite": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 1024,
+        "mismatch_count": 182,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 17.285715103149414
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 1024,
+        "mismatch_count": 678,
+        "max_abs_diff": 0.28125,
+        "max_rel_diff": 4.333333492279053
+      },
+      "overall": "FAIL"
+    },
+    "b4_all_zero": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b4_all_one": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b4_pos_neg_cancel": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 1024,
+        "mismatch_count": 397,
+        "max_abs_diff": 0.25,
+        "max_rel_diff": 0.0012285012053325772
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 1024,
+        "mismatch_count": 920,
+        "max_abs_diff": 1.625,
+        "max_rel_diff": 0.007883565500378609
+      },
+      "overall": "FAIL"
+    },
+    "b4_small_values": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 0.28571420907974243
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": 1.52587890625e-05,
+        "max_rel_diff": 1.8108100891113281
+      },
+      "overall": "PASS"
+    },
+    "b4_large_values": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 1024,
+        "mismatch_count": 266,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 1024,
+        "mismatch_count": 219,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b4_overflow_risk": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b4_underflow_risk": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": 0.02941175177693367
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": 1.9073486328125e-06,
+        "max_rel_diff": 0.49999791383743286
+      },
+      "overall": "PASS"
+    },
+    "b4_nan": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b4_inf": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 1024,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b8_random_finite": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 2048,
+        "mismatch_count": 338,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 17.285715103149414
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 2048,
+        "mismatch_count": 1363,
+        "max_abs_diff": 0.28125,
+        "max_rel_diff": 4.487179279327393
+      },
+      "overall": "FAIL"
+    },
+    "b8_all_zero": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b8_all_one": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b8_pos_neg_cancel": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 2048,
+        "mismatch_count": 828,
+        "max_abs_diff": 0.25,
+        "max_rel_diff": 0.0012285012053325772
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 2048,
+        "mismatch_count": 1831,
+        "max_abs_diff": 1.625,
+        "max_rel_diff": 0.007798440288752317
+      },
+      "overall": "FAIL"
+    },
+    "b8_small_values": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 1.2857111692428589
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": 1.9073486328125e-05,
+        "max_rel_diff": 6.333298206329346
+      },
+      "overall": "PASS"
+    },
+    "b8_large_values": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 2048,
+        "mismatch_count": 547,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 2048,
+        "mismatch_count": 445,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b8_overflow_risk": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b8_underflow_risk": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": 0.07692297548055649
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.384185791015625e-06,
+        "max_rel_diff": 0.49999791383743286
+      },
+      "overall": "PASS"
+    },
+    "b8_nan": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b8_inf": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 2048,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b16_random_finite": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 4096,
+        "mismatch_count": 694,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 17.285715103149414
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 4096,
+        "mismatch_count": 2775,
+        "max_abs_diff": 0.28125,
+        "max_rel_diff": 7.0
+      },
+      "overall": "FAIL"
+    },
+    "b16_all_zero": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b16_all_one": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b16_pos_neg_cancel": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 4096,
+        "mismatch_count": 1628,
+        "max_abs_diff": 0.25,
+        "max_rel_diff": 0.0012285012053325772
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 4096,
+        "mismatch_count": 3701,
+        "max_abs_diff": 1.75,
+        "max_rel_diff": 0.008018327876925468
+      },
+      "overall": "FAIL"
+    },
+    "b16_small_values": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 1.2857111692428589
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.09808349609375e-05,
+        "max_rel_diff": 6.333298206329346
+      },
+      "overall": "PASS"
+    },
+    "b16_large_values": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 4096,
+        "mismatch_count": 1060,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 4096,
+        "mismatch_count": 852,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b16_overflow_risk": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b16_underflow_risk": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": 0.4999958276748657
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.384185791015625e-06,
+        "max_rel_diff": 1.9999663829803467
+      },
+      "overall": "PASS"
+    },
+    "b16_nan": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b16_inf": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 4096,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b32_random_finite": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 8192,
+        "mismatch_count": 1389,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 17.285715103149414
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 8192,
+        "mismatch_count": 5485,
+        "max_abs_diff": 0.28125,
+        "max_rel_diff": 7.0
+      },
+      "overall": "FAIL"
+    },
+    "b32_all_zero": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b32_all_one": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b32_pos_neg_cancel": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 8192,
+        "mismatch_count": 3287,
+        "max_abs_diff": 0.25,
+        "max_rel_diff": 0.001254705130122602
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 8192,
+        "mismatch_count": 7325,
+        "max_abs_diff": 1.875,
+        "max_rel_diff": 0.008620689623057842
+      },
+      "overall": "FAIL"
+    },
+    "b32_small_values": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 1.6666619777679443
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.09808349609375e-05,
+        "max_rel_diff": 6.333298206329346
+      },
+      "overall": "PASS"
+    },
+    "b32_large_values": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 8192,
+        "mismatch_count": 2101,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 8192,
+        "mismatch_count": 1709,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b32_overflow_risk": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b32_underflow_risk": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": 0.9999916553497314
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.6226043701171875e-06,
+        "max_rel_diff": 1.9999663829803467
+      },
+      "overall": "PASS"
+    },
+    "b32_nan": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b32_inf": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 8192,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b64_random_finite": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 16384,
+        "mismatch_count": 2736,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 17.285715103149414
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 16384,
+        "mismatch_count": 10999,
+        "max_abs_diff": 0.28125,
+        "max_rel_diff": 7.0
+      },
+      "overall": "FAIL"
+    },
+    "b64_all_zero": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b64_all_one": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0
+      },
+      "overall": "PASS"
+    },
+    "b64_pos_neg_cancel": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 16384,
+        "mismatch_count": 6439,
+        "max_abs_diff": 0.25,
+        "max_rel_diff": 0.0012285012053325772
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 16384,
+        "mismatch_count": 14727,
+        "max_abs_diff": 1.875,
+        "max_rel_diff": 0.00906344410032034
+      },
+      "overall": "FAIL"
+    },
+    "b64_small_values": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 6.333298206329346
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.47955322265625e-05,
+        "max_rel_diff": 7629394.5
+      },
+      "overall": "PASS"
+    },
+    "b64_large_values": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 16384,
+        "mismatch_count": 4187,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 16384,
+        "mismatch_count": 3407,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b64_overflow_risk": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b64_underflow_risk": {
+      "fp32_accum": {
+        "status": "PASS",
+        "reference": "fp32_accum",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": 0.9999916553497314
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "reference": "fp16_path",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": 2.6226043701171875e-06,
+        "max_rel_diff": 1.9999663829803467
+      },
+      "overall": "PASS"
+    },
+    "b64_nan": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    },
+    "b64_inf": {
+      "fp32_accum": {
+        "status": "FAIL",
+        "reference": "fp32_accum",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "reference": "fp16_path",
+        "total_elements": 16384,
+        "mismatch_count": 0,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN
+      },
+      "overall": "FAIL"
+    }
+  }
+}

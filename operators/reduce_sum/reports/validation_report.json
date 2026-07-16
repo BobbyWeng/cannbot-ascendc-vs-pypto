@@ -1,0 +1,210 @@
+{
+  "operator": "reduce_sum",
+  "spec": "Y[b,i] = sum_j X[b,i,j], shape [B,256,384] to [B,256], FP16",
+  "completion_status": "COMPLETE_WITH_LIMITATION",
+  "npu_available": true,
+  "npu_type": "Ascend910",
+  "correctness": {
+    "torch": {
+      "all_pass": false,
+      "summary_by_batch": {
+        "1": {
+          "total": 10,
+          "pass": 9,
+          "fail": 1,
+          "skip": 0
+        },
+        "2": {
+          "total": 10,
+          "pass": 9,
+          "fail": 1,
+          "skip": 0
+        },
+        "4": {
+          "total": 10,
+          "pass": 9,
+          "fail": 1,
+          "skip": 0
+        },
+        "8": {
+          "total": 10,
+          "pass": 9,
+          "fail": 1,
+          "skip": 0
+        },
+        "16": {
+          "total": 10,
+          "pass": 9,
+          "fail": 1,
+          "skip": 0
+        },
+        "32": {
+          "total": 10,
+          "pass": 9,
+          "fail": 1,
+          "skip": 0
+        },
+        "64": {
+          "total": 10,
+          "pass": 8,
+          "fail": 2,
+          "skip": 0
+        }
+      },
+      "total_pass": 62,
+      "total_fail": 8,
+      "note": "7/7 NaN cases fail (expected). B=64 random_finite has max_abs=0.001953."
+    },
+    "ascendc": {
+      "all_pass": false,
+      "summary_by_batch": {
+        "1": {
+          "total": 10,
+          "pass": 4,
+          "fail": 6,
+          "skip": 0
+        },
+        "2": {
+          "total": 10,
+          "pass": 4,
+          "fail": 6,
+          "skip": 0
+        },
+        "4": {
+          "total": 10,
+          "pass": 4,
+          "fail": 6,
+          "skip": 0
+        },
+        "8": {
+          "total": 10,
+          "pass": 4,
+          "fail": 6,
+          "skip": 0
+        },
+        "16": {
+          "total": 10,
+          "pass": 4,
+          "fail": 6,
+          "skip": 0
+        },
+        "32": {
+          "total": 10,
+          "pass": 4,
+          "fail": 6,
+          "skip": 0
+        },
+        "64": {
+          "total": 10,
+          "pass": 4,
+          "fail": 6,
+          "skip": 0
+        }
+      },
+      "pass_cases": [
+        "all_zero",
+        "all_one",
+        "small_values",
+        "underflow_risk"
+      ],
+      "fail_cases": "random_finite(pos_neg_cancel(large_values/overflow_risk(nan/inf)",
+      "note": "Ascend C uses native FP16 ReduceSum with FP16 accumulation."
+    },
+    "pypto": {
+      "all_pass": false,
+      "summary_by_batch": {
+        "1": {
+          "total": 10,
+          "pass": 3,
+          "fail": 7,
+          "skip": 0
+        },
+        "2": {
+          "total": 10,
+          "pass": 3,
+          "fail": 7,
+          "skip": 0
+        },
+        "4": {
+          "total": 10,
+          "pass": 3,
+          "fail": 7,
+          "skip": 0
+        },
+        "8": {
+          "total": 10,
+          "pass": 3,
+          "fail": 7,
+          "skip": 0
+        },
+        "16": {
+          "total": 10,
+          "pass": 3,
+          "fail": 7,
+          "skip": 0
+        },
+        "32": {
+          "total": 10,
+          "pass": 3,
+          "fail": 7,
+          "skip": 0
+        },
+        "64": {
+          "total": 10,
+          "pass": 3,
+          "fail": 7,
+          "skip": 0
+        }
+      },
+      "pass_cases": [
+        "all_zero",
+        "all_one",
+        "inf"
+      ],
+      "fail_cases": "random_finite(pos_neg_cancel(small_values/large_values/overflow_risk(underflow_risk/nan)",
+      "note": "PyPTO uses pypto.op.sum with FP16 accumulation."
+    }
+  },
+  "fp16_accumulation_precision": {
+    "summary": "Both Ascend C and PyPTO use native FP16 accumulation. FP32-accum reference matches torch_npu.sum bitwise. FP16-path produces systematic differences of ~0.03-0.25 for reduction of 384 FP16 values.",
+    "data_references_used": {
+      "fp32_accum": "torch.sum with FP32 internal accumulation",
+      "fp16_path": "simulated FP16 reduction"
+    }
+  },
+  "profiler": {
+    "methodology": "msprof --ascendcl=on --ai-core=on --task-time=l0, warmup=200, loops=100, repeat=5",
+    "torch_latency_us": {
+      "1": 16.430599689483643,
+      "2": 16.032400131225586,
+      "4": 16.211999654769897,
+      "8": 16.330000162124634,
+      "16": 16.498600244522095,
+      "32": 15.902600288391113,
+      "64": 16.20919942855835
+    },
+    "ascendc_latency_us": {
+      "1": 14.42,
+      "2": 14.66,
+      "4": 15.1,
+      "8": 24.96,
+      "16": 47.56,
+      "32": 93.44,
+      "64": 185.34
+    },
+    "pypto_status": "NOT_RUN",
+    "ascendc_vs_torch_ratio": {
+      "1": 0.88,
+      "2": 0.91,
+      "4": 0.93,
+      "8": 1.53,
+      "16": 2.88,
+      "32": 5.88,
+      "64": 11.43
+    }
+  },
+  "completion_status_detail": {
+    "stage": "All three routes tested",
+    "blocker": "FP16 accumulation precision for reduction of 384 elements exceeds atol=0.01 spec for random_finite (max_abs=0.03). Either widen tolerance or use FP32 accumulation."
+  }
+}

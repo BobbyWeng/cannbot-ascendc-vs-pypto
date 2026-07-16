@@ -25,8 +25,8 @@ def source_introspection(log_dir):
     lines.append(f"sys.path: {sys.path}")
 
     orig = getattr(expand_row, '_original_func', expand_row)
-    lines.append(f"function type: {type(expand_clone_kernel)}")
-    lines.append(f"__module__: {getattr(expand_clone_kernel, '__module__', 'N/A')}")
+    lines.append(f"function type: {type(orig)}")
+    lines.append(f"__module__: {getattr(orig, '__module__', 'N/A')}")
     try:
         src = inspect.getsource(orig)
         lines.append(f"inspect.getsource: OK ({len(src)} chars)")

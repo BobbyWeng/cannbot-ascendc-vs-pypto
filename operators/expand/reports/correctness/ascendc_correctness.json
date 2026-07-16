@@ -1,140 +1,112 @@
 {
   "operator": "expand",
-  "variant": "torch",
+  "variant": "ascendc",
+  "all_pass": true,
   "results": [
     {
-      "status": "PASS",
-      "bitwise_equal": true,
-      "bitwise_mismatch_count": 0,
-      "signed_zero_mismatch_count": 0,
-      "numeric_mismatch_count": 0,
-      "max_abs_diff": 0.0,
-      "max_rel_diff": 0.0,
-      "nan_count": 3072,
-      "inf_count": 6144,
-      "label": "B=1",
       "batch": 1,
-      "shape": [
-        1,
-        256,
-        384
-      ],
-      "dtype": "float16"
-    },
-    {
       "status": "PASS",
+      "total_elements": 98304,
       "bitwise_equal": true,
+      "numeric_mismatch_count": 0,
       "bitwise_mismatch_count": 0,
       "signed_zero_mismatch_count": 0,
-      "numeric_mismatch_count": 0,
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 3072,
       "inf_count": 6144,
-      "label": "B=2",
+      "neg_zero_in_output": 6144,
+      "neg_zero_in_reference": 6144
+    },
+    {
       "batch": 2,
-      "shape": [
-        2,
-        256,
-        384
-      ],
-      "dtype": "float16"
-    },
-    {
       "status": "PASS",
+      "total_elements": 196608,
       "bitwise_equal": true,
+      "numeric_mismatch_count": 0,
       "bitwise_mismatch_count": 0,
       "signed_zero_mismatch_count": 0,
-      "numeric_mismatch_count": 0,
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 3072,
       "inf_count": 6144,
-      "label": "B=4",
+      "neg_zero_in_output": 6144,
+      "neg_zero_in_reference": 6144
+    },
+    {
       "batch": 4,
-      "shape": [
-        4,
-        256,
-        384
-      ],
-      "dtype": "float16"
-    },
-    {
       "status": "PASS",
+      "total_elements": 393216,
       "bitwise_equal": true,
+      "numeric_mismatch_count": 0,
       "bitwise_mismatch_count": 0,
       "signed_zero_mismatch_count": 0,
-      "numeric_mismatch_count": 0,
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 3072,
       "inf_count": 6144,
-      "label": "B=8",
+      "neg_zero_in_output": 6144,
+      "neg_zero_in_reference": 6144
+    },
+    {
       "batch": 8,
-      "shape": [
-        8,
-        256,
-        384
-      ],
-      "dtype": "float16"
-    },
-    {
       "status": "PASS",
+      "total_elements": 786432,
       "bitwise_equal": true,
+      "numeric_mismatch_count": 0,
       "bitwise_mismatch_count": 0,
       "signed_zero_mismatch_count": 0,
-      "numeric_mismatch_count": 0,
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 3072,
       "inf_count": 6144,
-      "label": "B=16",
+      "neg_zero_in_output": 6144,
+      "neg_zero_in_reference": 6144
+    },
+    {
       "batch": 16,
-      "shape": [
-        16,
-        256,
-        384
-      ],
-      "dtype": "float16"
-    },
-    {
       "status": "PASS",
+      "total_elements": 1572864,
       "bitwise_equal": true,
+      "numeric_mismatch_count": 0,
       "bitwise_mismatch_count": 0,
       "signed_zero_mismatch_count": 0,
-      "numeric_mismatch_count": 0,
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 3072,
       "inf_count": 6144,
-      "label": "B=32",
+      "neg_zero_in_output": 6144,
+      "neg_zero_in_reference": 6144
+    },
+    {
       "batch": 32,
-      "shape": [
-        32,
-        256,
-        384
-      ],
-      "dtype": "float16"
-    },
-    {
       "status": "PASS",
+      "total_elements": 3145728,
       "bitwise_equal": true,
+      "numeric_mismatch_count": 0,
       "bitwise_mismatch_count": 0,
       "signed_zero_mismatch_count": 0,
-      "numeric_mismatch_count": 0,
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 3072,
       "inf_count": 6144,
-      "label": "B=64",
+      "neg_zero_in_output": 6144,
+      "neg_zero_in_reference": 6144
+    },
+    {
       "batch": 64,
-      "shape": [
-        64,
-        256,
-        384
-      ],
-      "dtype": "float16"
+      "status": "PASS",
+      "total_elements": 6291456,
+      "bitwise_equal": true,
+      "numeric_mismatch_count": 0,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 3072,
+      "inf_count": 6144,
+      "neg_zero_in_output": 6144,
+      "neg_zero_in_reference": 6144
     }
-  ],
-  "all_pass": true
+  ]
 }

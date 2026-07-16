@@ -3,13 +3,14 @@
   "source_readiness": true,
   "build_readiness": true,
   "data_readiness": true,
-  "torch_correctness": "PASS B=1 only",
-  "ascendc_correctness": "UNVERIFIED_RESULT — kernel source is TRUE_DEVICE_IMPLEMENTATION (Duplicate per-row) but correctness not run",
-  "pypto_correctness": "PASS B=1..64",
-  "profiler_status": "INCOMPLETE",
+  "torch_correctness": "PASS B=1..64 (bitwise exact)",
+  "ascendc_correctness": "PASS B=1..64 (bitwise exact, TRUE_DEVICE Duplicate per-row kernel)",
+  "pypto_correctness": "PASS B=1..64 (finite elements match, per-row JIT dispatch)",
+  "profiler_status": "COMPLETE — msprof all 3 routes (repeat=3, warmup=200, loops=100)",
   "report_status": "provisional",
   "archive_status": "pending",
-  "blocker": "Missing hardware verification: need correctness run + msprof profiling for all 3 routes",
-  "ready_for_integration": false,
-  "status": "PARTIAL"
+  "blocker": "PyPTO uses per-row AICPU dispatch (~3000 us) vs compute kernel (~15 us). PyPTO not comparable in performance ranking.",
+  "ready_for_integration": true,
+  "status": "COMPLETE_WITH_LIMITATION",
+  "last_updated": "2026-07-16T23:30:00Z"
 }

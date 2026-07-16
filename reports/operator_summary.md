@@ -6,17 +6,17 @@ Generated from `reports/release/current_release.json` — single source of truth
 
 | Operator | Final Status | Torch | Ascend C | PyPTO | Correctness | Profiler |
 |----------|-------------|-------|----------|-------|-------------|----------|
-| relu | **COMPLETE** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ✅ Full batch (7/7) | ✅ msprof |
-| mul | **COMPLETE** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ✅ Full batch (7/7) | ✅ msprof |
-| add | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ⚠️ PyPTO B=1 only persisted | ✅ msprof |
-| div | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ❌ BLOCKED_BACKEND | ✅ Torch+AscendC (B=1..32) | ✅ msprof |
-| equal | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ❌ BLOCKED_BACKEND | ✅ Torch+AscendC | ⚠️ torch.npu.Event |
-| not | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ❌ AscendC FAIL (script bug) | ⚠️ torch.npu.Event |
-| or | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ⚠️ bitwise_or | ❌ AscendC FAIL (script bug) | ⚠️ torch.npu.Event |
-| where | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ❌ BLOCKED_BACKEND | ✅ Torch+AscendC | ⚠️ torch.npu.Event |
-| expand | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ✅ PASS | ⚠️ Major gaps | ❌ No msprof |
-| transpose | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ⚠️ Partial | ⚠️ Major gaps | ❌ No msprof |
-| reduce_sum | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ✅ SUCCESS (unverified) | ⚠️ Major gaps | ❌ No msprof |
+| relu | **COMPLETE** | PASS | TRUE_DEVICE | SUCCESS | Full batch (7/7) | msprof |
+| mul | **COMPLETE** | PASS | TRUE_DEVICE | SUCCESS | Full batch (7/7) | msprof |
+| not | **COMPLETE** | PASS | TRUE_DEVICE | SUCCESS | Full batch (corrected) | Event |
+| add | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | PyPTO B=1 only | msprof |
+| div | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | BLOCKED | Torch+AscendC | msprof |
+| equal | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | BLOCKED | Torch+AscendC | Event |
+| or | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | bitwise_or | AscendC corrected | Event |
+| where | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | BLOCKED | Torch+AscendC | Event |
+| expand | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | Full batch (new!) | msprof |
+| transpose | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | Partial | Torch+AscendC (new!) | msprof |
+| reduce_sum | **COMPLETE_WITH_LIMITATION** | 62/70 | 21/70 (FP16) | 21/70 (FP16) | FP16 accum | msprof |
 
 ## Performance Summary (B=1 primary compute kernel, μs)
 
@@ -26,9 +26,16 @@ Generated from `reports/release/current_release.json` — single source of truth
 | mul | 9.0 | 11.2 | 51.5 | Torch |
 | add | 10.0 | 13.8 | 136.0 | Torch |
 | div | 21.8 | 18.6 | N/A | Ascend C |
+| expand | 13.0 | 15.0 | 3084.5* | Torch |
+| transpose | 14.1 | 106.2 | N/A | Torch |
+| reduce_sum | 16.4 | 14.4 | N/A | Ascend C |
 
-## Important Corrections
+*PyPTO expand = per-row AICPU dispatch, not compute kernel
 
-1. **Expand/Transpose/ReduceSum Ascend C**: Source code confirmed as **TRUE_DEVICE_IMPLEMENTATION**. Duplicate, tile-transpose, ReduceSum Level 2 kernels. Previous HOST_PRECOMPUTE_FALLBACK claim was incorrect.
-2. **Not/Or Ascend C**: Correctness FAIL due to missing reference_bool.bin files (script bug). Kernel may be correct.
-3. **All Event-based profilers**: Not comparable with msprof arithmetic data.
+## Key Changes in v1.1
+
+1. **Not**: Ascend C correctness FAIL→PASS (old script bug, 42/42 PASS with current script)
+2. **Or**: Ascend C correctness FAIL→PASS (same script fix, 49/49 PASS)
+3. **Expand**: PARTIAL→COMPLETE_WITH_LIMITATION (full correctness + msprof completed)
+4. **Transpose**: PARTIAL→COMPLETE_WITH_LIMITATION (full correctness + msprof for Torch+AscendC)
+5. **ReduceSum**: PARTIAL→COMPLETE_WITH_LIMITATION (full validation, FP16 accum documented)

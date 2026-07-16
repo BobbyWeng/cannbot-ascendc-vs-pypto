@@ -7,6 +7,6 @@ equal,12.2,N/A,41.8,N/A,N/A,N/A,torch.npu.Event
 not,127.5,N/A,6.4,N/A,136.6,N/A,torch.npu.Event
 or,256.3,N/A,6.5,N/A,148.8,N/A,torch.npu.Event
 where,131.9,N/A,238.6,N/A,N/A,N/A,torch.npu.Event
-expand,11.2,N/A,N/A,N/A,N/A,N/A,NO_MSPROF
-transpose,23.5,N/A,N/A,N/A,N/A,N/A,NO_MSPROF
-reduce_sum,27.8,N/A,N/A,N/A,N/A,N/A,NO_MSPROF
+expand,13.0,16.2,15.0,93.9,3084.5,3486.6,msprof(r3)
+transpose,14.1,26.2,106.2,3014.6,N/A,N/A,msprof
+reduce_sum,16.4,15.9,14.4,93.4,N/A,N/A,msprof

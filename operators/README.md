@@ -9,6 +9,7 @@ Generated from `reports/release/current_release.json` — single source of truth
 | COMPLETE | 2 | relu, mul |
 | COMPLETE_WITH_LIMITATION | 6 | add, div, equal, not, or, where |
 | PARTIAL | 3 | expand, transpose, reduce_sum |
+| INCOMPLETE | 1 | matmul |
 
 ## Core Arithmetic (msprof, all batches)
 
@@ -29,6 +30,14 @@ All times B=1 msprof primary compute kernel (KERNEL_AIVEC for torch/ascendc, KER
 | **not** | COMPLETE_WITH_LIMITATION | 127.5 us | 6.4 us | 136.6 us | AscendC FAIL (script bug); PyPTO UNVERIFIED |
 | **or** | COMPLETE_WITH_LIMITATION | 256.3 us | 6.5 us | 148.8 us | AscendC FAIL (script bug); PyPTO bitwise_or |
 | **where** | COMPLETE_WITH_LIMITATION | 131.9 us | 238.6 us | BLOCKED_BACKEND | Torch+AscendC PASS |
+
+## Cube Operators
+
+| Operator | Status | Torch | Ascend C | PyPTO | Cube Badge |
+|----------|--------|:-----:|:--------:|:-----:|:----------:|
+| **matmul** | **INCOMPLETE** | ⏳ Pending | ⏳ Pending (Cube 🧊) | ⏳ Pending | 🧊 **Cube v1** |
+
+**Note**: MatMul is the first Cube-class operator. All source code, configs, and data generation scripts are committed. NPU execution (build, correctness, profiling) is required to complete.
 
 ## Layout/Reduce (no profiler data — PARTIAL)
 

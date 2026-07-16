@@ -1,42 +1,401 @@
 {
   "operator": "or",
   "variant": "ascendc",
+  "generated_by": "correctness.py",
+  "generated_at": "2026-07-16T23:30:00Z",
   "results": [
     {
-      "batch": 1,
-      "status": "FAIL",
-      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/or/data/reference_b1_bool.bin'"
+      "batch": "b1_false_false",
+      "status": "PASS",
+      "total_elements": 98304,
+      "checked_elements": 98304,
+      "mismatch_count": 0,
+      "error": ""
     },
     {
-      "batch": 2,
-      "status": "FAIL",
-      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/or/data/reference_b2_bool.bin'"
+      "batch": "b1_false_true",
+      "status": "PASS",
+      "total_elements": 98304,
+      "checked_elements": 98304,
+      "mismatch_count": 0,
+      "error": ""
     },
     {
-      "batch": 4,
-      "status": "FAIL",
-      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/or/data/reference_b4_bool.bin'"
+      "batch": "b1_true_false",
+      "status": "PASS",
+      "total_elements": 98304,
+      "checked_elements": 98304,
+      "mismatch_count": 0,
+      "error": ""
     },
     {
-      "batch": 8,
-      "status": "FAIL",
-      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/or/data/reference_b8_bool.bin'"
+      "batch": "b1_true_true",
+      "status": "PASS",
+      "total_elements": 98304,
+      "checked_elements": 98304,
+      "mismatch_count": 0,
+      "error": ""
     },
     {
-      "batch": 16,
-      "status": "FAIL",
-      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/or/data/reference_b16_bool.bin'"
+      "batch": "b1_random_mask",
+      "status": "PASS",
+      "total_elements": 98304,
+      "checked_elements": 98304,
+      "mismatch_count": 0,
+      "error": ""
     },
     {
-      "batch": 32,
-      "status": "FAIL",
-      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/or/data/reference_b32_bool.bin'"
+      "batch": "b1_sparse",
+      "status": "PASS",
+      "total_elements": 98304,
+      "checked_elements": 98304,
+      "mismatch_count": 0,
+      "error": ""
     },
     {
-      "batch": 64,
-      "status": "FAIL",
-      "error": "[Errno 2] No such file or directory: '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/or/data/reference_b64_bool.bin'"
+      "batch": "b1_dense",
+      "status": "PASS",
+      "total_elements": 98304,
+      "checked_elements": 98304,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b2_false_false",
+      "status": "PASS",
+      "total_elements": 196608,
+      "checked_elements": 196608,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b2_false_true",
+      "status": "PASS",
+      "total_elements": 196608,
+      "checked_elements": 196608,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b2_true_false",
+      "status": "PASS",
+      "total_elements": 196608,
+      "checked_elements": 196608,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b2_true_true",
+      "status": "PASS",
+      "total_elements": 196608,
+      "checked_elements": 196608,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b2_random_mask",
+      "status": "PASS",
+      "total_elements": 196608,
+      "checked_elements": 196608,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b2_sparse",
+      "status": "PASS",
+      "total_elements": 196608,
+      "checked_elements": 196608,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b2_dense",
+      "status": "PASS",
+      "total_elements": 196608,
+      "checked_elements": 196608,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b4_false_false",
+      "status": "PASS",
+      "total_elements": 393216,
+      "checked_elements": 393216,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b4_false_true",
+      "status": "PASS",
+      "total_elements": 393216,
+      "checked_elements": 393216,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b4_true_false",
+      "status": "PASS",
+      "total_elements": 393216,
+      "checked_elements": 393216,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b4_true_true",
+      "status": "PASS",
+      "total_elements": 393216,
+      "checked_elements": 393216,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b4_random_mask",
+      "status": "PASS",
+      "total_elements": 393216,
+      "checked_elements": 393216,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b4_sparse",
+      "status": "PASS",
+      "total_elements": 393216,
+      "checked_elements": 393216,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b4_dense",
+      "status": "PASS",
+      "total_elements": 393216,
+      "checked_elements": 393216,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b8_false_false",
+      "status": "PASS",
+      "total_elements": 786432,
+      "checked_elements": 786432,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b8_false_true",
+      "status": "PASS",
+      "total_elements": 786432,
+      "checked_elements": 786432,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b8_true_false",
+      "status": "PASS",
+      "total_elements": 786432,
+      "checked_elements": 786432,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b8_true_true",
+      "status": "PASS",
+      "total_elements": 786432,
+      "checked_elements": 786432,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b8_random_mask",
+      "status": "PASS",
+      "total_elements": 786432,
+      "checked_elements": 786432,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b8_sparse",
+      "status": "PASS",
+      "total_elements": 786432,
+      "checked_elements": 786432,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b8_dense",
+      "status": "PASS",
+      "total_elements": 786432,
+      "checked_elements": 786432,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b16_false_false",
+      "status": "PASS",
+      "total_elements": 1572864,
+      "checked_elements": 1572864,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b16_false_true",
+      "status": "PASS",
+      "total_elements": 1572864,
+      "checked_elements": 1572864,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b16_true_false",
+      "status": "PASS",
+      "total_elements": 1572864,
+      "checked_elements": 1572864,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b16_true_true",
+      "status": "PASS",
+      "total_elements": 1572864,
+      "checked_elements": 1572864,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b16_random_mask",
+      "status": "PASS",
+      "total_elements": 1572864,
+      "checked_elements": 1572864,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b16_sparse",
+      "status": "PASS",
+      "total_elements": 1572864,
+      "checked_elements": 1572864,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b16_dense",
+      "status": "PASS",
+      "total_elements": 1572864,
+      "checked_elements": 1572864,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b32_false_false",
+      "status": "PASS",
+      "total_elements": 3145728,
+      "checked_elements": 3145728,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b32_false_true",
+      "status": "PASS",
+      "total_elements": 3145728,
+      "checked_elements": 3145728,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b32_true_false",
+      "status": "PASS",
+      "total_elements": 3145728,
+      "checked_elements": 3145728,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b32_true_true",
+      "status": "PASS",
+      "total_elements": 3145728,
+      "checked_elements": 3145728,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b32_random_mask",
+      "status": "PASS",
+      "total_elements": 3145728,
+      "checked_elements": 3145728,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b32_sparse",
+      "status": "PASS",
+      "total_elements": 3145728,
+      "checked_elements": 3145728,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b32_dense",
+      "status": "PASS",
+      "total_elements": 3145728,
+      "checked_elements": 3145728,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b64_false_false",
+      "status": "PASS",
+      "total_elements": 6291456,
+      "checked_elements": 6291456,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b64_false_true",
+      "status": "PASS",
+      "total_elements": 6291456,
+      "checked_elements": 6291456,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b64_true_false",
+      "status": "PASS",
+      "total_elements": 6291456,
+      "checked_elements": 6291456,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b64_true_true",
+      "status": "PASS",
+      "total_elements": 6291456,
+      "checked_elements": 6291456,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b64_random_mask",
+      "status": "PASS",
+      "total_elements": 6291456,
+      "checked_elements": 6291456,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b64_sparse",
+      "status": "PASS",
+      "total_elements": 6291456,
+      "checked_elements": 6291456,
+      "mismatch_count": 0,
+      "error": ""
+    },
+    {
+      "batch": "b64_dense",
+      "status": "PASS",
+      "total_elements": 6291456,
+      "checked_elements": 6291456,
+      "mismatch_count": 0,
+      "error": ""
     }
   ],
-  "all_pass": false
+  "all_pass": true
 }

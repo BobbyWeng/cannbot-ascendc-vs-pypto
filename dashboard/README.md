@@ -1,75 +1,50 @@
 # PyPTO Operator Dashboard
 
-Unified visualization layer for all operator development status, correctness, performance, and profiling data.
+Unified visualization layer for operator development status, correctness, and performance.
 
-## Quick Start
+## Development Mode
 
 ```bash
-python dashboard/dashboard.py
+python dashboard.py
 ```
 
-Open `dashboard/index.html` in any browser (no server required).
+Scans `operators/*/` for live data. Requires the full repository checkout.
 
-## What It Does
+## Release Mode
 
-- Scans `operators/*/` automatically
-- Reads SPEC, reports, benchmarks, profiler data, correctness results
-- Generates a static HTML dashboard + JSON data file
-- New operators appear automatically — no manual maintenance
+```bash
+python dashboard.py --release reports/release/current_release.json
+```
+
+Reads only the release JSON — does NOT scan operator directories.
+Works with a sparse checkout containing only `dashboard/` and `reports/release/`.
 
 ## Output
 
 ```
 dashboard/
-├── index.html       ← Open in browser
-├── dashboard.json   ← Machine-readable data
-├── dashboard.py     ← Scanner/generator (single entry point)
-├── dashboard.css    ← Styles (embedded in HTML, also standalone)
-├── dashboard.js     ← Interactive logic (embedded in HTML, also standalone)
-├── assets/          ← Reserved for future assets
+├── index.html         ← Open in browser
+├── dashboard.json     ← Machine-readable data
+├── dashboard.py       ← Generator (single entry point)
+├── download_dashboard.sh  ← Sparse checkout helper
 └── README.md
 ```
 
 ## Features
 
-- **Overview**: Summary cards, progress bar, searchable/sortable operator table
-- **Operator Detail**: SPEC info, development pipeline, tabs for:
-  - Correctness (per-batch table + heatmap)
-  - Performance (latency per batch)
-  - Side-by-side comparison (Torch vs Ascend C vs PyPTO)
-  - Kernel timeline visualization
-  - Kernel type distribution (pie chart)
-  - Profiler data
-  - Version history
-- **Dark theme**: Inspired by GitHub Actions, W&B, TensorBoard
+- **Overview**: Summary cards, completion progress bar, searchable/sortable operator table
+- **Operator Detail**: SPEC info, per-route correctness, profiler metrics, known limitations
+- **Dark theme**: GitHub Actions inspired
 - **No server required**: Pure static HTML + JavaScript
 
 ## Architecture
 
 ```
-dashboard.py  →  scans operators/*/
-              →  generates dashboard.json
-              →  generates index.html (with embedded CSS/JS)
+dashboard.py --release reports/release/current_release.json
+    → reads release JSON (single source of truth)
+    → generates dashboard/dashboard.json
+    → generates dashboard/index.html (with embedded CSS/JS)
 ```
 
-`dashboard.json` is the single source of truth consumed by `index.html`.
-
-## Adding a New Operator
-
-Simply add the operator directory under `operators/` with the standard structure:
-
-```
-operators/{op}/
-├── SPEC.yaml
-├── experiment_config.yaml
-├── torch/          (benchmark_results.json, correctness_results.json)
-├── ascendc/        (src/, build/)
-├── pypto/          (golden/, src/, tests/)
-└── reports/
-    ├── raw/
-    ├── parsed/
-    └── final/
-        └── final_comparison.json
-```
-
-Then run `python dashboard/dashboard.py` — the new operator appears automatically.
+`dashboard.json` is consumed by `index.html`. Everything displayed comes from
+`reports/release/current_release.json` — no duplicated status tables.

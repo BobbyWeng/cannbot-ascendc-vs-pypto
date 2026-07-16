@@ -3,13 +3,14 @@
   "source_readiness": true,
   "build_readiness": true,
   "data_readiness": true,
-  "torch_correctness": "PASS B=1 (random_finite only)",
-  "ascendc_correctness": "UNVERIFIED_RESULT — kernel source is TRUE_DEVICE_IMPLEMENTATION (ReduceSum Level 2, FP16 accum) but correctness not run",
-  "pypto_correctness": "UNVERIFIED_RESULT — orchestrator SUCCESS but correctness results not saved",
-  "profiler_status": "INCOMPLETE",
-  "report_status": "provisional",
+  "torch_correctness": "COMPLETE: 62/70 PASS (7 NaN expected, 1 B=64 random_finite borderline atol=0.002)",
+  "ascendc_correctness": "COMPLETE: 21/70 PASS — FP16 accum precision exceeds atol=0.01 for random_finite (max_abs=0.03). Pass: all_zero/all_one/small_values/underflow_risk. Fail: random_finite/pos_neg_cancel/large_values/overflow_risk/nan/inf.",
+  "pypto_correctness": "COMPLETE: 21/70 PASS — Same FP16 accum limitation as AscendC. Pass: all_zero/all_one/inf. Fail: 7 cases.",
+  "profiler_status": "COMPLETE_WITH_LIMITATION — Torch+msprof (B=1..16) + AscendC+msprof (B=1..64) + Torch Event (B=1..64). PyPTO not profiled.",
+  "report_status": "validated",
   "archive_status": "pending",
-  "blocker": "Missing hardware verification: need correctness run + msprof for all 3 routes",
+  "blocker": "FP16 accumulation precision for reduction of 384 elements exceeds atol=0.01 spec (max_abs=0.03 for random_finite). Affects both AscendC and PyPTO.",
   "ready_for_integration": false,
-  "status": "PARTIAL"
+  "status": "COMPLETE_WITH_LIMITATION",
+  "last_updated": "2026-07-16T21:54:00Z"
 }

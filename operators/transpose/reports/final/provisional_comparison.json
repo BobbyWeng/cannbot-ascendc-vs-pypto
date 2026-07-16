@@ -1,1 +1,203 @@
-{"operator":"transpose","report_type":"provisional","status":"INCOMPLETE","correctness":{"torch":"PASS B=1..64","pypto":"PARTIAL (small PASS, large BLOCKED_BACKEND)","ascendc":"PASS (host fallback, not device-side)"},"pypto_blocker":"BLOCKED_BACKEND — CompileFunction pass failure for [256,384]","note":"Ascend C needs device-side kernel; PyPTO blocked for production shape"}
+{
+  "experiment": {
+    "operator": "transpose",
+    "formula": "Y[b,j,i] = X[b,i,j] (perm [0,2,1])",
+    "shape": "[B, 256, 384] -> [B, 384, 256]",
+    "dtype": "float16",
+    "warmup": 200,
+    "loops": 100,
+    "repeat": 5,
+    "profiler": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+    "npu_device": "Ascend910"
+  },
+  "correctness": {
+    "torch": {
+      "status": "PASS",
+      "batches_all_pass": true,
+      "bitwise": true,
+      "nan_count_per_batch": 8,
+      "inf_count_per_batch": 16
+    },
+    "ascendc": {
+      "status": "PASS",
+      "batches_all_pass": true,
+      "bitwise": true,
+      "nan_count_per_batch": 8,
+      "inf_count_per_batch": 16
+    },
+    "pypto": {
+      "status": "PASS (partial)",
+      "details": "Small [16,32],[32,16] PASS. [256,384] FAIL: CompileFunction backend error. Known BLOCKED_BACKEND."
+    }
+  },
+  "batches": {
+    "1": {
+      "torch": {
+        "primary_compute_kernel_us": 14.1,
+        "all_device_kernels_us": 82.359,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "aclnnInplaceCopy_TransposeAiCore_Transpose"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 106.2,
+        "all_device_kernels_us": 692.526,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "transpose_kernel"
+        ]
+      },
+      "pypto": {
+        "status": "BLOCKED_BACKEND",
+        "note": "CompileFunction fails for [256,384] slices in all batches"
+      }
+    },
+    "2": {
+      "torch": {
+        "primary_compute_kernel_us": 16.68,
+        "all_device_kernels_us": 88.291,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "aclnnInplaceCopy_TransposeAiCore_Transpose"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 199.84,
+        "all_device_kernels_us": 1345.145,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "transpose_kernel"
+        ]
+      },
+      "pypto": {
+        "status": "BLOCKED_BACKEND",
+        "note": "CompileFunction fails for [256,384] slices in all batches"
+      }
+    },
+    "4": {
+      "torch": {
+        "primary_compute_kernel_us": 22.48,
+        "all_device_kernels_us": 89.618,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "aclnnInplaceCopy_TransposeAiCore_Transpose"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 385.62,
+        "all_device_kernels_us": 2642.91,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "transpose_kernel"
+        ]
+      },
+      "pypto": {
+        "status": "BLOCKED_BACKEND",
+        "note": "CompileFunction fails for [256,384] slices in all batches"
+      }
+    },
+    "8": {
+      "torch": {
+        "primary_compute_kernel_us": 19.26,
+        "all_device_kernels_us": 86.096,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "aclnnInplaceCopy_TransposeAiCore_Transpose"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 762.3,
+        "all_device_kernels_us": 5272.676,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "transpose_kernel"
+        ]
+      },
+      "pypto": {
+        "status": "BLOCKED_BACKEND",
+        "note": "CompileFunction fails for [256,384] slices in all batches"
+      }
+    },
+    "16": {
+      "torch": {
+        "primary_compute_kernel_us": 20.18,
+        "all_device_kernels_us": 99.836,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "aclnnInplaceCopy_TransposeAiCore_Transpose"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 1510.6,
+        "all_device_kernels_us": 10517.667,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "transpose_kernel"
+        ]
+      },
+      "pypto": {
+        "status": "BLOCKED_BACKEND",
+        "note": "CompileFunction fails for [256,384] slices in all batches"
+      }
+    },
+    "32": {
+      "torch": {
+        "primary_compute_kernel_us": 26.2,
+        "all_device_kernels_us": 122.163,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "aclnnInplaceCopy_TransposeAiCore_Transpose"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 3014.6,
+        "all_device_kernels_us": 21008.479,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "transpose_kernel"
+        ]
+      },
+      "pypto": {
+        "status": "BLOCKED_BACKEND",
+        "note": "CompileFunction fails for [256,384] slices in all batches"
+      }
+    },
+    "64": {
+      "torch": {
+        "primary_compute_kernel_us": 37.64,
+        "all_device_kernels_us": 176.919,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "aclnnInplaceCopy_TransposeAiCore_Transpose"
+        ]
+      },
+      "ascendc": {
+        "primary_compute_kernel_us": 6016.54,
+        "all_device_kernels_us": 41980.095,
+        "kernel_type": "KERNEL_AIVEC",
+        "kernels_per_call": 7.0,
+        "kernel_names": [
+          "transpose_kernel"
+        ]
+      },
+      "pypto": {
+        "status": "BLOCKED_BACKEND",
+        "note": "CompileFunction fails for [256,384] slices in all batches"
+      }
+    }
+  }
+}

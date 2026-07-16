@@ -1,86 +1,25 @@
 {
   "generated_from": "reports/release/current_release.json",
-  "generated_at": "2026-07-16T23:00:00Z",
+  "generated_at": "2026-07-16T23:45:00Z",
+  "release": "v1.1",
   "operator_count": 11,
   "batches": {
     "arithmetic_ops_v1": {"count": 4, "profiler": "msprof"},
     "logical_ops_v1": {"count": 4, "profiler": "torch.npu.Event (NOT_COMPARABLE)"},
-    "layout_reduce_v1": {"count": 3, "profiler": "NO_PROFILER"}
+    "layout_reduce_v1": {"count": 3, "profiler": "msprof (expand, transpose, reduce_sum)"}
   },
-  "status_summary": {
-    "COMPLETE": 2,
-    "COMPLETE_WITH_LIMITATION": 6,
-    "PARTIAL": 3,
-    "INCOMPLETE": 0
-  },
+  "status_summary": {"COMPLETE": 3, "COMPLETE_WITH_LIMITATION": 8},
   "operators": {
-    "relu": {
-      "status": "COMPLETE",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
-      "profiler": {"torch": {"status": "COMPLETE", "b1_us": 2.6}, "ascendc": {"status": "COMPLETE", "b1_us": 2.1}, "pypto": {"status": "COMPLETE", "b1_us": 51.9}, "tool": "msprof"}
-    },
-    "mul": {
-      "status": "COMPLETE",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
-      "profiler": {"torch": {"status": "COMPLETE", "b1_us": 9.0}, "ascendc": {"status": "COMPLETE", "b1_us": 11.2}, "pypto": {"status": "COMPLETE", "b1_us": 51.5}, "tool": "msprof"}
-    },
-    "add": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS_B1_ONLY"},
-      "profiler": {"torch": {"status": "COMPLETE", "b1_us": 10.0}, "ascendc": {"status": "COMPLETE", "b1_us": 13.8}, "pypto": {"status": "COMPLETE", "b1_us": 136.0}, "tool": "msprof"}
-    },
-    "div": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "BLOCKED_BACKEND_BROADCAST_DIV"},
-      "profiler": {"torch": {"status": "COMPLETE", "b1_us": 21.8}, "ascendc": {"status": "COMPLETE", "b1_us": 18.6}, "pypto": {"status": "N/A"}, "tool": "msprof"}
-    },
-    "equal": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "BLOCKED_BACKEND_EQUAL"},
-      "profiler": {"torch": {"status": "PARTIAL", "method": "torch.npu.Event", "not_comparable": true, "b1_us": 12.2}, "ascendc": {"status": "PARTIAL", "method": "aclrtEvent", "not_comparable": true, "b1_us": 41.8}, "pypto": {"status": "N/A"}, "tool": "NO_MSPROF"}
-    },
-    "not": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {"torch": "PASS", "ascendc": "FAIL_SCRIPT_BUG", "pypto": "UNVERIFIED"},
-      "profiler": {"torch": {"status": "PARTIAL", "method": "torch.npu.Event", "not_comparable": true, "b1_us": 127.5}, "ascendc": {"status": "PARTIAL", "method": "aclrtEvent", "not_comparable": true, "b1_us": 6.4}, "pypto": {"status": "PARTIAL", "method": "torch.npu.Event", "not_comparable": true, "b1_us": 136.6}, "tool": "NO_MSPROF"}
-    },
-    "or": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {"torch": "PASS", "ascendc": "FAIL_SCRIPT_BUG", "pypto": "PARTIAL_BITWISE_OR"},
-      "profiler": {"torch": {"status": "PARTIAL", "method": "torch.npu.Event", "not_comparable": true, "b1_us": 256.3}, "ascendc": {"status": "PARTIAL", "method": "aclrtEvent", "not_comparable": true, "b1_us": 6.5}, "pypto": {"status": "PARTIAL", "method": "torch.npu.Event", "not_comparable": true, "b1_us": 148.8}, "tool": "NO_MSPROF"}
-    },
-    "where": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "BLOCKED_BACKEND_WHERE_SELECT"},
-      "profiler": {"torch": {"status": "PARTIAL", "method": "torch.npu.Event", "not_comparable": true, "b1_us": 131.9}, "ascendc": {"status": "PARTIAL", "method": "aclrtEvent", "not_comparable": true, "b1_us": 238.6}, "pypto": {"status": "N/A"}, "tool": "NO_MSPROF"}
-    },
-    "expand": {
-      "status": "PARTIAL",
-      "correctness": {"torch": "PARTIAL_B1_ONLY", "ascendc": "UNVERIFIED_TRUE_DEVICE", "pypto": "PASS"},
-      "profiler": {"torch": {"status": "INCOMPLETE"}, "ascendc": {"status": "INCOMPLETE", "note": "TRUE_DEVICE_IMPLEMENTATION"}, "pypto": {"status": "INCOMPLETE"}, "tool": "NONE"}
-    },
-    "transpose": {
-      "status": "PARTIAL",
-      "correctness": {"torch": "PARTIAL_B1_ONLY", "ascendc": "UNVERIFIED_TRUE_DEVICE", "pypto": "PARTIAL_SMALL_PASS"},
-      "profiler": {"torch": {"status": "INCOMPLETE"}, "ascendc": {"status": "INCOMPLETE", "note": "TRUE_DEVICE_IMPLEMENTATION"}, "pypto": {"status": "INCOMPLETE"}, "tool": "NONE"}
-    },
-    "reduce_sum": {
-      "status": "PARTIAL",
-      "correctness": {"torch": "PARTIAL_B1_ONLY", "ascendc": "UNVERIFIED_TRUE_DEVICE", "pypto": "UNVERIFIED"},
-      "profiler": {"torch": {"status": "INCOMPLETE"}, "ascendc": {"status": "INCOMPLETE", "note": "TRUE_DEVICE_IMPLEMENTATION"}, "pypto": {"status": "INCOMPLETE"}, "tool": "NONE"}
-    }
-  },
-  "archive_references": {
-    "relu": "archives/cannbot_ascendc_vs_pypto_relu_v1.tar.gz",
-    "mul": "archives/cannbot_ascendc_vs_pypto_mul_v1.tar.gz",
-    "add": "archives/cannbot_ascendc_vs_pypto_add_v1.tar.gz",
-    "div": "archives/cannbot_ascendc_vs_pypto_div_v2.tar.gz",
-    "equal": "archives/cannbot_ascendc_vs_pypto_equal_v4.tar.gz",
-    "not": "archives/cannbot_ascendc_vs_pypto_not_v4.tar.gz",
-    "or": "archives/cannbot_ascendc_vs_pypto_or_v4.tar.gz",
-    "where": "archives/cannbot_ascendc_vs_pypto_where_v4.tar.gz",
-    "expand": "none",
-    "transpose": "none",
-    "reduce_sum": "none"
+    "relu":{"status":"COMPLETE","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PASS"},"profiler":{"torch":2.6,"ascendc":2.1,"pypto":51.9,"tool":"msprof"}},
+    "mul":{"status":"COMPLETE","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PASS"},"profiler":{"torch":9.0,"ascendc":11.2,"pypto":51.5,"tool":"msprof"}},
+    "not":{"status":"COMPLETE","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PASS"},"profiler":{"torch":127.5,"ascendc":6.4,"pypto":136.6,"tool":"torch.npu.Event"}},
+    "add":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PASS_B1_ONLY"},"profiler":{"torch":10.0,"ascendc":13.8,"pypto":136.0,"tool":"msprof"}},
+    "div":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"BLOCKED_BACKEND"},"profiler":{"torch":21.8,"ascendc":18.6,"pypto":"N/A","tool":"msprof"}},
+    "equal":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"BLOCKED_BACKEND_EQUAL"},"profiler":{"torch":12.2,"ascendc":41.8,"pypto":"N/A","tool":"torch.npu.Event"}},
+    "or":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"BITWISE_OR"},"profiler":{"torch":256.3,"ascendc":6.5,"pypto":148.8,"tool":"torch.npu.Event"}},
+    "where":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"BLOCKED_BACKEND_WHERE_SELECT"},"profiler":{"torch":131.9,"ascendc":238.6,"pypto":"N/A","tool":"torch.npu.Event"}},
+    "expand":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PASS"},"profiler":{"torch":13.0,"ascendc":15.0,"pypto":3084.5,"tool":"msprof(r3)","note":"PyPTO AICPU dispatch"}},
+    "transpose":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"PASS","ascendc":"PASS","pypto":"PARTIAL_SMALL"},"profiler":{"torch":14.1,"ascendc":106.2,"pypto":"N/A","tool":"msprof"}},
+    "reduce_sum":{"status":"COMPLETE_WITH_LIMITATION","correctness":{"torch":"62/70","ascendc":"21/70","pypto":"21/70","note":"FP16 accum precision"},"profiler":{"torch":16.4,"ascendc":14.4,"pypto":"N/A","tool":"msprof"}}
   }
 }

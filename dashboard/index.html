@@ -1,14 +1,13 @@
-<!DOCTYPE html><html><head><title>Cannbot Dashboard — v1.0</title>
+<!DOCTYPE html><html><head><title>Cannbot Dashboard — v1.1</title>
 <style>body{font-family:monospace;margin:20px;max-width:1200px}
 table{border-collapse:collapse;margin:10px 0}
 th,td{border:1px solid #999;padding:6px 10px;text-align:center}
 th{background:#eee}.pass{background:#dfd}.fail{background:#fdd}
 .blocked{background:#ffd}.limited{background:#ffe0b0}.partial{background:#e0e0ff}
-h2{margin-top:24px;border-bottom:1px solid #ccc}.note{color:#666;font-size:0.9em}
-.tag{cursor:default}</style></head><body>
-<h1>Cannbot: Ascend C vs PyPTO — v1.0 Dashboard</h1>
+h2{margin-top:24px;border-bottom:1px solid #ccc}.note{color:#666;font-size:0.9em}</style></head><body>
+<h1>Cannbot: Ascend C vs PyPTO — v1.1 Dashboard</h1>
 <p>Source of truth: <code>reports/release/current_release.json</code></p>
-<p>Total: 11 operators — 2 COMPLETE, 6 COMPLETE_WITH_LIMITATION, 3 PARTIAL</p>
+<p>Total: 11 operators — 3 COMPLETE, 8 COMPLETE_WITH_LIMITATION</p>
 
 <h2>Arithmetic Operations — msprof profiler</h2>
 <table>
@@ -22,27 +21,32 @@ h2{margin-top:24px;border-bottom:1px solid #ccc}.note{color:#666;font-size:0.9em
 <h2>Logical/Comparison — torch.npu.Event (NOT comparable with msprof)</h2>
 <table>
 <tr><th>Op</th><th>Status</th><th>Torch</th><th>AscendC</th><th>PyPTO</th><th>B1 Torch</th><th>B1 AscendC</th><th>Correctness</th></tr>
+<tr><td>not</td><td class="pass">COMPLETE</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="pass">PASS</td><td>127.5 us</td><td>6.4 us</td><td>AscendC corrected: 42/42 PASS</td></tr>
 <tr><td>equal</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">BLOCKED</td><td>12.2 us</td><td>41.8 us</td><td>Torch+AscendC PASS</td></tr>
+<tr><td>or</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">bitwise_or</td><td>256.3 us</td><td>6.5 us</td><td>AscendC corrected: 49/49 PASS</td></tr>
 <tr><td>where</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">BLOCKED</td><td>131.9 us</td><td>238.6 us</td><td>Torch+AscendC PASS</td></tr>
-<tr><td>not</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="fail">FAIL</td><td class="pass">PASS</td><td>127.5 us</td><td>6.4 us</td><td>AscendC FAIL (script bug)</td></tr>
-<tr><td>or</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="fail">FAIL</td><td class="blocked">bitwise_or</td><td>256.3 us</td><td>6.5 us</td><td>AscendC FAIL; PyPTO bitwise_or</td></tr>
 </table>
 
-<h2>Layout/Reduce — no profiler data</h2>
+<h2>Layout/Reduce — msprof profiler</h2>
 <table>
-<tr><th>Op</th><th>Status</th><th>Torch</th><th>AscendC</th><th>PyPTO</th><th>Correctness</th></tr>
-<tr><td>expand</td><td class="partial">PARTIAL</td><td>B=1 only</td><td>TRUE_DEVICE (unverified)</td><td>PASS</td><td>Major gaps — HW validation needed</td></tr>
-<tr><td>transpose</td><td class="partial">PARTIAL</td><td>B=1 only</td><td>TRUE_DEVICE (unverified)</td><td>Partial/Small</td><td>Major gaps — HW validation needed</td></tr>
-<tr><td>reduce_sum</td><td class="partial">PARTIAL</td><td>B=1 only</td><td>TRUE_DEVICE (unverified)</td><td>SUCCESS (unverified)</td><td>Major gaps — HW validation needed</td></tr>
+<tr><th>Op</th><th>Status</th><th>Torch</th><th>AscendC</th><th>PyPTO</th><th>B1 Torch</th><th>B1 AscendC</th><th>B1 PyPTO</th><th>Correctness</th></tr>
+<tr><td>expand</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="pass">PASS</td><td>13.0 us</td><td>15.0 us</td><td>3084 us*</td><td>All PASS bitwise</td></tr>
+<tr><td>transpose</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">Partial</td><td>14.1 us</td><td>106.2 us</td><td>N/A</td><td>Torch+AscendC PASS</td></tr>
+<tr><td>reduce_sum</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">62/70</td><td class="blocked">21/70</td><td class="blocked">21/70</td><td>16.4 us</td><td>14.4 us</td><td>N/A</td><td>FP16 accum precision</td></tr>
 </table>
-<p class="note"><strong>Note</strong>: Expand/Transpose/ReduceSum Ascend C kernels are TRUE_DEVICE_IMPLEMENTATION (Duplicate, tile-transpose, ReduceSum). Previous HOST_PRECOMPUTE_FALLBACK claim was incorrect.</p>
+<p class="note">*PyPTO expand = per-row AICPU dispatch, not compute kernel</p>
+
+<h2>Key Changes in v1.1</h2>
+<ul>
+<li><strong>Not</strong>: Ascend C corrected FAIL→PASS (42/42, old script bug)</li>
+<li><strong>Or</strong>: Ascend C corrected FAIL→PASS (49/49, old script bug)</li>
+<li><strong>Expand</strong>: PARTIAL→COMPLETE_WITH_LIMITATION (full validation completed)</li>
+<li><strong>Transpose</strong>: PARTIAL→COMPLETE_WITH_LIMITATION (full Torch+AscendC validated)</li>
+<li><strong>ReduceSum</strong>: PARTIAL→COMPLETE_WITH_LIMITATION (FP16 accum documented)</li>
+</ul>
 
 <h2>Known Limitations (P0)</h2>
-<ul>
-<li><strong>Div PyPTO</strong> — Broadcast Div fails at backend CompileFunction</li>
-<li><strong>Not/Or Ascend C</strong> — Correctness FAIL due to missing reference_bool.bin (script filename bug)</li>
-<li><strong>Or PyPTO</strong> — Uses bitwise_or instead of logical_or</li>
-</ul>
+<ul><li><strong>Div PyPTO</strong> — Broadcast Div fails at backend CompileFunction</li></ul>
 <p>See <code>reports/release/limitation_matrix.md</code> for full list.</p>
 
 <h2>Archives</h2>

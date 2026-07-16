@@ -1,1547 +1,2478 @@
 {
   "operator": "reduce_sum",
   "variant": "pypto",
-  "all_pass": false,
   "results": [
     {
       "batch": 1,
       "case": "random_finite",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         1,
         256,
         384
       ],
-      "shape_out": [
-        1,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.03125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 1.8
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 175,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 175,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 0.300048828125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 random_finite fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 236,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 236,
+        "max_abs_diff": 0.1640625,
+        "max_rel_diff": 0.34228515625,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 random_finite fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 1,
       "case": "all_zero",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         1,
         256,
         384
       ],
-      "shape_out": [
-        1,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 all_zero fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 all_zero fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 1,
       "case": "all_one",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         1,
         256,
         384
       ],
-      "shape_out": [
-        1,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 all_one fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 all_one fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 1,
       "case": "pos_neg_cancel",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         1,
         256,
         384
       ],
-      "shape_out": [
-        1,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 65,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 65,
+        "max_abs_diff": 0.125,
+        "max_rel_diff": 0.0006432533264160156,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 pos_neg_cancel fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 228,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 228,
+        "max_abs_diff": 1.375,
+        "max_rel_diff": 0.006557464599609375,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 pos_neg_cancel fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 1,
       "case": "small_values",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         1,
         256,
         384
       ],
-      "shape_out": [
-        1,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 4e-06,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 176,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 176,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 0.126708984375,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 small_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 235,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 235,
+        "max_abs_diff": 1.430511474609375e-05,
+        "max_rel_diff": 0.97119140625,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 small_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 1,
       "case": "large_values",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         1,
         256,
         384
       ],
-      "shape_out": [
-        1,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 96.0,
-      "nan_actual": 75,
-      "nan_ref": 0,
-      "inf_actual": 158,
-      "inf_ref": 145,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 139,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 139,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 75,
+        "inf_count": 158,
+        "label": "B=1 large_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 130,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 130,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 75,
+        "inf_count": 158,
+        "label": "B=1 large_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 1,
       "case": "overflow_risk",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         1,
         256,
         384
       ],
-      "shape_out": [
-        1,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 3,
-      "nan_ref": 0,
-      "inf_actual": 253,
-      "inf_ref": 256,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 3,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 3,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 3,
+        "inf_count": 253,
+        "label": "B=1 overflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 3,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 3,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 3,
+        "inf_count": 253,
+        "label": "B=1 overflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 1,
       "case": "underflow_risk",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         1,
         256,
         384
       ],
-      "shape_out": [
-        1,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 26,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 26,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 underflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 127,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 127,
+        "max_abs_diff": 1.7881393432617188e-06,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=1 underflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 1,
       "case": "nan",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         1,
         256,
         384
       ],
-      "shape_out": [
-        1,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 256,
-      "nan_ref": 256,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 256,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 256,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 256,
+        "inf_count": 0,
+        "label": "B=1 nan fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 256,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 256,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 256,
+        "inf_count": 0,
+        "label": "B=1 nan fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 1,
       "case": "inf",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         1,
         256,
         384
       ],
-      "shape_out": [
-        1,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 256,
-      "inf_ref": 256,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 256,
+        "label": "B=1 inf fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 256,
+        "label": "B=1 inf fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 2,
       "case": "random_finite",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         2,
         256,
         384
       ],
-      "shape_out": [
-        2,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.03125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 1.78
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 357,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 357,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 0.51953125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 random_finite fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 472,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 472,
+        "max_abs_diff": 0.1640625,
+        "max_rel_diff": 1.2861328125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 random_finite fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 2,
       "case": "all_zero",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         2,
         256,
         384
       ],
-      "shape_out": [
-        2,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 all_zero fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 all_zero fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 2,
       "case": "all_one",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         2,
         256,
         384
       ],
-      "shape_out": [
-        2,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 all_one fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 all_one fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 2,
       "case": "pos_neg_cancel",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         2,
         256,
         384
       ],
-      "shape_out": [
-        2,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 135,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 135,
+        "max_abs_diff": 0.125,
+        "max_rel_diff": 0.00063323974609375,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 pos_neg_cancel fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 463,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 463,
+        "max_abs_diff": 1.5,
+        "max_rel_diff": 0.006992340087890625,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 pos_neg_cancel fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 2,
       "case": "small_values",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         2,
         256,
         384
       ],
-      "shape_out": [
-        2,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 4e-06,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 352,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 352,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 0.126708984375,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 small_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 476,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 476,
+        "max_abs_diff": 1.52587890625e-05,
+        "max_rel_diff": 0.97119140625,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 small_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 2,
       "case": "large_values",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         2,
         256,
         384
       ],
-      "shape_out": [
-        2,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 104.0,
-      "nan_actual": 148,
-      "nan_ref": 0,
-      "inf_actual": 311,
-      "inf_ref": 282,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 285,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 285,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 148,
+        "inf_count": 311,
+        "label": "B=2 large_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 257,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 257,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 148,
+        "inf_count": 311,
+        "label": "B=2 large_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 2,
       "case": "overflow_risk",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         2,
         256,
         384
       ],
-      "shape_out": [
-        2,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 7,
-      "nan_ref": 0,
-      "inf_actual": 505,
-      "inf_ref": 512,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 7,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 7,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 7,
+        "inf_count": 505,
+        "label": "B=2 overflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 7,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 7,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 7,
+        "inf_count": 505,
+        "label": "B=2 overflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 2,
       "case": "underflow_risk",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         2,
         256,
         384
       ],
-      "shape_out": [
-        2,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 55,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 55,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 underflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 256,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 256,
+        "max_abs_diff": 1.7881393432617188e-06,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=2 underflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 2,
       "case": "nan",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         2,
         256,
         384
       ],
-      "shape_out": [
-        2,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 512,
-      "nan_ref": 512,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 512,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 512,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 512,
+        "inf_count": 0,
+        "label": "B=2 nan fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 512,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 512,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 512,
+        "inf_count": 0,
+        "label": "B=2 nan fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 2,
       "case": "inf",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         2,
         256,
         384
       ],
-      "shape_out": [
-        2,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 512,
-      "inf_ref": 512,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 512,
+        "label": "B=2 inf fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 512,
+        "label": "B=2 inf fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 4,
       "case": "random_finite",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         4,
         256,
         384
       ],
-      "shape_out": [
-        4,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.03125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 1.779
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 706,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 706,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 26.421875,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 random_finite fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 938,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 938,
+        "max_abs_diff": 0.265625,
+        "max_rel_diff": 7.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 random_finite fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 4,
       "case": "all_zero",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         4,
         256,
         384
       ],
-      "shape_out": [
-        4,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 all_zero fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 all_zero fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 4,
       "case": "all_one",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         4,
         256,
         384
       ],
-      "shape_out": [
-        4,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 all_one fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 all_one fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 4,
       "case": "pos_neg_cancel",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         4,
         256,
         384
       ],
-      "shape_out": [
-        4,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 262,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 262,
+        "max_abs_diff": 0.125,
+        "max_rel_diff": 0.000644683837890625,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 pos_neg_cancel fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 913,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 913,
+        "max_abs_diff": 1.625,
+        "max_rel_diff": 0.00788116455078125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 pos_neg_cancel fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 4,
       "case": "small_values",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         4,
         256,
         384
       ],
-      "shape_out": [
-        4,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 4e-06,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 704,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 704,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 0.178955078125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 small_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 943,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 943,
+        "max_abs_diff": 1.52587890625e-05,
+        "max_rel_diff": 2.02734375,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 small_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 4,
       "case": "large_values",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         4,
         256,
         384
       ],
-      "shape_out": [
-        4,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 128.0,
-      "nan_actual": 285,
-      "nan_ref": 0,
-      "inf_actual": 630,
-      "inf_ref": 568,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 562,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 562,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 285,
+        "inf_count": 630,
+        "label": "B=4 large_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 520,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 520,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 285,
+        "inf_count": 630,
+        "label": "B=4 large_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 4,
       "case": "overflow_risk",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         4,
         256,
         384
       ],
-      "shape_out": [
-        4,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 11,
-      "nan_ref": 0,
-      "inf_actual": 1013,
-      "inf_ref": 1024,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 11,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 11,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 11,
+        "inf_count": 1013,
+        "label": "B=4 overflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 11,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 11,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 11,
+        "inf_count": 1013,
+        "label": "B=4 overflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 4,
       "case": "underflow_risk",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         4,
         256,
         384
       ],
-      "shape_out": [
-        4,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 107,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 107,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 underflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 495,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 495,
+        "max_abs_diff": 1.9073486328125e-06,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=4 underflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 4,
       "case": "nan",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         4,
         256,
         384
       ],
-      "shape_out": [
-        4,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 1024,
-      "nan_ref": 1024,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1024,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1024,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 1024,
+        "inf_count": 0,
+        "label": "B=4 nan fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1024,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1024,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 1024,
+        "inf_count": 0,
+        "label": "B=4 nan fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 4,
       "case": "inf",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         4,
         256,
         384
       ],
-      "shape_out": [
-        4,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 1024,
-      "inf_ref": 1024,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 1024,
+        "label": "B=4 inf fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 1024,
+        "label": "B=4 inf fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 8,
       "case": "random_finite",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         8,
         256,
         384
       ],
-      "shape_out": [
-        8,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.03125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 1.778
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1385,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1385,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 26.421875,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 random_finite fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1874,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1874,
+        "max_abs_diff": 0.265625,
+        "max_rel_diff": 7.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 random_finite fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 8,
       "case": "all_zero",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         8,
         256,
         384
       ],
-      "shape_out": [
-        8,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 all_zero fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 all_zero fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 8,
       "case": "all_one",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         8,
         256,
         384
       ],
-      "shape_out": [
-        8,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 all_one fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 all_one fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 8,
       "case": "pos_neg_cancel",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         8,
         256,
         384
       ],
-      "shape_out": [
-        8,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 567,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 567,
+        "max_abs_diff": 0.125,
+        "max_rel_diff": 0.0006504058837890625,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 pos_neg_cancel fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1842,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1842,
+        "max_abs_diff": 1.625,
+        "max_rel_diff": 0.0077972412109375,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 pos_neg_cancel fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 8,
       "case": "small_values",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         8,
         256,
         384
       ],
-      "shape_out": [
-        8,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 4e-06,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1393,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1393,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 1.2861328125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 small_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1878,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1878,
+        "max_abs_diff": 1.9073486328125e-05,
+        "max_rel_diff": 6.33203125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 small_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 8,
       "case": "large_values",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         8,
         256,
         384
       ],
-      "shape_out": [
-        8,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 164.0,
-      "nan_actual": 603,
-      "nan_ref": 0,
-      "inf_actual": 1214,
-      "inf_ref": 1130,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1144,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1144,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 603,
+        "inf_count": 1214,
+        "label": "B=8 large_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1066,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1066,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 603,
+        "inf_count": 1214,
+        "label": "B=8 large_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 8,
       "case": "overflow_risk",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         8,
         256,
         384
       ],
-      "shape_out": [
-        8,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 30,
-      "nan_ref": 0,
-      "inf_actual": 2018,
-      "inf_ref": 2048,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 30,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 30,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 30,
+        "inf_count": 2018,
+        "label": "B=8 overflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 30,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 30,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 30,
+        "inf_count": 2018,
+        "label": "B=8 overflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 8,
       "case": "underflow_risk",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         8,
         256,
         384
       ],
-      "shape_out": [
-        8,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 207,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 207,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 underflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 970,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 970,
+        "max_abs_diff": 2.1457672119140625e-06,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=8 underflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 8,
       "case": "nan",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         8,
         256,
         384
       ],
-      "shape_out": [
-        8,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 2048,
-      "nan_ref": 2048,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 2048,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 2048,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 2048,
+        "inf_count": 0,
+        "label": "B=8 nan fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 2048,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 2048,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 2048,
+        "inf_count": 0,
+        "label": "B=8 nan fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 8,
       "case": "inf",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         8,
         256,
         384
       ],
-      "shape_out": [
-        8,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 2048,
-      "inf_ref": 2048,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 2048,
+        "label": "B=8 inf fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 2048,
+        "label": "B=8 inf fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 16,
       "case": "random_finite",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         16,
         256,
         384
       ],
-      "shape_out": [
-        16,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.03125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 1.782
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 2781,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 2781,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 26.421875,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 random_finite fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 3759,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 3759,
+        "max_abs_diff": 0.265625,
+        "max_rel_diff": 7.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 random_finite fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 16,
       "case": "all_zero",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         16,
         256,
         384
       ],
-      "shape_out": [
-        16,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 all_zero fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 all_zero fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 16,
       "case": "all_one",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         16,
         256,
         384
       ],
-      "shape_out": [
-        16,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 all_one fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 all_one fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 16,
       "case": "pos_neg_cancel",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         16,
         256,
         384
       ],
-      "shape_out": [
-        16,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1168,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1168,
+        "max_abs_diff": 0.125,
+        "max_rel_diff": 0.00064849853515625,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 pos_neg_cancel fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 3709,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 3709,
+        "max_abs_diff": 1.75,
+        "max_rel_diff": 0.00801849365234375,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 pos_neg_cancel fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 16,
       "case": "small_values",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         16,
         256,
         384
       ],
-      "shape_out": [
-        16,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 4e-06,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 2781,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 2781,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 1.2861328125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 small_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 3730,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 3730,
+        "max_abs_diff": 2.288818359375e-05,
+        "max_rel_diff": 6.33203125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 small_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 16,
       "case": "large_values",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         16,
         256,
         384
       ],
-      "shape_out": [
-        16,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 192.0,
-      "nan_actual": 1186,
-      "nan_ref": 0,
-      "inf_actual": 2456,
-      "inf_ref": 2287,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 2252,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 2252,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 1186,
+        "inf_count": 2456,
+        "label": "B=16 large_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 2119,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 2119,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 1186,
+        "inf_count": 2456,
+        "label": "B=16 large_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 16,
       "case": "overflow_risk",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         16,
         256,
         384
       ],
-      "shape_out": [
-        16,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 45,
-      "nan_ref": 0,
-      "inf_actual": 4051,
-      "inf_ref": 4096,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 45,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 45,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 45,
+        "inf_count": 4051,
+        "label": "B=16 overflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 46,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 46,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 45,
+        "inf_count": 4051,
+        "label": "B=16 overflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 16,
       "case": "underflow_risk",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         16,
         256,
         384
       ],
-      "shape_out": [
-        16,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 430,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 430,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 underflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1925,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1925,
+        "max_abs_diff": 2.1457672119140625e-06,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=16 underflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 16,
       "case": "nan",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         16,
         256,
         384
       ],
-      "shape_out": [
-        16,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 4096,
-      "nan_ref": 4096,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 4096,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 4096,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 4096,
+        "inf_count": 0,
+        "label": "B=16 nan fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 4096,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 4096,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 4096,
+        "inf_count": 0,
+        "label": "B=16 nan fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 16,
       "case": "inf",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         16,
         256,
         384
       ],
-      "shape_out": [
-        16,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 4096,
-      "inf_ref": 4096,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 4096,
+        "label": "B=16 inf fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 4096,
+        "label": "B=16 inf fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 32,
       "case": "random_finite",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         32,
         256,
         384
       ],
-      "shape_out": [
-        32,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.03125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 1.801
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 5652,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 5652,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 26.421875,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 random_finite fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 7528,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 7528,
+        "max_abs_diff": 0.265625,
+        "max_rel_diff": 7.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 random_finite fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 32,
       "case": "all_zero",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         32,
         256,
         384
       ],
-      "shape_out": [
-        32,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 all_zero fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 all_zero fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 32,
       "case": "all_one",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         32,
         256,
         384
       ],
-      "shape_out": [
-        32,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 all_one fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 all_one fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 32,
       "case": "pos_neg_cancel",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         32,
         256,
         384
       ],
-      "shape_out": [
-        32,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 2342,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 2342,
+        "max_abs_diff": 0.125,
+        "max_rel_diff": 0.0006499290466308594,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 pos_neg_cancel fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 7356,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 7356,
+        "max_abs_diff": 1.875,
+        "max_rel_diff": 0.0086212158203125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 pos_neg_cancel fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 32,
       "case": "small_values",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         32,
         256,
         384
       ],
-      "shape_out": [
-        32,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 4e-06,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 5540,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 5540,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 1.6669921875,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 small_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 7470,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 7470,
+        "max_abs_diff": 2.288818359375e-05,
+        "max_rel_diff": 6.33203125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 small_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 32,
       "case": "large_values",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         32,
         256,
         384
       ],
-      "shape_out": [
-        32,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 192.0,
-      "nan_actual": 2396,
-      "nan_ref": 0,
-      "inf_actual": 4909,
-      "inf_ref": 4593,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 4468,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 4468,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 2396,
+        "inf_count": 4909,
+        "label": "B=32 large_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 4239,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 4239,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 2396,
+        "inf_count": 4909,
+        "label": "B=32 large_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 32,
       "case": "overflow_risk",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         32,
         256,
         384
       ],
-      "shape_out": [
-        32,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 96,
-      "nan_ref": 0,
-      "inf_actual": 8096,
-      "inf_ref": 8192,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 96,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 96,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 96,
+        "inf_count": 8096,
+        "label": "B=32 overflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 97,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 97,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 96,
+        "inf_count": 8096,
+        "label": "B=32 overflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 32,
       "case": "underflow_risk",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         32,
         256,
         384
       ],
-      "shape_out": [
-        32,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 885,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 885,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 underflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 3903,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 3903,
+        "max_abs_diff": 2.6226043701171875e-06,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=32 underflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 32,
       "case": "nan",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         32,
         256,
         384
       ],
-      "shape_out": [
-        32,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 8192,
-      "nan_ref": 8192,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 8192,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 8192,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 8192,
+        "inf_count": 0,
+        "label": "B=32 nan fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 8192,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 8192,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 8192,
+        "inf_count": 0,
+        "label": "B=32 nan fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 32,
       "case": "inf",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         32,
         256,
         384
       ],
-      "shape_out": [
-        32,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 8192,
-      "inf_ref": 8192,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 8192,
+        "label": "B=32 inf fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 8192,
+        "label": "B=32 inf fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 64,
       "case": "random_finite",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         64,
         256,
         384
       ],
-      "shape_out": [
-        64,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.03125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 1.852
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 11282,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 11282,
+        "max_abs_diff": 0.03125,
+        "max_rel_diff": 26.421875,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 random_finite fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 15041,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 15041,
+        "max_abs_diff": 0.28125,
+        "max_rel_diff": 7.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 random_finite fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 64,
       "case": "all_zero",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         64,
         256,
         384
       ],
-      "shape_out": [
-        64,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 all_zero fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 all_zero fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 64,
       "case": "all_one",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         64,
         256,
         384
       ],
-      "shape_out": [
-        64,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 all_one fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 all_one fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     },
     {
       "batch": 64,
       "case": "pos_neg_cancel",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         64,
         256,
         384
       ],
-      "shape_out": [
-        64,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.125,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "FP16_accum_precision",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 4749,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 4749,
+        "max_abs_diff": 0.125,
+        "max_rel_diff": 0.0006456375122070312,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 pos_neg_cancel fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 14710,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 14710,
+        "max_abs_diff": 1.875,
+        "max_rel_diff": 0.009063720703125,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 pos_neg_cancel fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 64,
       "case": "small_values",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         64,
         256,
         384
       ],
-      "shape_out": [
-        64,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 4e-06,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 11163,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 11163,
+        "max_abs_diff": 3.814697265625e-06,
+        "max_rel_diff": 11.0,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 small_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 14993,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 14993,
+        "max_abs_diff": 2.288818359375e-05,
+        "max_rel_diff": Infinity,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 small_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 64,
       "case": "large_values",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         64,
         256,
         384
       ],
-      "shape_out": [
-        64,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 192.0,
-      "nan_actual": 4824,
-      "nan_ref": 0,
-      "inf_actual": 9741,
-      "inf_ref": 9200,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 8904,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 8904,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 4824,
+        "inf_count": 9741,
+        "label": "B=64 large_values fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 8520,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 8520,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 4824,
+        "inf_count": 9741,
+        "label": "B=64 large_values fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 64,
       "case": "overflow_risk",
-      "status": "FAIL",
-      "shape_in": [
+      "shape": [
         64,
         256,
         384
       ],
-      "shape_out": [
-        64,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 207,
-      "nan_ref": 0,
-      "inf_actual": 16177,
-      "inf_ref": 16384,
-      "failure_type": "Inf_mismatch",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 207,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 207,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 207,
+        "inf_count": 16177,
+        "label": "B=64 overflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 208,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 208,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 207,
+        "inf_count": 16177,
+        "label": "B=64 overflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 64,
       "case": "underflow_risk",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         64,
         256,
         384
       ],
-      "shape_out": [
-        64,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 1753,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 1753,
+        "max_abs_diff": 2.384185791015625e-07,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 underflow_risk fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 7829,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 7829,
+        "max_abs_diff": 2.6226043701171875e-06,
+        "max_rel_diff": NaN,
+        "nan_count": 0,
+        "inf_count": 0,
+        "label": "B=64 underflow_risk fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 64,
       "case": "nan",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         64,
         256,
         384
       ],
-      "shape_out": [
-        64,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 16384,
-      "nan_ref": 16384,
-      "inf_actual": 0,
-      "inf_ref": 0,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 16384,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 16384,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 16384,
+        "inf_count": 0,
+        "label": "B=64 nan fp32-accum"
+      },
+      "fp16_path": {
+        "status": "FAIL",
+        "bitwise_equal": false,
+        "bitwise_mismatch_count": 16384,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 16384,
+        "max_abs_diff": NaN,
+        "max_rel_diff": NaN,
+        "nan_count": 16384,
+        "inf_count": 0,
+        "label": "B=64 nan fp16-path"
+      },
+      "status": "FAIL"
     },
     {
       "batch": 64,
       "case": "inf",
-      "status": "PASS",
-      "shape_in": [
+      "shape": [
         64,
         256,
         384
       ],
-      "shape_out": [
-        64,
-        256
-      ],
-      "accumulation_dtype": "FP16 via pypto.sum",
-      "max_abs_diff_vs_torch": 0.0,
-      "nan_actual": 0,
-      "nan_ref": 0,
-      "inf_actual": 16384,
-      "inf_ref": 16384,
-      "failure_type": "none",
-      "elapsed_sec": 0.0
+      "dtype": "float16",
+      "fp32_accum": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 16384,
+        "label": "B=64 inf fp32-accum"
+      },
+      "fp16_path": {
+        "status": "PASS",
+        "bitwise_equal": true,
+        "bitwise_mismatch_count": 0,
+        "signed_zero_mismatch_count": 0,
+        "numeric_mismatch_count": 0,
+        "max_abs_diff": 0.0,
+        "max_rel_diff": 0.0,
+        "nan_count": 0,
+        "inf_count": 16384,
+        "label": "B=64 inf fp16-path"
+      },
+      "status": "PASS",
+      "match_reference": "fp32_accum"
     }
-  ]
+  ],
+  "all_pass": false
 }

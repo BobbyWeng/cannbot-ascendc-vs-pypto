@@ -1,5 +1,25 @@
-metric,torch,pypto,ascendc
-correctness,PASS B=1..64,PASS B=1..64,PASS (host fallback)
-profiler,PENDING,PENDING,HOST_FALLBACK_NOT_COMPARABLE
-device_side,yes,yes,NO (identity kernel only)
-status,COMPLETE,PARTIAL,INCOMPLETE
+metric,torch,ascendc,pypto
+correctness,PASS B=1..64,PASS B=1..64,PASS B=1..64
+b1_primary_compute_kernel_us,13.02,15.04,3084.48
+b1_all_device_kernels_us,20.188,3048.827,39083.833
+b1_kernel_count,500,28192,79105
+b2_primary_compute_kernel_us,14.48,16.32,2965.24
+b2_all_device_kernels_us,21.557,3140.123,76812.663
+b2_kernel_count,500,28192,158209
+b4_primary_compute_kernel_us,13.36,19.84,3172.16
+b4_all_device_kernels_us,22.026,3501.027,155007.229
+b4_kernel_count,500,28192,316417
+b8_primary_compute_kernel_us,14.38,27.72,3721.78
+b8_all_device_kernels_us,23.64,6275.942,311213.719
+b8_kernel_count,500,28192,632833
+b16_primary_compute_kernel_us,11.94,49.66,3082.56
+b16_all_device_kernels_us,25.052,12284.831,625020.655
+b16_kernel_count,500,28192,1265665
+b32_primary_compute_kernel_us,14.42,91.8,2918.7
+b32_all_device_kernels_us,33.485,23963.338,1265597.514
+b32_kernel_count,500,28192,2531329
+b64_primary_compute_kernel_us,17.5,177.86,2796.34
+b64_all_device_kernels_us,47.357,48298.528,2507501.139
+b64_kernel_count,500,28192,5062657
+device_side,yes,yes,yes (per-row JIT)
+status,COMPLETE,COMPLETE,COMPLETE

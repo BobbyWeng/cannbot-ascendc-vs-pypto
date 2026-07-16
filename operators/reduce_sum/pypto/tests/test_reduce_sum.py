@@ -34,7 +34,7 @@ def test_reduce_sum():
         for case in COVERAGE_CASES:
             shape = (B,) + SHAPE_TAIL
             x_path = os.path.join(DATA_DIR, f"x_b{B}_{case}.bin")
-            x = torch.from_numpy(np.fromfile(x_path, dtype=torch.float16).reshape(shape))
+            x = torch.from_numpy(np.fromfile(x_path, dtype=np.float16).reshape(shape))
 
             expected = reduce_sum_golden(x)
 
