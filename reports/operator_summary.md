@@ -1,36 +1,34 @@
 # Operator Summary
 
-## Core Arithmetic — COMPLETE
+Generated from `reports/release/current_release.json` — single source of truth.
 
-| Operator | Status | Torch (msprof) | Ascend C (msprof) | PyPTO (msprof MIX_AIC) |
-|----------|--------|:--------------:|:-----------------:|:----------------------:|
-| relu | COMPLETE | 2.6 us | 2.1 us | 51.9 us |
-| mul | COMPLETE | 9.0 us | 11.2 us | 51.5 us |
-| add | COMPLETE | 10.0 us | 13.8 us | 136.0 us |
-| div | COMPLETE_WITH_LIMITATION | 21.8 us | 18.6 us | BLOCKED_BACKEND |
+## Status Dashboard
 
-## Logical/Comparison — COMPLETE_WITH_LIMITATION (no msprof)
+| Operator | Final Status | Torch | Ascend C | PyPTO | Correctness | Profiler |
+|----------|-------------|-------|----------|-------|-------------|----------|
+| relu | **COMPLETE** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ✅ Full batch (7/7) | ✅ msprof |
+| mul | **COMPLETE** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ✅ Full batch (7/7) | ✅ msprof |
+| add | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ⚠️ PyPTO B=1 only persisted | ✅ msprof |
+| div | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ❌ BLOCKED_BACKEND | ✅ Torch+AscendC (B=1..32) | ✅ msprof |
+| equal | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ❌ BLOCKED_BACKEND | ✅ Torch+AscendC | ⚠️ torch.npu.Event |
+| not | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ❌ AscendC FAIL (script bug) | ⚠️ torch.npu.Event |
+| or | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ⚠️ bitwise_or | ❌ AscendC FAIL (script bug) | ⚠️ torch.npu.Event |
+| where | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ❌ BLOCKED_BACKEND | ✅ Torch+AscendC | ⚠️ torch.npu.Event |
+| expand | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ✅ PASS | ⚠️ Major gaps | ❌ No msprof |
+| transpose | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ⚠️ Partial | ⚠️ Major gaps | ❌ No msprof |
+| reduce_sum | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ✅ SUCCESS (unverified) | ⚠️ Major gaps | ❌ No msprof |
 
-| Operator | Status | Torch (Event) | Ascend C (aclrtEvent) | PyPTO |
-|----------|--------|:------------:|:--------------------:|:-----:|
-| equal | COMPLETE_WITH_LIMITATION | 12.2 us | 41.8 us | BLOCKED_BACKEND_EQUAL |
-| where | COMPLETE_WITH_LIMITATION | 131.9 us | 238.6 us | BLOCKED_BACKEND_WHERE |
+## Performance Summary (B=1 primary compute kernel, μs)
 
-## Logical — REPORT_OUTDATED (correctness FAIL)
+| Operator | Torch | Ascend C | PyPTO compute | Fastest |
+|----------|:-----:|:--------:|:-------------:|:-------:|
+| relu | 2.6 | 2.1 | 51.9 | Ascend C |
+| mul | 9.0 | 11.2 | 51.5 | Torch |
+| add | 10.0 | 13.8 | 136.0 | Torch |
+| div | 21.8 | 18.6 | N/A | Ascend C |
 
-| Operator | Status | Torch (Event) | Ascend C (aclrtEvent) | PyPTO |
-|----------|--------|:------------:|:--------------------:|:-----:|
-| not | REPORT_OUTDATED | 127.5 us | 6.4 us | 136.6 us |
-| or | REPORT_OUTDATED | 256.3 us | 6.5 us | 148.8 us |
+## Important Corrections
 
-Not/Or: Ascend C correctness shows all batches FAIL (script bug). Reports falsely claim PASS.
-
-## Layout/Reduce — INCOMPLETE
-
-| Operator | Status | Torch | Ascend C | PyPTO |
-|----------|--------|:-----:|:--------:|:-----:|
-| expand | INCOMPLETE | B=1 only | HOST_PRECOMPUTE | PARTIAL |
-| transpose | INCOMPLETE | B=1 only | HOST_PRECOMPUTE | BLOCKED (large) |
-| reduce_sum | INCOMPLETE | B=1 only | HOST_PRECOMPUTE | SUCCESS (no correctness) |
-
-All times B=1. Arithmetic operators use msprof (primary compute kernel). Logical/comparison operators use torch.npu.Event/aclrtEvent (host-synchronized) — NOT comparable.
+1. **Expand/Transpose/ReduceSum Ascend C**: Source code confirmed as **TRUE_DEVICE_IMPLEMENTATION**. Duplicate, tile-transpose, ReduceSum Level 2 kernels. Previous HOST_PRECOMPUTE_FALLBACK claim was incorrect.
+2. **Not/Or Ascend C**: Correctness FAIL due to missing reference_bool.bin files (script bug). Kernel may be correct.
+3. **All Event-based profilers**: Not comparable with msprof arithmetic data.

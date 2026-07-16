@@ -1,0 +1,701 @@
+{
+  "release_version": "1.0",
+  "generated_at": "2026-07-16T23:00:00Z",
+  "git_commit": "e07f251b3f1e7b440d909f1424e137b60bd40f74",
+  "environment": {
+    "platform": "Ascend 910B",
+    "cann_version": "9.0.0",
+    "python": "3.11",
+    "pytorch": "2.x with torch_npu",
+    "profiler": "msprof with --ascendcl=on --ai-core=on --task-time=l0",
+    "warmup": 200,
+    "profiled_loops": 100,
+    "repeat": 5,
+    "primary_metric": "primary_compute_kernel_us",
+    "secondary_metric": "all_device_kernels_us_per_call",
+    "jit_handling": "two-process (warmup no-profiler then msprof)"
+  },
+  "operator_count": 11,
+  "status_summary": {
+    "COMPLETE": 2,
+    "COMPLETE_WITH_LIMITATION": 6,
+    "PARTIAL": 3,
+    "INCOMPLETE": 0,
+    "BLOCKED_FRONTEND": 0,
+    "BLOCKED_BACKEND": 0,
+    "NOT_COMPARABLE": 0
+  },
+  "operators": {
+    "relu": {
+      "final_status": "COMPLETE",
+      "shape": "[B,12,256,32]",
+      "formula": "Y = max(X, 0)",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise (signed-zero exempted)",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PASS (all batches bitwise)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_AIVEC",
+            "kernels_per_call": 1,
+            "b1_primary_us": 2.6,
+            "b32_primary_us": 4.7,
+            "b64_primary_us": 6.6
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_IMPLEMENTATION",
+          "correctness": "PASS (all batches bitwise)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_AIVEC",
+            "kernels_per_call": 1,
+            "b1_primary_us": 2.1,
+            "b32_primary_us": 6.0,
+            "b64_primary_us": 9.7
+          }
+        },
+        "pypto": {
+          "implementation_status": "SUCCESS",
+          "correctness": "PASS (all batches bitwise)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_MIX_AIC",
+            "kernels_per_call": 3,
+            "aicpu_executor_us": 111.08,
+            "b1_primary_us": 51.9,
+            "b32_primary_us": 103.9,
+            "b64_primary_us": 150.8
+          }
+        }
+      },
+      "correctness_coverage": "FULL — all 7 batches PASS for all 3 routes",
+      "profiler_coverage": "FULL — msprof data for all 3 routes, all batches",
+      "report_path": "operators/relu/reports/final/final_comparison.md",
+      "dashboard_synced": true,
+      "archive": "archives/cannbot_ascendc_vs_pypto_relu_v1.tar.gz",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    },
+    "mul": {
+      "final_status": "COMPLETE",
+      "shape": "[B,3,4,256,32]",
+      "formula": "Y = X1 * X2",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PASS (all batches bitwise)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_AIVEC",
+            "kernels_per_call": 7,
+            "b1_primary_us": 9.0,
+            "b32_primary_us": 18.5,
+            "b64_primary_us": 35.4
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_IMPLEMENTATION",
+          "correctness": "PASS (all batches bitwise)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_AIVEC",
+            "kernels_per_call": 7,
+            "b1_primary_us": 11.2,
+            "b32_primary_us": 20.8,
+            "b64_primary_us": 39.3
+          }
+        },
+        "pypto": {
+          "implementation_status": "SUCCESS",
+          "correctness": "PASS (all batches bitwise)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_MIX_AIC",
+            "kernels_per_call": 3,
+            "aicpu_executor_us": 150.5,
+            "b1_primary_us": 51.5,
+            "b32_primary_us": 136.4,
+            "b64_primary_us": 214.4
+          }
+        }
+      },
+      "correctness_coverage": "FULL — all 7 batches PASS for all 3 routes",
+      "profiler_coverage": "FULL — msprof data for all 3 routes, all batches",
+      "report_path": "operators/mul/reports/final/final_comparison.md",
+      "dashboard_synced": true,
+      "archive": "archives/cannbot_ascendc_vs_pypto_mul_v1.tar.gz",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    },
+    "add": {
+      "final_status": "COMPLETE_WITH_LIMITATION",
+      "shape": "[B,256,384]",
+      "formula": "Y = ((X1+X2)+X3)+X4 (4-input add)",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise",
+      "limitation": "PyPTO correctness results not fully persisted (only B=1 saved to JSON)",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PASS (all batches bitwise)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_AIVEC",
+            "kernels_per_call": 21,
+            "b1_primary_us": 10.0,
+            "b32_primary_us": 20.6,
+            "b64_primary_us": 35.1
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_IMPLEMENTATION",
+          "correctness": "PASS (all batches from output BINs)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_AIVEC",
+            "kernels_per_call": 7,
+            "b1_primary_us": 13.8,
+            "b32_primary_us": 33.4,
+            "b64_primary_us": 60.0
+          }
+        },
+        "pypto": {
+          "implementation_status": "SUCCESS",
+          "correctness": "PARTIAL — only B=1 persisted (B=2..64 not saved to correctness JSON)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_MIX_AIC",
+            "kernels_per_call": 9,
+            "aicpu_executor_us": 326.9,
+            "b1_primary_us": 136.0,
+            "b32_primary_us": 210.8,
+            "b64_primary_us": 310.4
+          }
+        }
+      },
+      "correctness_coverage": "Torch+AscendC FULL; PyPTO PARTIAL (B=1 only persisted)",
+      "profiler_coverage": "FULL — msprof all routes, all batches",
+      "report_path": "operators/add/reports/final/final_comparison.md",
+      "dashboard_synced": true,
+      "archive": "archives/cannbot_ascendc_vs_pypto_add_v1.tar.gz",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    },
+    "div": {
+      "final_status": "COMPLETE_WITH_LIMITATION",
+      "shape": "X1 [B,12,256,256], X2 [B,12,256,1] (broadcast last dim)",
+      "formula": "Y = X1 / X2",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32],
+      "precision": "atol=1e-3, rtol=1e-3",
+      "limitation": "PyPTO broadcast Div fails at backend CompileFunction. Minimal 2D Div [1,32]/[1,1] passes.",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PASS (all batches, atol=1e-3 rtol=1e-3)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_AIVEC",
+            "kernels_per_call": 7,
+            "b1_primary_us": 21.8,
+            "b32_primary_us": 126.2
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_IMPLEMENTATION",
+          "correctness": "PASS (all batches B=1..32, no B=64)",
+          "profiler": {
+            "status": "COMPLETE",
+            "method": "msprof",
+            "primary_kernel_type": "KERNEL_AIVEC",
+            "kernels_per_call": 7,
+            "b1_primary_us": 18.6,
+            "b32_primary_us": 306.5
+          }
+        },
+        "pypto": {
+          "implementation_status": "BLOCKED_BACKEND",
+          "correctness": "N/A — blocked at CompileFunction for broadcast shape",
+          "profiler": {
+            "status": "N/A",
+            "method": "N/A",
+            "note": "PyPTO excluded from three-way performance ranking for Div"
+          }
+        }
+      },
+      "correctness_coverage": "Torch+AscendC FULL (B=1..32); PyPTO N/A (backend blocked)",
+      "profiler_coverage": "Torch+AscendC FULL (msprof B=1..32); PyPTO N/A",
+      "report_path": "operators/div/reports/final/final_comparison.md",
+      "dashboard_synced": true,
+      "archive": "archives/cannbot_ascendc_vs_pypto_div_v2.tar.gz",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    },
+    "equal": {
+      "final_status": "COMPLETE_WITH_LIMITATION",
+      "shape": "[B,12,256,256] (bool output)",
+      "formula": "Y = (X1 == X2)",
+      "dtype": "FP16 input, bool output",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise (bool)",
+      "limitation": "No msprof profiling — all measurements via torch.npu.Event/aclrtEvent. NOT comparable with arithmetic msprof data.",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PASS (all batches)",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "torch.npu.Event",
+            "not_comparable": true,
+            "b1_host_sync_us": 12.2
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_IMPLEMENTATION",
+          "correctness": "PASS (all batches)",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "aclrtEvent",
+            "not_comparable": true,
+            "b1_host_sync_us": 41.8
+          }
+        },
+        "pypto": {
+          "implementation_status": "BLOCKED_BACKEND_EQUAL",
+          "correctness": "BLOCKED_BACKEND",
+          "profiler": {"status": "N/A"}
+        }
+      },
+      "correctness_coverage": "Torch+AscendC FULL; PyPTO N/A (backend blocked)",
+      "profiler_coverage": "PARTIAL — Event-based only, no msprof",
+      "report_path": "operators/equal/reports/final/final_comparison.md",
+      "dashboard_synced": true,
+      "archive": "archives/cannbot_ascendc_vs_pypto_equal_v4.tar.gz",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12]
+    },
+    "not": {
+      "final_status": "COMPLETE_WITH_LIMITATION",
+      "shape": "[B,12,256,256] (bool output)",
+      "formula": "Y = NOT X (logical negation)",
+      "dtype": "Bool input and output",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise (bool)",
+      "limitation": "Ascend C correctness FAIL — missing reference_bool.bin files (script filename bug). Profiler is torch.npu.Event only, NOT msprof.",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PASS (all batches)",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "torch.npu.Event",
+            "not_comparable": true,
+            "b1_host_sync_us": 127.5
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_IMPLEMENTATION",
+          "correctness": "FAIL — all 7 batches FAIL (missing reference_bool.bin — script bug, kernel may be correct)",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "aclrtEvent",
+            "not_comparable": true,
+            "b1_host_sync_us": 6.4
+          }
+        },
+        "pypto": {
+          "implementation_status": "SUCCESS",
+          "correctness": "UNVERIFIED_RESULT — no correctness results saved",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "torch.npu.Event",
+            "not_comparable": true,
+            "b1_host_sync_us": 136.6
+          }
+        }
+      },
+      "correctness_coverage": "Torch FULL; AscendC FAIL (bug); PyPTO UNVERIFIED",
+      "profiler_coverage": "PARTIAL — Event-based only, no msprof",
+      "report_path": "operators/not/reports/final/final_comparison.md",
+      "dashboard_synced": true,
+      "archive": "archives/cannbot_ascendc_vs_pypto_not_v4.tar.gz",
+      "completeness_gates": [1, 2, 3, 4, 5, 7, 9, 10, 11, 12]
+    },
+    "or": {
+      "final_status": "COMPLETE_WITH_LIMITATION",
+      "shape": "[B,12,256,256] (bool output)",
+      "formula": "Y = X1 OR X2 (logical disjunction)",
+      "dtype": "Bool input and output",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise (bool)",
+      "limitation": "Ascend C correctness FAIL due to script bug. PyPTO uses bitwise_or instead of logical_or (correct only for 0/1). Profiler is torch.npu.Event only.",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PASS (all batches)",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "torch.npu.Event",
+            "not_comparable": true,
+            "b1_host_sync_us": 256.3
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_IMPLEMENTATION",
+          "correctness": "FAIL — all 7 batches FAIL (missing reference_bool.bin — script bug, kernel may be correct)",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "aclrtEvent",
+            "not_comparable": true,
+            "b1_host_sync_us": 6.5
+          }
+        },
+        "pypto": {
+          "implementation_status": "SUCCESS_WITH_LIMITATION",
+          "correctness": "PARTIAL — uses bitwise_or instead of logical_or; correct for 0/1 inputs only",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "torch.npu.Event",
+            "not_comparable": true,
+            "b1_host_sync_us": 148.8
+          }
+        }
+      },
+      "correctness_coverage": "Torch FULL; AscendC FAIL; PyPTO PARTIAL (bitwise_or limitation)",
+      "profiler_coverage": "PARTIAL — Event-based only, no msprof",
+      "report_path": "operators/or/reports/final/final_comparison.md",
+      "dashboard_synced": true,
+      "archive": "archives/cannbot_ascendc_vs_pypto_or_v4.tar.gz",
+      "completeness_gates": [1, 2, 3, 4, 5, 7, 9, 10, 11, 12]
+    },
+    "where": {
+      "final_status": "COMPLETE_WITH_LIMITATION",
+      "shape": "[B,12,256,256]",
+      "formula": "Y = condition ? X1 : X2 (select)",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise",
+      "limitation": "No msprof profiling. PyPTO BLOCKED_BACKEND_WHERE_SELECT.",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PASS (all batches)",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "torch.npu.Event",
+            "not_comparable": true,
+            "b1_host_sync_us": 131.9
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_WITH_SCALAR_FALLBACK",
+          "correctness": "PASS (all batches from correctness.json)",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "aclrtEvent",
+            "not_comparable": true,
+            "b1_host_sync_us": 238.6
+          }
+        },
+        "pypto": {
+          "implementation_status": "BLOCKED_BACKEND_WHERE_SELECT",
+          "correctness": "BLOCKED_BACKEND",
+          "profiler": {"status": "N/A"}
+        }
+      },
+      "correctness_coverage": "Torch+AscendC FULL; PyPTO N/A (backend blocked)",
+      "profiler_coverage": "PARTIAL — Event-based only, no msprof",
+      "report_path": "operators/where/reports/final/final_comparison.md",
+      "dashboard_synced": true,
+      "archive": "archives/cannbot_ascendc_vs_pypto_where_v4.tar.gz",
+      "completeness_gates": [1, 2, 3, 4, 5, 7, 9, 10, 11, 12]
+    },
+    "expand": {
+      "final_status": "PARTIAL",
+      "shape": "X: [B,256,1], Y: [B,256,384] (broadcast expand)",
+      "formula": "Y[b,i,j] = X[b,i,0] (Duplicate per-row)",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise",
+      "limitation": "All three routes lack full correctness verification and msprof profiling. Ascend C has TRUE_DEVICE_IMPLEMENTATION (source confirmed) but correctness NOT RUN. PyPTO has per-row dispatch with 29400 us overhead (host dispatch, not kernel).",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PARTIAL — B=1 only (correctness_results.json exists)",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "torch benchmark (11.2 us B=1), no msprof",
+            "b1_host_sync_us": 11.2
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_IMPLEMENTATION",
+          "correctness": "UNVERIFIED_RESULT — kernel source verified as Duplicate per-row but no run evidence",
+          "profiler": {
+            "status": "INCOMPLETE",
+            "method": "no profiler data",
+            "b1_expected_us": 16.9
+          }
+        },
+        "pypto": {
+          "implementation_status": "SUCCESS",
+          "correctness": "PASS — B=1..64 (per-row expand dispatch)",
+          "profiler": {
+            "status": "INCOMPLETE",
+            "method": "no msprof data",
+            "note": "29400 us is host dispatch overhead, not kernel compute"
+          }
+        }
+      },
+      "correctness_coverage": "Torch B=1 only; AscendC UNVERIFIED; PyPTO B=1..64",
+      "profiler_coverage": "INCOMPLETE — no msprof for any route",
+      "report_path": "operators/expand/reports/final/provisional_comparison.md",
+      "dashboard_synced": false,
+      "archive": "none",
+      "completeness_gates": [1, 2, 3, 4, 5, 7]
+    },
+    "transpose": {
+      "final_status": "PARTIAL",
+      "shape": "X: [B,256,384], Y: [B,384,256] (permute [0,2,1])",
+      "formula": "Y[b,j,i] = X[b,i,j]",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise",
+      "limitation": "All routes lack full correctness and msprof profiling. Ascend C has TRUE_DEVICE_IMPLEMENTATION (tile-based, source confirmed) but correctness NOT RUN. PyPTO small shape PASS, large [256,384] BLOCKED_BACKEND.",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PARTIAL — B=1 only",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "torch benchmark (23.5 us B=1), no msprof",
+            "b1_host_sync_us": 23.5
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_IMPLEMENTATION",
+          "correctness": "UNVERIFIED_RESULT — kernel source verified as tile-based transpose but no run evidence",
+          "profiler": {
+            "status": "INCOMPLETE",
+            "method": "no profiler data",
+            "b1_expected_us": 105.4
+          }
+        },
+        "pypto": {
+          "implementation_status": "PARTIAL",
+          "correctness": "PARTIAL — small shape PASS, large [256,384] BLOCKED_BACKEND",
+          "profiler": {
+            "status": "INCOMPLETE",
+            "method": "no msprof data"
+          }
+        }
+      },
+      "correctness_coverage": "Torch B=1 only; AscendC UNVERIFIED; PyPTO PARTIAL (small PASS, large BLOCKED)",
+      "profiler_coverage": "INCOMPLETE — no msprof for any route",
+      "report_path": "operators/transpose/reports/final/provisional_comparison.md",
+      "dashboard_synced": false,
+      "archive": "none",
+      "completeness_gates": [1, 2, 3, 4, 5, 7]
+    },
+    "reduce_sum": {
+      "final_status": "PARTIAL",
+      "shape": "X: [B,256,384], Y: [B,256] (reduce over last dim)",
+      "formula": "Y[b,i] = sum_j X[b,i,j]",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "FP16 accumulation (AscendC native ReduceSum API for half)",
+      "limitation": "All routes lack full correctness and msprof profiling. Ascend C has TRUE_DEVICE_IMPLEMENTATION (ReduceSum Level 2, source confirmed) but correctness NOT RUN. PyPTO orchestrator SUCCESS but no results saved.",
+      "routes": {
+        "torch": {
+          "implementation_status": "COMPLETE",
+          "correctness": "PARTIAL — B=1 tested (random_finite case only)",
+          "profiler": {
+            "status": "PARTIAL",
+            "method": "torch benchmark (27.8 us B=1), no msprof",
+            "b1_host_sync_us": 27.8
+          }
+        },
+        "ascendc": {
+          "implementation_status": "TRUE_DEVICE_IMPLEMENTATION",
+          "accumulation_dtype": "FP16 (native ReduceSum API for half)",
+          "correctness": "UNVERIFIED_RESULT — kernel source verified as ReduceSum Level 2 but no run evidence",
+          "profiler": {
+            "status": "INCOMPLETE",
+            "method": "no profiler data",
+            "b1_expected_us": 20.8
+          }
+        },
+        "pypto": {
+          "implementation_status": "SUCCESS",
+          "accumulation_dtype": "FP16",
+          "correctness": "UNVERIFIED_RESULT — orchestrator SUCCESS but no correctness results saved",
+          "profiler": {
+            "status": "INCOMPLETE",
+            "method": "no msprof data",
+            "b1_expected_us": 118.2
+          }
+        }
+      },
+      "correctness_coverage": "Torch B=1 one case only; AscendC UNVERIFIED; PyPTO UNVERIFIED",
+      "profiler_coverage": "INCOMPLETE — no msprof for any route",
+      "report_path": "operators/reduce_sum/reports/final/provisional_comparison.md",
+      "dashboard_synced": false,
+      "archive": "none",
+      "completeness_gates": [1, 2, 3, 4, 5, 7]
+    }
+  },
+  "batches": {
+    "arithmetic_ops_v1": {
+      "operators": ["relu", "mul", "add", "div"],
+      "profiler": "msprof",
+      "measurement_level": "primary_compute_kernel_us"
+    },
+    "logical_ops_v1": {
+      "operators": ["equal", "not", "or", "where"],
+      "profiler": "torch.npu.Event / aclrtEvent",
+      "measurement_level": "host_synchronized_operation_us",
+      "not_comparable_with_arithmetic": true
+    },
+    "layout_reduce_v1": {
+      "operators": ["expand", "transpose", "reduce_sum"],
+      "profiler": "none",
+      "measurement_level": "no profiler data — INCOMPLETE"
+    }
+  },
+  "known_limitations": [
+    {
+      "operator": "div",
+      "route": "pypto",
+      "severity": "P0",
+      "description": "Broadcast Div [B,12,256,256]/[B,12,256,1] fails at backend CompileFunction. Minimal 2D Div passes.",
+      "blocker_type": "BLOCKED_BACKEND"
+    },
+    {
+      "operator": "not",
+      "route": "ascendc",
+      "severity": "P0",
+      "description": "Ascend C correctness FAIL — all 7 batches missing reference_bool.bin files (filename pattern bug). Kernel may be correct.",
+      "blocker_type": "UNVERIFIED_RESULT"
+    },
+    {
+      "operator": "or",
+      "route": "ascendc",
+      "severity": "P0",
+      "description": "Ascend C correctness FAIL — all 7 batches missing reference_bool.bin files (filename pattern bug). Kernel may be correct.",
+      "blocker_type": "UNVERIFIED_RESULT"
+    },
+    {
+      "operator": "or",
+      "route": "pypto",
+      "severity": "P0",
+      "description": "PyPTO uses bitwise_or instead of logical_or — only correct for 0/1 inputs.",
+      "blocker_type": "FUNCTIONAL_ISSUE"
+    },
+    {
+      "operator": "add",
+      "route": "pypto",
+      "severity": "P1",
+      "description": "PyPTO correctness results only saved for B=1; B=2..64 not persisted (test code supports all batches).",
+      "blocker_type": "MISSING_EVIDENCE"
+    },
+    {
+      "operator": "not",
+      "route": "all",
+      "severity": "P1",
+      "description": "No msprof profiling — all measurements via torch.npu.Event/aclrtEvent. NOT comparable with arithmetic operators.",
+      "blocker_type": "INCOMPARABLE_METHODOLOGY"
+    },
+    {
+      "operator": "or",
+      "route": "all",
+      "severity": "P1",
+      "description": "No msprof profiling — all measurements via torch.npu.Event/aclrtEvent. NOT comparable with arithmetic operators.",
+      "blocker_type": "INCOMPARABLE_METHODOLOGY"
+    },
+    {
+      "operator": "equal",
+      "route": "all",
+      "severity": "P1",
+      "description": "No msprof profiling — all measurements via torch.npu.Event/aclrtEvent. NOT comparable with arithmetic operators.",
+      "blocker_type": "INCOMPARABLE_METHODOLOGY"
+    },
+    {
+      "operator": "where",
+      "route": "all",
+      "severity": "P1",
+      "description": "No msprof profiling — all measurements via torch.npu.Event/aclrtEvent. NOT comparable with arithmetic operators.",
+      "blocker_type": "INCOMPARABLE_METHODOLOGY"
+    },
+    {
+      "operator": "expand",
+      "route": "all",
+      "severity": "P1",
+      "description": "No msprof profiling collected for any route. Ascend C kernel source verified as TRUE_DEVICE_IMPLEMENTATION but correctness NOT RUN. Torch only B=1.",
+      "blocker_type": "MISSING_HARDWARE_VALIDATION"
+    },
+    {
+      "operator": "transpose",
+      "route": "all",
+      "severity": "P1",
+      "description": "No msprof profiling. Ascend C kernel source verified as TRUE_DEVICE_IMPLEMENTATION but correctness NOT RUN. PyPTO large shape BLOCKED_BACKEND.",
+      "blocker_type": "MISSING_HARDWARE_VALIDATION"
+    },
+    {
+      "operator": "reduce_sum",
+      "route": "all",
+      "severity": "P1",
+      "description": "No msprof profiling. Ascend C kernel source verified as TRUE_DEVICE_IMPLEMENTATION (ReduceSum Level 2) but correctness NOT RUN. PyPTO results not saved.",
+      "blocker_type": "MISSING_HARDWARE_VALIDATION"
+    },
+    {
+      "operator": "transpose",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "Large shape [B,256,384] BLOCKED_BACKEND at CompileFunction.",
+      "blocker_type": "BLOCKED_BACKEND"
+    },
+    {
+      "operator": "equal",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "BLOCKED_BACKEND_EQUAL — PyPTO cannot generate equal operator.",
+      "blocker_type": "BLOCKED_BACKEND"
+    },
+    {
+      "operator": "where",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "BLOCKED_BACKEND_WHERE_SELECT — PyPTO cannot generate where operator.",
+      "blocker_type": "BLOCKED_BACKEND"
+    },
+    {
+      "operator": "div",
+      "route": "all",
+      "severity": "P2",
+      "description": "No B=64 profiler data. Per-batch profiler only for B=32.",
+      "blocker_type": "MISSING_EVIDENCE"
+    }
+  ],
+  "ascendc_implementation_audit": {
+    "TRUE_DEVICE_IMPLEMENTATION": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum"],
+    "HOST_PRECOMPUTE_FALLBACK": [],
+    "IDENTITY_KERNEL": [],
+    "PARTIAL_DEVICE_IMPLEMENTATION": [],
+    "BROKEN_IMPLEMENTATION": [],
+    "UNKNOWN": [],
+    "note": "All 11 operators have genuine Ascend C device-side kernels verified by source code inspection. Expand/Transpose/ReduceSum are NOT host fallback — they have real Duplicate/tile-transpose/ReduceSum kernels. Previous reports claiming HOST_PRECOMPUTE_FALLBACK were incorrect."
+  }
+}

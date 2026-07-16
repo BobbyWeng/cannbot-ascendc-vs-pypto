@@ -1,5 +1,0 @@
-Operator,Status,AscendC,Torch,PyPTO,Readme,SHA256SUMS,REPRODUCE,ProfilerRaw,ProfilerParsed,CorrectnessAllBatch,TestImportBug,Docs,Archive,Score
-ReLU,COMPLETE,PASS,PASS,SUCCESS,created,exists,exists,non-standard,exists,persisted,no-issue,complete,ok,7.5
-Mul,COMPLETE,PASS,PASS,SUCCESS,exists,regenerated,exists,exists,exists,persisted,no-issue,complete,needs-slim,8.0
-Add,COMPLETE,PASS,PASS,SUCCESS,created,created,created,needs-HW,needs-HW,persisted(B1-documented-all),fixed-add_wrapper-missing-add_4,complete,needs-HW,7.5
-Div,COMPLETE_WITH_LIMITATION,PASS,PASS,BACKEND-LIMITATION,exists,exists,exists,partial-B32-only,partial-B32-only,persisted,div_wrapper-cache-fixed,complete,ok,7.8

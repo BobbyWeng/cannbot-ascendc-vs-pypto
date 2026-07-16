@@ -1,9 +1,0 @@
-operator,pypto_jit_source_status,pypto_jit_error,pypto_backend_status,pypto_backend_error,pypto_correctness,pypto_blocker
-relu,PASS (standard import),none,PASS,none,PASS B=1..64,none
-mul,PASS (standard import),none,PASS,none,PASS B=1..64,none
-add,PASS (standard import),none,PASS,none,PASS B=1..64,none
-not,PASS (standard import),none,PASS,none,PASS B=1..64,none
-or,PASS (standard import),none,PASS,none,PASS B=1..64,none
-expand,PASS (standard import),none,PASS,none,PASS B=1,none (per-row dispatch)
-transpose,PASS (standard import),none,PARTIAL (small shapes PASS),CompileFunction run pass failed for [256,384],PASS [16,32] FAIL [256,384],BLOCKED_BACKEND (large tensors)
-reduce_sum,PASS (standard import),none,PASS,none,PASS B=1 (FP16 accum precision),none

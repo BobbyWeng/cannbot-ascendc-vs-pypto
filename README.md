@@ -9,112 +9,67 @@ cannbot_ascendc_vs_pypto/
 ├── README.md                        # This file
 ├── AGENTS.md                        # Agent configuration
 ├── environment/                     # Environment and version manifests
-│   ├── environment_manifest.json
-│   └── preflight.sh
 ├── common/                          # Shared libraries
-│   ├── schemas/                     # JSON schemas
-│   ├── benchmark/                   # Benchmark utilities
-│   ├── correctness/                 # Correctness checking
-│   ├── profiler/                    # Profiler parsing
-│   └── reporting/                   # Report generation
 ├── operators/                       # Operator comparison directories
 │   ├── relu/                        # ReLU (COMPLETE)
-│   ├── add/                         # Addition (COMPLETE)
+│   ├── add/                         # Addition (COMPLETE_WITH_LIMITATION)
 │   ├── mul/                         # Multiplication (COMPLETE)
-│   ├── div/                         # Division (COMPLETE, PyPTO backend limitation)
+│   ├── div/                         # Division (COMPLETE_WITH_LIMITATION)
 │   ├── equal/                       # Equal (COMPLETE_WITH_LIMITATION)
-│   ├── not/                         # LogicalNot (REPORT_OUTDATED - needs correction)
-│   ├── or/                          # LogicalOr (REPORT_OUTDATED - needs correction)
+│   ├── not/                         # LogicalNot (COMPLETE_WITH_LIMITATION)
+│   ├── or/                          # LogicalOr (COMPLETE_WITH_LIMITATION)
 │   ├── where/                       # Where (COMPLETE_WITH_LIMITATION)
-│   ├── expand/                      # Expand (INCOMPLETE)
-│   ├── transpose/                   # Transpose (INCOMPLETE)
-│   ├── reduce_sum/                  # ReduceSum (INCOMPLETE)
+│   ├── expand/                      # Expand (PARTIAL)
+│   ├── transpose/                   # Transpose (PARTIAL)
+│   ├── reduce_sum/                  # ReduceSum (PARTIAL)
 ├── templates/                       # Templates for new operators
-│   └── operator_template/
 ├── reports/                         # Project-level reports
+│   ├── release/                     # Current release (single source of truth)
+│   │   ├── current_release.json     # Machine-readable release state
+│   │   ├── current_release.md       # Human-readable release summary
+│   │   ├── operator_matrix.csv      # Operator status matrix
+│   │   ├── performance_matrix.csv   # Performance comparison
+│   │   ├── correctness_matrix.csv   # Correctness coverage
+│   │   ├── limitation_matrix.md     # Known limitations
+│   │   └── limitation_matrix.json   # Machine-readable limitations
+│   ├── batches/                     # Batch-level current reports
+│   └── operator_summary.md          # Quick-reference summary
 ├── scripts/                         # Project-level scripts
-└── AGENTS.md
+└── archives/                        # Operator archive packages
 ```
-
-## Operator Directory Structure
-
-Each operator under `operators/{op}/` follows a consistent structure:
-
-```
-operators/{op}/
-├── README.md                        # Operator-specific README
-├── SPEC.yaml                        # Operator specification
-├── experiment_config.yaml           # Experiment configuration
-├── data/                            # Input data and reference
-│   ├── manifest.json
-│   └── generation_scripts/
-├── torch/                           # Torch baseline
-│   ├── benchmark.py
-│   └── correctness.py
-├── ascendc/                         # Ascend C implementation
-│   ├── src/
-│   ├── CMakeLists.txt
-│   ├── build/
-│   ├── scripts/
-│   └── artifact_manifest.json
-├── pypto/                           # PyPTO implementation
-│   ├── SPEC/
-│   ├── API_REPORT/
-│   ├── DESIGN/
-│   ├── golden/
-│   ├── src/
-│   ├── tests/
-│   ├── scripts/
-│   └── artifact_manifest.json
-├── benchmark/                       # Benchmark runners
-│   ├── run_all.sh
-│   ├── profiler_config/
-│   └── parse_profiler.py
-├── reports/                         # Results
-│   ├── raw/
-│   ├── parsed/
-│   ├── correctness/
-│   └── final/
-├── REPRODUCE.md                     # Reproduction guide
-└── SHA256SUMS                       # File integrity hashes
-```
-
-## Adding a New Operator
-
-To add a new operator, use the template:
-
-```bash
-cp -r templates/operator_template/ operators/{op_name}/
-# Then customize all {{ variable }} placeholders
-```
-
-Refer to the `templates/operator_template/archive_checklist.md` for the complete verification checklist.
 
 ## Operator Status
 
-| Operator | Torch Baseline | Ascend C | PyPTO | Correctness | Profiler | Report | Status |
-|----------|---------------|----------|-------|-------------|----------|--------|--------|
-| relu     | ✅ COMPLETE | ✅ TRUE_DEVICE_IMPLEMENTATION | ✅ SUCCESS | ✅ PASS (all B) | ✅ msprof | ✅ Complete | ✅ COMPLETE |
-| mul      | ✅ COMPLETE | ✅ TRUE_DEVICE_IMPLEMENTATION | ✅ SUCCESS | ✅ PASS (all B) | ✅ msprof | ✅ Complete | ✅ COMPLETE |
-| add      | ✅ COMPLETE | ✅ TRUE_DEVICE_IMPLEMENTATION | ✅ SUCCESS | ✅ PASS (all B) | ✅ msprof | ✅ Complete | ✅ COMPLETE |
-| div      | ✅ COMPLETE | ✅ TRUE_DEVICE_IMPLEMENTATION | ⚠️ BLOCKED_BACKEND | ✅ Torch+AscendC PASS; PyPTO limited | ✅ msprof (B=32) | ✅ Complete | ✅ COMPLETE_WITH_LIMITATION |
-| equal    | ✅ COMPLETE | ✅ TRUE_DEVICE_IMPLEMENTATION | ❌ BLOCKED_BACKEND_EQUAL | ✅ Torch+AscendC PASS | ⚠️ torch.npu.Event (NOT_COMPARABLE) | ✅ Complete | ✅ COMPLETE_WITH_LIMITATION |
-| not      | ✅ COMPLETE | ✅ TRUE_DEVICE_IMPLEMENTATION | ✅ PASS | ❌ AscendC FAIL (script bug) | ⚠️ torch.npu.Event (NOT_COMPARABLE) | ⚠️ OUTDATED | ⚠️ REPORT_OUTDATED |
-| or       | ✅ COMPLETE | ✅ TRUE_DEVICE_IMPLEMENTATION | ⚠️ PARTIAL (bitwise_or bug) | ❌ AscendC FAIL (script bug) | ⚠️ torch.npu.Event (NOT_COMPARABLE) | ⚠️ OUTDATED | ⚠️ REPORT_OUTDATED |
-| where    | ✅ COMPLETE | ✅ TRUE_DEVICE_WITH_SCALAR_FALLBACK | ❌ BLOCKED_BACKEND_WHERE_SELECT | ✅ Torch+AscendC PASS | ⚠️ torch.npu.Event (NOT_COMPARABLE) | ✅ Complete | ✅ COMPLETE_WITH_LIMITATION |
-| expand   | ⚠️ B=1 only | ❌ HOST_PRECOMPUTE_FALLBACK | ⚠️ PARTIAL | ⬜ NOT_RUN | ⬜ N/A | ⚠️ Overstated | ❌ INCOMPLETE |
-| transpose| ⚠️ B=1 only | ❌ HOST_PRECOMPUTE_FALLBACK | ❌ BLOCKED_BACKEND (large) | ⬜ NOT_RUN | ⬜ N/A | ⚠️ Overstated | ❌ INCOMPLETE |
-| reduce_sum| ⚠️ B=1 only| ❌ HOST_PRECOMPUTE_FALLBACK | ✅ SUCCESS | ⬜ NOT_RUN | ⬜ N/A | ⚠️ Overstated | ❌ INCOMPLETE |
+| Operator | Final Status | Torch | Ascend C | PyPTO | Correctness | Profiler |
+|----------|-------------|-------|----------|-------|-------------|----------|
+| relu | **COMPLETE** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ✅ Full batch | ✅ msprof |
+| mul | **COMPLETE** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ✅ Full batch | ✅ msprof |
+| add | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ⚠️ PyPTO B=1 only persisted | ✅ msprof |
+| div | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ❌ BLOCKED_BACKEND | ✅ Torch+AscendC | ✅ msprof |
+| equal | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ❌ BLOCKED_BACKEND | ✅ Torch+AscendC | ⚠️ Event only |
+| not | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ✅ SUCCESS | ❌ AscendC FAIL (script bug) | ⚠️ Event only |
+| or | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ⚠️ bitwise_or | ❌ AscendC FAIL (script bug) | ⚠️ Event only |
+| where | **COMPLETE_WITH_LIMITATION** | ✅ PASS | ✅ TRUE_DEVICE | ❌ BLOCKED_BACKEND | ✅ Torch+AscendC | ⚠️ Event only |
+| expand | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ✅ PASS (dispatch) | ⚠️ Major gaps | ❌ No msprof |
+| transpose | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ⚠️ Partial (small PASS) | ⚠️ Major gaps | ❌ No msprof |
+| reduce_sum | **PARTIAL** | ⚠️ B=1 only | ✅ TRUE_DEVICE (unverified) | ✅ SUCCESS (unverified) | ⚠️ Major gaps | ❌ No msprof |
+
+**Summary**: 2 COMPLETE, 6 COMPLETE_WITH_LIMITATION, 3 PARTIAL
+
+## Key Corrections vs Previous Reports
+
+- **Expand/Transpose/ReduceSum Ascend C**: Previous reports claimed `HOST_PRECOMPUTE_FALLBACK`. Source code audit confirms all three are **TRUE_DEVICE_IMPLEMENTATION** with genuine device-side kernels (Duplicate, tile-transpose, ReduceSum Level 2). However, correctness and profiler data have not been collected on hardware.
+- **Not/Or Ascend C**: Ascend C correctness shows FAIL (missing reference_bool.bin files). Kernel may be correct — script filename pattern bug.
+- **All logical operators**: Profiling uses `torch.npu.Event`/`aclrtEvent`, NOT msprof. These latencies are NOT comparable with arithmetic operator msprof data.
 
 ## Measurement Methodology
 
-All operators use a **unified profiler-based measurement** approach:
-
+All arithmetic operators use **unified profiler-based measurement**:
 1. **Profiler**: msprof with `--ascendcl=on --ai-core=on --task-time=l0`
 2. **Warmup**: 200 iterations (excluded from measurement)
 3. **Profiled iterations**: 100 iterations
-4. **Key metric**: `all_device_kernels_us` — sum of all device kernel durations per logical call
-5. **PyPTO**: Two-process method (warmup no-profiler, then msprof) to exclude JIT compilation time
+4. **Key metric**: `primary_compute_kernel_us` — device kernel duration
+5. **PyPTO**: Two-process method (warmup no-profiler, then msprof) to exclude JIT compilation
 
 ## Requirements
 
@@ -124,7 +79,6 @@ All operators use a **unified profiler-based measurement** approach:
 - PyTorch + torch_npu
 - PyPTO framework
 - Cannbot Skills (for Ascend C development)
-- pypto-op-orchestrator (for PyPTO development)
 
 ## Reproducing Results
 

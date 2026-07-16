@@ -3,13 +3,13 @@
   "source_readiness": true,
   "build_readiness": true,
   "data_readiness": true,
-  "torch_correctness": "PASS",
-  "ascendc_correctness": "PASS (host fallback)",
+  "torch_correctness": "PASS B=1 only",
+  "ascendc_correctness": "UNVERIFIED_RESULT — kernel source is TRUE_DEVICE_IMPLEMENTATION (Duplicate per-row) but correctness not run",
   "pypto_correctness": "PASS B=1..64",
-  "profiler_status": "pending",
+  "profiler_status": "INCOMPLETE",
   "report_status": "provisional",
   "archive_status": "pending",
-  "blocker": "Ascend C device-side kernel not implemented",
+  "blocker": "Missing hardware verification: need correctness run + msprof profiling for all 3 routes",
   "ready_for_integration": false,
-  "status": "INCOMPLETE"
+  "status": "PARTIAL"
 }

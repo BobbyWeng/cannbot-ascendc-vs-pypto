@@ -3,13 +3,13 @@
   "source_readiness": true,
   "build_readiness": true,
   "data_readiness": true,
-  "torch_correctness": "PASS",
-  "ascendc_correctness": "PASS (host fallback)",
-  "pypto_correctness": "PASS core cases; 42/70 strict (FP16 accum precision)",
-  "profiler_status": "pending",
+  "torch_correctness": "PASS B=1 (random_finite only)",
+  "ascendc_correctness": "UNVERIFIED_RESULT — kernel source is TRUE_DEVICE_IMPLEMENTATION (ReduceSum Level 2, FP16 accum) but correctness not run",
+  "pypto_correctness": "UNVERIFIED_RESULT — orchestrator SUCCESS but correctness results not saved",
+  "profiler_status": "INCOMPLETE",
   "report_status": "provisional",
   "archive_status": "pending",
-  "blocker": "Ascend C device-side kernel not implemented",
+  "blocker": "Missing hardware verification: need correctness run + msprof for all 3 routes",
   "ready_for_integration": false,
-  "status": "INCOMPLETE"
+  "status": "PARTIAL"
 }

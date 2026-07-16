@@ -1,0 +1,47 @@
+{
+  "cleanup_time": "2026-07-16T23:00:00Z",
+  "git_commit": "e07f251b3f1e7b440d909f1424e137b60bd40f74",
+  "deleted_directories": [
+    {"path": "reports/full_audit/", "files": 20, "reason": "Superseded by current_release.json"},
+    {"path": "reports/pre_release_audit/", "files": 16, "reason": "Superseded by current_release.json"},
+    {"path": "reports/project_audit/", "files": 3, "reason": "Superseded by current_release.json"},
+    {"path": "reports/project_release/", "files": 6, "reason": "Superseded by current_release.json"},
+    {"path": "reports/project_repair/", "files": 5, "reason": "Superseded by current_release.json"},
+    {"path": "reports/runtime/", "files": 0, "reason": "Empty directory"}
+  ],
+  "deleted_files": [
+    {"path": "reports/device_side_final_report.md", "size_kb": 4, "reason": "Historical plan, current source is authoritative"},
+    {"path": "reports/device_side_plan.md", "size_kb": 3, "reason": "Historical plan, actual implementation done"},
+    {"path": "reports/project_audit_after.json", "size_kb": 1, "reason": "Outdated project snapshot"},
+    {"path": "reports/project_audit_after.md", "size_kb": 3, "reason": "Outdated project snapshot"},
+    {"path": "reports/cleanup_manifest.json", "size_kb": 1, "reason": "Old cleanup from initial migration"},
+    {"path": "reports/full_audit.tar.gz", "size_kb": 12, "reason": "Compressed archive of deleted audit"},
+    {"path": "cannbot_ascendc_vs_pypto_div_v2.tar.gz", "size_kb": 388, "reason": "Moved to archives/"},
+    {"path": "20MB", "size_kb": 20480, "reason": "Stale large file in root"},
+    {"path": "=", "size_kb": 1, "reason": "Stale file in root"}
+  ],
+  "deleted_batch_files": [
+    {"path": "reports/batches/layout_reduce_v1/pypto_jit_matrix.csv", "reason": "Old JIT analysis"},
+    {"path": "reports/batches/layout_reduce_v1/pypto_jit_path_diff.csv", "reason": "Old JIT analysis"},
+    {"path": "reports/batches/layout_reduce_v1/pypto_success_pattern_audit.json", "reason": "Old success pattern analysis"},
+    {"path": "reports/batches/layout_reduce_v1/pypto_success_pattern_audit.md", "reason": "Old success pattern analysis"},
+    {"path": "reports/batches/layout_reduce_v1/transpose_optimization_report.json", "reason": "Old optimization report"},
+    {"path": "reports/batches/layout_reduce_v1/transpose_optimization_report.md", "reason": "Old optimization report"},
+    {"path": "reports/batches/layout_reduce_v1/FINAL_ANSWERS.md", "reason": "Superseded by current_release"},
+    {"path": "reports/batches/layout_reduce_v1/key_blocker_repair_summary.json", "reason": "Old blocker repair"},
+    {"path": "reports/batches/layout_reduce_v1/key_blocker_repair_summary.md", "reason": "Old blocker repair"},
+    {"path": "reports/batches/layout_reduce_v1/profiler_completion_report.json", "reason": "Old profiler analysis"},
+    {"path": "reports/batches/layout_reduce_v1/profiler_completion_report.md", "reason": "Old profiler analysis"},
+    {"path": "reports/batches/layout_reduce_v1/full_profiler_summary.md", "reason": "Old profiler summary"},
+    {"path": "reports/batches/layout_reduce_v1/profiler_summary.md", "reason": "Old profiler summary"}
+  ],
+  "deleted_operator_reports": [
+    {"path": "operators/expand/reports/final/final_comparison.json", "reason": "Falsely claimed HOST_PRECOMPUTE_FALLBACK"},
+    {"path": "operators/expand/reports/final/final_comparison.md", "reason": "Falsely claimed HOST_PRECOMPUTE_FALLBACK"},
+    {"path": "operators/transpose/reports/final/final_comparison.json", "reason": "Falsely claimed HOST_PRECOMPUTE_FALLBACK"},
+    {"path": "operators/transpose/reports/final/final_comparison.md", "reason": "Falsely claimed HOST_PRECOMPUTE_FALLBACK"},
+    {"path": "operators/reduce_sum/reports/final/final_comparison.json", "reason": "Falsely claimed HOST_PRECOMPUTE_FALLBACK"},
+    {"path": "operators/reduce_sum/reports/final/final_comparison.md", "reason": "Falsely claimed HOST_PRECOMPUTE_FALLBACK"}
+  ],
+  "replacement_source_of_truth": "reports/release/current_release.json"
+}

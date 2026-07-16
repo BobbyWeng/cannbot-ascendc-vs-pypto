@@ -1,49 +1,42 @@
 # ReduceSum — Ascend C vs Torch vs PyPTO Comparison
 
 ## Operator
-`Y[b,i] = sum_j X[b,i,j]` — reduce sum over last dimension (384), FP16
+`Y[b,i] = sum_j X[b,i,j]` — reduce sum over last dimension (384)
 
 ## Shapes
 - X: `[B, 256, 384]`, FP16
 - Y: `[B, 256]`, FP16
 - Batches: B ∈ {1, 2, 4, 8, 16, 32, 64}
 
-## Status: INCOMPLETE
+## Status: PARTIAL
+
+## Ascend C Implementation: TRUE_DEVICE_IMPLEMENTATION
+The kernel uses Level 2 ReduceSum API: GM[384] → ReduceSum → GM[1].
+No host pre-reduce. Source verified as genuine device-side compute.
 
 ## Correctness
 
 | Implementation | Status | Detail |
 |---------------|--------|--------|
-| Torch NPU | ❓ PENDING | Run `python3 torch/correctness.py` |
-| Ascend C | ❓ PENDING | Build and run correctness |
-| PyPTO | ❓ PENDING | Run `python3 pypto/correctness.py` |
+| Torch NPU | ⚠️ PARTIAL | B=1 random_finite only |
+| Ascend C | ⚠️ UNVERIFIED | Kernel source confirmed; no correctness run |
+| PyPTO | ⚠️ UNVERIFIED | Orchestrator SUCCESS; no results saved |
 
-## Input Coverage
-- random_finite, all_zero, all_one, pos_neg_cancel, small_values, large_values, overflow_risk, underflow_risk, nan, inf
-
-## Performance (median kernel latency, µs)
+## Performance (no msprof data)
 
 | B | Torch | Ascend C | PyPTO |
 |---|:-----:|:--------:|:-----:|
-| 1 | ❓ | ❓ | ❓ |
-| 2 | ❓ | ❓ | ❓ |
-| 4 | ❓ | ❓ | ❓ |
-| 8 | ❓ | ❓ | ❓ |
-| 16 | ❓ | ❓ | ❓ |
-| 32 | ❓ | ❓ | ❓ |
-| 64 | ❓ | ❓ | ❓ |
+| Data | PENDING | PENDING | PENDING |
 
 ## Accumulation Dtype
 
-| Implementation | Accumulation Dtype | Notes |
-|--------------|-------------------|-------|
-| torch.sum | FP32 (internal) | Standard PyTorch behavior |
-| Ascend C | FP32 | Manual FP32 accum per row |
-| PyPTO | TBD | Depends on backend implementation |
+| Implementation | Accumulation |
+|--------------|-------------|
+| torch.sum | FP32 (internal) |
+| Ascend C | FP16 (native ReduceSum API for half) |
+| PyPTO | FP16 |
 
-## Key Files
-- `ascendc/src/reduce_sum_kernel.asc` — Ascend C kernel
-- `pypto/src/reduce_sum_impl.py` — PyPTO implementation
-- `data/generation_scripts/generate_inputs.py` — Data generation
-
-See `reports/final/final_comparison.md` for full analysis.
+## Known Issues
+1. No msprof profiling for any route (profiler INCOMPLETE)
+2. Ascend C and PyPTO correctness not run/persisted
+3. FP16 accumulation precision differences expected vs FP32 torch
