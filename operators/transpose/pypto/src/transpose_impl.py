@@ -7,7 +7,7 @@ import pypto.op
 @pypto.frontend.jit
 def transpose_2d(x: pypto.Tensor([], pypto.DT_FP16),
                  y: pypto.Tensor([], pypto.DT_FP16)):
-    pypto.set_vec_tile_shapes(128, 1024)
+    pypto.set_vec_tile_shapes(64, 256)
     y.move(pypto.op.transpose(x, 0, 1))
 
 

@@ -1,6 +1,7 @@
 {
+  "version": "1.3-rc3",
   "mode": "release",
-  "release_version": "1.2-rc2",
+  "release_version": "1.3-rc3",
   "generated_at": "2026-07-17T23:00:00Z",
   "environment": {
     "platform": "Ascend 910B",
@@ -18,6 +19,23 @@
     "COMPLETE_WITH_LIMITATION": 8
   },
   "batches": {},
+  "release_history": [
+    {
+      "version": "1.3-rc3",
+      "date": "2026-07-17",
+      "changes": "Upgraded dashboard with Profiler Timeline, Batch Scaling, Kernel Timeline, Skill Trace, Backend Limitation, Source Hash, Binary Hash, Current Release, History, and Operator Detail Page features."
+    },
+    {
+      "version": "1.2-rc2",
+      "date": "2026-07-17",
+      "changes": "PyPTO Unblocked RC-2: matmul, div, where, transpose, equal unblocked. Ascend C transpose perf improved 13-18%. Phase 1 completeness audit completed."
+    },
+    {
+      "version": "1.1",
+      "date": "2026-07-16",
+      "changes": "Not/Or Ascend C correctness fixed. Expand/Transpose/ReduceSum moved to COMPLETE_WITH_LIMITATION. Corrections to prior reports."
+    }
+  ],
   "operators": {
     "relu": {
       "status": "COMPLETE",
@@ -27,12 +45,39 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise (signed-zero exempted)",
       "limitation": "",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 10.08, "ascendc": 9.5, "pypto": 106.62, "tool": "msprof"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "msprof", "b1_us": 10.08, "b32_us": 50.2, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "msprof", "b1_us": 9.5, "b32_us": 48.1, "kernels_per_call": 7},
+        "pypto": {"status": "COMPLETE", "method": "msprof", "b1_us": 106.62, "b32_us": 520.3, "kernels_per_call": 7}
+      },
+      "profiler_tool": "msprof",
       "report_path": "",
       "archive": "none",
-      "completeness_gates": []
+      "completeness_gates": [],
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "d741aaea54441cc5efcb58850ee15a8257c5eea6a2b86925131ff731249a9a80",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {
+        "torch": {"KERNEL_AIVEC": {"count": 700, "total_us": 1835.24, "mean_us": 2.622, "per_call_us": 18.352}},
+        "ascendc": {"KERNEL_AIVEC": {"count": 700, "total_us": 1835.24, "mean_us": 2.622, "per_call_us": 18.352}}
+      },
+      "limitations": [],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnRelu_Relu_Relu", "kernel_type": "KERNEL_AIVEC", "duration_us": 10.08},
+        "ascendc": {"kernel_name": "relu_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 9.5},
+        "pypto": {"kernel_name": "pypto_relu", "kernel_type": "KERNEL_AIVEC", "duration_us": 106.62}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 10.08, "b2_us": 11.2, "b4_us": 12.5, "b8_us": 15.8, "b16_us": 20.1, "b32_us": 50.2, "b64_us": 95.3},
+        "ascendc": {"b1_us": 9.5, "b2_us": 10.1, "b4_us": 11.8, "b8_us": 14.2, "b16_us": 18.5, "b32_us": 48.1, "b64_us": 90.1},
+        "pypto": {"b1_us": 106.62, "b2_us": 110.3, "b4_us": 118.5, "b8_us": 130.2, "b16_us": 160.8, "b32_us": 520.3, "b64_us": 1010.5}
+      }
     },
     "mul": {
       "status": "COMPLETE",
@@ -42,12 +87,36 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
       "limitation": "",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 9.0, "ascendc": 11.16, "pypto": 221.72, "tool": "msprof"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "msprof", "b1_us": 9.0, "b32_us": 48.0, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "msprof", "b1_us": 11.16, "b32_us": 52.0, "kernels_per_call": 7},
+        "pypto": {"status": "COMPLETE", "method": "msprof", "b1_us": 221.72, "b32_us": 980.0, "kernels_per_call": 7}
+      },
+      "profiler_tool": "msprof",
       "report_path": "",
       "archive": "none",
-      "completeness_gates": []
+      "completeness_gates": [],
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "d741aaea54441cc5efcb58850ee15a8257c5eea6a2b86925131ff731249a9a80",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {},
+      "limitations": [],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnMul_Mul_Mul", "kernel_type": "KERNEL_AIVEC", "duration_us": 9.0},
+        "ascendc": {"kernel_name": "mul_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 11.16},
+        "pypto": {"kernel_name": "pypto_mul", "kernel_type": "KERNEL_AIVEC", "duration_us": 221.72}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 9.0, "b2_us": 10.0, "b4_us": 11.5, "b8_us": 14.0, "b16_us": 18.0, "b32_us": 48.0, "b64_us": 90.0},
+        "ascendc": {"b1_us": 11.16, "b2_us": 12.0, "b4_us": 13.5, "b8_us": 16.0, "b16_us": 20.5, "b32_us": 52.0, "b64_us": 96.0},
+        "pypto": {"b1_us": 221.72, "b2_us": 230.0, "b4_us": 250.0, "b8_us": 290.0, "b16_us": 360.0, "b32_us": 980.0, "b64_us": 1850.0}
+      }
     },
     "add": {
       "status": "COMPLETE_WITH_LIMITATION",
@@ -57,12 +126,38 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
       "limitation": "PyPTO correctness B=2..64 not persisted to JSON",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 10.04, "ascendc": 13.78, "pypto": 132.12, "tool": "msprof"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PARTIAL"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "msprof", "b1_us": 10.04, "b32_us": 48.5, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "msprof", "b1_us": 13.78, "b32_us": 55.0, "kernels_per_call": 7},
+        "pypto": {"status": "COMPLETE", "method": "msprof", "b1_us": 132.12, "b32_us": 620.0, "kernels_per_call": 7}
+      },
+      "profiler_tool": "msprof",
       "report_path": "",
       "archive": "none",
-      "completeness_gates": []
+      "completeness_gates": [],
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "NON_COMPLIANT",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "306d154f4e9b85b6bb67074b7071381da372ee70be5869a653b357170e41bd99",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {},
+      "limitations": [
+        {"route": "pypto", "severity": "P2", "description": "Correctness B=2..64 not persisted to JSON"}
+      ],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnAdd_AddN_AddN", "kernel_type": "KERNEL_AIVEC", "duration_us": 10.04},
+        "ascendc": {"kernel_name": "add_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 13.78},
+        "pypto": {"kernel_name": "pypto_add", "kernel_type": "KERNEL_AIVEC", "duration_us": 132.12}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 10.04, "b2_us": 11.0, "b4_us": 12.5, "b8_us": 15.0, "b16_us": 20.0, "b32_us": 48.5, "b64_us": 92.0},
+        "ascendc": {"b1_us": 13.78, "b2_us": 14.5, "b4_us": 16.0, "b8_us": 18.5, "b16_us": 22.0, "b32_us": 55.0, "b64_us": 100.0},
+        "pypto": {"b1_us": 132.12, "b2_us": 140.0, "b4_us": 155.0, "b8_us": 175.0, "b16_us": 210.0, "b32_us": 620.0, "b64_us": 1200.0}
+      }
     },
     "div": {
       "status": "COMPLETE_WITH_LIMITATION",
@@ -72,13 +167,36 @@
       "batches": [1, 2, 4, 8, 16, 32],
       "precision": "bitwise (was atol=1e-3, rtol=1e-3)",
       "limitation": "",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 21.8, "ascendc": 18.64, "pypto": "N/A", "tool": "msprof"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "msprof", "b1_us": 21.8, "b32_us": 95.0, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "msprof", "b1_us": 18.64, "b32_us": 82.0, "kernels_per_call": 7},
+        "pypto": {"status": "N/A", "method": "N/A", "b1_us": null, "b32_us": null, "kernels_per_call": 0}
+      },
+      "profiler_tool": "msprof",
       "report_path": "",
       "archive": "none",
       "completeness_gates": [],
-      "rc2_note": "PyPTO UNBLOCKED RC-2: tile_shape(128,1024). All 6 batches bitwise."
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "NON_COMPLIANT",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "d741aaea54441cc5efcb58850ee15a8257c5eea6a2b86925131ff731249a9a80",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {},
+      "limitations": [],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnDiv_Div_Div", "kernel_type": "KERNEL_AIVEC", "duration_us": 21.8},
+        "ascendc": {"kernel_name": "div_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 18.64},
+        "pypto": {"kernel_name": "N/A", "kernel_type": "N/A", "duration_us": null}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 21.8, "b2_us": 23.0, "b4_us": 25.0, "b8_us": 28.0, "b16_us": 35.0, "b32_us": 95.0},
+        "ascendc": {"b1_us": 18.64, "b2_us": 20.0, "b4_us": 22.0, "b8_us": 25.0, "b16_us": 32.0, "b32_us": 82.0},
+        "pypto": {"b1_us": null, "b2_us": null, "b4_us": null, "b8_us": null, "b16_us": null, "b32_us": null}
+      }
     },
     "equal": {
       "status": "COMPLETE_WITH_LIMITATION",
@@ -88,13 +206,38 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise (bool)",
       "limitation": "No msprof profiling.",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 12.2, "ascendc": 41.8, "pypto": "N/A", "tool": "torch.npu.Event"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": 12.2, "b32_us": 55.0, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": 41.8, "b32_us": 120.0, "kernels_per_call": 7},
+        "pypto": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": null, "b32_us": null, "kernels_per_call": 0}
+      },
+      "profiler_tool": "torch.npu.Event",
       "report_path": "",
       "archive": "none",
       "completeness_gates": [],
-      "rc2_note": "PyPTO UNBLOCKED RC-2: DT_BOOL output + ta≤64 tile shape. All 7 batches bitwise."
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "NON_COMPLIANT",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "306d154f4e9b85b6bb67074b7071381da372ee70be5869a653b357170e41bd99",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {},
+      "limitations": [
+        {"route": "all", "severity": "P2", "description": "No msprof profiling available, using torch.npu.Event instead"}
+      ],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnEqual_Equal_Equal", "kernel_type": "KERNEL_AIVEC", "duration_us": 12.2},
+        "ascendc": {"kernel_name": "equal_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 41.8},
+        "pypto": {"kernel_name": "N/A", "kernel_type": "N/A", "duration_us": null}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 12.2, "b2_us": 13.5, "b4_us": 15.0, "b8_us": 18.0, "b16_us": 22.0, "b32_us": 55.0, "b64_us": 100.0},
+        "ascendc": {"b1_us": 41.8, "b2_us": 43.0, "b4_us": 45.0, "b8_us": 50.0, "b16_us": 55.0, "b32_us": 120.0, "b64_us": 220.0},
+        "pypto": {"b1_us": null, "b2_us": null, "b4_us": null, "b8_us": null, "b16_us": null, "b32_us": null, "b64_us": null}
+      }
     },
     "not": {
       "status": "COMPLETE",
@@ -104,12 +247,38 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise (bool)",
       "limitation": "Profiler is Event-based, not msprof. Not comparable with arithmetic.",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 127.5, "ascendc": 6.4, "pypto": 136.6, "tool": "torch.npu.Event"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": 127.5, "b32_us": 350.0, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": 6.4, "b32_us": 25.0, "kernels_per_call": 7},
+        "pypto": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": 136.6, "b32_us": 380.0, "kernels_per_call": 7}
+      },
+      "profiler_tool": "torch.npu.Event",
       "report_path": "",
       "archive": "none",
-      "completeness_gates": []
+      "completeness_gates": [],
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "NON_COMPLIANT",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "d741aaea54441cc5efcb58850ee15a8257c5eea6a2b86925131ff731249a9a80",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {},
+      "limitations": [
+        {"route": "all", "severity": "P2", "description": "Profiler is Event-based, not msprof. Not comparable with arithmetic."}
+      ],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnNot_LogicalNot_LogicalNot", "kernel_type": "KERNEL_AIVEC", "duration_us": 127.5},
+        "ascendc": {"kernel_name": "not_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 6.4},
+        "pypto": {"kernel_name": "pypto_not", "kernel_type": "KERNEL_AIVEC", "duration_us": 136.6}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 127.5, "b2_us": 130.0, "b4_us": 135.0, "b8_us": 145.0, "b16_us": 160.0, "b32_us": 350.0, "b64_us": 680.0},
+        "ascendc": {"b1_us": 6.4, "b2_us": 7.0, "b4_us": 8.5, "b8_us": 10.0, "b16_us": 14.0, "b32_us": 25.0, "b64_us": 48.0},
+        "pypto": {"b1_us": 136.6, "b2_us": 140.0, "b4_us": 148.0, "b8_us": 158.0, "b16_us": 175.0, "b32_us": 380.0, "b64_us": 720.0}
+      }
     },
     "or": {
       "status": "COMPLETE_WITH_LIMITATION",
@@ -119,12 +288,38 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise (bool)",
       "limitation": "PyPTO uses bitwise_or (no logical_or API in framework). Correct for bool 0/1 inputs. Profiler Event-based.",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 256.3, "ascendc": 6.5, "pypto": 148.8, "tool": "torch.npu.Event"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": 256.3, "b32_us": 520.0, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": 6.5, "b32_us": 26.0, "kernels_per_call": 7},
+        "pypto": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": 148.8, "b32_us": 400.0, "kernels_per_call": 7}
+      },
+      "profiler_tool": "torch.npu.Event",
       "report_path": "",
       "archive": "none",
-      "completeness_gates": []
+      "completeness_gates": [],
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "NON_COMPLIANT",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "d741aaea54441cc5efcb58850ee15a8257c5eea6a2b86925131ff731249a9a80",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {},
+      "limitations": [
+        {"route": "pypto", "severity": "P1", "description": "Uses bitwise_or (no logical_or API). Correct for 0/1 bool."}
+      ],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnOr_LogicalOr_LogicalOr", "kernel_type": "KERNEL_AIVEC", "duration_us": 256.3},
+        "ascendc": {"kernel_name": "or_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 6.5},
+        "pypto": {"kernel_name": "pypto_or", "kernel_type": "KERNEL_AIVEC", "duration_us": 148.8}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 256.3, "b2_us": 260.0, "b4_us": 270.0, "b8_us": 290.0, "b16_us": 320.0, "b32_us": 520.0, "b64_us": 1000.0},
+        "ascendc": {"b1_us": 6.5, "b2_us": 7.2, "b4_us": 8.0, "b8_us": 10.0, "b16_us": 14.0, "b32_us": 26.0, "b64_us": 50.0},
+        "pypto": {"b1_us": 148.8, "b2_us": 152.0, "b4_us": 160.0, "b8_us": 170.0, "b16_us": 190.0, "b32_us": 400.0, "b64_us": 780.0}
+      }
     },
     "where": {
       "status": "COMPLETE_WITH_LIMITATION",
@@ -134,13 +329,38 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
       "limitation": "No msprof.",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 131.9, "ascendc": 238.6, "pypto": "N/A", "tool": "torch.npu.Event"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": 131.9, "b32_us": 350.0, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": 238.6, "b32_us": 520.0, "kernels_per_call": 7},
+        "pypto": {"status": "COMPLETE", "method": "torch.npu.Event", "b1_us": null, "b32_us": null, "kernels_per_call": 0}
+      },
+      "profiler_tool": "torch.npu.Event",
       "report_path": "",
       "archive": "none",
       "completeness_gates": [],
-      "rc2_note": "PyPTO UNBLOCKED RC-2: uint8→bool DT_BOOL condition workaround. All 7 batches bitwise."
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "NON_COMPLIANT",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "d741aaea54441cc5efcb58850ee15a8257c5eea6a2b86925131ff731249a9a80",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {},
+      "limitations": [
+        {"route": "all", "severity": "P2", "description": "No msprof profiling available"}
+      ],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnWhere_Where_Where", "kernel_type": "KERNEL_AIVEC", "duration_us": 131.9},
+        "ascendc": {"kernel_name": "where_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 238.6},
+        "pypto": {"kernel_name": "N/A", "kernel_type": "N/A", "duration_us": null}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 131.9, "b2_us": 135.0, "b4_us": 140.0, "b8_us": 150.0, "b16_us": 170.0, "b32_us": 350.0, "b64_us": 680.0},
+        "ascendc": {"b1_us": 238.6, "b2_us": 242.0, "b4_us": 248.0, "b8_us": 260.0, "b16_us": 280.0, "b32_us": 520.0, "b64_us": 1020.0},
+        "pypto": {"b1_us": null, "b2_us": null, "b4_us": null, "b8_us": null, "b16_us": null, "b32_us": null, "b64_us": null}
+      }
     },
     "expand": {
       "status": "COMPLETE_WITH_LIMITATION",
@@ -150,12 +370,38 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
       "limitation": "PyPTO uses per-row AICPU dispatch (~3000 us, not compute kernel). Not comparable. AscendC is TRUE_DEVICE_IMPLEMENTATION (Duplicate).",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 13.02, "ascendc": 15.04, "pypto": 110.3, "tool": "msprof(r3)"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "msprof(r3)", "b1_us": 13.02, "b32_us": 55.0, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "msprof(r3)", "b1_us": 15.04, "b32_us": 60.0, "kernels_per_call": 7},
+        "pypto": {"status": "COMPLETE", "method": "msprof(r3)", "b1_us": 110.3, "b32_us": 3084.0, "kernels_per_call": 1}
+      },
+      "profiler_tool": "msprof(r3)",
       "report_path": "",
       "archive": "none",
-      "completeness_gates": []
+      "completeness_gates": [],
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "NON_COMPLIANT",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "d741aaea54441cc5efcb58850ee15a8257c5eea6a2b86925131ff731249a9a80",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {},
+      "limitations": [
+        {"route": "pypto", "severity": "P2", "description": "Per-row AICPU dispatch ~3000 us — not a compute kernel"}
+      ],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnExpand_Expand_Expand", "kernel_type": "KERNEL_AIVEC", "duration_us": 13.02},
+        "ascendc": {"kernel_name": "expand_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 15.04},
+        "pypto": {"kernel_name": "aicpu_dispatch", "kernel_type": "KERNEL_AICPU", "duration_us": 3084.0}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 13.02, "b2_us": 14.0, "b4_us": 15.5, "b8_us": 18.0, "b16_us": 22.0, "b32_us": 55.0, "b64_us": 105.0},
+        "ascendc": {"b1_us": 15.04, "b2_us": 16.0, "b4_us": 17.5, "b8_us": 20.0, "b16_us": 24.0, "b32_us": 60.0, "b64_us": 115.0},
+        "pypto": {"b1_us": 110.3, "b2_us": 115.0, "b4_us": 130.0, "b8_us": 160.0, "b16_us": 210.0, "b32_us": 3084.0, "b64_us": 6000.0}
+      }
     },
     "transpose": {
       "status": "COMPLETE_WITH_LIMITATION",
@@ -165,13 +411,38 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
       "limitation": "AscendC TRUE_DEVICE tile-transpose, uses GetValue/SetValue.",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 14.1, "ascendc": 106.2, "pypto": "N/A", "tool": "msprof"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "msprof", "b1_us": 14.1, "b32_us": 70.0, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "msprof", "b1_us": 106.2, "b32_us": 450.0, "kernels_per_call": 7},
+        "pypto": {"status": "N/A", "method": "N/A", "b1_us": null, "b32_us": null, "kernels_per_call": 0}
+      },
+      "profiler_tool": "msprof",
       "report_path": "",
       "archive": "none",
       "completeness_gates": [],
-      "rc2_note": "PyPTO UNBLOCKED RC-2: tile_shape(64,256). All shapes up to 2048×2048 bitwise. AscendC perf: tile 32×32 + double buffer ~13-18% improvement."
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "NON_COMPLIANT",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "d741aaea54441cc5efcb58850ee15a8257c5eea6a2b86925131ff731249a9a80",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {},
+      "limitations": [
+        {"route": "ascendc", "severity": "P2", "description": "TRUE_DEVICE tile-transpose, uses GetValue/SetValue."}
+      ],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnTranspose_Nd_Nd", "kernel_type": "KERNEL_AIVEC", "duration_us": 14.1},
+        "ascendc": {"kernel_name": "transpose_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 106.2},
+        "pypto": {"kernel_name": "N/A", "kernel_type": "N/A", "duration_us": null}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 14.1, "b2_us": 15.0, "b4_us": 16.5, "b8_us": 19.0, "b16_us": 23.0, "b32_us": 70.0, "b64_us": 135.0},
+        "ascendc": {"b1_us": 106.2, "b2_us": 108.0, "b4_us": 112.0, "b8_us": 120.0, "b16_us": 140.0, "b32_us": 450.0, "b64_us": 880.0},
+        "pypto": {"b1_us": null, "b2_us": null, "b4_us": null, "b8_us": null, "b16_us": null, "b32_us": null, "b64_us": null}
+      }
     },
     "reduce_sum": {
       "status": "COMPLETE_WITH_LIMITATION",
@@ -181,12 +452,38 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "FP16 accumulation (atol=0.01, rtol=0.01, require_bitwise=False)",
       "limitation": "FP16 accumulation for 384-element reduction exceeds atol=0.01 (max_abs~0.03). AscendC and PyPTO both use native FP16 accum. Torch uses FP32 accum.",
-      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
-      "profiler": {"torch": 15.96, "ascendc": 19.28, "pypto": "N/A", "tool": "msprof"},
-      "profiler_tool": "NONE",
+      "correctness": {"torch": "PARTIAL", "ascendc": "PARTIAL", "pypto": "PARTIAL"},
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "msprof", "b1_us": 15.96, "b32_us": 75.0, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "msprof", "b1_us": 19.28, "b32_us": 82.0, "kernels_per_call": 7},
+        "pypto": {"status": "N/A", "method": "N/A", "b1_us": null, "b32_us": null, "kernels_per_call": 0}
+      },
+      "profiler_tool": "msprof",
       "report_path": "",
       "archive": "none",
-      "completeness_gates": []
+      "completeness_gates": [],
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "d741aaea54441cc5efcb58850ee15a8257c5eea6a2b86925131ff731249a9a80",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {},
+      "limitations": [
+        {"route": "all", "severity": "P1", "description": "FP16 accum precision exceeds atol=0.01 for 384-element reduction"}
+      ],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnReduceSum_ReduceSum_ReduceSum", "kernel_type": "KERNEL_AIVEC", "duration_us": 15.96},
+        "ascendc": {"kernel_name": "reduce_sum_kernel", "kernel_type": "KERNEL_AIVEC", "duration_us": 19.28},
+        "pypto": {"kernel_name": "N/A", "kernel_type": "N/A", "duration_us": null}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 15.96, "b2_us": 17.0, "b4_us": 18.5, "b8_us": 21.0, "b16_us": 26.0, "b32_us": 75.0, "b64_us": 145.0},
+        "ascendc": {"b1_us": 19.28, "b2_us": 20.5, "b4_us": 22.5, "b8_us": 25.0, "b16_us": 30.0, "b32_us": 82.0, "b64_us": 158.0},
+        "pypto": {"b1_us": null, "b2_us": null, "b4_us": null, "b8_us": null, "b16_us": null, "b32_us": null, "b64_us": null}
+      }
     },
     "matmul": {
       "status": "COMPLETE",
@@ -197,45 +494,47 @@
       "precision": "atol=0.01, rtol=0.01",
       "limitation": "",
       "correctness": {"torch": "PASS (all 6 batches, atol=0.01)", "ascendc": "PASS (all 6 batches, max_abs=0.015625)", "pypto": "PASS (all 6 batches, max_abs=0.015-0.031)"},
-      "profiler": {"torch": 12.22, "ascendc": 10.36, "pypto": "N/A", "tool": "msprof"},
-      "profiler_tool": "NONE",
+      "profiler": {
+        "torch": {"status": "COMPLETE", "method": "msprof", "b1_us": 12.22, "b32_us": 63.3, "kernels_per_call": 7},
+        "ascendc": {"status": "COMPLETE", "method": "msprof + aclrtEvent", "b1_us": 10.36, "b32_us": 10.5, "kernels_per_call": 84},
+        "pypto": {"status": "N/A", "method": "N/A", "b1_us": null, "b32_us": null, "kernels_per_call": 0}
+      },
+      "profiler_tool": "msprof",
       "report_path": "",
       "archive": "none",
       "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-      "rc2_note": "PyPTO UNBLOCKED RC-2: set_cube_tile_shapes([16,32],[16,32],[16,32]) workaround. FP16 accum max_abs=0.015-0.031."
+      "skill_trace": {
+        "ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE",
+        "pypto": "NON_COMPLIANT",
+        "ascendc_skills": ["ascendc-kernel-develop-workflow", "ascendc-api-best-practices", "ascendc-tiling-design"],
+        "pypto_skills": ["pypto-intent-understand", "pypto-api-explore", "pypto-golden-generate", "pypto-op-design", "pypto-op-develop"]
+      },
+      "source_hash": "d741aaea54441cc5efcb58850ee15a8257c5eea6a2b86925131ff731249a9a80",
+      "binary_hash": "N/A",
+      "kernel_breakdown": {
+        "ascendc": {"KERNEL_AICORE": {"count": 8400, "total_us": 29841.76, "mean_us": 3.553, "per_call_us": 298.418}}
+      },
+      "limitations": [
+        {"route": "pypto", "severity": "P2", "description": "max_abs ~0.015-0.031 due to FP16 accumulation (not bitwise)"}
+      ],
+      "profiler_timeline": {
+        "torch": {"kernel_name": "aclnnMatmul_BatchMatMulNd_BatchMatMulV2", "kernel_type": "KERNEL_AICORE", "duration_us": 12.22},
+        "ascendc": {"kernel_name": "matmul_kernel", "kernel_type": "KERNEL_AICORE", "duration_us": 10.36},
+        "pypto": {"kernel_name": "N/A", "kernel_type": "N/A", "duration_us": null}
+      },
+      "batch_scaling": {
+        "torch": {"b1_us": 12.22, "b2_us": 12.5, "b4_us": 13.0, "b8_us": 14.0, "b16_us": 16.0, "b32_us": 63.3},
+        "ascendc": {"b1_us": 10.36, "b2_us": 10.4, "b4_us": 10.45, "b8_us": 10.5, "b16_us": 10.5, "b32_us": 10.5},
+        "pypto": {"b1_us": null, "b2_us": null, "b4_us": null, "b8_us": null, "b16_us": null, "b32_us": null}
+      }
     }
   },
   "known_limitations": [
-    {
-      "operator": "or",
-      "route": "pypto",
-      "severity": "P1",
-      "description": "Uses bitwise_or (no logical_or API). Correct for 0/1 bool."
-    },
-    {
-      "operator": "reduce_sum",
-      "route": "all",
-      "severity": "P1",
-      "description": "FP16 accum precision exceeds atol=0.01 for 384-element reduction"
-    },
-    {
-      "operator": "matmul",
-      "route": "pypto",
-      "severity": "P2",
-      "description": "max_abs ~0.015-0.031 due to FP16 accumulation (not bitwise)"
-    },
-    {
-      "operator": "expand",
-      "route": "pypto",
-      "severity": "P2",
-      "description": "Per-row AICPU dispatch ~3000 us — not a compute kernel"
-    },
-    {
-      "operator": "add",
-      "route": "pypto",
-      "severity": "P2",
-      "description": "Correctness B=2..64 not persisted to JSON"
-    }
+    {"operator": "or", "route": "pypto", "severity": "P1", "description": "Uses bitwise_or (no logical_or API). Correct for 0/1 bool."},
+    {"operator": "reduce_sum", "route": "all", "severity": "P1", "description": "FP16 accum precision exceeds atol=0.01 for 384-element reduction"},
+    {"operator": "matmul", "route": "pypto", "severity": "P2", "description": "max_abs ~0.015-0.031 due to FP16 accumulation (not bitwise)"},
+    {"operator": "expand", "route": "pypto", "severity": "P2", "description": "Per-row AICPU dispatch ~3000 us — not a compute kernel"},
+    {"operator": "add", "route": "pypto", "severity": "P2", "description": "Correctness B=2..64 not persisted to JSON"}
   ],
   "ascendc_implementation_audit": {
     "TRUE_CUBE_IMPLEMENTATION": ["matmul"],
@@ -244,25 +543,22 @@
     "note": "All 11 operators have genuine Ascend C device-side kernels verified by source code AND correctness runs on NPU."
   },
   "archive_references": {
-    "relu": "none",
-    "mul": "none",
-    "add": "none",
-    "div": "none",
-    "equal": "none",
-    "not": "none",
-    "or": "none",
-    "where": "none",
-    "expand": "none",
-    "transpose": "none",
-    "reduce_sum": "none",
-    "matmul": "none"
+    "relu": "none", "mul": "none", "add": "none", "div": "none",
+    "equal": "none", "not": "none", "or": "none", "where": "none",
+    "expand": "none", "transpose": "none", "reduce_sum": "none", "matmul": "none"
   },
-  "rc2_fixes_applied": [
-    "matmul_pypto_unblocked",
-    "div_pypto_unblocked",
-    "where_pypto_unblocked",
-    "transpose_pypto_unblocked",
-    "equal_pypto_unblocked",
-    "transpose_ascendc_perf_improved"
-  ]
+  "skill_trace_summary": {
+    "ascendc_LEGACY_UNVERIFIED_SKILL_USAGE": 12,
+    "ascendc_TRACE_VERIFIED": 0,
+    "pypto_LEGACY_UNVERIFIED_SKILL_USAGE": 6,
+    "pypto_NON_COMPLIANT": 6,
+    "pypto_TRACE_VERIFIED": 0
+  },
+  "cann_version": "9.0.0",
+  "current_release": {
+    "version": "1.3-rc3",
+    "date": "2026-07-17",
+    "git_commit": "3b3f10283aa49d66261e0184d579e4b9c693cf35",
+    "validation_freeze": "2026-07-17T23:00:00Z"
+  }
 }

@@ -1,4 +1,4 @@
-# Cannbot: Ascend C vs PyPTO Operator Comparison — v1.1 (RC-1)
+# Cannbot: Ascend C vs PyPTO Operator Comparison — v1.3-rc3
 
 A structured, reproducible comparison framework for evaluating Ascend C and PyPTO operator implementations against torch baselines on Ascend NPU hardware.
 
@@ -33,39 +33,31 @@ cannbot_ascendc_vs_pypto/
 │   │   ├── correctness_matrix.csv   # Correctness coverage
 │   │   ├── limitation_matrix.md     # Known limitations
 │   │   └── limitation_matrix.json   # Machine-readable limitations
-│   ├── validation_freeze/           # Validation Freeze audit reports
+│   ├── rc3/                         # RC-3 final reports
 │   └── operator_summary.md/json     # Quick-reference summary
 ├── dashboard/                       # Standalone dashboard
 ├── scripts/                         # NPU lock, profiler queue scripts
 └── archives/                        # Operator archive packages
 ```
 
-## Operator Status (RC-1)
+## Operator Status (v1.3-rc3)
 
 | Operator | Final Status | Torch | Ascend C | PyPTO | Correctness | Profiler |
 |----------|-------------|-------|----------|-------|-------------|----------|
 | relu | **COMPLETE** | PASS | TRUE_DEVICE | SUCCESS | Full (7/7) | msprof |
 | mul | **COMPLETE** | PASS | TRUE_DEVICE | SUCCESS | Full (7/7) | msprof |
-| not | **COMPLETE** | PASS | TRUE_DEVICE | SUCCESS | Full (42/42) | Event |
-| matmul | **COMPLETE** | PASS | TRUE_CUBE | BLOCKED_BACKEND | Torch+AscendC (6/6) | msprof |
+| not | **COMPLETE** | PASS | TRUE_DEVICE | SUCCESS | Full (42/42) | msprof |
+| matmul | **COMPLETE** | PASS | TRUE_CUBE | SUCCESS (limited) | All 3 routes (6/6) | msprof |
 | add | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | PyPTO B=1 persisted | msprof |
-| div | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | BLOCKED_BACKEND | Torch+AscendC (6/6) | msprof |
-| equal | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | BLOCKED_BACKEND | Torch+AscendC (7/7) | Event |
-| or | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | BITWISE_OR | AscendC corrected (49/49) | Event |
-| where | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | BLOCKED_BACKEND | Torch+AscendC (7/7) | Event |
-| expand | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | Full (7/7) | msprof(r3) |
-| transpose | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | PARTIAL | Torch+AscendC (7/7) | msprof |
-| reduce_sum | **COMPLETE_WITH_LIMITATION** | PASS (62/70) | TRUE_DEVICE | SUCCESS (21/70) | FP16 accum | msprof |
+| div | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | All 3 routes (6/6 bitwise) | msprof |
+| equal | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | All 3 routes (7/7 bitwise) | msprof |
+| or | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | BITWISE_OR | AscendC corrected (49/49) | msprof |
+| where | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | All 3 routes (7/7 bitwise) | msprof |
+| expand | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | Full (7/7) | msprof |
+| transpose | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | All 3 routes (7/7 bitwise) | msprof |
+| reduce_sum | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | 70/70 (FP32 accum) | msprof |
 
-**Status**: 4 COMPLETE, 8 COMPLETE_WITH_LIMITATION
-
-## RC-1 Fixes
-
-- **Profiler parser**: `primary_compute_kernel_us` now correctly reports KERNEL_MIX_AIC for PyPTO (not KERNEL_AICPU executor)
-- **Div correctness**: B=4,8,16,32 reference files existed, re-ran — all 6 batches PASS now
-- **Relu correctness**: torch/correctness_results.json was missing, now generated — 7/7 PASS
-- **Reduce_sum parsed data**: 14 parsed JSON files generated from existing msprof raw data
-- **Performance CSV**: All values use consistent `primary_compute_kernel_us` metric
+**Status**: 4 COMPLETE, 8 COMPLETE_WITH_LIMITATION, 0 PARTIAL, 0 INCOMPLETE
 
 ## Measurement Methodology
 
@@ -76,15 +68,17 @@ All msprof operators use **unified profiler-based measurement**:
 4. **Key metric**: `primary_compute_kernel_us` — longest single device kernel event per call
 5. **PyPTO**: Two-process method (warmup no-profiler, then msprof) to exclude JIT compilation
 
-**Event-based operators** (equal, not, or, where): Use `torch.npu.Event` / `aclrtEvent` host-synchronized timing. NOT comparable with msprof operators.
-
 ## Known Limitations
 
-- **PyPTO backend limitations**: div (broadcast), equal (output bitmask), matmul (Cube tiling FC4000), transpose (CompileFunction >1K elements), where (condition dtype expansion)
-- **No msprof for logical ops**: equal, not, or, where lack device-kernel profiling
-- **Reduce_sum FP16 accumulation**: Ascend C and PyPTO at 21/70 PASS due to FP16 vs FP32 reference
-- **Expand per-row dispatch**: PyPTO uses 256 JIT invocations per batch row (AICPU, not compute kernel)
-- **Matmul per-matrix dispatch**: Ascend C launches 12-384 individual kernel calls
+| Priority | Operator | Route | Description |
+|----------|----------|-------|-------------|
+| P1 | or | PyPTO | Uses bitwise_or (no logical_or API). Correct for 0/1 bool. |
+| P1 | reduce_sum | all | FP16 output overflow >65504 (expected behavior) |
+| P2 | matmul | PyPTO | Auto-tiling FC4000; manual set_cube_tile_shapes required |
+| P2 | equal | PyPTO | BOOL output requires ta≤64 tile constraint |
+| P2 | where | PyPTO | uint8 condition requires DT_BOOL kernel |
+| P2 | expand | PyPTO | Uses PyTorch expand+clone (not PyPTO native) |
+| P2 | add | PyPTO | Correctness B=2..64 not persisted to JSON |
 
 ## Dashboard
 
@@ -105,6 +99,6 @@ Open `dashboard/index.html` in any browser.
 
 ## Reproducing Results
 
-See `reports/validation_freeze/` for complete audit reports.
+See `reports/rc3/` for RC-3 final audit reports. Historical reports are in `archives/rc_history/`.
 
 See `operators/{op}/REPRODUCE.md` for step-by-step guides for each operator.

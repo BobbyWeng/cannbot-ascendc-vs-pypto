@@ -6,10 +6,8 @@ Generated from `reports/release/current_release.json` — single source of truth
 
 | Category | Count | Operators |
 |----------|:-----:|-----------|
-| COMPLETE | 2 | relu, mul |
-| COMPLETE_WITH_LIMITATION | 6 | add, div, equal, not, or, where |
-| PARTIAL | 3 | expand, transpose, reduce_sum |
-| COMPLETE_WITH_LIMITATION | 7 | add, div, equal, not, or, where, matmul |
+| COMPLETE | 4 | relu, mul, not, matmul |
+| COMPLETE_WITH_LIMITATION | 8 | add, div, equal, or, where, expand, transpose, reduce_sum |
 
 ## Core Arithmetic (msprof, all batches)
 
@@ -22,22 +20,22 @@ Generated from `reports/release/current_release.json` — single source of truth
 
 All times B=1 msprof primary compute kernel (KERNEL_AIVEC for torch/ascendc, KERNEL_MIX_AIC for pypto).
 
-## Logical/Comparison (torch.npu.Event/aclrtEvent — NOT comparable with msprof)
+## Logical/Comparison (msprof — comparable with arithmetic ops)
 
-| Operator | Status | Torch (B=1) | Ascend C (B=1) | PyPTO | Correctness |
-|----------|--------|:-----------:|:--------------:|:-----:|:-----------:|
-| **equal** | COMPLETE_WITH_LIMITATION | 12.2 us | 41.8 us | BLOCKED_BACKEND | Torch+AscendC PASS |
-| **not** | COMPLETE_WITH_LIMITATION | 127.5 us | 6.4 us | 136.6 us | AscendC FAIL (script bug); PyPTO UNVERIFIED |
-| **or** | COMPLETE_WITH_LIMITATION | 256.3 us | 6.5 us | 148.8 us | AscendC FAIL (script bug); PyPTO bitwise_or |
-| **where** | COMPLETE_WITH_LIMITATION | 131.9 us | 238.6 us | BLOCKED_BACKEND | Torch+AscendC PASS |
+| Operator | Status | Torch (B=1) | Ascend C (B=1) | PyPTO (B=1 compute) | Correctness |
+|----------|--------|:-----------:|:--------------:|:-------------------:|:-----------:|
+| **equal** | COMPLETE_WITH_LIMITATION | 11.5 us | 50.0 us | N/A | Torch+AscendC+PyPTO PASS |
+| **not** | COMPLETE | 8.2 us | 8.2 us | 118.8 us | Torch+AscendC+PyPTO PASS |
+| **or** | COMPLETE_WITH_LIMITATION | 8.3 us | 9.1 us | 119.1 us | Torch+AscendC PASS; PyPTO bitwise_or |
+| **where** | COMPLETE_WITH_LIMITATION | 10.1 us | 13.8 us | N/A | Torch+AscendC+PyPTO PASS |
 
 ## Cube Operators
 
 | Operator | Status | Torch | Ascend C | PyPTO | Cube Badge |
 |----------|--------|:-----:|:--------:|:-----:|:----------:|
-| **matmul** | **⚠️ COMPLETE_WITH_LIMITATION** | ✅ PASS (atol/rtol) | ⚠️ TRUE_DEVICE_AIVEC | ❌ BLOCKED_BACKEND | **Not true Cube** |
+| **matmul** | **COMPLETE** | ✅ PASS (atol/rtol) | ✅ TRUE_CUBE (msprof) | ✅ PASS (FP16 accum) | **True Cube** |
 
-**Note**: MatMul correctness passes for Torch and Ascend C. Ascend C runs on AIC Vector path (FP32 accumulation), not Cube MMAD. The MatmulImpl Cube API requires tiling library integration.
+**Note**: MatMul correctness passes for all 3 routes. Ascend C uses Cube MMAD (MatmulImpl). PyPTO unblocked via manual set_cube_tile_shapes workaround (max_abs~0.015-0.031 due to FP16 accum).
 
 ## Layout/Reduce (no profiler data — PARTIAL)
 

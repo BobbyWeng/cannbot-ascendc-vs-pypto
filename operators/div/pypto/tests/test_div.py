@@ -31,8 +31,8 @@ def test_div():
         shape = (B,) + KERNEL_TAIL
         x2_shape = (B,) + X2_KERNEL_TAIL
         x1 = torch.randn(shape, dtype=DTYPE) * 2.0
-        x2_sign = torch.sign(torch.randn(x2_shape))
-        x2_mag = torch.rand(x2_shape) * 3.75 + 0.25
+        x2_sign = torch.sign(torch.randn(x2_shape, dtype=DTYPE))
+        x2_mag = torch.rand(x2_shape, dtype=DTYPE) * 3.75 + 0.25
         x2 = x2_sign * x2_mag
         x2 = x2.clamp(-4.0, -0.25) + x2.clamp(0.25, 4.0)
         x2_mask = (x2.abs() >= 0.25)

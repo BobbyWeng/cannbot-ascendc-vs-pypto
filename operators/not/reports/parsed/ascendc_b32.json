@@ -1,0 +1,33 @@
+{
+  "kernel_count": 700,
+  "logical_calls": 100,
+  "kernels_per_logical_call": 7.0,
+  "all_device_kernels_us_per_call": 51.188,
+  "primary_compute_kernel_us": 14.16,
+  "primary_kernel_name": "not_kernel",
+  "primary_kernel_type": "KERNEL_AIVEC",
+  "kernel_names": [
+    "not_kernel"
+  ],
+  "kernel_types": [
+    "KERNEL_AIVEC"
+  ],
+  "kernel_type_breakdown": {
+    "KERNEL_AIVEC": {
+      "count": 700,
+      "total_us": 5118.78,
+      "mean_us": 7.313,
+      "per_call_us": 51.188
+    }
+  },
+  "compute_kernel_types": [
+    "KERNEL_AIVEC"
+  ],
+  "executor_kernel_types": [],
+  "total_kernel_duration_all_iters_us": 5118.78,
+  "operator": "not",
+  "implementation": "ascendc",
+  "batch": 32,
+  "parser_version": "1.2-rc3",
+  "profiler_type": "msprof"
+}

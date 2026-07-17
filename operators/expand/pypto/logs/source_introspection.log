@@ -2,15 +2,20 @@
 SOURCE INTROSPECTION
 ============================================================
 Python executable: /opt/buildtools/Python-3.11.4/bin/python3
-cwd: /mnt/workspace/cannbot_ascendc_vs_pypto
-sys.path: ['/mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests/../src', '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests/../golden', '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests', '/home/developer/Ascend/cann-9.0.0/python/site-packages', '/home/developer/Ascend/cann-9.0.0/opp/built-in/op_impl/ai_core/tbe', '/mnt/workspace/cannbot_ascendc_vs_pypto', '/opt/buildtools/Python-3.11.4/lib/python311.zip', '/opt/buildtools/Python-3.11.4/lib/python3.11', '/opt/buildtools/Python-3.11.4/lib/python3.11/lib-dynload', '/home/developer/.local/lib/python3.11/site-packages', '/opt/buildtools/Python-3.11.4/lib/python3.11/site-packages', '/tmp/tmpd4nen4ak']
+cwd: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand
+sys.path: ['/mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests/../src', '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests/../golden', '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand/pypto/tests', '/home/developer/Ascend/cann-9.0.0/python/site-packages', '/home/developer/Ascend/cann-9.0.0/opp/built-in/op_impl/ai_core/tbe', '/mnt/workspace/cannbot_ascendc_vs_pypto/operators/expand', '/opt/buildtools/Python-3.11.4/lib/python311.zip', '/opt/buildtools/Python-3.11.4/lib/python3.11', '/opt/buildtools/Python-3.11.4/lib/python3.11/lib-dynload', '/home/developer/.local/lib/python3.11/site-packages', '/opt/buildtools/Python-3.11.4/lib/python3.11/site-packages', '/tmp/tmpbpf193eg']
 function type: <class 'function'>
 __module__: expand_impl
-inspect.getsource: OK (212 chars)
+inspect.getsource: OK (392 chars)
 Source:
 @pypto.frontend.jit
 def expand_row(x: pypto.Tensor([1], pypto.DT_FP16),
                y: pypto.Tensor([384], pypto.DT_FP16)):
+    """Per-row expand - used as fallback/reference.
+    
+    JIT kernel that expands a single row from [1] to [384].
+    Each call dispatches via AICPU at ~107us overhead.
+    """
     pypto.set_vec_tile_shapes(128, 1024)
     y.move(pypto.op.expand_clone(x, [384]))
 

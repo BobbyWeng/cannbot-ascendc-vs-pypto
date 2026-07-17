@@ -1,22 +1,22 @@
 {
   "operator": "or",
   "torch": {
-    "status": "PENDING",
-    "correctness": "PENDING",
-    "profiler": "PENDING"
+    "status": "COMPLETE",
+    "correctness": "PASS",
+    "profiler": "COMPLETE"
   },
   "ascendc": {
-    "status": "PENDING",
-    "correctness": "PENDING",
-    "profiler": "PENDING"
+    "status": "COMPLETE",
+    "correctness": "PASS",
+    "profiler": "COMPLETE"
   },
   "pypto": {
-    "status": "PENDING",
-    "correctness": "PENDING",
-    "profiler": "PENDING"
+    "status": "COMPLETE_WITH_LIMITATION",
+    "correctness": "PASS",
+    "profiler": "COMPLETE"
   },
   "reports": {
-    "final": "PENDING"
+    "final": "COMPLETE"
   },
-  "last_updated": "2026-07-16"
+  "last_updated": "2026-07-17T23:00:00Z"
 }

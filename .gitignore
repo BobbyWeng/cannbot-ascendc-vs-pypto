@@ -34,7 +34,16 @@ temp/
 # msprof raw profiler data (parsed data IS tracked)
 msprof_*/
 profiler_raw/
-**/reports/raw/PROF_*/
+**/reports/raw/
+**/profiling/
+
+# Diagnostics (candidate attempts)
+**/diagnostics/
+**/logs/
+
+# Raw profiler databases and output
+*.db
+mindstudio_profiler_*/
 
 # Core dumps
 core

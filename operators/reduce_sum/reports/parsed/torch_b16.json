@@ -1,0 +1,30 @@
+{
+  "kernel_count": 300,
+  "logical_calls": 100,
+  "kernels_per_logical_call": 3.0,
+  "all_device_kernels_us_per_call": 19.769,
+  "primary_compute_kernel_us": 18.5,
+  "primary_kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
+  "primary_kernel_type": "KERNEL_MIX_AIV",
+  "kernel_names": [
+    "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum"
+  ],
+  "kernel_types": [
+    "KERNEL_MIX_AIV"
+  ],
+  "kernel_type_breakdown": {
+    "KERNEL_MIX_AIV": {
+      "count": 300,
+      "total_us": 1976.86,
+      "mean_us": 6.59,
+      "per_call_us": 19.769
+    }
+  },
+  "compute_kernel_types": [
+    "KERNEL_MIX_AIV"
+  ],
+  "executor_kernel_types": [],
+  "total_kernel_duration_all_iters_us": 1976.86,
+  "parser_version": "1.2-rc3",
+  "profiler_type": "msprof"
+}

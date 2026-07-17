@@ -10,28 +10,33 @@ Broadcast division along last dimension.
 - **Kernel**: X1/Y `[B,12,256,256]`, X2 `[B,12,256,1]`
 - **Dimension merge**: `(3,4) -> 12`, contiguous zero-copy view
 
-## Status: COMPLETE ✅
+## Status: COMPLETE_WITH_LIMITATION ✅
 
 ## Correctness
 | Implementation | Status | Detail |
 |---------------|--------|--------|
 | Ascend C | ✅ PASS | All 6 batches bitwise exact with FP16 reference |
 | Torch NPU | ✅ PASS | `torch.div` matches reference |
-| PyPTO | ⚠️ LIMITED | Minimal shapes work; broadcast fails at backend |
+| PyPTO | ✅ **UNBLOCKED RC-2** | All 6 batches bitwise (max_abs=0.0) |
 
 ## Performance (B=32)
 | Implementation | Latency (µs) | vs Torch |
 |---------------|:------------:|:--------:|
 | **Ascend C (optimized)** | 328.6 | 2.91× |
 | **Torch NPU** | 112.8 | 1.00× |
-| **PyPTO** | N/A | Backend blocked |
+| **PyPTO** | N/A (not profiled) | Unblocked in RC-2 |
 
 ## Implementation Strategies
 | Implementation | Kernel Type | Broadcast Method |
 |--------------|-------------|-----------------|
 | torch.div | KERNEL_AIVEC (42 micro-kernels/call) | Vendor fused broadcast-div |
 | Ascend C | KERNEL_AIVEC (1 kernel/call) | Per-row Duplicate+Div in UB |
-| PyPTO | — | Backend CompileFunction fails |
+| PyPTO | KERNEL_AIVEC | tile_shape(128,1024) (fixed RC-2) |
+
+## PyPTO RC-2 Fix
+- **Root cause**: `tile_shape(1024,2048)` was too large for backend CompileFunction. Dtype mismatch in test also contributed.
+- **Workaround**: Changed tile shape to `(128,1024)`. Fixed dtype mismatch in test.
+- **Result**: All 6 batches pass bitwise (max_abs=0.0).
 
 ## Key Files
 - `ascendc/src/div_kernel.asc` — Current kernel (baseline)

@@ -3,9 +3,9 @@
   "logical_calls": 100,
   "kernels_per_logical_call": 3.01,
   "all_device_kernels_us_per_call": 208.226,
-  "primary_compute_kernel_us": 3083.122,
-  "primary_kernel_name": "KERNEL_AICPU",
-  "primary_kernel_type": "KERNEL_AICPU",
+  "primary_compute_kernel_us": 221.724,
+  "primary_kernel_name": "PYPTO_mul_kernel_2d",
+  "primary_kernel_type": "KERNEL_MIX_AIC",
   "kernel_names": [
     "KERNEL_AICPU",
     "PYPTO_mul_kernel_2d"
@@ -35,5 +35,7 @@
     "KERNEL_AICPU"
   ],
   "total_kernel_duration_all_iters_us": 20822.56,
-  "aicpu_executor_us_per_call": 150.523
+  "aicpu_executor_us_per_call": 150.523,
+  "parser_version": "1.2-rc3",
+  "profiler_type": "msprof"
 }

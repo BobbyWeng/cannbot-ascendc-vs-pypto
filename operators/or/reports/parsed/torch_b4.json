@@ -1,0 +1,44 @@
+{
+  "kernel_count": 300,
+  "logical_calls": 100,
+  "kernels_per_logical_call": 3.0,
+  "all_device_kernels_us_per_call": 484.56,
+  "primary_compute_kernel_us": 13.12,
+  "primary_kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
+  "primary_kernel_type": "KERNEL_AIVEC",
+  "kernel_names": [
+    "aclnnLogicalOr_CastAiCpu_Cast",
+    "aclnnLogicalOr_LogicalOrAiCore_LogicalOr"
+  ],
+  "kernel_types": [
+    "KERNEL_AICPU",
+    "KERNEL_AIVEC"
+  ],
+  "kernel_type_breakdown": {
+    "KERNEL_AICPU": {
+      "count": 200,
+      "total_us": 47656.0,
+      "mean_us": 238.28,
+      "per_call_us": 476.56
+    },
+    "KERNEL_AIVEC": {
+      "count": 100,
+      "total_us": 799.98,
+      "mean_us": 8.0,
+      "per_call_us": 8.0
+    }
+  },
+  "compute_kernel_types": [
+    "KERNEL_AIVEC"
+  ],
+  "executor_kernel_types": [
+    "KERNEL_AICPU"
+  ],
+  "total_kernel_duration_all_iters_us": 48455.98,
+  "aicpu_executor_us_per_call": 476.56,
+  "operator": "or",
+  "implementation": "torch",
+  "batch": 4,
+  "parser_version": "1.2-rc3",
+  "profiler_type": "msprof"
+}

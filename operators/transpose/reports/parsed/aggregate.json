@@ -1,0 +1,260 @@
+{
+  "torch": {
+    "1": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 82.359,
+      "primary_compute_kernel_us": 14.1,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "aclnnInplaceCopy_TransposeAiCore_Transpose"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 8235.92,
+          "mean_us": 11.766
+        }
+      },
+      "host_events_count": 4279
+    },
+    "2": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 88.291,
+      "primary_compute_kernel_us": 16.68,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "aclnnInplaceCopy_TransposeAiCore_Transpose"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 8829.1,
+          "mean_us": 12.613
+        }
+      },
+      "host_events_count": 4279
+    },
+    "4": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 89.618,
+      "primary_compute_kernel_us": 22.48,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "aclnnInplaceCopy_TransposeAiCore_Transpose"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 8961.84,
+          "mean_us": 12.803
+        }
+      },
+      "host_events_count": 4279
+    },
+    "8": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 86.096,
+      "primary_compute_kernel_us": 19.26,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "aclnnInplaceCopy_TransposeAiCore_Transpose"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 8609.58,
+          "mean_us": 12.299
+        }
+      },
+      "host_events_count": 4280
+    },
+    "16": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 99.836,
+      "primary_compute_kernel_us": 20.18,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "aclnnInplaceCopy_TransposeAiCore_Transpose"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 9983.6,
+          "mean_us": 14.262
+        }
+      },
+      "host_events_count": 4280
+    },
+    "32": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 122.163,
+      "primary_compute_kernel_us": 26.2,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "aclnnInplaceCopy_TransposeAiCore_Transpose"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 12216.26,
+          "mean_us": 17.452
+        }
+      },
+      "host_events_count": 4280
+    },
+    "64": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 176.919,
+      "primary_compute_kernel_us": 37.64,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "aclnnInplaceCopy_TransposeAiCore_Transpose"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 17691.94,
+          "mean_us": 25.274
+        }
+      },
+      "host_events_count": 4281
+    }
+  },
+  "ascendc": {
+    "1": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 692.526,
+      "primary_compute_kernel_us": 106.2,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "transpose_kernel"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 69252.62,
+          "mean_us": 98.932
+        }
+      },
+      "host_events_count": 2133
+    },
+    "2": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 1345.145,
+      "primary_compute_kernel_us": 199.84,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "transpose_kernel"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 134514.5,
+          "mean_us": 192.164
+        }
+      },
+      "host_events_count": 2133
+    },
+    "4": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 2642.91,
+      "primary_compute_kernel_us": 385.62,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "transpose_kernel"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 264291.0,
+          "mean_us": 377.559
+        }
+      },
+      "host_events_count": 2133
+    },
+    "8": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 5272.676,
+      "primary_compute_kernel_us": 762.3,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "transpose_kernel"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 527267.62,
+          "mean_us": 753.239
+        }
+      },
+      "host_events_count": 2133
+    },
+    "16": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 10517.667,
+      "primary_compute_kernel_us": 1510.6,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "transpose_kernel"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 1051766.66,
+          "mean_us": 1502.524
+        }
+      },
+      "host_events_count": 2133
+    },
+    "32": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 21008.479,
+      "primary_compute_kernel_us": 3014.6,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "transpose_kernel"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 2100847.9,
+          "mean_us": 3001.211
+        }
+      },
+      "host_events_count": 2133
+    },
+    "64": {
+      "kernel_count": 700,
+      "kernels_per_call": 7.0,
+      "all_device_kernels_us": 41980.095,
+      "primary_compute_kernel_us": 6016.54,
+      "primary_compute_type": "KERNEL_AIVEC",
+      "kernel_names": [
+        "transpose_kernel"
+      ],
+      "by_type": {
+        "KERNEL_AIVEC": {
+          "count": 700,
+          "total_us": 4198009.46,
+          "mean_us": 5997.156
+        }
+      },
+      "host_events_count": 2133
+    }
+  },
+  "parser_version": "1.2-rc3",
+  "profiler_type": "unknown"
+}

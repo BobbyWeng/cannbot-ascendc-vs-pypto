@@ -12,6 +12,7 @@
 - Vector operation: set_vec_tile_shapes for pure element-wise comparison
 - BOOL output is 1 byte per element vs 2 bytes for FP16 input
 - Multi-core parallelization handled by PyPTO runtime
+- **Constraint**: `ta` (first tiling axis) must be ≤ 64 for BOOL output kernels to avoid CompileFunction failure (backend limitation on dav-2201)
 
 ## Loop Structure
 ```

@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+"""PyPTO correctness for ReduceSum — FP32 accumulation path.
+
+Compares against both fp32_accum and fp16_path references.
+FP32 accumulation should match fp32_accum reference within atol=0.01, rtol=0.01.
+"""
 import os, sys, json, argparse
 import numpy as np
 import warnings

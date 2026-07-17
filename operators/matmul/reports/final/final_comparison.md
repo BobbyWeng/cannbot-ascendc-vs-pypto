@@ -6,9 +6,9 @@
 |-------|--------|-------------|-------------|-------------|:-----------:|:------------:|
 | Torch | COMPLETE | PASS (atol=0.01) | KERNEL_AICORE | aclnnMatmul_BatchMatMulNd_BatchMatMulV2 | **12.2 us** (primary) | **63.3 us** (primary) |
 | Ascend C | COMPLETE | PASS (max_abs=0.015625) | KERNEL_AICORE (__cube__) | matmul_kernel | **74.5 us** (12 mats) | **2416 us** (384 mats) |
-| PyPTO | BLOCKED_BACKEND | N/A | N/A | N/A | N/A | N/A |
+| PyPTO | COMPLETE_WITH_LIMITATION | PASS (max_abs=0.015-0.031) | N/A | N/A | N/A | N/A |
 
-**PyPTO**: BLOCKED_BACKEND — Cube tiling engine returns FC4000 (invalid tile values). All matmul shapes fail. See `pypto/DIAGNOSTIC_REPORT.md`.
+**PyPTO**: UNBLOCKED via RC-2 fix — manual set_cube_tile_shapes([16,32],[16,32],[16,32]) workaround. All shapes compile and run. FP16 accumulation causes max_abs~0.015-0.031 (not bitwise). msprof data N/A.
 
 ## Correctness
 
@@ -121,7 +121,7 @@ Kernel dispatch: Per-matrix (1 kernel call per matrix, not batched)
 
 1. **Ascend C per-matrix dispatch**: Each matrix is launched as a separate `<<<1, 0>>>` kernel call. This results in high launch overhead (12-384 kernel launches per logical operation). An optimized batched kernel would fuse all matrices into a single call.
 
-2. **PyPTO BLOCKED_BACKEND**: PyPTO `pypto.matmul` fails at the Cube tiling engine (FC4000: invalid tile values). All matmul shapes are affected, not just the target shape.
+2. **PyPTO COMPLETE_WITH_LIMITATION**: PyPTO `pypto.matmul` was UNBLOCKED in RC-2 via manual `set_cube_tile_shapes` workaround. All 6 batches compile and pass correctness. FP16 accumulation causes max_abs~0.015-0.031 (not bitwise). No msprof profiler data.
 
 3. **Kernel type classification**: msprof classifies both torch `aclnnMatmul` and Ascend C `matmul_kernel` as KERNEL_AICORE, not KERNEL_AIC_CUBE. The profiler may not distinguish AIC_CUBE from AICORE in this CANN version.
 
@@ -133,4 +133,4 @@ Kernel dispatch: Per-matrix (1 kernel call per matrix, not batched)
 |-------|-------|--------|
 | Torch | COMPLETE | Full correctness + msprof profiler data |
 | Ascend C | COMPLETE | TRUE Cube kernel, full correctness, msprof profiler data |
-| PyPTO | COMPLETE_WITH_LIMITATION | BLOCKED_BACKEND — Cube tiling FC4000 error. Documented in DIAGNOSTIC_REPORT.md |
+| PyPTO | COMPLETE_WITH_LIMITATION | Correctness PASS (all 6 batches). FP16 accum max_abs~0.015-0.031. No msprof data. |

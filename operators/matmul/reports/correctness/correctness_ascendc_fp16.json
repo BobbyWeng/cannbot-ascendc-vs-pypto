@@ -1,0 +1,75 @@
+{
+  "operator": "matmul",
+  "implementation": "ascendc",
+  "reference_type": "fp16",
+  "batch_results": [
+    {
+      "batch": 1,
+      "impl": "ascendc",
+      "results": {
+        "perf_fp16": {
+          "status": "PASS",
+          "bitwise_equal": false,
+          "bitwise_mismatch_count": 88,
+          "signed_zero_mismatch_count": 0,
+          "numeric_mismatch_count": 88,
+          "max_abs_diff": 0.00390625,
+          "max_rel_diff": 0.004970550537109375,
+          "nan_count": 0,
+          "inf_count": 0,
+          "label": "ascendc B=1 case=perf_fp16"
+        },
+        "zeros": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_zeros.bin"
+        },
+        "ones": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_ones.bin"
+        },
+        "identity": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_identity.bin"
+        },
+        "sparse": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_sparse.bin"
+        },
+        "small_values": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_small_values.bin"
+        },
+        "mixed_signs": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_mixed_signs.bin"
+        },
+        "cancellation": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_cancellation.bin"
+        },
+        "max_safe": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_max_safe.bin"
+        },
+        "underflow": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_underflow.bin"
+        },
+        "overflow_risk": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_overflow_risk.bin"
+        },
+        "nan": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_nan.bin"
+        },
+        "inf": {
+          "status": "SKIP",
+          "error": "Output not found: /mnt/workspace/cannbot_ascendc_vs_pypto/operators/matmul/ascendc/build/output/output_b1_inf.bin"
+        }
+      },
+      "all_pass": false
+    }
+  ],
+  "all_pass": false
+}

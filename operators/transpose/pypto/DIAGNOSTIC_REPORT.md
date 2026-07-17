@@ -1,31 +1,33 @@
 # Transpose PyPTO Diagnostic Report
 
-## Status: PARTIAL
+## Status: FIXED
 
-### Current State
-| Shape | Status | Detail |
-|-------|--------|--------|
-| [1,16,32]→[1,32,16] | PASS | Bitwise exact (0.0 max_diff) |
-| [1,32,16]→[1,16,32] | PASS | Bitwise exact (0.0 max_diff) |
-| [1,256,384]→[1,384,256] | FAIL | CompileFunction pass failure |
+### Previous Diagnosis (Incorrect)
+Previously believed to be **BLOCKED_BACKEND** — a fundamental CompileFunction limitation for tensors >~1000 elements. The real error was:
 
-### Backend Error
 ```
 Errcode: FFFFFF! Run pass failed., func CompileFunction, file host_machine.cpp, line 179
 ```
 
-### Root Cause
-PyPTO's `transpose` implementation hits a pass failure in the codegen/compilation pipeline when tensor size exceeds ~1000 elements. The [16,32]=512 elements case works, but [256,384]=98304 does not.
+### Actual Root Cause
+**Tile shape mismatch.** The original implementation used `pypto.set_vec_tile_shapes(128, 1024)`, which causes CompileFunction to fail for tensors whose dimensions don't align well with this tile shape. The scalar tile of 1024 creates too large a per-tile memory footprint.
 
-### Blocker Classification
-**BLOCKED_BACKEND** — Not a JIT/source issue. The backend CompileFunction pass has a genuine limitation for large tensors.
+### Fix
+Changed `pypto.set_vec_tile_shapes(128, 1024)` → `pypto.set_vec_tile_shapes(64, 256)` in `transpose_impl.py`.
 
-### Alternatives Considered
-- Manual tile-based transpose via explicit indexing (not available in PyPTO)
-- Smaller tiles: PyPTO does not expose element-level operations
-- Per-batch processing: same problem since the 2D slice [256,384] still exceeds limit
+### Verified Results
 
-### Recommendation
-- PyPTO transpose for this batch is blocked at backend level
-- Use Ascend C device-side transpose for performance
-- Document as `BLOCKED_BACKEND (transpose CompileFunction pass failure for tensors >~1K elements)`
+| Shape | Elements | Status | Max Diff |
+|-------|----------|--------|----------|
+| [1,16,32] | 512 | PASS | 0.0 (bitwise) |
+| [1,32,16] | 512 | PASS | 0.0 (bitwise) |
+| [1,256,384] | 98304 | PASS | 0.0 (bitwise) |
+| [1,384,256] | 98304 | PASS | 0.0 (bitwise) |
+| [2,16,32] | 1024 | PASS | 0.0 (bitwise) |
+| [4,32,64] | 8192 | PASS | 0.0 (bitwise) |
+| [2,256,384] | 196608 | PASS | 0.0 (bitwise) |
+| [1,1024,1024] | 1048576 | PASS | 0.0 (bitwise) |
+| [1,2048,2048] | 4194304 | PASS | 0.0 (bitwise) |
+
+### Conclusion
+**Not BLOCKED_BACKEND** — the transpose operation works correctly for all tested sizes up to 4M elements when configured with an appropriate tile shape `(64, 256)`. The issue was purely a configuration problem.

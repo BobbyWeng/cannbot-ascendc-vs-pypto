@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyPTO Operator Dashboard v1.1</title>
+<title>PyPTO Operator Dashboard v1.3-rc3</title>
 <style>/* PyPTO Dashboard — Dark Theme */
 :root {
   --bg-primary: #0d1117;
@@ -143,6 +143,12 @@ tr:hover { background: var(--bg-hover); }
   .info-grid { grid-template-columns: repeat(2, 1fr); }
   .toolbar input { width: 160px; }
 }
+
+.chart-bar { display: flex; align-items: center; gap: 6px; margin: 2px 0; font-size: 12px; }
+.chart-bar .bar { height: 14px; border-radius: 3px; min-width: 4px; transition: width 0.3s; }
+.chart-bar .label-mini { color: var(--text-muted); width: 50px; text-align: right; }
+.chart-bar .value-mini { color: var(--text-secondary); width: 60px; }
+.hash-text { font-family: monospace; font-size: 10px; color: var(--text-muted); word-break: break-all; }
 </style>
 </head>
 <body>
@@ -154,10 +160,10 @@ tr:hover { background: var(--bg-hover); }
   <div class="header">
     <div>
       <h1>PyPTO Operator Dashboard</h1>
-      <div class="subtitle">Release Mode — Source: reports/release/current_release.json</div>
+      <div class="subtitle" id="header-subtitle">Loading...</div>
     </div>
     <div class="header-right">
-      <span class="badge">0/12 completed</span>
+      <span class="badge" id="header-badge">0/12 completed</span>
       <span class="update-time" id="update-time"></span>
     </div>
   </div>
@@ -168,7 +174,7 @@ tr:hover { background: var(--bg-hover); }
   </div>
 
   <div class="container">
-    <p>Release v1.1 — 2026-07-17T00:10:00Z</p>
+    <div id="release-info"></div>
 
     <div class="summary-cards" id="summary-cards"></div>
 
@@ -193,6 +199,7 @@ tr:hover { background: var(--bg-hover); }
           <th>Correctness</th>
           <th>B1 Perf</th>
           <th>Profiler</th>
+          <th>Skill Trace</th>
         </tr>
       </thead>
       <tbody id="op-table-body"></tbody>
@@ -219,6 +226,9 @@ tr:hover { background: var(--bg-hover); }
         <div class="tab active" data-tab="correctness" onclick="switchTab('correctness')">Correctness</div>
         <div class="tab" data-tab="performance" onclick="switchTab('performance')">Performance</div>
         <div class="tab" data-tab="limitations" onclick="switchTab('limitations')">Limitations</div>
+        <div class="tab" data-tab="profiler-timeline" onclick="switchTab('profiler-timeline')">Profiler Timeline</div>
+        <div class="tab" data-tab="batch-scaling" onclick="switchTab('batch-scaling')">Batch Scaling</div>
+        <div class="tab" data-tab="kernel-timeline" onclick="switchTab('kernel-timeline')">Kernel Timeline</div>
       </div>
 
       <div class="tab-content active" id="tab-correctness">
@@ -239,7 +249,7 @@ tr:hover { background: var(--bg-hover); }
         <div class="section">
           <h3>Profiler Metrics</h3>
           <table>
-            <thead><tr><th>Route</th><th>Method</th><th>B1 Latency</th></tr></thead>
+            <thead><tr><th>Route</th><th>Method</th><th>B1 Latency</th><th>Kernels/Call</th></tr></thead>
             <tbody id="perf-table-body"></tbody>
           </table>
         </div>
@@ -250,12 +260,43 @@ tr:hover { background: var(--bg-hover); }
           <h3>Known Limitations</h3>
           <div id="limitations-content"></div>
         </div>
+        <div class="section">
+          <h3>Source & Binary Hashes</h3>
+          <div id="hash-content"></div>
+        </div>
       </div>
+
+      <div class="tab-content" id="tab-profiler-timeline">
+        <div class="section">
+          <h3>Kernel Timeline</h3>
+          <div id="profiler-timeline-content"></div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-batch-scaling">
+        <div class="section">
+          <h3>Latency vs Batch Size</h3>
+          <div id="batch-scaling-content"></div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-kernel-timeline">
+        <div class="section">
+          <h3>Kernel Breakdown by Type</h3>
+          <div id="kernel-timeline-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bottom-sections" style="margin-top: 32px">
+      <div id="release-history-section"></div>
+      <div id="skill-trace-section"></div>
+      <div id="backend-limitations-section"></div>
     </div>
   </div>
 </div>
 
-<script>// PyPTO Dashboard — Interactive
+<script>
 let dashboardData = null;
 let currentOp = null;
 let currentTab = 'correctness';
@@ -267,8 +308,10 @@ function init() {
     .then(r => r.json())
     .then(data => {
       dashboardData = data;
+      document.getElementById('header-subtitle').textContent = 'Release ' + (data.version || data.release_version || '?') + ' — ' + data.generated_at;
       renderSummary(data);
       renderTable(data);
+      renderBottomSections(data);
       setupSearch();
       setupSort();
       document.getElementById('loading').style.display = 'none';
@@ -280,43 +323,15 @@ function init() {
 }
 
 function renderSummary(data) {
-  if (data.mode === 'release') {
-    const s = data.status_summary || {};
-    const total = data.operator_count || 0;
-    const cards = [
-      { label: 'Total Operators', value: total, cls: 'color-blue' },
-    ];
-    for (const [status, count] of Object.entries(s)) {
-      const cls = status.startsWith('COMPLETE') ? 'color-green' : status === 'PARTIAL' ? 'color-yellow' : 'color-red';
-      cards.push({ label: status, value: count, cls: cls });
-    }
-    const container = document.getElementById('summary-cards');
-    container.innerHTML = cards.map(c => `
-      <div class="summary-card ${c.cls}">
-        <div class="value">${c.value}</div>
-        <div class="label">${c.label}</div>
-      </div>
-    `).join('');
-
-    const compl = (s['COMPLETE'] || 0) + (s['COMPLETE_WITH_LIMITATION'] || 0);
-    const pct = total > 0 ? Math.round(compl / total * 100) : 0;
-    document.getElementById('progress-fill').style.width = pct + '%';
-    document.getElementById('progress-text').textContent = pct + '% (' + compl + '/' + total + ')';
-    document.getElementById('update-time').textContent = 'Release: ' + data.generated_at;
-    return;
-  }
-
-  const s = data.summary;
+  const s = data.status_summary || {};
+  const total = data.operator_count || 0;
   const cards = [
-    { label: 'Total Operators', value: s.total, cls: 'color-blue' },
-    { label: 'Completed', value: s.completed, cls: 'color-green' },
-    { label: 'Torch Ready', value: s.torch_done, cls: 'color-cyan' },
-    { label: 'Ascend C Ready', value: s.ascendc_done, cls: 'color-purple' },
-    { label: 'PyPTO Ready', value: s.pypto_done, cls: 'color-orange' },
-    { label: 'Correctness PASS', value: s.pass_count, cls: 'color-green' },
-    { label: 'Correctness FAIL', value: s.fail_count, cls: 'color-red' },
-    { label: 'Blocked', value: s.blocked, cls: 'color-yellow' },
+    { label: 'Total Operators', value: total, cls: 'color-blue' },
   ];
+  for (const [status, count] of Object.entries(s)) {
+    const cls = status.startsWith('COMPLETE') ? 'color-green' : status === 'PARTIAL' ? 'color-yellow' : 'color-red';
+    cards.push({ label: status, value: count, cls: cls });
+  }
   const container = document.getElementById('summary-cards');
   container.innerHTML = cards.map(c => `
     <div class="summary-card ${c.cls}">
@@ -325,21 +340,18 @@ function renderSummary(data) {
     </div>
   `).join('');
 
-  const pct = s.total > 0 ? Math.round(s.completed / s.total * 100) : 0;
+  const compl = (s['COMPLETE'] || 0) + (s['COMPLETE_WITH_LIMITATION'] || 0);
+  const pct = total > 0 ? Math.round(compl / total * 100) : 0;
   document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-text').textContent = pct + '% (' + s.completed + '/' + s.total + ')';
-  document.getElementById('update-time').textContent = 'Generated: ' + data.generated_at;
+  document.getElementById('progress-text').textContent = pct + '% (' + compl + '/' + total + ')';
+  document.getElementById('update-time').textContent = 'Release: ' + data.generated_at;
+  const badge = document.getElementById('header-badge');
+  badge.textContent = compl + '/' + total + ' completed';
+
+  document.getElementById('release-info').innerHTML = '<p style="color:var(--text-secondary);font-size:13px;margin-bottom:12px">Release v' + (data.version || data.release_version || '?') + ' — ' + data.generated_at + (data.current_release && data.current_release.git_commit ? ' — commit: <code style="font-size:11px">' + data.current_release.git_commit.slice(0,12) + '</code>' : '') + '</p>';
 }
 
 function renderTable(data) {
-  if (data.mode === 'release') {
-    renderReleaseTable(data);
-    return;
-  }
-  renderDevTable(data);
-}
-
-function renderReleaseTable(data) {
   const ops = Object.entries(data.operators).map(([name, op]) => ({ name: name, ...op }));
   ops.sort((a, b) => {
     const order = { 'COMPLETE': 0, 'COMPLETE_WITH_LIMITATION': 1, 'PARTIAL': 2, 'INCOMPLETE': 3 };
@@ -371,63 +383,24 @@ function renderReleaseTable(data) {
 
     const profilerTool = op.profiler_tool || 'N/A';
 
-    return `<tr onclick="showDetail('${op.name}')">
-      <td><strong>${op.name}</strong></td>
-      <td><span class="status-badge ${statusCls}">${op.status}</span></td>
-      <td style="font-size:12px">${torchC}</td>
-      <td style="font-size:12px">${ascendcC}</td>
-      <td style="font-size:12px">${pyptoC}</td>
-      <td>${corrStr}</td>
-      <td style="font-size:12px">${b1Str}</td>
-      <td style="font-size:12px">${profilerTool}</td>
-    </tr>`;
+    const st = op.skill_trace || {};
+    const stHtml = '<span style="font-size:10px;color:var(--text-muted)">A:' + (st.ascendc || '?') + '<br>P:' + (st.pypto || '?') + '</span>';
+
+    const sourceHash = op.source_hash || '';
+    const hashTitle = sourceHash ? ' title="SHA256: ' + sourceHash + '"' : '';
+
+    return '<tr onclick="showDetail(\'' + op.name + '\')"' + hashTitle + '>' +
+      '<td><strong>' + op.name + '</strong></td>' +
+      '<td><span class="status-badge ' + statusCls + '">' + op.status + '</span></td>' +
+      '<td style="font-size:12px">' + torchC + '</td>' +
+      '<td style="font-size:12px">' + ascendcC + '</td>' +
+      '<td style="font-size:12px">' + pyptoC + '</td>' +
+      '<td>' + corrStr + '</td>' +
+      '<td style="font-size:12px">' + b1Str + '</td>' +
+      '<td style="font-size:12px">' + profilerTool + '</td>' +
+      '<td style="font-size:10px">' + stHtml + '</td>' +
+      '</tr>';
   }).join('');
-}
-
-function renderDevTable(data) {
-  const ops = [...(data.operators || [])];
-  ops.sort((a, b) => {
-    let va = String(a[sortField] || '').toLowerCase();
-    let vb = String(b[sortField] || '').toLowerCase();
-    if (sortField === 'status') {
-      const order = { completed: 0, in_progress: 1, planned: 2, blocked: 3 };
-      const da = order[a.status] || 99;
-      const db = order[b.status] || 99;
-      return sortAsc ? da - db : db - da;
-    }
-    if (sortField === 'name') {
-      return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
-    }
-    return 0;
-  });
-
-  const tbody = document.getElementById('op-table-body');
-  tbody.innerHTML = ops.map(op => {
-    const corr = op.correctness_all_pass === true ? '<span class="status-badge pass">PASS</span>' :
-                 op.correctness_all_pass === false ? '<span class="status-badge fail">FAIL</span>' :
-                 '<span class="status-badge unknown">N/A</span>';
-    const torchKt = op.kernel_types?.torch?.join(', ') || 'N/A';
-    const ascendcKt = op.kernel_types?.ascendc?.join(', ') || 'N/A';
-    const pyptoKt = op.kernel_types?.pypto?.join(', ') || 'N/A';
-    return `<tr onclick="showDevDetail('${op.name}')">
-      <td><strong>${op.name}</strong></td>
-      <td><span class="status-badge ${op.status}">${op.status}</span></td>
-      <td>${torchKt}</td>
-      <td>${ascendcKt}</td>
-      <td>${pyptoKt}</td>
-      <td>${corr}</td>
-      <td style="font-size:12px">${op.last_update}</td>
-    </tr>`;
-  }).join('');
-
-  document.querySelectorAll('#op-table th').forEach(th => {
-    const field = th.dataset.sort;
-    th.classList.toggle('sorted', field === sortField);
-    const arrow = th.querySelector('.sort-arrow');
-    if (arrow && field === sortField) {
-      arrow.textContent = sortAsc ? ' ▲' : ' ▼';
-    }
-  });
 }
 
 function setupSearch() {
@@ -458,14 +431,6 @@ function setupSort() {
 }
 
 function showDetail(opName) {
-  if (dashboardData.mode === 'release') {
-    showReleaseDetail(opName);
-  } else {
-    showDevDetail(opName);
-  }
-}
-
-function showReleaseDetail(opName) {
   const op = dashboardData.operators[opName];
   if (!op) return;
   currentOp = op;
@@ -489,15 +454,22 @@ function showReleaseDetail(opName) {
   if (dashboardData.known_limitations) {
     const opLimits = dashboardData.known_limitations.filter(l => l.operator === opName);
     const container = document.getElementById('limitations-content');
-    if (opLimits.length === 0) {
+    if (opLimits.length === 0 && (!op.limitations || op.limitations.length === 0)) {
       container.innerHTML = '<p style="color:var(--text-muted)">No known limitations for this operator.</p>';
     } else {
-      container.innerHTML = opLimits.map(l => {
-        const sevClass = 'sev-' + l.severity.toLowerCase();
-        return '<div class="limitation-item"><span class="' + sevClass + '">[' + l.severity + ']</span> ' + l.route + ': ' + l.description + ' <span style="color:var(--text-muted);font-size:12px">(' + l.blocker_type + ')</span></div>';
+      const allLimits = [...(op.limitations || []), ...opLimits];
+      container.innerHTML = allLimits.map(l => {
+        const sev = l.severity || 'P3';
+        const sevClass = 'sev-' + sev.toLowerCase();
+        return '<div class="limitation-item"><span class="' + sevClass + '">[' + sev + ']</span> ' + (l.route || '') + ': ' + l.description + '</div>';
       }).join('');
     }
   }
+
+  renderHashContent(op);
+  renderProfilerTimeline(op);
+  renderBatchScaling(op);
+  renderKernelTimeline(op);
 
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -532,9 +504,110 @@ function renderReleasePerformance(op) {
     const p = profiler[impl] || {};
     const method = p.method || 'N/A';
     const lat = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
-    html += '<tr><td>' + impl + '</td><td>' + method + '</td><td>' + lat + '</td></tr>';
+    const kpc = p.kernels_per_call != null ? p.kernels_per_call : 'N/A';
+    html += '<tr><td>' + impl + '</td><td>' + method + '</td><td>' + lat + '</td><td>' + kpc + '</td></tr>';
   }
   document.getElementById('perf-table-body').innerHTML = html;
+}
+
+function renderHashContent(op) {
+  const container = document.getElementById('hash-content');
+  const sourceHash = op.source_hash || 'N/A';
+  const binaryHash = op.binary_hash || 'N/A';
+  container.innerHTML =
+    '<div class="limitation-item"><span style="color:var(--accent-cyan);font-weight:600">Source Hash:</span> <span class="hash-text">' + sourceHash + '</span></div>' +
+    '<div class="limitation-item"><span style="color:var(--accent-purple);font-weight:600">Binary Hash:</span> <span class="hash-text">' + binaryHash + '</span></div>';
+}
+
+function renderProfilerTimeline(op) {
+  const timeline = op.profiler_timeline || {};
+  const container = document.getElementById('profiler-timeline-content');
+  const routes = ['torch', 'ascendc', 'pypto'];
+  let html = '<table><thead><tr><th>Route</th><th>Kernel Name</th><th>Kernel Type</th><th>B1 Duration</th></tr></thead><tbody>';
+  for (const route of routes) {
+    const t = timeline[route] || {};
+    html += '<tr><td>' + route + '</td><td style="font-size:12px">' + (t.kernel_name || 'N/A') + '</td><td style="font-size:12px">' + (t.kernel_type || 'N/A') + '</td><td>' + (t.duration_us != null ? Number(t.duration_us).toFixed(1) + ' us' : 'N/A') + '</td></tr>';
+  }
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+function renderBatchScaling(op) {
+  const scaling = op.batch_scaling || {};
+  const container = document.getElementById('batch-scaling-content');
+  const routes = ['torch', 'ascendc', 'pypto'];
+  let maxUs = 0;
+  const colors = ['var(--accent-blue)', 'var(--accent-green)', 'var(--accent-orange)'];
+  for (const route of routes) {
+    const s = scaling[route] || {};
+    for (const [k, v] of Object.entries(s)) {
+      if (v != null && v > maxUs) maxUs = v;
+    }
+  }
+  if (maxUs === 0) maxUs = 100;
+
+  let html = '<table><thead><tr><th>Route</th>';
+  const allBatches = {};
+  for (const route of routes) {
+    const s = scaling[route] || {};
+    for (const k of Object.keys(s)) allBatches[k] = true;
+  }
+  const batchKeys = Object.keys(allBatches).sort();
+  for (const bk of batchKeys) html += '<th>' + bk + '</th>';
+  html += '</tr></thead><tbody>';
+
+  for (let ri = 0; ri < routes.length; ri++) {
+    const route = routes[ri];
+    const s = scaling[route] || {};
+    html += '<tr><td>' + route + '</td>';
+    for (const bk of batchKeys) {
+      const v = s[bk];
+      html += '<td style="font-size:12px">' + (v != null ? Number(v).toFixed(1) + ' us' : '-') + '</td>';
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+
+  html += '<div style="margin-top:12px"><h4 style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">Visual (B1 to Bmax)</h4>';
+  for (let ri = 0; ri < routes.length; ri++) {
+    const route = routes[ri];
+    const s = scaling[route] || {};
+    const vals = Object.values(s).filter(v => v != null);
+    if (vals.length < 2) continue;
+    const minV = Math.min(...vals);
+    const maxV = Math.max(...vals);
+    let barHtml = '<div style="margin-bottom:8px"><span style="font-size:12px;font-weight:600;color:' + colors[ri] + '">' + route + '</span>';
+    for (const [bk, bv] of Object.entries(s)) {
+      if (bv == null) continue;
+      const pct = maxV > 0 ? (bv / maxV * 100) : 0;
+      barHtml += '<div class="chart-bar"><span class="label-mini">' + bk + '</span><div class="bar" style="width:' + pct + '%;background:' + colors[ri] + '"></div><span class="value-mini">' + Number(bv).toFixed(1) + 'us</span></div>';
+    }
+    barHtml += '</div>';
+    html += barHtml;
+  }
+
+  container.innerHTML = html;
+}
+
+function renderKernelTimeline(op) {
+  const kb = op.kernel_breakdown || {};
+  const container = document.getElementById('kernel-timeline-content');
+  const routes = Object.keys(kb);
+  if (routes.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-muted)">No kernel breakdown data available.</p>';
+    return;
+  }
+  let html = '';
+  for (const route of routes) {
+    const types = kb[route] || {};
+    html += '<div style="margin-bottom:16px"><h4 style="font-size:14px;font-weight:600;margin-bottom:6px">' + route + '</h4>';
+    html += '<table><thead><tr><th>Kernel Type</th><th>Count</th><th>Total (us)</th><th>Mean (us)</th><th>Per Call (us)</th></tr></thead><tbody>';
+    for (const [ktype, kdata] of Object.entries(types)) {
+      html += '<tr><td style="font-size:12px">' + ktype + '</td><td>' + (kdata.count || 0) + '</td><td>' + Number(kdata.total_us || 0).toFixed(1) + '</td><td>' + Number(kdata.mean_us || 0).toFixed(3) + '</td><td>' + Number(kdata.per_call_us || 0).toFixed(3) + '</td></tr>';
+    }
+    html += '</tbody></table></div>';
+  }
+  container.innerHTML = html;
 }
 
 function closeDetail() {
@@ -548,6 +621,71 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
+}
+
+function renderBottomSections(data) {
+  renderReleaseHistory(data);
+  renderSkillTraceSummary(data);
+  renderBackendLimitations(data);
+}
+
+function renderReleaseHistory(data) {
+  const history = data.release_history || [];
+  const container = document.getElementById('release-history-section');
+  if (history.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+  let html = '<div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">';
+  html += '<h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Release History</h3>';
+  html += '<table><thead><tr><th>Version</th><th>Date</th><th>Changes</th></tr></thead><tbody>';
+  for (const h of history) {
+    html += '<tr><td style="font-weight:600;white-space:nowrap">' + h.version + '</td><td style="white-space:nowrap">' + h.date + '</td><td style="font-size:12px">' + (h.changes || '') + '</td></tr>';
+  }
+  html += '</tbody></table></div>';
+  container.innerHTML = html;
+}
+
+function renderSkillTraceSummary(data) {
+  const st = data.skill_trace_summary || {};
+  const container = document.getElementById('skill-trace-section');
+  let html = '<div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">';
+  html += '<h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Skill Trace Summary</h3>';
+  html += '<table><thead><tr><th>Route</th><th>Status</th><th>Count</th></tr></thead><tbody>';
+  const rows = [
+    { route: 'Ascend C', status: 'LEGACY_UNVERIFIED_SKILL_USAGE', count: st.ascendc_LEGACY_UNVERIFIED_SKILL_USAGE || 0 },
+    { route: 'Ascend C', status: 'TRACE_VERIFIED', count: st.ascendc_TRACE_VERIFIED || 0 },
+    { route: 'PyPTO', status: 'LEGACY_UNVERIFIED_SKILL_USAGE', count: st.pypto_LEGACY_UNVERIFIED_SKILL_USAGE || 0 },
+    { route: 'PyPTO', status: 'NON_COMPLIANT', count: st.pypto_NON_COMPLIANT || 0 },
+    { route: 'PyPTO', status: 'TRACE_VERIFIED', count: st.pypto_TRACE_VERIFIED || 0 },
+  ];
+  for (const r of rows) {
+    if (r.count === 0) continue;
+    const cls = r.status === 'TRACE_VERIFIED' ? 'pass' : r.status === 'NON_COMPLIANT' ? 'fail' : 'unknown';
+    html += '<tr><td>' + r.route + '</td><td><span class="status-badge ' + cls + '">' + r.status + '</span></td><td>' + r.count + '</td></tr>';
+  }
+  html += '</tbody></table>';
+  html += '<p style="color:var(--text-muted);font-size:12px;margin-top:8px">Per-operator skill trace status shown in the main table (A: AscendC, P: PyPTO).</p>';
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderBackendLimitations(data) {
+  const limitations = data.known_limitations || [];
+  const container = document.getElementById('backend-limitations-section');
+  if (limitations.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+  let html = '<div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">';
+  html += '<h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Backend Limitations</h3>';
+  html += '<table><thead><tr><th>Operator</th><th>Route</th><th>Severity</th><th>Description</th></tr></thead><tbody>';
+  for (const l of limitations) {
+    const sevClass = 'sev-' + l.severity.toLowerCase();
+    html += '<tr><td style="font-weight:600">' + l.operator + '</td><td>' + l.route + '</td><td><span class="' + sevClass + '">' + l.severity + '</span></td><td style="font-size:12px">' + l.description + '</td></tr>';
+  }
+  html += '</tbody></table></div>';
+  container.innerHTML = html;
 }
 
 document.addEventListener('DOMContentLoaded', init);

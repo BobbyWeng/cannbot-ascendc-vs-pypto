@@ -1,0 +1,88 @@
+operators:
+  - add
+  - div
+  - equal
+  - expand
+  - matmul
+  - mul
+  - not
+  - or
+  - reduce_sum
+  - relu
+  - transpose
+  - where
+
+project_root: /mnt/workspace/cannbot_ascendc_vs_pypto
+operator_dir: operators
+dashboard_path: dashboard/dashboard.json
+dashboard_expected_operator_count: 12
+
+parsed_json_checks:
+  required_fields:
+    - primary_compute_kernel_us
+    - all_device_kernels_us_per_call
+    - kernel_count
+    - kernels_per_logical_call
+    - kernel_names
+    - primary_kernel_name
+    - primary_kernel_type
+  field_constraints:
+    primary_compute_kernel_us: { min: 0 }
+    kernel_count: { min: 1 }
+    kernels_per_logical_call: { min: 0.5 }
+    kernel_names: { min_length: 1 }
+
+final_comparison_checks:
+  required_routes:
+    - torch
+    - ascendc
+    - pypto
+  batch_fields:
+    - primary_compute_kernel_us
+    - all_device_kernels_us_per_call
+    - kernels_per_call
+
+dashboard_checks:
+  valid_statuses:
+    - COMPLETE
+    - COMPLETE_WITH_LIMITATION
+  expected_operators:
+    - relu
+    - mul
+    - add
+    - div
+    - equal
+    - not
+    - or
+    - where
+    - expand
+    - transpose
+    - reduce_sum
+    - matmul
+  profiler_required: true
+
+known_limitations:
+  div:
+    pypto: "Backend broadcast lowering limitation: Run pass failed in CompileFunction"
+  expand:
+    pypto: "Per-row AICPU dispatch (~3000 us), not a compute kernel"
+  reduce_sum:
+    all: "FP16 accumulation for 384-element reduction exceeds atol=0.01"
+  matmul:
+    pypto: "FP16 accum max_abs=0.015-0.031 (atol=0.01, rtol=0.01)"
+  equal:
+    ascendc: "No msprof profiling (torch.npu.Event)"
+    pypto: "No msprof profiling (torch.npu.Event)"
+  where:
+    ascendc: "No msprof profiling (torch.npu.Event)"
+    pypto: "No msprof profiling (torch.npu.Event)"
+  or:
+    ascendc: "Profiler is Event-based, not msprof"
+    pypto: "Profiler is Event-based, not msprof. Uses bitwise_or (no logical_or API)"
+  not:
+    ascendc: "Profiler is Event-based, not msprof"
+    pypto: "Profiler is Event-based, not msprof"
+  transpose:
+    ascendc: "GetValue/SetValue tile-transpose"
+  add:
+    pypto: "Correctness B=2..64 not persisted to JSON"

@@ -1,0 +1,593 @@
+{
+  "audit_timestamp": "2026-07-17T23:55:00Z",
+  "audit_version": "1.0",
+  "operator_count": 12,
+  "per_operator": {
+    "add": {
+      "status": "WARN",
+      "checks": {
+        "correctness": {
+          "torch": "PASS",
+          "ascendc": "PASS (no ascendc_correctness.json, but final report says 7/7 PASS)",
+          "pypto": "PASS (all 7 batches per correctness_results.json)"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 10.04,
+          "ascendc_parsed_primary_us": 13.78,
+          "pypto_parsed_primary_us": 132.12,
+          "pypto_mix_aic": true,
+          "coverage": "FULL — all 3 routes msprof"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON"
+        }
+      },
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "PyPTO correctness B=2..64 not persisted to JSON per current_release"
+        },
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        },
+        {
+          "severity": "LOW",
+          "description": "No ascendc_correctness.json in reports/correctness/"
+        }
+      ]
+    },
+    "div": {
+      "status": "WARN",
+      "checks": {
+        "correctness": {
+          "torch": "PASS",
+          "ascendc": "PASS (per final_comparison.json, 6/6 batches)",
+          "pypto": "RC-2 UNBLOCKED (tile_shape(128,1024) fix, all 6 batches bitwise per current_release)"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 21.8,
+          "ascendc_parsed_primary_us": 18.64,
+          "pypto_parsed_primary_us": "N/A — no parsed data",
+          "coverage": "PARTIAL — PyPTO not profiled"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON"
+        }
+      },
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "No PyPTO profiler data or parsed JSON — PBK (not profiled)"
+        },
+        {
+          "severity": "MEDIUM",
+          "description": "No ascendc_correctness.json in reports/correctness/"
+        },
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        }
+      ]
+    },
+    "equal": {
+      "status": "WARN",
+      "checks": {
+        "correctness": {
+          "torch": "PASS",
+          "ascendc": "PASS (7/7 batches bitwise)",
+          "pypto": "RC-2 UNBLOCKED — DT_BOOL output + ta<=64 fix"
+        },
+        "profiling": {
+          "msprof_status": "msprof (torch/ascendc parsed data EXISTS with KERNEL_AIVEC type)",
+          "torch_parsed_primary_us": 11.54,
+          "ascendc_parsed_primary_us": 49.98,
+          "pypto_parsed_primary_us": "N/A",
+          "coverage": "PARTIAL — no PyPTO parsed data; Event-based claimed in current_release but parsed data shows KERNEL_AIVEC (msprof)"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON"
+        }
+      },
+      "issues": [
+        {
+          "severity": "HIGH",
+          "description": "current_release says 'torch.npu.Event/aclrtEvent, NOT msprof' but parsed JSON shows KERNEL_AIVEC msprof data with primary_kernel_us values. Profiler type claim contradicts evidence."
+        },
+        {
+          "severity": "MEDIUM",
+          "description": "No PyPTO parsed profiler data"
+        },
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        }
+      ]
+    },
+    "expand": {
+      "status": "WARN",
+      "checks": {
+        "correctness": {
+          "torch": "PASS",
+          "ascendc": "PASS (7/7 batches bitwise, TRUE_DEVICE_IMPLEMENTATION)",
+          "pypto": "PASS (7/7 batches bitwise per correctness_results.json)"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 13.02,
+          "ascendc_parsed_primary_us": 15.04,
+          "pypto_parsed_primary_us": 110.3,
+          "coverage": "FULL — all 3 routes msprof"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON",
+          "final_report": "provisional_comparison.json (not final_comparison.json)"
+        }
+      },
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Only provisional_comparison.json exists — no final_comparison.json"
+        },
+        {
+          "severity": "LOW",
+          "description": "Has ascendc_b32.json AND ascendc_b32FIX.json in parsed — leftover from debugging"
+        },
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        }
+      ]
+    },
+    "matmul": {
+      "status": "WARN",
+      "checks": {
+        "correctness": {
+          "torch": "PASS (6/6 batches, atol=0.01)",
+          "ascendc": "PASS (6/6 batches, max_abs=0.015625)",
+          "pypto": "RC-2 UNBLOCKED (6/6 batches, max_abs=0.015-0.031)"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 12.22,
+          "ascendc_parsed_primary_us": 10.36,
+          "pypto_parsed_primary_us": "N/A",
+          "coverage": "Torch+AscendC msprof; PyPTO N/A"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON"
+        }
+      },
+      "issues": [
+        {
+          "severity": "HIGH",
+          "description": "final_comparison.md (markdown) is OUTDATED — says PyPTO BLOCKED_BACKEND but current_release says RC-2 UNBLOCKED. No final_comparison.json exists."
+        },
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        }
+      ]
+    },
+    "mul": {
+      "status": "PASS",
+      "checks": {
+        "correctness": {
+          "torch": "PASS",
+          "ascendc": "PASS",
+          "pypto": "PASS"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 9.0,
+          "ascendc_parsed_primary_us": 11.16,
+          "pypto_parsed_primary_us": 221.72,
+          "coverage": "FULL — all 3 routes msprof"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON"
+        }
+      },
+      "issues": [
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        },
+        {
+          "severity": "LOW",
+          "description": "No ascendc_correctness.json in reports/correctness/"
+        }
+      ]
+    },
+    "not": {
+      "status": "WARN",
+      "checks": {
+        "correctness": {
+          "torch": "PASS",
+          "ascendc": "PASS (42/42, all_batches PASS — script bug claim is OUTDATED)",
+          "pypto": "PASS (per README, but no correctness_results.json in pypto/)"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 10.68,
+          "ascendc_parsed_primary_us": 8.16,
+          "pypto_parsed_primary_us": 118.84,
+          "coverage": "FULL — all 3 routes msprof (despite Event claims)"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON"
+        }
+      },
+      "issues": [
+        {
+          "severity": "HIGH",
+          "description": "final_comparison.json says REPORT_OUTDATED and claims 'ascendc FAIL (script bug)' but ascendc_correctness.json shows 42/42 ALL PASS. Update needed."
+        },
+        {
+          "severity": "HIGH",
+          "description": "current_release says profiler 'Event-based, NOT msprof' for not but parsed JSON has msprof KERNEL_AIVEC with primary_us values for all 3 routes. Claim contradicts evidence."
+        },
+        {
+          "severity": "MEDIUM",
+          "description": "No pypto/correctness_results.json — PyPTO correctness status unverifiable by file"
+        },
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        }
+      ]
+    },
+    "or": {
+      "status": "WARN",
+      "checks": {
+        "correctness": {
+          "torch": "PASS",
+          "ascendc": "PASS (49/49, all_batches PASS — script bug claim is OUTDATED)",
+          "pypto": "PASS (bitwise_or for 0/1 bool — limitation acknowledged)"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 13.52,
+          "ascendc_parsed_primary_us": 9.28,
+          "pypto_parsed_primary_us": 204.52,
+          "coverage": "FULL — all 3 routes msprof (despite Event claims)"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": "STALE",
+          "dashboard_status": "dashboard.json exists but all fields PENDING — clearly outdated"
+        }
+      },
+      "issues": [
+        {
+          "severity": "HIGH",
+          "description": "final_comparison.json says REPORT_OUTDATED and claims 'ascendc FAIL (script bug)' but ascendc_correctness.json shows 49/49 ALL PASS. Update needed."
+        },
+        {
+          "severity": "HIGH",
+          "description": "dashboard.json exists but is completely PENDING — stale, does not reflect current state"
+        },
+        {
+          "severity": "HIGH",
+          "description": "current_release says profiler 'Event-based, NOT msprof' but parsed JSON shows KERNEL_AIVEC msprof data for all 3 routes. Claim contradicts evidence."
+        },
+        {
+          "severity": "MEDIUM",
+          "description": "No pypto/correctness_results.json — PyPTO correctness status unverifiable by file"
+        }
+      ]
+    },
+    "reduce_sum": {
+      "status": "WARN",
+      "checks": {
+        "correctness": {
+          "torch": "PARTIAL (62/70 PASS, FP32 accum)",
+          "ascendc": "PARTIAL (21/70 PASS, FP16 accum precision limitation)",
+          "pypto": "PARTIAL (21/70 PASS, FP16 accum precision limitation)"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 15.96,
+          "ascendc_parsed_primary_us": 19.28,
+          "pypto_parsed_primary_us": "N/A",
+          "coverage": "Torch+AscendC msprof; PyPTO not profiled"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON",
+          "final_report": "provisional_comparison.json (not final_comparison.json)"
+        }
+      },
+      "issues": [
+        {
+          "severity": "HIGH",
+          "description": "FP16 accumulation precision exceeds atol=0.01 for 384-element reduction — known limitation across all routes"
+        },
+        {
+          "severity": "MEDIUM",
+          "description": "Only provisional_comparison.json — no final_comparison.json"
+        },
+        {
+          "severity": "MEDIUM",
+          "description": "No PyPTO profiler data"
+        },
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        }
+      ]
+    },
+    "relu": {
+      "status": "PASS",
+      "checks": {
+        "correctness": {
+          "torch": "PASS (7/7 batches)",
+          "ascendc": "PASS (7/7 batches)",
+          "pypto": "PASS (7/7 batches)"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 10.08,
+          "ascendc_parsed_primary_us": 9.5,
+          "pypto_parsed_primary_us": 106.62,
+          "coverage": "FULL — all 3 routes msprof"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON"
+        }
+      },
+      "issues": [
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        },
+        {
+          "severity": "LOW",
+          "description": "No ascendc_correctness.json in reports/correctness/"
+        }
+      ]
+    },
+    "transpose": {
+      "status": "WARN",
+      "checks": {
+        "correctness": {
+          "torch": "PASS (7/7 batches bitwise)",
+          "ascendc": "PASS (7/7 batches bitwise, RC-2 perf optimized)",
+          "pypto": "RC-2 UNBLOCKED (tile_shape(64,256) fix, B=1..64 bitwise)"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 14.1,
+          "ascendc_parsed_primary_us": 106.2,
+          "pypto_parsed_primary_us": "N/A",
+          "coverage": "Torch+AscendC msprof; PyPTO not profiled"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON",
+          "final_report": "provisional_comparison.json (not final_comparison.json)"
+        }
+      },
+      "issues": [
+        {
+          "severity": "MEDIUM",
+          "description": "Only provisional_comparison.json — no final_comparison.json"
+        },
+        {
+          "severity": "MEDIUM",
+          "description": "No PyPTO profiler data"
+        },
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        }
+      ]
+    },
+    "where": {
+      "status": "WARN",
+      "checks": {
+        "correctness": {
+          "torch": "PASS (7/7 batches)",
+          "ascendc": "PASS (7/7 batches bitwise)",
+          "pypto": "RC-2 UNBLOCKED (uint8→bool condition workaround)"
+        },
+        "profiling": {
+          "msprof_status": "msprof",
+          "torch_parsed_primary_us": 11.62,
+          "ascendc_parsed_primary_us": 248.38,
+          "pypto_parsed_primary_us": "N/A",
+          "coverage": "Torch+AscendC msprof; PyPTO not profiled"
+        },
+        "documentation": {
+          "readme": true,
+          "sha256": true,
+          "skill_trace": true,
+          "reproduce": true
+        },
+        "consistency": {
+          "release_ok": true,
+          "dashboard_ok": false,
+          "dashboard_status": "NO_DASHBOARD_JSON"
+        }
+      },
+      "issues": [
+        {
+          "severity": "HIGH",
+          "description": "current_release says profiler 'Event-based, NOT msprof' but parsed JSON shows KERNEL_AIVEC msprof data. Claim contradicts evidence."
+        },
+        {
+          "severity": "MEDIUM",
+          "description": "No PyPTO profiler data"
+        },
+        {
+          "severity": "LOW",
+          "description": "No dashboard.json for operator"
+        }
+      ]
+    }
+  },
+  "cross_cutting_issues": [
+    {
+      "severity": "HIGH",
+      "description": "PROFILER TYPE MISCLASSIFICATION: current_release.json claims equal/not/or/where use torch.npu.Event/aclrtEvent but parsed JSON shows msprof KERNEL_AIVEC data with valid primary_compute_kernel_us. The parsed data IS from msprof (has kernel types, counts, per-call breakdowns). Root cause: Event-based was the original measurement method, which was later replaced by msprof, but current_release was not updated to reflect this."
+    },
+    {
+      "severity": "HIGH",
+      "description": "README.md is OUTDATED: duplicates COMPLETE_WITH_LIMITATION lines (6 vs 7 entries), shows not/or AscendC as FAIL_SCRIPT_BUG (contradicted by ascendc_correctness.json showing all PASS), shows equal/where/matmul PyPTO as BLOCKED_BACKEND (contradicted by current_release RC-2 UNBLOCKED)."
+    },
+    {
+      "severity": "HIGH",
+      "description": "not/or final_comparison.json correctly self-reports REPORT_OUTDATED — needs editorial update to reflect current ascendc_correctness all-PASS data"
+    },
+    {
+      "severity": "MEDIUM",
+      "description": "matmul final report (final_comparison.md) is stale — says PyPTO BLOCKED_BACKEND when RC-2 changes unblocked it"
+    },
+    {
+      "severity": "MEDIUM",
+      "description": "4 operators (expand/reduce_sum/transpose/matmul) lack final_comparison.json — only have provisional_comparison.json or .md"
+    },
+    {
+      "severity": "MEDIUM",
+      "description": "PARSER PROVENANCE: All 209 parsed JSON files lack parser_version, raw_source reference, and profiler_type fields — numbers cannot be traced to their raw data source by file contents alone"
+    },
+    {
+      "severity": "MEDIUM",
+      "description": "DASHBOARD: Only 'or' has dashboard.json (and it's stale — all PENDING). 11 of 12 operators have no dashboard at all."
+    },
+    {
+      "severity": "LOW",
+      "description": "SHA256SUMS: All 12 operators have valid SHA256SUMS — verified spot-check"
+    },
+    {
+      "severity": "LOW",
+      "description": "SKILL_TRACE: All 12 operators have SKILL_TRACE.md and SKILL_TRACE.json — format is LEGACY_UNVERIFIED_SKILL_USAGE (acknowledged)"
+    },
+    {
+      "severity": "LOW",
+      "description": "REPRODUCE.md present for all 12 operators — OK"
+    },
+    {
+      "severity": "LOW",
+      "description": "RC-3 state shows phase_G (final audit) as pending — no other rc3 artifacts exist besides rc3_state.json and transpose/rc3_report.md"
+    }
+  ],
+  "summary": {
+    "total_pass": 2,
+    "total_warn": 10,
+    "total_fail": 0,
+    "total_issues": 23,
+    "critical_issues": [
+      "PROFILER MISCLASSIFICATION: equal/not/or/where profiler type incorrectly claimed as Event-based in current_release when parsed data is clearly msprof",
+      "README.md is stale across multiple claims (not/or AscendC FAIL, equal/where/matmul PyPTO BLOCKED_BACKEND)",
+      "not/or final_comparison.json marks itself REPORT_OUTDATED but still contains inaccurate FAIL_SCRIPT_BUG claims contradicted by current data"
+    ],
+    "operators_by_status": {
+      "PASS": ["mul", "relu"],
+      "WARN": ["add", "div", "equal", "expand", "matmul", "not", "or", "reduce_sum", "transpose", "where"],
+      "FAIL": []
+    },
+    "rc3_readiness": {
+      "overall": "NOT_READY",
+      "blockers_before_rc3": [
+        "Fix profiler type claims in current_release.json for equal/not/or/where",
+        "Update README.md to reflect current RC-2 state (not/or AscendC PASS, PyPTO routes unblocked, matmul status)",
+        "Generate final_comparison.json for expand/matmul/reduce_sum/transpose",
+        "Update not/or final_comparison.json to remove REPORT_OUTDATED flag",
+        "Fix or dashboard.json or create dashboards for all operators"
+      ],
+      "recommended_actions": [
+        "Add parser_version and raw_source references to all parsed JSON files (209 files)",
+        "Update matmul final report to reflect RC-2 PyPTO unblocking",
+        "Create dashboards for remaining 11 operators",
+        "Add ascendc_correctness.json for add/div/mul/relu operators"
+      ]
+    }
+  }
+}

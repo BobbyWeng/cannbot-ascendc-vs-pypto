@@ -24,7 +24,7 @@
     "consecutive_no_improvement": 0
   },
   "last_updated": "2026-07-16",
-  "pypto_status": "PARTIAL (small [16,32] PASS, large [256,384] backend compile fail)",
-  "blocker": "BLOCKED_BACKEND — CompileFunction run pass failed for [256,384] transpose",
-  "note": "JIT source fixed. Backend limitation: transpose CompileFunction pass fails for tensors > ~1000 elements."
+  "pypto_status": "FIXED (all shapes PASS with tile(64,256))",
+  "blocker": "NONE — resolved by changing tile shape from (128,1024) to (64,256)",
+  "note": "Tile shape fix: set_vec_tile_shapes(64,256) instead of (128,1024). All tested shapes up to 2048x2048 pass bitwise."
 }

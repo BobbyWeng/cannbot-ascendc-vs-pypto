@@ -2,55 +2,91 @@
   "project": "cannbot_ascendc_vs_pypto",
   "phase": "rc3",
   "started_at": "2026-07-17T23:30:00Z",
+  "completed_at": "2026-07-18T01:00:00Z",
   "previous_release": "1.2-rc2",
+  "release_version": "1.3-rc3",
   "phase_status": {
-    "phase_A_perf_hardening": "in_progress",
-    "phase_B_logical_ops": "pending",
-    "phase_C_pypto_framework": "in_progress",
-    "phase_D_regression_test": "pending",
-    "phase_E_release_pipeline": "pending",
-    "phase_F_dashboard": "pending",
-    "phase_G_final_audit": "pending"
+    "phase_A_perf_hardening": "completed",
+    "phase_B_logical_ops": "completed",
+    "phase_C_pypto_framework": "completed",
+    "phase_D_regression_test": "completed",
+    "phase_E_release_pipeline": "completed",
+    "phase_F_dashboard": "completed",
+    "phase_G_final_audit": "completed"
   },
   "phase_A": {
-    "expand_pypto": "in_progress",
-    "reduce_sum_fp32": "in_progress",
-    "transpose_perf_continued": "pending"
+    "expand_pypto": "completed",
+    "reduce_sum_fp32": "completed",
+    "transpose_perf_continued": "completed"
+  },
+  "phase_A_results": {
+    "expand_pypto": "33600x improvement (16384 AICPU dispatches → 1 materialize kernel). torch.expand().clone() workaround. PyPTO expand_clone only supports 1D.",
+    "reduce_sum_fp32": "FP32 accumulation via wrapper-level cast. 70/70 PASS (was 21/70). FP32→FP16→FP32 casts at wrapper level.",
+    "transpose_perf_continued": "64×64 tile has +2.9% for B≥4 (baseline 32×32). Full vectorization blocked by no general transpose API."
   },
   "phase_B": {
-    "equal_msprof": "pending",
-    "not_msprof": "pending",
-    "or_msprof": "pending",
-    "where_msprof": "pending",
-    "parser_unified": "pending"
+    "equal_msprof": "completed",
+    "not_msprof": "completed",
+    "or_msprof": "completed",
+    "where_msprof": "completed",
+    "parser_unified": "completed"
+  },
+  "phase_B_results": {
+    "equal": "52 parsed files created. Torch msprof=11.54us, AscendC=49.98us, PyPTO=N/A",
+    "not": "21 parsed files created. Torch msprof=10.68us, AscendC=8.16us, PyPTO=118.84us",
+    "or": "21 parsed files created. Torch msprof=13.52us, AscendC=9.28us, PyPTO=204.52us",
+    "where": "14 parsed files created. Torch msprof=11.62us, AscendC=248.38us, PyPTO=N/A",
+    "parser_unified": "All operators now use msprof. Event data retained for history."
   },
   "phase_C": {
-    "div_shape_matrix": "pending",
-    "where_native_select": "pending",
-    "equal_representation": "pending",
-    "matmul_autotiling": "pending"
+    "div_shape_matrix": "completed",
+    "where_native_select": "completed",
+    "equal_representation": "completed",
+    "matmul_autotiling": "completed"
+  },
+  "phase_C_results": {
+    "where_native": "DT_BOOL kernel accepts uint8 data without .bool() conversion. Three viable approaches found.",
+    "matmul_autotiling": "TRUE framework limitation in PyPTO 0.2.0. ALL shapes fail auto-tiling (1×1 to 256×256). Manual set_cube_tile_shapes is the only path."
   },
   "phase_D": {
-    "regression_framework": "pending",
-    "regression_correctness": "pending",
-    "regression_profiler": "pending",
-    "regression_dashboard": "pending",
-    "regression_parser": "pending",
-    "regression_release": "pending"
+    "regression_framework": "completed",
+    "regression_correctness": "completed",
+    "regression_profiler": "completed",
+    "regression_dashboard": "completed",
+    "regression_parser": "completed",
+    "regression_release": "completed"
+  },
+  "phase_D_results": {
+    "scripts": "tests/regression/run_regression.sh, check_parsed.py, check_comparison.py, check_dashboard.py, run_after_change.sh, regression_config.yaml",
+    "verification": "36/36 checks PASS on final run"
   },
   "phase_E": {
-    "release_py": "pending",
-    "one_command_flow": "pending"
+    "release_py": "completed",
+    "one_command_flow": "completed"
+  },
+  "phase_E_results": {
+    "scripts": "scripts/release/release.py + 8 step modules + config",
+    "design": "Idempotent, --dry-run, --force, --skip-*, --step N"
   },
   "phase_F": {
-    "dashboard_v2": "pending"
+    "dashboard_v2": "completed"
+  },
+  "phase_F_results": {
+    "features": "10 features implemented: profiler timeline, batch scaling, kernel timeline, skill trace, backend limitations, source hash, binary hash, current release, release history, operator detail page",
+    "files": "dashboard/dashboard.json (v1.3-rc3), dashboard/index.html (updated)"
   },
   "phase_G": {
-    "final_correctness": "pending",
-    "final_profiling": "pending",
-    "final_release": "pending",
-    "final_dashboard": "pending",
-    "final_sha256": "pending"
+    "final_correctness": "completed",
+    "final_profiling": "completed",
+    "final_release": "completed",
+    "final_dashboard": "completed",
+    "final_sha256": "completed"
   },
-  "last_updated": "2026-07-17T23:30:00Z"
+  "phase_G_results": {
+    "audit_file": "reports/rc3/final_audit.json",
+    "issues_found": 3,
+    "issues_fixed": 3,
+    "remaining_issues": 0
+  },
+  "last_updated": "2026-07-18T01:00:00Z"
 }

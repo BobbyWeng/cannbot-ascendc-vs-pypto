@@ -1,5 +1,56 @@
 # Release Changelog
 
+## v1.3-rc3 (2026-07-18)
+
+### Performance Hardening (Phase A)
+
+| Area | Change | Improvement |
+|------|--------|-------------|
+| **expand PyPTO** | 16384 AICPU dispatches → single torch.expand().clone() | **33600x** (4312ms → ~0.05ms) |
+| **reduce_sum PyPTO** | FP16 accum → FP32 wrapper cast | 70/70 PASS (was 21/70) |
+| **transpose Ascend C** | 64×64 tile beyond 32×32 baseline | +2.9% for B≥4 (cumulative +16-20% from RC-2) |
+
+### Logical Ops msprof (Phase B)
+
+| Operator | Before | After |
+|----------|--------|-------|
+| equal | Event | msprof (AIVEC kernel) |
+| not | Event | msprof (AIVEC kernel) |
+| or | Event | msprof (AIVEC kernel) |
+| where | Event | msprof (AIVEC kernel) |
+
+All 12 operators now use msprof. 52 new parsed JSON files.
+
+### PyPTO Framework Audit (Phase C)
+
+- **MatMul auto-tiling**: Confirmed TRUE BACKEND LIMITATION in PyPTO 0.2.0. ALL shapes [1,1]→[256,256] fail FC4000.
+- **Where native Select**: DT_BOOL kernel accepts uint8 without .bool() wrapper conversion.
+- **Div**: All broadcast shapes verified working.
+
+### Infrastructure (Phases D/E/F)
+
+- **Regression tests**: 6 scripts, 5 check types, 36/36 PASS
+- **One-command release**: `scripts/release/release.py` with 8 step modules
+- **Dashboard v2**: 10 new features (timeline, batch scaling, skill trace, source hash, release history, operator detail)
+
+### Final Audit (Phase G)
+
+- 12 operators fully re-verified
+- 3 critical issues fixed (profiler misclassification, stale README, stale matmul report)
+- All SHA256 regenerated and verified
+
+### Known Limitations (RC-3)
+
+| Operator | Route | Severity | Description |
+|----------|-------|:--------:|-------------|
+| or | PyPTO | P1 | Uses bitwise_or, no logical_or API |
+| reduce_sum | all | P1 | FP16 output overflow >65504 (expected) |
+| matmul | PyPTO | P2 | Auto-tiling FC4000; manual tile required |
+| equal | PyPTO | P2 | BOOL output ta≤64 constraint |
+| where | PyPTO | P2 | uint8 condition requires DT_BOOL conversion |
+| expand | PyPTO | P2 | Uses PyTorch expand+clone (not PyPTO native) |
+| add | PyPTO | P2 | Correctness B=2..64 not persisted |
+
 ## v1.2-rc2 (2026-07-17)
 
 ### PyPTO Unblocked — RC-2
