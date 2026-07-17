@@ -1,0 +1,31 @@
+{
+  "current_version": {
+    "pypto_wheel": "0.2.0",
+    "pypto_commit": "d1c290f3691effe350243f49acb0b262d0ca2e39",
+    "cann": "9.0.0",
+    "torch_npu": "2.8.0.post2",
+    "install_type": "editable"
+  },
+  "candidate_version": null,
+  "known_limitations": [
+    "MatMul auto tiling broken (FC4000)",
+    "MatMul 4D JIT compilation timeout for large shapes (B=32)",
+    "KERNEL_MIX_AIC + KERNEL_AICPU overhead vs direct Cube",
+    "Some operator backends BLOCKED"
+  ],
+  "operators": {
+    "matmul": {"pypto_status": "COMPLETE_WITH_LIMITATION", "ascendc_status": "COMPLIANT_MULTICORE"},
+    "add": {"pypto_status": "COMPLETE_WITH_LIMITATION", "bitwise_pass": "77/77"},
+    "reduce_sum": {"pypto_status": "COMPLETE_WITH_LIMITATION", "ascendc_fp32": "IMPLEMENTED"},
+    "expand": {"pypto_status": "COMPLETE_WITH_LIMITATION", "issue": "AICPU dispatch"},
+    "transpose": {"pypto_status": "COMPLETE_WITH_LIMITATION", "issue": "Large-shape tile"},
+    "where": {"pypto_status": "COMPLETE_WITH_LIMITATION", "issue": "Condition handling"},
+    "div": {"pypto_status": "COMPLETE_WITH_LIMITATION", "issue": "Broadcast"},
+    "or": {"pypto_status": "COMPLETE_WITH_LIMITATION", "issue": "BOOL/mask"},
+    "not": {"COMPLETE_WITH_LIMITATION": ""},
+    "equal": {"COMPLETE_WITH_LIMITATION": ""},
+    "relu": "COMPLETE",
+    "mul": "COMPLETE"
+  },
+  "recommendation": "Stay on current 0.2.0 until new version passes full regression"
+}

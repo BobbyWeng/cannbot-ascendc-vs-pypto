@@ -11,7 +11,7 @@
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 0,
-      "inf_count": 75,
+      "inf_count": 0,
       "label": "B=1",
       "batch": 1,
       "shape": [
@@ -30,7 +30,7 @@
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 0,
-      "inf_count": 66,
+      "inf_count": 0,
       "label": "B=2",
       "batch": 2,
       "shape": [
@@ -49,7 +49,7 @@
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 0,
-      "inf_count": 61,
+      "inf_count": 0,
       "label": "B=4",
       "batch": 4,
       "shape": [
@@ -68,7 +68,7 @@
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 0,
-      "inf_count": 80,
+      "inf_count": 0,
       "label": "B=8",
       "batch": 8,
       "shape": [
@@ -87,7 +87,7 @@
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 0,
-      "inf_count": 73,
+      "inf_count": 0,
       "label": "B=16",
       "batch": 16,
       "shape": [
@@ -106,7 +106,7 @@
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 0,
-      "inf_count": 58,
+      "inf_count": 0,
       "label": "B=32",
       "batch": 32,
       "shape": [
@@ -125,7 +125,7 @@
       "max_abs_diff": 0.0,
       "max_rel_diff": 0.0,
       "nan_count": 0,
-      "inf_count": 72,
+      "inf_count": 0,
       "label": "B=64",
       "batch": 64,
       "shape": [

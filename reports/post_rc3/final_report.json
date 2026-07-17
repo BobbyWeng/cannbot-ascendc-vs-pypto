@@ -1,0 +1,54 @@
+{
+  "report_type": "post_rc3_hardening",
+  "timestamp": "2026-07-17T14:30:00Z",
+  "operators": {
+    "matmul": {
+      "status": "COMPLETE",
+      "changes": [
+        "Multi-core batch scheduling: 1 kernel launch per logical call",
+        "blockDim: min(totalMatrices, 20) from old blockDim=1",
+        "Per-core matrix dispatch via GetBlockIdx/GetBlockNum",
+        "Correctness verified across B=1,2,4,8,16,32 against torch reference",
+        "Batch-unique execution verified for B=1,8,32,64"
+      ],
+      "old_kernels_per_call": {
+        "b1": 12, "b2": 24, "b4": 48, "b8": 96, "b16": 192, "b32": 384
+      },
+      "new_kernels_per_call": {
+        "b1": 1, "b2": 1, "b4": 1, "b8": 1, "b16": 1, "b32": 1
+      },
+      "performance_us": {
+        "b1": 6.4, "b2": 7.5, "b4": 8.7, "b8": 11.9, "b16": 20.0, "b32": 36.3
+      },
+      "tflops": {
+        "b1": 7.82, "b2": 13.43, "b4": 23.09, "b8": 33.81, "b16": 40.23, "b32": 44.37
+      },
+      "correctness": {
+        "b1": {"max_abs": 0.003906, "mean_abs": 4.4e-7, "bitwise": 99.9},
+        "b2": {"max_abs": 0.007812, "mean_abs": 6.9e-7, "bitwise": 99.9},
+        "b4": {"max_abs": 0.007812, "mean_abs": 5.9e-7, "bitwise": 99.9},
+        "b8": {"max_abs": 0.007812, "mean_abs": 5.4e-7, "bitwise": 99.9},
+        "b16": {"max_abs": 0.015625, "mean_abs": 5.8e-7, "bitwise": 99.9},
+        "b32": {"max_abs": 0.007812, "mean_abs": 5.9e-7, "bitwise": 99.9}
+      },
+      "block_dim": {"b1": 12, "b2": 20, "b4": 20, "b8": 20, "b16": 20, "b32": 20},
+      "matrices_per_core": {"b1": 1, "b2": 2, "b4": 3, "b8": 5, "b16": 10, "b32": 20},
+      "batch_unique_verification": "PASS"
+    },
+    "add": {
+      "status": "DEFERRED",
+      "reason": "BLOCKED_BACKEND — PyPTO backend limitation requires dedicated investigation beyond available NPU time"
+    },
+    "reduce_sum": {
+      "status": "DEFERRED",
+      "reason": "Existing PyPTO two-layer FP32 accumulation architecture already documented. Full Ascend C FP32 comparison deferred."
+    }
+  },
+  "remaining_work": [
+    "Add correctness re-run after PyPTO backend fix",
+    "ReduceSum Ascend C FP32 accumulation kernel and comparison",
+    "MatMul tile shape tuning for further optimization (B=32 already 44 TFLOPS)",
+    "PyPTO version tracking and regression",
+    "Full msprof profiling for all three routes across all batches"
+  ]
+}

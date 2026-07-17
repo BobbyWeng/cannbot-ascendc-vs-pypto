@@ -1,0 +1,7 @@
+Batch,Torch_us,AscendC_us,PyPTO_us,Torch_TFLOPS,AscendC_TFLOPS,PyPTO_TFLOPS,Speedup_AscC_vs_Torch,Speedup_AscC_vs_Old
+1,22.2,6.4,N/A,2.27,7.86,N/A,3.5x,46.6x
+2,14.8,8.1,N/A,6.80,12.43,N/A,1.8x,73.6x
+4,14.4,9.3,N/A,13.98,21.65,N/A,1.5x,60.2x
+8,14.9,12.7,N/A,27.02,31.71,N/A,1.2x,82.0x
+16,18.3,20.7,N/A,44.01,38.90,N/A,0.9x,106.3x
+32,32.2,37.0,N/A,50.02,43.53,N/A,0.9x,257.3x

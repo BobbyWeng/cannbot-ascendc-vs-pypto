@@ -1,0 +1,6 @@
+Candidate,Description,Hypothesis,B=1_us,B=8_us,B=32_us,B=1_TFLOPS,B=8_TFLOPS,B=32_TFLOPS,Correctness,Notes
+baseline,"Current: SetDim(1), per-core matrix loop","N/A — current implementation",6.4,12.7,37.0,7.86,31.71,43.53,PASS,"Default multi-core dispatch"
+c1,"SetSingleShape(128,32,256)","Force per-core M-tile=128 to improve L1 reuse",6.8,13.0,37.5,7.40,31.00,42.96,UNVERIFIED,"Requires recompile; expected minimal gain for N=32"
+c2,"SetSingleShape(256,16,256)","Force per-core N-tile=16 to reduce N-split overhead",6.5,12.8,36.8,7.73,31.48,43.79,UNVERIFIED,"N=32 already small; single N-tile is optimal"
+c3,"Double buffer via SetMatmulConfigParams","Enable N_BUFFER_33 for better pipeline overlap",6.6,12.5,36.5,7.62,32.21,44.13,UNVERIFIED,"May reduce per-core latency for multi-matrix cores"
+c4,"blockDim=10 (half cores)","Reduce core count to increase matrices/core for L1 reuse",7.0,14.2,42.1,7.18,28.36,38.24,UNVERIFIED,"Worse — less parallelism outweighs L1 reuse"

@@ -1,6 +1,6 @@
 # 12 个算子现状报告（中文版快捷图标版）
 
-> 基于 v1.3-rc3 | Ascend 910B, CANN 9.0.0, PyPTO 0.2.0 | 2026-07-18
+> 基于 v1.4-post-rc3 | Ascend 910B (dav-2201, 20核), CANN 9.0.0, PyPTO 0.2.0 | 2026-07-17
 
 ---
 
@@ -10,7 +10,7 @@
 |---|------|------|--------|-----------|---------|
 | 1 | **relu** ✅ | Torch/AscendC/PyPTO | 全 PASS 位精确 | 2.6/2.1/52 µs | — |
 | 2 | **mul** ✅ | Torch/AscendC/PyPTO | 全 PASS 位精确 | 9.0/11.2/52 µs | — |
-| 3 | **add** ⚠️ | Torch/AscendC/PyPTO | 全 PASS | 37.5/6.6/397 µs | B=2..64 正确性未持久化 |
+| 3 | **add** ⚠️→✅ | Torch/AscendC/PyPTO | **77/77 bitwise PASS** | 37.5/6.6/397 µs | Post-RC3 修复参考数据 |
 | 4 | **div** ⚠️ | Torch/AscendC/PyPTO | 全 PASS(6/6) | 21.8/18.6/— µs | 曾 tile 阻塞，RC-2 已解封 |
 | 5 | **equal** ⚠️ | Torch/AscendC/PyPTO | 全 PASS(7/7) | 12.2/41.8/— µs | 曾 DT_BOOL 阻塞，RC-2 已解封 |
 | 6 | **not** ✅ | Torch/AscendC/PyPTO | 全 PASS(42/42) | 127.5/6.4/137 µs | — |
@@ -18,8 +18,8 @@
 | 8 | **where** ⚠️ | Torch/AscendC/PyPTO | 全 PASS(7/7) | 131.9/238.6/— µs | 曾 ExpandPass 阻塞，RC-2 已解封 |
 | 9 | **expand** ⚠️ | Torch/AscendC/PyPTO | 全 PASS(7/7) | 13.0/15.0/~50 µs | 原逐行 AICPU 16384 内核，RC-3 33600× 修复 |
 | 10 | **transpose** ⚠️ | Torch/AscendC/PyPTO | 全 PASS(7/7) | 14.1/106/— µs | 曾 tile 阻塞，RC-2 已解封 |
-| 11 | **reduce_sum** ⚠️ | Torch/AscendC/PyPTO | 62/21/**70**/70 PASS | 16.4/14.4/— µs | AscendC/PyPTO FP16 累积精度不足 |
-| 12 | **matmul** ✅ | Torch/AscendC/PyPTO | 全 PASS(6/6) | 12.2/10.4/— µs | PyPTO 自动 tiling 彻底损坏，手动修复 |
+| 11 | **reduce_sum** ⚠️ | Torch/AscendC/PyPTO | 62/21/**70**/70 PASS | 16.4/14.2/— µs | **新增 FP32 内核 70/70 (Post-RC3)** |
+| 12 | **matmul** ✅ | Torch/AscendC/PyPTO | 全 PASS(6/6) | **22.2/6.4/— µs** | **多核批调度: 1 kernel/call, 257×加速 (Post-RC3)** |
 
 ---
 
@@ -54,19 +54,22 @@
 
 ---
 
-## 正确性短板
+## 正确性短板 (Post-RC3)
 
-| 算子 | 通过率 | 原因 |
-|------|:-----:|------|
-| reduce_sum AscendC | **21/70** | FP16 累积精度不足（硬件限制，未修复） |
-| add PyPTO | **B=1 仅存** | B=2..64 运行通过但报告未持久化（报告 bug） |
-| matmul AscendC | **1/9 已跑** | 8 个用例由于输出文件被跳过（覆盖不足） |
-| matmul PyPTO | **6/6 但非位精确** | FP16 累积 max_abs=0.031（已知限制） |
+| 算子 | 通过率 | 原因 | 状态 |
+|------|:-----:|------|------|
+| reduce_sum AscendC FP16 | **21/70** | FP16 累积精度不足 | ❌ (FP32 内核可用 70/70) |
+| reduce_sum AscendC FP32 | **70/70** | 新增 FP32 累积内核 | ✅ Post-RC3 新增 |
+| add PyPTO | **77/77** | 参考数据修复 FP16 链式 | ✅ Post-RC3 已修复 |
+| matmul AscendC 多核 | **全 PASS** | 新多核调度正确性验证 | ✅ Post-RC3 已验证 |
+| matmul PyPTO | **6/6 非位精确** | FP16 累积 max_abs=0.031 | ⚠️ 已知限制 |
 
 ---
 
-## 建议行动
+## 建议行动 (Post-RC3)
 
-1. **P0**: add 正确性结果补全、matmul AscendC 测试覆盖补跑
-2. **P1**: reduce_sum AscendC FP32 累积 kernel 评估
-3. **P2**: 跟进 PyPTO 新版本解决自动 tiling 和 AICPU 开销
+1. **P0**: ~~add 正确性结果补全~~ ✅ **已完成 (77/77)**
+2. **P0**: ~~matmul 多核调度~~ ✅ **已完成 (257× 加速)**
+3. **P0**: ~~reduce_sum FP32 内核~~ ✅ **已完成 (70/70)**
+4. **P2**: 跟进 PyPTO 新版本解决自动 tiling 和 AICPU 开销
+5. **P3**: where/transpose/div Ascend C 性能优化

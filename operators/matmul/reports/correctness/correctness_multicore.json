@@ -1,0 +1,52 @@
+{
+  "operator": "matmul",
+  "implementation": "ascendc_multicore",
+  "post_rc3_verified": true,
+  "batch_results": [
+    {
+      "batch": 1,
+      "max_abs": 0.003906,
+      "mean_abs": 4.4e-07,
+      "bitwise_pct": 99.9,
+      "status": "PASS"
+    },
+    {
+      "batch": 2,
+      "max_abs": 0.007812,
+      "mean_abs": 6.9e-07,
+      "bitwise_pct": 99.9,
+      "status": "PASS"
+    },
+    {
+      "batch": 4,
+      "max_abs": 0.007812,
+      "mean_abs": 5.9e-07,
+      "bitwise_pct": 99.9,
+      "status": "PASS"
+    },
+    {
+      "batch": 8,
+      "max_abs": 0.007812,
+      "mean_abs": 5.4e-07,
+      "bitwise_pct": 99.9,
+      "status": "PASS"
+    },
+    {
+      "batch": 16,
+      "max_abs": 0.015625,
+      "mean_abs": 5.8e-07,
+      "bitwise_pct": 99.9,
+      "status": "PASS"
+    },
+    {
+      "batch": 32,
+      "max_abs": 0.007812,
+      "mean_abs": 5.9e-07,
+      "bitwise_pct": 99.9,
+      "status": "PASS"
+    }
+  ],
+  "all_pass": true,
+  "tolerance_spec": "atol=0.01, rtol=0.01",
+  "accumulation_dtype": "FP16 (with FP32 Cube intermediate)"
+}
