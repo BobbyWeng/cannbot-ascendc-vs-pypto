@@ -1,694 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyPTO Operator Dashboard v1.3-rc3</title>
-<style>/* PyPTO Dashboard — Dark Theme */
-:root {
-  --bg-primary: #0d1117;
-  --bg-secondary: #161b22;
-  --bg-tertiary: #21262d;
-  --bg-hover: #30363d;
-  --border: #30363d;
-  --text-primary: #e6edf3;
-  --text-secondary: #8b949e;
-  --text-muted: #6e7681;
-  --accent-blue: #58a6ff;
-  --accent-green: #3fb950;
-  --accent-yellow: #d29922;
-  --accent-red: #f85149;
-  --accent-purple: #bc8cff;
-  --accent-orange: #f0883e;
-  --accent-cyan: #39d2c0;
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 100vh;
-}
-
-a { color: var(--accent-blue); text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-.header {
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border);
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.header h1 { font-size: 20px; font-weight: 600; }
-.header .subtitle { color: var(--text-secondary); font-size: 13px; margin-top: 2px; }
-.header-right { display: flex; align-items: center; gap: 16px; }
-.header-right .update-time { color: var(--text-muted); font-size: 12px; }
-.header-right .badge { background: var(--accent-blue); color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
-
-.toolbar {
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.toolbar input {
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 6px 12px;
-  color: var(--text-primary);
-  font-size: 14px;
-  width: 240px;
-  outline: none;
-}
-.toolbar input:focus { border-color: var(--accent-blue); }
-
-.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
-
-.summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
-.summary-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
-.summary-card .value { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
-.summary-card .label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
-.summary-card.color-blue .value { color: var(--accent-blue); }
-.summary-card.color-green .value { color: var(--accent-green); }
-.summary-card.color-red .value { color: var(--accent-red); }
-.summary-card.color-yellow .value { color: var(--accent-yellow); }
-.summary-card.color-purple .value { color: var(--accent-purple); }
-.summary-card.color-orange .value { color: var(--accent-orange); }
-
-.progress-bar { background: var(--bg-tertiary); border-radius: 6px; height: 8px; overflow: hidden; margin-top: 8px; }
-.progress-bar .fill { height: 100%; border-radius: 6px; transition: width 0.3s; }
-
-table { width: 100%; border-collapse: collapse; background: var(--bg-secondary); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
-th { background: var(--bg-tertiary); padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); cursor: pointer; user-select: none; white-space: nowrap; }
-th:hover { color: var(--text-primary); }
-th .sort-arrow { margin-left: 4px; opacity: 0.5; }
-th.sorted .sort-arrow { opacity: 1; }
-td { padding: 10px 14px; border-top: 1px solid var(--border); font-size: 14px; }
-tr { cursor: pointer; }
-tr:hover { background: var(--bg-hover); }
-
-.status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; }
-.status-badge.completed { background: rgba(63,185,80,0.15); color: var(--accent-green); }
-.status-badge.in_progress { background: rgba(210,153,34,0.15); color: var(--accent-yellow); }
-.status-badge.planned { background: rgba(110,118,129,0.15); color: var(--text-muted); }
-.status-badge.blocked { background: rgba(248,81,73,0.15); color: var(--accent-red); }
-.status-badge.pass { background: rgba(63,185,80,0.15); color: var(--accent-green); }
-.status-badge.fail { background: rgba(248,81,73,0.15); color: var(--accent-red); }
-.status-badge.unknown { background: rgba(110,118,129,0.15); color: var(--text-muted); }
-
-.detail-view { display: none; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px; }
-.detail-view.visible { display: block; }
-.detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.detail-header h2 { font-size: 24px; }
-.detail-close { background: none; border: 1px solid var(--border); color: var(--text-secondary); padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; }
-.detail-close:hover { background: var(--bg-hover); color: var(--text-primary); }
-
-.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
-.info-item { background: var(--bg-tertiary); border-radius: 6px; padding: 12px 16px; }
-.info-item .label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-.info-item .value { font-size: 15px; font-weight: 500; }
-
-.section { margin-bottom: 24px; }
-.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-
-.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
-.tab { padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); border-bottom: 2px solid transparent; transition: all 0.2s; }
-.tab:hover { color: var(--text-primary); }
-.tab.active { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-
-.limitation-item { background: var(--bg-tertiary); border-radius: 6px; padding: 12px 16px; margin-bottom: 8px; }
-.limitation-item .sev-p0 { color: var(--accent-red); font-weight: 600; }
-.limitation-item .sev-p1 { color: var(--accent-yellow); font-weight: 600; }
-.limitation-item .sev-p2 { color: var(--accent-orange); font-weight: 600; }
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.summary-card, .detail-view.visible { animation: fadeIn 0.3s ease-out; }
-
-@media (max-width: 768px) {
-  .summary-cards { grid-template-columns: repeat(2, 1fr); }
-  .info-grid { grid-template-columns: repeat(2, 1fr); }
-  .toolbar input { width: 160px; }
-}
-
-.chart-bar { display: flex; align-items: center; gap: 6px; margin: 2px 0; font-size: 12px; }
-.chart-bar .bar { height: 14px; border-radius: 3px; min-width: 4px; transition: width 0.3s; }
-.chart-bar .label-mini { color: var(--text-muted); width: 50px; text-align: right; }
-.chart-bar .value-mini { color: var(--text-secondary); width: 60px; }
-.hash-text { font-family: monospace; font-size: 10px; color: var(--text-muted); word-break: break-all; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Cannbot 算子对比 Dashboard</title>
+  <link rel="stylesheet" href="./dashboard.css">
 </head>
 <body>
-<div id="loading" style="display:flex;align-items:center;justify-content:center;min-height:100vh;color:var(--text-muted);font-size:18px">
-  Loading dashboard...
-</div>
-
-<div id="app" style="display:none">
-  <div class="header">
-    <div>
-      <h1>PyPTO Operator Dashboard</h1>
-      <div class="subtitle" id="header-subtitle">Loading...</div>
-    </div>
-    <div class="header-right">
-      <span class="badge" id="header-badge">0/12 completed</span>
-      <span class="update-time" id="update-time"></span>
-    </div>
-  </div>
-
-  <div class="toolbar">
-    <input type="text" id="search" placeholder="Search operators...">
-    <label style="color:var(--text-muted);font-size:13px">Sort by: click table headers</label>
-  </div>
-
-  <div class="container">
-    <div id="release-info"></div>
-
-    <div class="summary-cards" id="summary-cards"></div>
-
-    <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-        <span style="font-size:13px;color:var(--text-secondary)">Overall Completion</span>
-        <span style="font-size:13px;font-weight:600" id="progress-text"></span>
+  <div id="loading" class="loading">正在加载发布数据…</div>
+  <div id="app" hidden>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ASCEND NPU · OPERATOR BENCHMARK</p>
+        <h1>Cannbot 算子对比</h1>
+        <p id="release-meta" class="muted"></p>
       </div>
-      <div class="progress-bar">
-        <div class="fill" id="progress-fill" style="background:var(--accent-green)"></div>
+      <div class="topbar-actions">
+        <span id="source-health" class="pill"></span>
+        <button id="refresh" class="button">刷新数据</button>
       </div>
-    </div>
+    </header>
 
-    <table id="op-table">
-      <thead>
-        <tr>
-          <th data-sort="name">Operator <span class="sort-arrow">▲</span></th>
-          <th data-sort="status">Status <span class="sort-arrow"></span></th>
-          <th>Torch</th>
-          <th>Ascend C</th>
-          <th>PyPTO</th>
-          <th>Correctness</th>
-          <th>B1 Perf</th>
-          <th>Profiler</th>
-          <th>Skill Trace</th>
-        </tr>
-      </thead>
-      <tbody id="op-table-body"></tbody>
-    </table>
+    <main class="page">
+      <section id="source-alert" class="source-alert"></section>
+      <section id="summary" class="summary-grid"></section>
 
-    <div class="detail-view" id="detail-view">
-      <div class="detail-header">
-        <h2 id="detail-title">Operator Detail</h2>
-        <button class="detail-close" onclick="closeDetail()">Close</button>
-      </div>
-
-      <div class="info-grid">
-        <div class="info-item"><div class="label">Formula</div><div class="value" id="info-formula">-</div></div>
-        <div class="info-item"><div class="label">Shape</div><div class="value" id="info-shape">-</div></div>
-        <div class="info-item"><div class="label">Dtype</div><div class="value" id="info-dtype">-</div></div>
-        <div class="info-item"><div class="label">Batches</div><div class="value" id="info-batches">-</div></div>
-        <div class="info-item"><div class="label">Precision</div><div class="value" id="info-precision">-</div></div>
-        <div class="info-item"><div class="label">Status</div><div class="value" id="info-status">-</div></div>
-        <div class="info-item"><div class="label">Limitation</div><div class="value" id="info-limitation">-</div></div>
-        <div class="info-item"><div class="label">Archive</div><div class="value" id="info-archive">-</div></div>
-      </div>
-
-      <div class="tabs">
-        <div class="tab active" data-tab="correctness" onclick="switchTab('correctness')">Correctness</div>
-        <div class="tab" data-tab="performance" onclick="switchTab('performance')">Performance</div>
-        <div class="tab" data-tab="limitations" onclick="switchTab('limitations')">Limitations</div>
-        <div class="tab" data-tab="profiler-timeline" onclick="switchTab('profiler-timeline')">Profiler Timeline</div>
-        <div class="tab" data-tab="batch-scaling" onclick="switchTab('batch-scaling')">Batch Scaling</div>
-        <div class="tab" data-tab="kernel-timeline" onclick="switchTab('kernel-timeline')">Kernel Timeline</div>
-      </div>
-
-      <div class="tab-content active" id="tab-correctness">
-        <div class="section">
-          <h3>Correctness Summary</h3>
-          <div id="corr-status" style="margin-bottom:12px"></div>
+      <section class="panel updates-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="section-kicker">本次发布</p>
+            <h2>Post-RC3 关键更新</h2>
+          </div>
+          <button id="toggle-updates" class="text-button">收起</button>
         </div>
-        <div class="section">
-          <h3>Per-Route Results</h3>
-          <table>
-            <thead><tr><th>Route</th><th>Result</th><th>Tool</th></tr></thead>
-            <tbody id="corr-table-body"></tbody>
+        <div id="updates" class="updates-grid"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading table-heading">
+          <div>
+            <p class="section-kicker">12 个算子 · 3 条实现路线</p>
+            <h2>算子总览</h2>
+          </div>
+          <div class="filters">
+            <label class="search-wrap">
+              <span>搜索</span>
+              <input id="search" type="search" placeholder="算子名、状态、限制…">
+            </label>
+            <label>
+              <span>状态</span>
+              <select id="status-filter">
+                <option value="all">全部</option>
+                <option value="COMPLETE">完全完成</option>
+                <option value="COMPLETE_WITH_LIMITATION">有限制完成</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table class="operator-table">
+            <thead>
+              <tr>
+                <th>算子</th>
+                <th>状态</th>
+                <th>Torch 正确性</th>
+                <th>Ascend C 正确性</th>
+                <th>PyPTO 正确性</th>
+                <th>B=1 主计算核</th>
+                <th>证据质量</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="operator-rows"></tbody>
           </table>
         </div>
-      </div>
+        <p id="empty-state" class="empty" hidden>没有符合筛选条件的算子。</p>
+      </section>
 
-      <div class="tab-content" id="tab-performance">
-        <div class="section">
-          <h3>Profiler Metrics</h3>
-          <table>
-            <thead><tr><th>Route</th><th>Method</th><th>B1 Latency</th><th>Kernels/Call</th></tr></thead>
-            <tbody id="perf-table-body"></tbody>
-          </table>
+      <section id="detail" class="panel detail-panel" hidden>
+        <div class="detail-hero">
+          <div>
+            <button id="close-detail" class="text-button back-button">← 返回总览</button>
+            <p class="section-kicker">算子详情</p>
+            <div class="detail-title-row">
+              <h2 id="detail-name"></h2>
+              <span id="detail-status" class="status"></span>
+            </div>
+            <p id="detail-formula" class="formula"></p>
+          </div>
+          <div id="detail-warnings" class="warning-stack"></div>
         </div>
-      </div>
 
-      <div class="tab-content" id="tab-limitations">
-        <div class="section">
-          <h3>Known Limitations</h3>
-          <div id="limitations-content"></div>
-        </div>
-        <div class="section">
-          <h3>Source & Binary Hashes</h3>
-          <div id="hash-content"></div>
-        </div>
-      </div>
+        <nav class="tabs" aria-label="详情视图">
+          <button class="tab active" data-tab="overview">概览</button>
+          <button class="tab" data-tab="correctness">正确性</button>
+          <button class="tab" data-tab="performance">性能</button>
+          <button class="tab" data-tab="evidence">数据证据</button>
+          <button class="tab" data-tab="limitations">限制与更新</button>
+        </nav>
 
-      <div class="tab-content" id="tab-profiler-timeline">
-        <div class="section">
-          <h3>Kernel Timeline</h3>
-          <div id="profiler-timeline-content"></div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="tab-batch-scaling">
-        <div class="section">
-          <h3>Latency vs Batch Size</h3>
-          <div id="batch-scaling-content"></div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="tab-kernel-timeline">
-        <div class="section">
-          <h3>Kernel Breakdown by Type</h3>
-          <div id="kernel-timeline-content"></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="bottom-sections" style="margin-top: 32px">
-      <div id="release-history-section"></div>
-      <div id="skill-trace-section"></div>
-      <div id="backend-limitations-section"></div>
-    </div>
+        <div id="tab-overview" class="tab-panel active"></div>
+        <div id="tab-correctness" class="tab-panel"></div>
+        <div id="tab-performance" class="tab-panel"></div>
+        <div id="tab-evidence" class="tab-panel"></div>
+        <div id="tab-limitations" class="tab-panel"></div>
+      </section>
+    </main>
   </div>
-</div>
-
-<script>
-let dashboardData = null;
-let currentOp = null;
-let currentTab = 'correctness';
-let sortField = 'name';
-let sortAsc = true;
-
-function init() {
-  fetch('./dashboard.json')
-    .then(r => r.json())
-    .then(data => {
-      dashboardData = data;
-      document.getElementById('header-subtitle').textContent = 'Release ' + (data.version || data.release_version || '?') + ' — ' + data.generated_at;
-      renderSummary(data);
-      renderTable(data);
-      renderBottomSections(data);
-      setupSearch();
-      setupSort();
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-    })
-    .catch(err => {
-      document.getElementById('loading').textContent = 'Failed to load dashboard.json: ' + err.message;
-    });
-}
-
-function renderSummary(data) {
-  const s = data.status_summary || {};
-  const total = data.operator_count || 0;
-  const cards = [
-    { label: 'Total Operators', value: total, cls: 'color-blue' },
-  ];
-  for (const [status, count] of Object.entries(s)) {
-    const cls = status.startsWith('COMPLETE') ? 'color-green' : status === 'PARTIAL' ? 'color-yellow' : 'color-red';
-    cards.push({ label: status, value: count, cls: cls });
-  }
-  const container = document.getElementById('summary-cards');
-  container.innerHTML = cards.map(c => `
-    <div class="summary-card ${c.cls}">
-      <div class="value">${c.value}</div>
-      <div class="label">${c.label}</div>
-    </div>
-  `).join('');
-
-  const compl = (s['COMPLETE'] || 0) + (s['COMPLETE_WITH_LIMITATION'] || 0);
-  const pct = total > 0 ? Math.round(compl / total * 100) : 0;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-text').textContent = pct + '% (' + compl + '/' + total + ')';
-  document.getElementById('update-time').textContent = 'Release: ' + data.generated_at;
-  const badge = document.getElementById('header-badge');
-  badge.textContent = compl + '/' + total + ' completed';
-
-  document.getElementById('release-info').innerHTML = '<p style="color:var(--text-secondary);font-size:13px;margin-bottom:12px">Release v' + (data.version || data.release_version || '?') + ' — ' + data.generated_at + (data.current_release && data.current_release.git_commit ? ' — commit: <code style="font-size:11px">' + data.current_release.git_commit.slice(0,12) + '</code>' : '') + '</p>';
-}
-
-function renderTable(data) {
-  const ops = Object.entries(data.operators).map(([name, op]) => ({ name: name, ...op }));
-  ops.sort((a, b) => {
-    const order = { 'COMPLETE': 0, 'COMPLETE_WITH_LIMITATION': 1, 'PARTIAL': 2, 'INCOMPLETE': 3 };
-    let va = (order[a.status] ?? 99);
-    let vb = (order[b.status] ?? 99);
-    return sortAsc ? va - vb : vb - va;
-  });
-
-  const tbody = document.getElementById('op-table-body');
-  tbody.innerHTML = ops.map(op => {
-    const statusCls = op.status.startsWith('COMPLETE') ? 'completed' : op.status === 'PARTIAL' ? 'in_progress' : 'unknown';
-    const torchC = op.correctness?.torch || 'N/A';
-    const ascendcC = op.correctness?.ascendc || 'N/A';
-    const pyptoC = op.correctness?.pypto || 'N/A';
-
-    const corrStr = [torchC, ascendcC, pyptoC].every(c => c.startsWith('PASS'))
-      ? '<span class="status-badge pass">PASS</span>'
-      : [torchC, ascendcC, pyptoC].some(c => c.startsWith('FAIL'))
-        ? '<span class="status-badge fail">FAIL</span>'
-        : '<span class="status-badge unknown">MIXED</span>';
-
-    const torchP = op.profiler?.torch || {};
-    const ascendcP = op.profiler?.ascendc || {};
-    const pyptoP = op.profiler?.pypto || {};
-    const b1 = torchP.b1_us != null ? 'T:' + Number(torchP.b1_us).toFixed(1) + 'us' : '';
-    const b1a = ascendcP.b1_us != null ? ' A:' + Number(ascendcP.b1_us).toFixed(1) + 'us' : '';
-    const b1p = pyptoP.b1_us != null ? ' P:' + Number(pyptoP.b1_us).toFixed(1) + 'us' : '';
-    const b1Str = (b1 + b1a + b1p) || 'N/A';
-
-    const profilerTool = op.profiler_tool || 'N/A';
-
-    const st = op.skill_trace || {};
-    const stHtml = '<span style="font-size:10px;color:var(--text-muted)">A:' + (st.ascendc || '?') + '<br>P:' + (st.pypto || '?') + '</span>';
-
-    const sourceHash = op.source_hash || '';
-    const hashTitle = sourceHash ? ' title="SHA256: ' + sourceHash + '"' : '';
-
-    return '<tr onclick="showDetail(\'' + op.name + '\')"' + hashTitle + '>' +
-      '<td><strong>' + op.name + '</strong></td>' +
-      '<td><span class="status-badge ' + statusCls + '">' + op.status + '</span></td>' +
-      '<td style="font-size:12px">' + torchC + '</td>' +
-      '<td style="font-size:12px">' + ascendcC + '</td>' +
-      '<td style="font-size:12px">' + pyptoC + '</td>' +
-      '<td>' + corrStr + '</td>' +
-      '<td style="font-size:12px">' + b1Str + '</td>' +
-      '<td style="font-size:12px">' + profilerTool + '</td>' +
-      '<td style="font-size:10px">' + stHtml + '</td>' +
-      '</tr>';
-  }).join('');
-}
-
-function setupSearch() {
-  document.getElementById('search').addEventListener('input', e => {
-    const q = e.target.value.toLowerCase();
-    const rows = document.querySelectorAll('#op-table-body tr');
-    rows.forEach(row => {
-      const text = row.textContent.toLowerCase();
-      row.style.display = text.includes(q) ? '' : 'none';
-    });
-  });
-}
-
-function setupSort() {
-  document.querySelectorAll('#op-table th').forEach(th => {
-    th.addEventListener('click', () => {
-      const field = th.dataset.sort;
-      if (!field) return;
-      if (sortField === field) {
-        sortAsc = !sortAsc;
-      } else {
-        sortField = field;
-        sortAsc = true;
-      }
-      renderTable(dashboardData);
-    });
-  });
-}
-
-function showDetail(opName) {
-  const op = dashboardData.operators[opName];
-  if (!op) return;
-  currentOp = op;
-
-  document.getElementById('detail-view').classList.add('visible');
-  document.getElementById('detail-title').textContent = opName + ' — Operator Detail';
-
-  document.getElementById('info-formula').textContent = op.formula || 'N/A';
-  document.getElementById('info-shape').textContent = op.shape || 'N/A';
-  document.getElementById('info-dtype').textContent = op.dtype || 'N/A';
-  document.getElementById('info-batches').textContent = (op.batches || []).join(', ') || 'N/A';
-  document.getElementById('info-precision').textContent = op.precision || 'N/A';
-  const statusCls = op.status.startsWith('COMPLETE') ? 'completed' : op.status === 'PARTIAL' ? 'in_progress' : 'unknown';
-  document.getElementById('info-status').innerHTML = '<span class="status-badge ' + statusCls + '">' + op.status + '</span>';
-  document.getElementById('info-limitation').textContent = op.limitation || 'None';
-  document.getElementById('info-archive').textContent = op.archive || 'none';
-
-  renderReleaseCorrectness(op);
-  renderReleasePerformance(op);
-
-  if (dashboardData.known_limitations) {
-    const opLimits = dashboardData.known_limitations.filter(l => l.operator === opName);
-    const container = document.getElementById('limitations-content');
-    if (opLimits.length === 0 && (!op.limitations || op.limitations.length === 0)) {
-      container.innerHTML = '<p style="color:var(--text-muted)">No known limitations for this operator.</p>';
-    } else {
-      const allLimits = [...(op.limitations || []), ...opLimits];
-      container.innerHTML = allLimits.map(l => {
-        const sev = l.severity || 'P3';
-        const sevClass = 'sev-' + sev.toLowerCase();
-        return '<div class="limitation-item"><span class="' + sevClass + '">[' + sev + ']</span> ' + (l.route || '') + ': ' + l.description + '</div>';
-      }).join('');
-    }
-  }
-
-  renderHashContent(op);
-  renderProfilerTimeline(op);
-  renderBatchScaling(op);
-  renderKernelTimeline(op);
-
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelector('[data-tab="correctness"]').classList.add('active');
-  document.getElementById('tab-correctness').classList.add('active');
-  document.getElementById('detail-view').scrollIntoView({ behavior: 'smooth' });
-}
-
-function renderReleaseCorrectness(op) {
-  const corr = op.correctness || {};
-  const allPass = Object.values(corr).every(c => String(c).startsWith('PASS'));
-  const allFail = Object.values(corr).every(c => String(c).startsWith('FAIL'));
-  const statusHtml = allPass ? '<span class="status-badge pass" style="font-size:16px;padding:4px 16px">ALL PASS</span>' :
-                     allFail ? '<span class="status-badge fail" style="font-size:16px;padding:4px 16px">ALL FAIL</span>' :
-                     '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">MIXED</span>';
-  document.getElementById('corr-status').innerHTML = statusHtml;
-
-  const impls = ['torch', 'ascendc', 'pypto'];
-  let html = '';
-  for (const impl of impls) {
-    const c = corr[impl] || 'N/A';
-    html += '<tr><td>' + impl + '</td><td>' + c + '</td><td style="font-size:12px">' + (op.profiler?.[impl]?.method || 'N/A') + '</td></tr>';
-  }
-  document.getElementById('corr-table-body').innerHTML = html;
-}
-
-function renderReleasePerformance(op) {
-  const profiler = op.profiler || {};
-  const impls = ['torch', 'ascendc', 'pypto'];
-  let html = '';
-  for (const impl of impls) {
-    const p = profiler[impl] || {};
-    const method = p.method || 'N/A';
-    const lat = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
-    const kpc = p.kernels_per_call != null ? p.kernels_per_call : 'N/A';
-    html += '<tr><td>' + impl + '</td><td>' + method + '</td><td>' + lat + '</td><td>' + kpc + '</td></tr>';
-  }
-  document.getElementById('perf-table-body').innerHTML = html;
-}
-
-function renderHashContent(op) {
-  const container = document.getElementById('hash-content');
-  const sourceHash = op.source_hash || 'N/A';
-  const binaryHash = op.binary_hash || 'N/A';
-  container.innerHTML =
-    '<div class="limitation-item"><span style="color:var(--accent-cyan);font-weight:600">Source Hash:</span> <span class="hash-text">' + sourceHash + '</span></div>' +
-    '<div class="limitation-item"><span style="color:var(--accent-purple);font-weight:600">Binary Hash:</span> <span class="hash-text">' + binaryHash + '</span></div>';
-}
-
-function renderProfilerTimeline(op) {
-  const timeline = op.profiler_timeline || {};
-  const container = document.getElementById('profiler-timeline-content');
-  const routes = ['torch', 'ascendc', 'pypto'];
-  let html = '<table><thead><tr><th>Route</th><th>Kernel Name</th><th>Kernel Type</th><th>B1 Duration</th></tr></thead><tbody>';
-  for (const route of routes) {
-    const t = timeline[route] || {};
-    html += '<tr><td>' + route + '</td><td style="font-size:12px">' + (t.kernel_name || 'N/A') + '</td><td style="font-size:12px">' + (t.kernel_type || 'N/A') + '</td><td>' + (t.duration_us != null ? Number(t.duration_us).toFixed(1) + ' us' : 'N/A') + '</td></tr>';
-  }
-  html += '</tbody></table>';
-  container.innerHTML = html;
-}
-
-function renderBatchScaling(op) {
-  const scaling = op.batch_scaling || {};
-  const container = document.getElementById('batch-scaling-content');
-  const routes = ['torch', 'ascendc', 'pypto'];
-  let maxUs = 0;
-  const colors = ['var(--accent-blue)', 'var(--accent-green)', 'var(--accent-orange)'];
-  for (const route of routes) {
-    const s = scaling[route] || {};
-    for (const [k, v] of Object.entries(s)) {
-      if (v != null && v > maxUs) maxUs = v;
-    }
-  }
-  if (maxUs === 0) maxUs = 100;
-
-  let html = '<table><thead><tr><th>Route</th>';
-  const allBatches = {};
-  for (const route of routes) {
-    const s = scaling[route] || {};
-    for (const k of Object.keys(s)) allBatches[k] = true;
-  }
-  const batchKeys = Object.keys(allBatches).sort();
-  for (const bk of batchKeys) html += '<th>' + bk + '</th>';
-  html += '</tr></thead><tbody>';
-
-  for (let ri = 0; ri < routes.length; ri++) {
-    const route = routes[ri];
-    const s = scaling[route] || {};
-    html += '<tr><td>' + route + '</td>';
-    for (const bk of batchKeys) {
-      const v = s[bk];
-      html += '<td style="font-size:12px">' + (v != null ? Number(v).toFixed(1) + ' us' : '-') + '</td>';
-    }
-    html += '</tr>';
-  }
-  html += '</tbody></table>';
-
-  html += '<div style="margin-top:12px"><h4 style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">Visual (B1 to Bmax)</h4>';
-  for (let ri = 0; ri < routes.length; ri++) {
-    const route = routes[ri];
-    const s = scaling[route] || {};
-    const vals = Object.values(s).filter(v => v != null);
-    if (vals.length < 2) continue;
-    const minV = Math.min(...vals);
-    const maxV = Math.max(...vals);
-    let barHtml = '<div style="margin-bottom:8px"><span style="font-size:12px;font-weight:600;color:' + colors[ri] + '">' + route + '</span>';
-    for (const [bk, bv] of Object.entries(s)) {
-      if (bv == null) continue;
-      const pct = maxV > 0 ? (bv / maxV * 100) : 0;
-      barHtml += '<div class="chart-bar"><span class="label-mini">' + bk + '</span><div class="bar" style="width:' + pct + '%;background:' + colors[ri] + '"></div><span class="value-mini">' + Number(bv).toFixed(1) + 'us</span></div>';
-    }
-    barHtml += '</div>';
-    html += barHtml;
-  }
-
-  container.innerHTML = html;
-}
-
-function renderKernelTimeline(op) {
-  const kb = op.kernel_breakdown || {};
-  const container = document.getElementById('kernel-timeline-content');
-  const routes = Object.keys(kb);
-  if (routes.length === 0) {
-    container.innerHTML = '<p style="color:var(--text-muted)">No kernel breakdown data available.</p>';
-    return;
-  }
-  let html = '';
-  for (const route of routes) {
-    const types = kb[route] || {};
-    html += '<div style="margin-bottom:16px"><h4 style="font-size:14px;font-weight:600;margin-bottom:6px">' + route + '</h4>';
-    html += '<table><thead><tr><th>Kernel Type</th><th>Count</th><th>Total (us)</th><th>Mean (us)</th><th>Per Call (us)</th></tr></thead><tbody>';
-    for (const [ktype, kdata] of Object.entries(types)) {
-      html += '<tr><td style="font-size:12px">' + ktype + '</td><td>' + (kdata.count || 0) + '</td><td>' + Number(kdata.total_us || 0).toFixed(1) + '</td><td>' + Number(kdata.mean_us || 0).toFixed(3) + '</td><td>' + Number(kdata.per_call_us || 0).toFixed(3) + '</td></tr>';
-    }
-    html += '</tbody></table></div>';
-  }
-  container.innerHTML = html;
-}
-
-function closeDetail() {
-  document.getElementById('detail-view').classList.remove('visible');
-  currentOp = null;
-}
-
-function switchTab(tab) {
-  currentTab = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
-  document.getElementById('tab-' + tab).classList.add('active');
-}
-
-function renderBottomSections(data) {
-  renderReleaseHistory(data);
-  renderSkillTraceSummary(data);
-  renderBackendLimitations(data);
-}
-
-function renderReleaseHistory(data) {
-  const history = data.release_history || [];
-  const container = document.getElementById('release-history-section');
-  if (history.length === 0) {
-    container.innerHTML = '';
-    return;
-  }
-  let html = '<div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">';
-  html += '<h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Release History</h3>';
-  html += '<table><thead><tr><th>Version</th><th>Date</th><th>Changes</th></tr></thead><tbody>';
-  for (const h of history) {
-    html += '<tr><td style="font-weight:600;white-space:nowrap">' + h.version + '</td><td style="white-space:nowrap">' + h.date + '</td><td style="font-size:12px">' + (h.changes || '') + '</td></tr>';
-  }
-  html += '</tbody></table></div>';
-  container.innerHTML = html;
-}
-
-function renderSkillTraceSummary(data) {
-  const st = data.skill_trace_summary || {};
-  const container = document.getElementById('skill-trace-section');
-  let html = '<div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">';
-  html += '<h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Skill Trace Summary</h3>';
-  html += '<table><thead><tr><th>Route</th><th>Status</th><th>Count</th></tr></thead><tbody>';
-  const rows = [
-    { route: 'Ascend C', status: 'LEGACY_UNVERIFIED_SKILL_USAGE', count: st.ascendc_LEGACY_UNVERIFIED_SKILL_USAGE || 0 },
-    { route: 'Ascend C', status: 'TRACE_VERIFIED', count: st.ascendc_TRACE_VERIFIED || 0 },
-    { route: 'PyPTO', status: 'LEGACY_UNVERIFIED_SKILL_USAGE', count: st.pypto_LEGACY_UNVERIFIED_SKILL_USAGE || 0 },
-    { route: 'PyPTO', status: 'NON_COMPLIANT', count: st.pypto_NON_COMPLIANT || 0 },
-    { route: 'PyPTO', status: 'TRACE_VERIFIED', count: st.pypto_TRACE_VERIFIED || 0 },
-  ];
-  for (const r of rows) {
-    if (r.count === 0) continue;
-    const cls = r.status === 'TRACE_VERIFIED' ? 'pass' : r.status === 'NON_COMPLIANT' ? 'fail' : 'unknown';
-    html += '<tr><td>' + r.route + '</td><td><span class="status-badge ' + cls + '">' + r.status + '</span></td><td>' + r.count + '</td></tr>';
-  }
-  html += '</tbody></table>';
-  html += '<p style="color:var(--text-muted);font-size:12px;margin-top:8px">Per-operator skill trace status shown in the main table (A: AscendC, P: PyPTO).</p>';
-  html += '</div>';
-  container.innerHTML = html;
-}
-
-function renderBackendLimitations(data) {
-  const limitations = data.known_limitations || [];
-  const container = document.getElementById('backend-limitations-section');
-  if (limitations.length === 0) {
-    container.innerHTML = '';
-    return;
-  }
-  let html = '<div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">';
-  html += '<h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Backend Limitations</h3>';
-  html += '<table><thead><tr><th>Operator</th><th>Route</th><th>Severity</th><th>Description</th></tr></thead><tbody>';
-  for (const l of limitations) {
-    const sevClass = 'sev-' + l.severity.toLowerCase();
-    html += '<tr><td style="font-weight:600">' + l.operator + '</td><td>' + l.route + '</td><td><span class="' + sevClass + '">' + l.severity + '</span></td><td style="font-size:12px">' + l.description + '</td></tr>';
-  }
-  html += '</tbody></table></div>';
-  container.innerHTML = html;
-}
-
-document.addEventListener('DOMContentLoaded', init);
-</script>
+  <script src="./dashboard.js"></script>
 </body>
 </html>

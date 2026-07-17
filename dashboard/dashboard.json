@@ -1,351 +1,4549 @@
 {
-  "version": "1.4-post-rc3",
+  "schema_version": "3.0",
   "mode": "release",
+  "language": "zh-CN",
   "release_version": "1.4-post-rc3",
   "generated_at": "2026-07-17T15:30:00Z",
+  "release_git_commit": "384239fb17761a874fc6fb0cc2bc4fe3b4daa5bc",
   "environment": {
-    "platform": "Ascend 910B (dav-2201)",
-    "aicore_count": 20,
+    "platform": "Ascend 910B",
     "cann_version": "9.0.0",
     "python": "3.11",
     "profiler": "msprof with --ascendcl=on --ai-core=on --task-time=l0",
     "warmup": 200,
     "profiled_loops": 100,
-    "repeat": 5,
+    "repeat": "5 (expand used repeat=3 due to runtime >2h)",
     "primary_metric": "primary_compute_kernel_us"
   },
-  "operator_count": 12,
+  "source": {
+    "release_file": "reports/release/current_release.json",
+    "release_sha256": "7bfa48d258708327d14db60f3d457dfe56e847ee60b7eae33e9f434d443f780f",
+    "precedence": [
+      "current_release.routes.*.profiler",
+      "SHA256-tracked operators/*/reports/parsed",
+      "unmanifested parsed evidence (display only; never ranked)"
+    ],
+    "performance_matrix_used": false
+  },
+  "summary": {
+    "operators": 12,
+    "complete": 12,
+    "with_limitation": 8,
+    "correctness_pass_routes": 35,
+    "total_routes": 36,
+    "evidence": {
+      "release_source": 8,
+      "verified": 173,
+      "unmanifested": 21,
+      "mismatch": 0,
+      "no_kernel_evidence": 2
+    }
+  },
   "status_summary": {
     "COMPLETE": 4,
-    "COMPLETE_WITH_LIMITATION": 8
+    "COMPLETE_WITH_LIMITATION": 8,
+    "PARTIAL": 0,
+    "INCOMPLETE": 0
   },
-  "release_history": [
-    {
-      "version": "1.4-post-rc3",
-      "date": "2026-07-17",
-      "changes": "MatMul 多核批调度重写 (1 kernel/call, 262× 加速); ReduceSum FP32 累积内核; Add 77/77 位精确验证; 中文 Dashboard 更新"
-    },
-    {
-      "version": "1.3-rc3",
-      "date": "2026-07-17",
-      "changes": "Dashboard v2: Profiler Timeline, Batch Scaling, Kernel Timeline, Skill Trace, Backend Limitation, Source Hash, Binary Hash"
-    },
-    {
-      "version": "1.2-rc2",
-      "date": "2026-07-17",
-      "changes": "PyPTO 解封 RC-2: matmul, div, where, transpose, equal 解封。Ascend C transpose 性能提升 13-18%"
-    }
-  ],
   "operators": {
-    "matmul": {
-      "status": "COMPLETE",
-      "status_zh": "完全完成",
-      "formula": "Y[b,h,:,:] = A[b,h,:,:] @ B[b,h,:,:]",
-      "shape": "A [B,12,256,256], B [B,12,256,32]",
-      "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32],
-      "precision": "atol=0.01, rtol=0.01",
-      "cube_class": true,
-      "post_rc3": {
-        "调度变更": "从 12-384 次串行 kernel 启动 → 1 次多核并行 kernel 启动",
-        "blockDim": "B=1:12, B≥2:20 (从 1 提升)",
-        "matrices_per_core": "B=1:1, B=8:5, B=32:20",
-        "TFLOPS_B32": 43.53,
-        "旧延迟_us_B32": 9521,
-        "新延迟_us_B32": 37.0,
-        "加速比_B32": "257×",
-        "batch_unique验证": "PASS (B=1/8/32/64 全部唯一)",
-        "全batch正确性": "PASS (max_abs≤0.0156, mean_abs~6e-7)",
-        "profiler_B1": "matmul_kernel, KERNEL_AICORE, ~4.9µs, 12块, Cube利用率~48%"
-      },
-      "correctness": {
-        "torch": "PASS (atol=0.01)",
-        "ascendc": "PASS (max_abs=0.0039-0.0156)"
-      },
-      "profiler": {
-        "torch": {
-          "status": "COMPLETE",
-          "method": "msprof",
-          "kernel_name": "aclnnMatmul_BatchMatMulNd_BatchMatMulV2",
-          "kernel_type": "KERNEL_AICORE",
-          "kernels_per_call": 7,
-          "b1_us": 22.2,
-          "b2_us": 14.8,
-          "b4_us": 14.4,
-          "b8_us": 14.9,
-          "b16_us": 18.3,
-          "b32_us": 32.2,
-          "b1_TFLOPS": 2.27,
-          "b32_TFLOPS": 50.02
-        },
-        "ascendc": {
-          "status": "COMPLETE_POST_RC3",
-          "method": "msprof",
-          "kernel_name": "matmul_kernel",
-          "kernel_type": "KERNEL_AICORE",
-          "kernels_per_call": 1,
-          "b1_us": 6.4,
-          "b2_us": 8.1,
-          "b4_us": 9.3,
-          "b8_us": 12.7,
-          "b16_us": 20.7,
-          "b32_us": 37.0,
-          "b1_TFLOPS": 7.86,
-          "b32_TFLOPS": 43.53,
-          "blockDim_b1": 12,
-          "blockDim_b32": 20,
-          "cube_util_pct": 48
-        }
-      },
-      "batch_scaling": {
-        "torch": {"b1_us": 22.2, "b2_us": 14.8, "b4_us": 14.4, "b8_us": 14.9, "b16_us": 18.3, "b32_us": 32.2},
-        "ascendc": {"b1_us": 6.4, "b2_us": 8.1, "b4_us": 9.3, "b8_us": 12.7, "b16_us": 20.7, "b32_us": 37.0}
-      },
-      "limitations": [
-        {"route": "ascendc", "severity": "P3", "description": "N=32 限制 Cube 利用率~48%；B≥16 时 Torch 更快"},
-        {"route": "pypto", "severity": "P2", "description": "自动 tiling 损坏(FC4000)；4D JIT 编译大 shape 超时"}
-      ]
-    },
-    "add": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
-      "formula": "Y = ((X1+X2)+X3)+X4 (左结合)",
-      "shape": "[B,256,384]",
-      "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确 (require_bitwise=true)",
-      "post_rc3": {
-        "正确性修复": "参考数据改为 FP16 链式累积，77/77 用例位精确 PASS",
-        "覆盖": "7 batch × 11 case (random, zeros, ones, cancel, NaN/Inf, overflow等)"
-      },
-      "correctness": {
-        "torch": "PASS (77/77 bitwise)",
-        "ascendc": "PASS (77/77 bitwise)",
-        "pypto": "PASS (77/77 bitwise)"
-      },
-      "profiler": {
-        "torch": {"method": "msprof", "b1_us": 10.04, "b32_us": 48.5, "kernels_per_call": 7},
-        "ascendc": {"method": "msprof", "b1_us": 6.6, "b32_us": 55.0, "kernels_per_call": 1},
-        "pypto": {"method": "msprof", "b1_us": 132.12, "b32_us": 620.0, "kernels_per_call": 9}
-      },
-      "batch_scaling": {
-        "torch": {"b1_us": 10.04, "b2_us": 11.0, "b4_us": 12.5, "b8_us": 15.0, "b16_us": 20.0, "b32_us": 48.5, "b64_us": 92.0},
-        "ascendc": {"b1_us": 6.6, "b2_us": 14.5, "b4_us": 16.0, "b8_us": 18.5, "b16_us": 22.0, "b32_us": 55.0, "b64_us": 100.0}
-      },
-      "limitations": [
-        {"route": "ascendc", "severity": "P3", "description": "4 输入融合单内核优势明显"},
-        {"route": "pypto", "severity": "P2", "description": "3 次二元加法串联 → 9 内核事件/调用，~60× 延迟"}
-      ]
-    },
-    "reduce_sum": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
-      "formula": "Y[b,i] = sum_j X[b,i,j]",
-      "shape": "X [B,256,384], Y [B,256]",
-      "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "atol=0.01, rtol=0.01",
-      "post_rc3": {
-        "FP32_累积内核": "已实现 (Cast FP16→FP32 → ReduceSum<float> → Cast→FP16)",
-        "FP32_精度优势": "random_finite: 0.013 vs 0.047 (3.5×); large_values: 1.97 vs 4.0 (2×)",
-        "FP32_性能": "~11-14µs (与 FP16 相同量级)",
-        "推荐_精度优先": "使用 FP32 累积内核",
-        "推荐_性能优先": "使用 FP16 原生累积"
-      },
-      "correctness": {
-        "torch": "62/70 PASS (7 NaN 预期失败)",
-        "ascendc_fp16": "21/70 PASS (FP16 精度不足)",
-        "ascendc_fp32": "70/70 PASS (新内核)",
-        "pypto": "70/70 PASS (wrapper FP32 cast)"
-      },
-      "profiler": {
-        "torch": {"method": "msprof", "b1_us": 15.96, "b32_us": 75.0, "kernels_per_call": 7},
-        "ascendc": {"method": "msprof", "b1_us": 14.2, "b32_us": 82.0, "kernels_per_call": 20}
-      },
-      "limitations": [
-        {"route": "ascendc_fp16", "severity": "P1", "description": "FP16 累积对 384 元素归约精度不足 (21/70)"},
-        {"route": "ascendc_fp32", "severity": "P3", "description": "性能比 FP16 略高 (代码路径优化)"}
-      ]
-    },
     "relu": {
+      "name": "relu",
       "status": "COMPLETE",
       "status_zh": "完全完成",
       "formula": "Y = max(X, 0)",
       "shape": "[B,12,256,32]",
       "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
-      "profiler": {
-        "torch": {"method": "msprof", "b1_us": 2.6, "b32_us": 50.2, "kernels_per_call": 1},
-        "ascendc": {"method": "msprof", "b1_us": 2.1, "b32_us": 48.1, "kernels_per_call": 1},
-        "pypto": {"method": "msprof", "b1_us": 51.9, "b32_us": 520.3, "kernels_per_call": 3}
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "bitwise (signed-zero exempted)",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO: FULL — all 7 batches PASS"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO: FULL — all 7 batches PASS"
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO: FULL — all 7 batches PASS"
+        }
       },
-      "batch_scaling": {
-        "torch": {"b1_us": 2.6, "b2_us": 3.0, "b4_us": 3.5, "b8_us": 4.2, "b16_us": 5.5, "b32_us": 50.2, "b64_us": 95.3},
-        "ascendc": {"b1_us": 2.1, "b2_us": 2.5, "b4_us": 3.0, "b8_us": 3.8, "b16_us": 5.0, "b32_us": 48.1, "b64_us": 90.1}
+      "correctness_coverage": "Torch/AscendC/PyPTO: FULL — all 7 batches PASS",
+      "profiler_coverage": "FULL — msprof all 3 routes",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 10.08,
+              "all_device_us": 18.352,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnRelu_Relu_Relu",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/torch_b1.json",
+              "sha256": "e8e72925370684f0c15ff875530ddb94cdcaa9ce25d44d3f98ea1f0211d04fcd",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 9.5,
+              "all_device_us": 14.063,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "relu_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/ascendc_b1.json",
+              "sha256": "015d6396ac4a35723b7241fa758458546b2e97c9231d7e95a4356d3fa70e220f",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 106.622,
+              "all_device_us": 190.668,
+              "executor_us": 139.54,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_relu_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/pypto_b1.json",
+              "sha256": "95bdee16d95a702c5b334ee75c62c3a6b2688b118584cb4e4f4e5888f49437d5",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 9.54,
+              "all_device_us": 18.708,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnRelu_Relu_Relu",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/torch_b2.json",
+              "sha256": "019b74247bfe5a5f969dc2412e78dc95b96ae339f3d02f004e8f4a0573d1414d",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.68,
+              "all_device_us": 15.936,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "relu_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/ascendc_b2.json",
+              "sha256": "2da7da857305e3d5217e0e3697d9e0c78951c16cb820bec4d4125e6e3ad82dd7",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 91.642,
+              "all_device_us": 196.748,
+              "executor_us": 145.074,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_relu_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/pypto_b2.json",
+              "sha256": "dadac7bdd0496c2abab8b53c9c32dcd4b08e7bd024c93b188d7e8defb994be56",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 12.62,
+              "all_device_us": 19.613,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnRelu_Relu_Relu",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/torch_b4.json",
+              "sha256": "699fda1037350c72b42d01e346b505fb085ae6422373d5ab3b1b66c90db656bf",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.18,
+              "all_device_us": 17.729,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "relu_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/ascendc_b4.json",
+              "sha256": "d4ab68495569c5b369a5662463eb980fdac5b9d854c968a397558e918143a2b2",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 118.422,
+              "all_device_us": 202.022,
+              "executor_us": 148.728,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_relu_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/pypto_b4.json",
+              "sha256": "ac94e82b76c2e626122988e5d170b55722baf9918bef4674c6ac3c08ed4e114d",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.86,
+              "all_device_us": 21.731,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnRelu_Relu_Relu",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/torch_b8.json",
+              "sha256": "f4e94b5f89078dca88298f1507a2f14babf629ff9da35b16d2cefbe915c152e1",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 10.54,
+              "all_device_us": 21.031,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "relu_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/ascendc_b8.json",
+              "sha256": "65854d4f721108a61d46b857e84308353154a05158ae1b824c4549edbb66a601",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 121.942,
+              "all_device_us": 209.207,
+              "executor_us": 150.818,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_relu_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/pypto_b8.json",
+              "sha256": "54db0bfbcb4f8fb8ea19879fa9ddb4789b808039933757a2da9d23c410f55e82",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.1,
+              "all_device_us": 25.199,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnRelu_Relu_Relu",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/torch_b16.json",
+              "sha256": "404666d0005aee685148886e6b2c100dd482e47da6aba4fd79f9afe1fd912661",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 10.82,
+              "all_device_us": 28.006,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "relu_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/ascendc_b16.json",
+              "sha256": "157c4f9201ea997a3ee6ba114cd2449a10407385c78a54797b50f7f7cad44d64",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 140.503,
+              "all_device_us": 252.412,
+              "executor_us": 174.267,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_relu_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/pypto_b16.json",
+              "sha256": "09f11acef0db3bd87770052cc99d69132b1117dea5831499a90df0946a7de40f",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 13.24,
+              "all_device_us": 32.318,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnRelu_Relu_Relu",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/torch_b32.json",
+              "sha256": "2f4208eeac0523eaaf1cb1b844d064eaad1f687437c533f28849501dddf32e1b",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.28,
+              "all_device_us": 41.39,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "relu_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/ascendc_b32.json",
+              "sha256": "60e81e180e998d5a382b7706770065b975a433d545228239f11e5a524141201c",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 162.523,
+              "all_device_us": 312.672,
+              "executor_us": 213.789,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_relu_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/pypto_b32.json",
+              "sha256": "8c43f85f7dfecd991d3e680c56619c386577a64e26ae2693e36f5d0f45140efc",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "64": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 19.92,
+              "all_device_us": 45.875,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnRelu_Relu_Relu",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/torch_b64.json",
+              "sha256": "0c3c1e962f528433abb70eda536e8dfc9003dd45b248840d331604dd5c39e486",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 20.96,
+              "all_device_us": 66.642,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "relu_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/ascendc_b64.json",
+              "sha256": "eeb77c1982bd1632e3d8eb106f0519082cbe4f928ae96e1835c7cf79ed093982",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 229.585,
+              "all_device_us": 423.061,
+              "executor_us": 267.793,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_relu_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/relu/reports/parsed/pypto_b64.json",
+              "sha256": "bc00b771a71183fa00ed39e310a745c12543175cdf9b17663b3b65b120b272b6",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 21,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
       },
-      "limitations": []
+      "limitations": [],
+      "warnings": [],
+      "release_notes": {
+        "rc3_fix": null,
+        "post_rc3_fix": null,
+        "post_rc3_change": null
+      },
+      "completeness_gates": []
     },
     "mul": {
+      "name": "mul",
       "status": "COMPLETE",
       "status_zh": "完全完成",
       "formula": "Y = X1 * X2",
       "shape": "[B,3,4,256,32]",
       "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
-      "profiler": {
-        "torch": {"method": "msprof", "b1_us": 9.0, "b32_us": 48.0, "kernels_per_call": 1},
-        "ascendc": {"method": "msprof", "b1_us": 11.2, "b32_us": 52.0, "kernels_per_call": 1},
-        "pypto": {"method": "msprof", "b1_us": 51.5, "b32_us": 281.2, "kernels_per_call": 3}
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "bitwise",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO: FULL"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO: FULL"
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO: FULL"
+        }
       },
-      "limitations": []
+      "correctness_coverage": "Torch/AscendC/PyPTO: FULL",
+      "profiler_coverage": "FULL — msprof all 3 routes",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 9.0,
+              "all_device_us": 19.378,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnMul_MulAiCore_Mul",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/torch_b1.json",
+              "sha256": "52cab3146b4e3db7c8d61d48383f8140fa56a8f6785fe3e8bf6a7374e1dfebde",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.16,
+              "all_device_us": 15.699,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "mul_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/ascendc_b1.json",
+              "sha256": "aeb0523a699f787f2e2be906f334ff05036109fa554e6ef8b1551e879e764e26",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 221.724,
+              "all_device_us": 208.226,
+              "executor_us": 150.523,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_mul_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/pypto_b1.json",
+              "sha256": "54b5b7584520af25d22f99210460e41436876d394b8a2df5c725a5ba527d73ba",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.22,
+              "all_device_us": 19.762,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnMul_MulAiCore_Mul",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/torch_b2.json",
+              "sha256": "24fe1837d0b7cc13c778ae17b3d6270dfff18a63851834a04cfe44b7d0b9fcb6",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 13.36,
+              "all_device_us": 17.663,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "mul_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/ascendc_b2.json",
+              "sha256": "1d44a661fddebdf550715d21ccd92bd48e4f167d86b3c336889b8b05d62aacc7",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 214.444,
+              "all_device_us": 203.338,
+              "executor_us": 146.266,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_mul_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/pypto_b2.json",
+              "sha256": "71b532b77a536232eeb5f6f39d65a590fa57e4fb18d23775a4d7907caf8d8bdd",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 10.46,
+              "all_device_us": 21.124,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnMul_MulAiCore_Mul",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/torch_b4.json",
+              "sha256": "2bc0b515a637064b10b7edae588796886a40ab5538f43751b614e7c7431b7455",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 15.52,
+              "all_device_us": 20.174,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "mul_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/ascendc_b4.json",
+              "sha256": "5d3b78539451ddafd18eace141ffdcb58ed627c6817506253acc2b883900bed8",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 218.584,
+              "all_device_us": 207.36,
+              "executor_us": 147.766,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_mul_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/pypto_b4.json",
+              "sha256": "13301898ccd404ccbb1ab126b6e6c71b5917d9e8542fcdaebb9d89fbce842105",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 13.76,
+              "all_device_us": 24.217,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnMul_MulAiCore_Mul",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/torch_b8.json",
+              "sha256": "f5be716c85fd783888f5e5d0423e50d24ca8ecc3fd2763a1faae11387b64a131",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 10.88,
+              "all_device_us": 24.33,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "mul_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/ascendc_b8.json",
+              "sha256": "fdadf7964fdcd613f2c2ce7bb002cd4928df7128ec0c7649842ac047acd50501",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 246.745,
+              "all_device_us": 223.959,
+              "executor_us": 157.208,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_mul_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/pypto_b8.json",
+              "sha256": "c30e6d77497c31f001e6fd39515cd0895e478a71ee86e9a302386f8752564c7d",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 12.86,
+              "all_device_us": 30.193,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnMul_MulAiCore_Mul",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/torch_b16.json",
+              "sha256": "c01be7df0bcd19ba00040171d181a51ce3b504c041edadf722eee318692f748c",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.1,
+              "all_device_us": 33.436,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "mul_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/ascendc_b16.json",
+              "sha256": "8c44ca8b6b7dbb01ff4191e99d6d0ece87610bf0bdbf397b299220854e1da95a",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 258.585,
+              "all_device_us": 285.204,
+              "executor_us": 192.018,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_mul_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/pypto_b16.json",
+              "sha256": "3695a30bbaea1ad3e040232fe40371d2d3ab9753643415a310bb09021fe08001",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 18.52,
+              "all_device_us": 40.922,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnMul_MulAiCore_Mul",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/torch_b32.json",
+              "sha256": "797d2d4b0760807a22a76aa297e0dca62df6e9514a24c4bfa2a8c1c870aa2325",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 20.84,
+              "all_device_us": 52.158,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "mul_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/ascendc_b32.json",
+              "sha256": "a58238098df1a866b1570ea9999c63f0b95db6c7652bae592796965cc10705c7",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 281.146,
+              "all_device_us": 369.522,
+              "executor_us": 233.132,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_mul_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/pypto_b32.json",
+              "sha256": "db96c3a4317d1e8dcc68f50b7fa9ba286a5077cc20db2a8e3d5ca90117544b67",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "64": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 27.961,
+              "all_device_us": 62.617,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnMul_MulAiCore_Mul",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/torch_b64.json",
+              "sha256": "22179fab858bbeb65d6523957c00794f666b8f9fa9e294b09976e0730845f9de",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 32.941,
+              "all_device_us": 88.215,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "mul_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/ascendc_b64.json",
+              "sha256": "bc3f392fe17bb0579d7c1420488b7df181a769d4b1d21e1e1350047ea7847043",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 358.387,
+              "all_device_us": 526.709,
+              "executor_us": 319.684,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_mul_kernel_2d",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/mul/reports/parsed/pypto_b64.json",
+              "sha256": "236ceee243e268739b596944f79dd6533ab5c5a449b68e722f9ca9df47090bc2",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 21,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
+      },
+      "limitations": [],
+      "warnings": [],
+      "release_notes": {
+        "rc3_fix": null,
+        "post_rc3_fix": null,
+        "post_rc3_change": null
+      },
+      "completeness_gates": []
+    },
+    "add": {
+      "name": "add",
+      "status": "COMPLETE_WITH_LIMITATION",
+      "status_zh": "有限制完成",
+      "formula": "Y = ((X1+X2)+X3)+X4",
+      "shape": "[B,256,384]",
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "bitwise",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO FULL — 77/77 bitwise PASS (7 batches × 11 cases)"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO FULL — 77/77 bitwise PASS (7 batches × 11 cases)"
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO FULL — 77/77 bitwise PASS (7 batches × 11 cases)"
+        }
+      },
+      "correctness_coverage": "Torch/AscendC/PyPTO FULL — 77/77 bitwise PASS (7 batches × 11 cases)",
+      "profiler_coverage": "FULL — msprof all 3 routes",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 10.04,
+              "all_device_us": 57.793,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnAdd_AddAiCore_Add",
+              "kernels_per_call": 21.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/torch_b1.json",
+              "sha256": "ac09994af206285eb2b89d826d0dad564ee48ae097e59b399cfe8f0089da4a20",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 13.78,
+              "all_device_us": 18.944,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "add_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/ascendc_b1.json",
+              "sha256": "c0e88f8bac70b6f6fc9cf58ad3a501342438dff86bbab5d1637eb276cd2ddfaa",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 132.123,
+              "all_device_us": 462.9,
+              "executor_us": 326.871,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_add_binary_kernel",
+              "kernels_per_call": 9.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/pypto_b1.json",
+              "sha256": "3061afa7d975a449b3d1d971f4c237016ad459e185920fc1148d9f4f52513218",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.08,
+              "all_device_us": 58.601,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnAdd_AddAiCore_Add",
+              "kernels_per_call": 21.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/torch_b2.json",
+              "sha256": "f7021fd10de7142f1ff34465dd20cacdf00b95535c9f2f8c56fcbee459bfdf5c",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 19.26,
+              "all_device_us": 22.919,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "add_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/ascendc_b2.json",
+              "sha256": "36c3dc18f06818c5a1b6f2e918c653387b8f959e292ddd013be71135f978e263",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 124.802,
+              "all_device_us": 471.404,
+              "executor_us": 332.058,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_add_binary_kernel",
+              "kernels_per_call": 9.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/pypto_b2.json",
+              "sha256": "946c04f9125be4c4e75ff4a059eb5f52c4b7a1c11fc5ae1a95fc07b9f4a25376",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 10.86,
+              "all_device_us": 62.929,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnAdd_AddAiCore_Add",
+              "kernels_per_call": 21.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/torch_b4.json",
+              "sha256": "4ebdea2833ca7a382ff599e62a9c4d7ae97568e3a41a2ecdefb9ffc36cba9a19",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 17.68,
+              "all_device_us": 26.264,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "add_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/ascendc_b4.json",
+              "sha256": "8044930e65ff7fac2c1aa21ed3ef771c523e7b5d3119c034d0c36e3979769270",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 131.363,
+              "all_device_us": 485.146,
+              "executor_us": 340.254,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_add_binary_kernel",
+              "kernels_per_call": 9.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/pypto_b4.json",
+              "sha256": "2f2fee2e06674d172f4b5971481d3e83e860f6f984d15dbadf9f0f7f539b5482",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 10.42,
+              "all_device_us": 72.519,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnAdd_AddAiCore_Add",
+              "kernels_per_call": 21.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/torch_b8.json",
+              "sha256": "869a92c9e4eec4573483d69030df17dff71fe6caaa45e3aca50e5fb7114eea49",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.94,
+              "all_device_us": 33.378,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "add_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/ascendc_b8.json",
+              "sha256": "6ea4f6b2abb85faf14606a43fdea48b1c7ac6ebe2fa5bd2bad71185cfa992831",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 115.762,
+              "all_device_us": 528.198,
+              "executor_us": 371.703,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_add_binary_kernel",
+              "kernels_per_call": 9.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/pypto_b8.json",
+              "sha256": "8c587fd0f9705898564a8a69267a5ce9b43c3f6a8b22369925bc8724995c6ed6",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 12.68,
+              "all_device_us": 89.853,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnAdd_AddAiCore_Add",
+              "kernels_per_call": 21.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/torch_b16.json",
+              "sha256": "ae3370636ab65a1ce2f2448e2ddd0aef993b6ab18984e0e9c0b838808e6f8977",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 22.54,
+              "all_device_us": 50.342,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "add_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/ascendc_b16.json",
+              "sha256": "19437b1b928c0b5bd95a5fc49313d4f6ede6c173ef4f64caec6df4068563e5ae",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 138.823,
+              "all_device_us": 569.455,
+              "executor_us": 393.08,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_add_binary_kernel",
+              "kernels_per_call": 9.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/pypto_b16.json",
+              "sha256": "3aebda8f23b169cef9b5b3fb880e366c7f3c41b8df627cab6d36891ec0f344a8",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 20.56,
+              "all_device_us": 122.557,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnAdd_AddAiCore_Add",
+              "kernels_per_call": 21.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/torch_b32.json",
+              "sha256": "68183967740b2bb6b9f3564afc66fd88ce3d07dc13f903aed6f9a82389f972e0",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 33.381,
+              "all_device_us": 83.864,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "add_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/ascendc_b32.json",
+              "sha256": "1d51146a42020162918a8a5934aef5765d66706a09a484be65091d119922bcbe",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 157.363,
+              "all_device_us": 645.057,
+              "executor_us": 434.231,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_add_binary_kernel",
+              "kernels_per_call": 9.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/pypto_b32.json",
+              "sha256": "2414bf8f4bdb2c12695bb10c8d5a66cd32da934a2930b8fe891ac2de9295199b",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "64": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 27.541,
+              "all_device_us": 229.447,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnAdd_AddAiCore_Add",
+              "kernels_per_call": 21.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/torch_b64.json",
+              "sha256": "c82b63f0b51a79e02c8793dedc70d2f22cc5d434a21134a28b52c4e63fc2889e",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 54.601,
+              "all_device_us": 150.813,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "add_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/ascendc_b64.json",
+              "sha256": "fd06296e9c30d210c196649eea04afee440296416659c285012de5c4d68f674c",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 180.104,
+              "all_device_us": 778.684,
+              "executor_us": 517.744,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_add_binary_kernel",
+              "kernels_per_call": 9.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/add/reports/parsed/pypto_b64.json",
+              "sha256": "8cf87297a4a374ce958c33988fca937d4e7ac535514062feba273a8689d53093",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 21,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
+      },
+      "limitations": [],
+      "warnings": [],
+      "release_notes": {
+        "rc3_fix": null,
+        "post_rc3_fix": "Reference data regenerated with correct FP16 left-associative chain. All 77 cases bitwise PASS.",
+        "post_rc3_change": null
+      },
+      "completeness_gates": []
+    },
+    "div": {
+      "name": "div",
+      "status": "COMPLETE_WITH_LIMITATION",
+      "status_zh": "有限制完成",
+      "formula": "Y = X1 / X2 (broadcast)",
+      "shape": "X1 [B,12,256,256], X2 [B,12,256,1]",
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
+      ],
+      "precision": "bitwise (was atol=1e-3, rtol=1e-3)",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL (B=1..32) — RC-2 UNBLOCKED"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL (B=1..32) — RC-2 UNBLOCKED"
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL (B=1..32) — RC-2 UNBLOCKED"
+        }
+      },
+      "correctness_coverage": "Torch+AscendC+PyPTO FULL (B=1..32) — RC-2 UNBLOCKED",
+      "profiler_coverage": "Torch+AscendC msprof B=1..32; PyPTO not profiled",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 21.8,
+              "all_device_us": 52.525,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/torch_b1.json",
+              "sha256": "9b9427a2ab860889ba99c0e19fd2a6845e89adbca99f27bceaafb39cb260fe3e",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 18.64,
+              "all_device_us": 89.753,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "div_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/ascendc_b1.json",
+              "sha256": "ff7a703eb3a6e354fdf7c0dcdf34eac85c5a0629960adb2c49a6f174884dc9b5",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 27.321,
+              "all_device_us": 77.735,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/torch_b2.json",
+              "sha256": "8e4fa95cec2de7232ab8c3850bfc62f412d0925f4580dcbb80d0e70afea3b9dc",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 28.941,
+              "all_device_us": 164.051,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "div_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/ascendc_b2.json",
+              "sha256": "9f22d941d7d42ee5a90ed42fb50596016e2cd8df7d000dbbbcd95b40b60af6e9",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 33.041,
+              "all_device_us": 127.573,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/torch_b4.json",
+              "sha256": "0ebab0eb994ebdee9b65fc40ba4df3df8b64de204407fe9ff8c2d8136567aefa",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 50.941,
+              "all_device_us": 319.831,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "div_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/ascendc_b4.json",
+              "sha256": "7c3b6226a2b94b20aa72323244e73b61ce9141e6d69d66056654c1d2874d6525",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 49.261,
+              "all_device_us": 215.678,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/torch_b8.json",
+              "sha256": "75a1aae8bb23b788495919cd1930d255501b33df4e4725bdc6c722b9335a4aba",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 101.062,
+              "all_device_us": 669.279,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "div_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/ascendc_b8.json",
+              "sha256": "c7228b25c1e62d87d190f3b0aed09bfa9041a75c4236662558922e4bd4872311",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 75.341,
+              "all_device_us": 403.688,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/torch_b16.json",
+              "sha256": "df1b45ef87d54e24903c384d769f8a40a3b9765ddb244acc5f6441c41cc5daae",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 156.763,
+              "all_device_us": 1059.065,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "div_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/ascendc_b16.json",
+              "sha256": "0b335abaea06de62dcbf17684a38a984dbd33f35f786c9d9482dcd593e9f1a0b",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 126.203,
+              "all_device_us": 1702.948,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
+              "kernels_per_call": 42.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/torch_b32.json",
+              "sha256": "ec12ba77cc7fb9082b0bd2baa63cc4179c65a9bceec962937903c81f739eac5a",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 306.526,
+              "all_device_us": 2097.675,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "div_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/div/reports/parsed/ascendc_b32.json",
+              "sha256": "9e172c3b1a63dff0f61b672ae2b91bc9a29d1cde560a88061d4ef5dff35d110b",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 12,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
+      },
+      "limitations": [
+        {
+          "operator": "div",
+          "route": "ascendc",
+          "severity": "P3",
+          "description": "B=32 performance 329us vs Torch 113us."
+        }
+      ],
+      "warnings": [
+        "PyPTO：release 有覆盖声明，但没有可展示的结构化性能记录"
+      ],
+      "release_notes": {
+        "rc3_fix": null,
+        "post_rc3_fix": null,
+        "post_rc3_change": null
+      },
+      "completeness_gates": []
+    },
+    "equal": {
+      "name": "equal",
+      "status": "COMPLETE_WITH_LIMITATION",
+      "status_zh": "有限制完成",
+      "formula": "Y = (X1 == X2)",
+      "shape": "[B,12,256,256] (bool output)",
+      "dtype": "FP16 input, bool output",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "bitwise (bool)",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED"
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED"
+        }
+      },
+      "correctness_coverage": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED",
+      "profiler_coverage": "FULL — msprof all 3 routes (torch+ascendc AIVEC; pypto MIX_AIC)",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.54,
+              "all_device_us": 2.904,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
+              "kernels_per_call": 1.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/torch_b1.json",
+              "sha256": "4cce8197b77f4a0c5564eeead004a4a5dc0c84f951d302ab1e8df4234075a7b5",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 49.98,
+              "all_device_us": 293.762,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "equal_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/ascendc_b1.json",
+              "sha256": "ea0a13b017f4ba9ceca416743d726d9af950f5f14bbdee142f62bcf62018da4a",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.28,
+              "all_device_us": 3.061,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
+              "kernels_per_call": 1.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/torch_b2.json",
+              "sha256": "5f26d0b3da0842193f53b4bbf55c80fd73ad97fb425acf1efc822800336b7aad",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 93.0,
+              "all_device_us": 574.669,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "equal_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/ascendc_b2.json",
+              "sha256": "10b9ef679b14a01bad99bd50b94062c5fa6faf1e0780850c85d4619f767961af",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 12.84,
+              "all_device_us": 3.258,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
+              "kernels_per_call": 1.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/torch_b4.json",
+              "sha256": "e8a4a402c3637709e5892788e05739acb92b287acc5f964a59697610026f9279",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 135.52,
+              "all_device_us": 856.686,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "equal_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/ascendc_b4.json",
+              "sha256": "288d0b2dfa01eae382c6dbcf4f691c6f514254a0ab7de526cab05c572480005d",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 17.26,
+              "all_device_us": 3.714,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
+              "kernels_per_call": 1.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/torch_b8.json",
+              "sha256": "faa5e61731748c7be5b1f8b991d721c84e1f3fb90d0a21f400264badfecd7a86",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 210.38,
+              "all_device_us": 1418.693,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "equal_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/ascendc_b8.json",
+              "sha256": "b7126a090d9773071cea3d90c9195c47259bbec629ab1c75b093c1b8522d78d6",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.52,
+              "all_device_us": 4.901,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
+              "kernels_per_call": 1.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/torch_b16.json",
+              "sha256": "99d46f96b6c6ff309c57ac23683dac21c94e1eab3713a54cb13ce8c50f66a92d",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 411.74,
+              "all_device_us": 2823.313,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "equal_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/ascendc_b16.json",
+              "sha256": "e82065d6ccfc352f03ba7e2a2173ab9b3a50a3879ced996b42d7577970809a0b",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 20.18,
+              "all_device_us": 6.674,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
+              "kernels_per_call": 1.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/torch_b32.json",
+              "sha256": "e02e04dcbdd8bcc8b7e9982ac2722ad5a632b674eac68d144794682979ee1530",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 815.7,
+              "all_device_us": 5633.081,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "equal_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/ascendc_b32.json",
+              "sha256": "0fb569da72cbc4db59a85bcab3152f5b697f0776d7ca67c2583dd96c9b1465c3",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "64": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 30.46,
+              "all_device_us": 10.302,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
+              "kernels_per_call": 1.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/torch_b64.json",
+              "sha256": "5b6f015f027e2ba444102503b87e30b4ec2ccd4aeddc767b3ac10b87003c2609",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 1582.8,
+              "all_device_us": 10971.543,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "equal_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/equal/reports/parsed/ascendc_b64.json",
+              "sha256": "c25747e1de4c8c1dfeaf932149aa935c056df9f1c27c7e90ee9d076c8d89a031",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 14,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
+      },
+      "limitations": [],
+      "warnings": [
+        "PyPTO：release 有覆盖声明，但没有可展示的结构化性能记录"
+      ],
+      "release_notes": {
+        "rc3_fix": null,
+        "post_rc3_fix": null,
+        "post_rc3_change": null
+      },
+      "completeness_gates": []
     },
     "not": {
+      "name": "not",
       "status": "COMPLETE",
       "status_zh": "完全完成",
       "formula": "Y = NOT X",
-      "shape": "[B,12,256,256] (bool)",
+      "shape": "[B,12,256,256] (bool output)",
       "dtype": "Bool",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确 (bool)",
-      "correctness": {"torch": "PASS", "ascendc": "PASS (42/42)", "pypto": "PASS"},
-      "profiler": {
-        "torch": {"method": "Event", "b1_us": 127.5, "b32_us": 350.0},
-        "ascendc": {"method": "Event", "b1_us": 6.4, "b32_us": 25.0},
-        "pypto": {"method": "Event", "b1_us": 136.6, "b32_us": 380.0}
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "bitwise (bool)",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "PASS"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "PASS (42/42 cases)",
+          "passed": 42,
+          "total": 42
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "PASS"
+        }
       },
-      "limitations": [{"route": "all", "severity": "P2", "description": "Event 方式计时，与 msprof 不可比"}]
+      "correctness_coverage": "Torch PASS; AscendC PASS (42/42 cases); PyPTO PASS",
+      "profiler_coverage": "FULL — msprof all 3 routes (torch+ascendc AIVEC; pypto MIX_AIC)",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 10.68,
+              "all_device_us": 141.876,
+              "executor_us": 138.787,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/torch_b1.json",
+              "sha256": "2dc8ab169e969501ed99af155536df04cc4568cbd2e6f51da1fa48d4549125b5",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 8.16,
+              "all_device_us": 14.882,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "not_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/ascendc_b1.json",
+              "sha256": "0450496dfdbd77a8430572a9951aa0d0fa35bca042d30bffd666c904a9ea5075",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 118.84,
+              "all_device_us": 194.53,
+              "executor_us": 141.769,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_not_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/pypto_b1.json",
+              "sha256": "cd782ba901831a1b650645d9750a1aa27979165438fb2621369f5f23ddb76040",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.26,
+              "all_device_us": 177.149,
+              "executor_us": 172.887,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/torch_b2.json",
+              "sha256": "4d2af28b9b4b9ccb5a463216a2e6f5c0233a7e124ab1d9490cde6bc48e5ff9d6",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 9.76,
+              "all_device_us": 16.878,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "not_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/ascendc_b2.json",
+              "sha256": "d9eecf06320c1c6855fbf473811cb063bd276d23c76a79ac2a3db1d79d09f91c",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 96.24,
+              "all_device_us": 195.532,
+              "executor_us": 142.269,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_not_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/pypto_b2.json",
+              "sha256": "8b70105f08d46062621f8b9b5b846181a0f82b490ba162ee5144e4076f725366",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 12.92,
+              "all_device_us": 235.938,
+              "executor_us": 230.114,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/torch_b4.json",
+              "sha256": "c5239f66606c41ce665cbd3d83b1ed05396966ab13991af2e757faa70fa36757",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 12.12,
+              "all_device_us": 19.605,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "not_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/ascendc_b4.json",
+              "sha256": "e6af77b607a53025ad1c8ebd5ce909d28c4255fd51dd05aa78f1732d1d89c95f",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 97.14,
+              "all_device_us": 195.232,
+              "executor_us": 141.88,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_not_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/pypto_b4.json",
+              "sha256": "52dc6635b612608d8caaa6347117e4ee776986352077e7ee133078f21bb7d4a0",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 19.94,
+              "all_device_us": 381.888,
+              "executor_us": 370.943,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/torch_b8.json",
+              "sha256": "29cddc36a4ddd9f0f060a29d8c5c84312156888b7aea82b066aeeab2bb34fc69",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 13.94,
+              "all_device_us": 24.389,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "not_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/ascendc_b8.json",
+              "sha256": "3b97d699450e8f329d8c620ebd3974f359732cd87a123f272ae34b769bd79f7e",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 106.36,
+              "all_device_us": 206.884,
+              "executor_us": 149.01,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_not_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/pypto_b8.json",
+              "sha256": "23a97a2359164be388a4ff2cfc03b56be86dcb93019fd4e1395412b97f07e10b",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 20.06,
+              "all_device_us": 584.679,
+              "executor_us": 569.645,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/torch_b16.json",
+              "sha256": "75ff308672c45372d9ec19cd8b39a4eb1db6564c7456f7c18473c85835da9d4b",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.36,
+              "all_device_us": 33.389,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "not_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/ascendc_b16.json",
+              "sha256": "5bf966e44947be28aca35f99e73a5108f9d56e54dc97414abade039b8ede521e",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 129.26,
+              "all_device_us": 229.871,
+              "executor_us": 164.293,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_not_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/pypto_b16.json",
+              "sha256": "38de95c7a53980790fd4aee1057979a1275f83cf95f19ec26d0106f2617332b7",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 26.42,
+              "all_device_us": 1018.17,
+              "executor_us": 997.816,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/torch_b32.json",
+              "sha256": "f5760e0220cc950394846bd34934cc4dbb1a2311e8380be67cbd99cb0098f2dd",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.16,
+              "all_device_us": 51.188,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "not_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/ascendc_b32.json",
+              "sha256": "2ad78c9008b4284970c01b37fd5a93ba6e7f7fcce2aedbdbbf5f57358e781336",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 159.78,
+              "all_device_us": 280.904,
+              "executor_us": 191.673,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_not_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/pypto_b32.json",
+              "sha256": "1fb8d1b7b625c47d3920db78b026c183eec19446714973d054658064149f420e",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            }
+          },
+          "64": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 34.12,
+              "all_device_us": 1966.847,
+              "executor_us": 1946.289,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/torch_b64.json",
+              "sha256": "ad1eef567fc41e5ef7f8115bd7a22c806c19de78f6ff3acb0bf69a14eb25b4a4",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 21.22,
+              "all_device_us": 86.468,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "not_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/ascendc_b64.json",
+              "sha256": "440826d90c4f31322e2adee134df74933e8197d01fc5594d512446cf1314e494",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 199.74,
+              "all_device_us": 345.219,
+              "executor_us": 228.096,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_not_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/not/reports/parsed/pypto_b64.json",
+              "sha256": "e778a4fa5ee779c25f3c75665999341fe087ff46a6db205dc825c0e38a100984",
+              "integrity": "UNMANIFESTED",
+              "comparable": false
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 0,
+          "unmanifested": 21,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
+      },
+      "limitations": [],
+      "warnings": [
+        "21 条 profiler 记录未登记到 SHA256SUMS，不参与性能排名"
+      ],
+      "release_notes": {
+        "rc3_fix": null,
+        "post_rc3_fix": null,
+        "post_rc3_change": null
+      },
+      "completeness_gates": []
     },
     "or": {
+      "name": "or",
       "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
+      "status_zh": "有限制完成",
       "formula": "Y = X1 OR X2",
-      "shape": "[B,12,256,256] (bool)",
+      "shape": "[B,12,256,256] (bool output)",
       "dtype": "Bool",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确 (bool)",
-      "correctness": {"torch": "PASS", "ascendc": "PASS (49/49)", "pypto": "PASS (bitwise_or)"},
-      "profiler": {
-        "torch": {"method": "Event", "b1_us": 256.3, "b32_us": 520.0},
-        "ascendc": {"method": "Event", "b1_us": 6.5, "b32_us": 26.0},
-        "pypto": {"method": "Event", "b1_us": 148.8, "b32_us": 400.0}
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "bitwise (bool)",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "PASS"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "PASS (49/49 cases)",
+          "passed": 49,
+          "total": 49
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "PASS (bitwise_or for 0/1)"
+        }
+      },
+      "correctness_coverage": "Torch PASS; AscendC PASS (49/49 cases); PyPTO PASS (bitwise_or for 0/1)",
+      "profiler_coverage": "FULL — msprof all 3 routes (torch+ascendc AIVEC; pypto MIX_AIC)",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 13.52,
+              "all_device_us": 282.673,
+              "executor_us": 278.819,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/torch_b1.json",
+              "sha256": "0fcf71871c96aba2c64be46e75b354118ef3a8ae72a1e3c863255e0f3305fdee",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 9.28,
+              "all_device_us": 15.918,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "or_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/ascendc_b1.json",
+              "sha256": "ee1cbbf1198d74b20eadda11b6a7cbe59bbac1f87bd287b0ce130db7382f87a1",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 204.52,
+              "all_device_us": 190.687,
+              "executor_us": 139.532,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_or_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/pypto_b1.json",
+              "sha256": "8107fd4952042073507fcf4c4b23330ff215c17e44dac44bb1a830487778a215",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.28,
+              "all_device_us": 351.641,
+              "executor_us": 346.449,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/torch_b2.json",
+              "sha256": "8e893dd746845970dbb92554daac1b801ec9daeb3203d4f9e713f1dd59efc745",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.1,
+              "all_device_us": 17.842,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "or_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/ascendc_b2.json",
+              "sha256": "3bf1bd35b1eff0fbe278daa2be6a02af68a996920d7b49474a2aec5afab38588",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 196.9,
+              "all_device_us": 189.207,
+              "executor_us": 139.698,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_or_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/pypto_b2.json",
+              "sha256": "068d02b69978b8cb60475ae157703877ee50a1903cd480629e7a06b244680c0f",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 13.12,
+              "all_device_us": 484.56,
+              "executor_us": 476.56,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/torch_b4.json",
+              "sha256": "423eaa5a1ea938c7f3552a018b8594fdad7f8e6af945f1242ca66e541b2ca47b",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 13.92,
+              "all_device_us": 20.727,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "or_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/ascendc_b4.json",
+              "sha256": "55d9f3a34ed8ce9d85a19e8f49f220791b9e111a6402d6c48cb5570fc5b114b9",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 227.28,
+              "all_device_us": 190.368,
+              "executor_us": 139.856,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_or_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/pypto_b4.json",
+              "sha256": "13e967c91a507ec8a0f564071616b92eb4d51e59ddb416bd0232611410d8f1b8",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 23.06,
+              "all_device_us": 778.781,
+              "executor_us": 762.333,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/torch_b8.json",
+              "sha256": "8e4c7920731219cfe021809ab9766515555f162be4f09093be181077e490a3ee",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 15.44,
+              "all_device_us": 24.886,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "or_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/ascendc_b8.json",
+              "sha256": "09b8e45928dab9560d1e5cb38c3f455dd27a3be779c9208d68cb08c7089fc572",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 219.88,
+              "all_device_us": 200.265,
+              "executor_us": 144.359,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_or_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/pypto_b8.json",
+              "sha256": "dce3ae182a9f312ce8a624b88c1b780b298f6ba72a0f565bb67d637a08dde3dd",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 28.0,
+              "all_device_us": 1194.264,
+              "executor_us": 1172.734,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/torch_b16.json",
+              "sha256": "d4599ed38974ae3dcb026c4c4c23d27cb0aceee74b0fe10797b74ff8a78cf1ac",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.26,
+              "all_device_us": 34.299,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "or_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/ascendc_b16.json",
+              "sha256": "5e7d310821cac14949aad104de677e676915cbb2a5c1d95c0ab4bea7f09b849f",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 235.58,
+              "all_device_us": 218.277,
+              "executor_us": 156.865,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_or_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/pypto_b16.json",
+              "sha256": "2b5a99bc8881ea33b8521558e3dd540190a92c9eac7908669ce2c4c9b9d9beab",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 31.98,
+              "all_device_us": 2126.646,
+              "executor_us": 2101.818,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/torch_b32.json",
+              "sha256": "004d818925cede1b47fac1ee81bff49ff63ecb254397ad2f971f387fd91e1cdd",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 15.16,
+              "all_device_us": 52.492,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "or_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/ascendc_b32.json",
+              "sha256": "5520c2641a5c633e4354827a46c0e04f306b17ef8ffbf4887faa78efea319b4e",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 255.3,
+              "all_device_us": 253.296,
+              "executor_us": 177.39,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_or_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/pypto_b32.json",
+              "sha256": "8a23f0835da7b71e270f7fd120b4232d62aa077fae8f221c9ec0fd050cb73b7d",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "64": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 39.02,
+              "all_device_us": 4473.417,
+              "executor_us": 4443.3,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/torch_b64.json",
+              "sha256": "1768731aa03dcf0e59dd0d48ee49d8196e0ab0553bee24b715b4faab5fdad080",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 23.78,
+              "all_device_us": 87.054,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "or_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/ascendc_b64.json",
+              "sha256": "c24da1dafc01ec9855e9b75cfdd687418986a3c53f84d15273e0fe5472845b41",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 265.66,
+              "all_device_us": 291.056,
+              "executor_us": 199.367,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_or_kernel",
+              "kernels_per_call": 3.01,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/or/reports/parsed/pypto_b64.json",
+              "sha256": "5eabe31aeb791e087dd10d27b3d9c6c091b4a0392785287d20c9a139b08b3903",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 21,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
       },
       "limitations": [
-        {"route": "pypto", "severity": "P1", "description": "无 logical_or API，用 bitwise_or 替代"},
-        {"route": "all", "severity": "P2", "description": "Event 方式计时"}
-      ]
-    },
-    "equal": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
-      "formula": "Y = (X1 == X2)",
-      "shape": "[B,12,256,256] (bool 输出)",
-      "dtype": "FP16 输入, bool 输出",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确 (bool)",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 解封)"},
-      "profiler": {
-        "torch": {"method": "Event", "b1_us": 12.2, "b32_us": 55.0},
-        "ascendc": {"method": "Event", "b1_us": 41.8, "b32_us": 120.0}
+        {
+          "operator": "or",
+          "route": "all",
+          "severity": "INFO",
+          "description": "PyPTO uses bitwise_or (no logical_or API in framework). Correct for bool 0/1 inputs."
+        },
+        {
+          "operator": "or",
+          "route": "pypto",
+          "severity": "P1",
+          "description": "Uses bitwise_or (no logical_or API). Correct for 0/1 bool."
+        }
+      ],
+      "warnings": [],
+      "release_notes": {
+        "rc3_fix": null,
+        "post_rc3_fix": null,
+        "post_rc3_change": null
       },
-      "limitations": [{"route": "pypto", "severity": "P2", "description": "DT_BOOL 输出 + ta≤64 约束 (RC2 已修复)"}]
+      "completeness_gates": []
     },
     "where": {
+      "name": "where",
       "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
+      "status_zh": "有限制完成",
       "formula": "Y = condition ? X1 : X2",
       "shape": "[B,12,256,256]",
-      "dtype": "FP16, condition uint8",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 解封)"},
-      "profiler": {
-        "torch": {"method": "Event", "b1_us": 131.9, "b64_us": 2180.0},
-        "ascendc": {"method": "Event", "b1_us": 238.6, "b64_us": 9245.0}
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "bitwise",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED"
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED"
+        }
+      },
+      "correctness_coverage": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED",
+      "profiler_coverage": "FULL — msprof torch+ascendc (AIVEC); pypto N/A (no pypto impl)",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.62,
+              "all_device_us": 151.288,
+              "executor_us": 146.684,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/torch_b1.json",
+              "sha256": "e38c3f1396c66acb4b8a29c87fa838d8392abb433173220d7904250cbea13357",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 248.38,
+              "all_device_us": 1672.58,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "where_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/ascendc_b1.json",
+              "sha256": "761fa47c3264e3a625b89850e170f38eec6e3f07fe2363f30ec873b6061fe5f4",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 12.22,
+              "all_device_us": 182.806,
+              "executor_us": 177.316,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/torch_b2.json",
+              "sha256": "41229526eac5b4e3153a4ff2a4f7c62b86c4ca16939a941fa88c39b2fa3b364c",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 488.06,
+              "all_device_us": 3331.884,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "where_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/ascendc_b2.json",
+              "sha256": "dde4ffb45bdb1aa3e39e0fb1900f917a6ebac4715c3bf23b88b110be1b7aa149",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 16.0,
+              "all_device_us": 263.728,
+              "executor_us": 256.035,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/torch_b4.json",
+              "sha256": "5bcdfaa0e1b51bd949e043f71f0ddb8d48bc931ae36954738ffcddca0d159443",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 727.76,
+              "all_device_us": 4992.41,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "where_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/ascendc_b4.json",
+              "sha256": "c31729b56c9bb22f5b317da97c51be366c0c7290dfb3e6cc6c25a9e3b30ff96b",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 16.44,
+              "all_device_us": 381.008,
+              "executor_us": 369.883,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/torch_b8.json",
+              "sha256": "7de16264b2299bd1a58dfe05a38a9b900df60f7a4619a5c6e783f57234a33202",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 1195.78,
+              "all_device_us": 8310.89,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "where_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/ascendc_b8.json",
+              "sha256": "e8cb0de8b202050f10099cf66ac3494a1bda60ec4b36b35261d09826e5ae7be7",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 21.64,
+              "all_device_us": 603.466,
+              "executor_us": 584.947,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/torch_b16.json",
+              "sha256": "c9e712ea392aa59fb040a7fb4236d8be8b3955c8b7bb0e3c4c8b70880a5a749e",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 2381.68,
+              "all_device_us": 16608.061,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "where_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/ascendc_b16.json",
+              "sha256": "cd3945a1fcceb0fb923cea5d5aac3ff612fda497fb514883011c9a1d2ad797b1",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 33.78,
+              "all_device_us": 1064.886,
+              "executor_us": 1039.921,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/torch_b32.json",
+              "sha256": "7cc939c1fcdad4c616507d3da794006031dc6bd13bfbb3e21ee834401be06e12",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 4755.3,
+              "all_device_us": 33202.546,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "where_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/ascendc_b32.json",
+              "sha256": "5d4526e36abc248288636a5d33df7bd4487bff233853d3faaac33b32ea716824",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "64": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 41.74,
+              "all_device_us": 2227.753,
+              "executor_us": 2201.408,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
+              "kernels_per_call": 2.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/torch_b64.json",
+              "sha256": "98effe8ce9d55c4a21a11024c40e7991d8c36d9876f1b863552a7071ea8c491e",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 9265.2,
+              "all_device_us": 64732.68,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "where_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/where/reports/parsed/ascendc_b64.json",
+              "sha256": "f64796c16d13a4952b172b96477ec9f6fe4df516e240fe0e4172f1192d30b056",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 14,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
       },
       "limitations": [
-        {"route": "ascendc", "severity": "P3", "description": "B=64 性能 9245µs (Torch 2180µs)"},
-        {"route": "pypto", "severity": "P2", "description": "ExpandPass 误读 condition 大小 (RC2 uint8→bool 修复)"}
-      ]
-    },
-    "div": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
-      "formula": "Y = X1 / X2 (广播)",
-      "shape": "X1 [B,12,256,256], X2 [B,12,256,1]",
-      "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32],
-      "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 解封)"},
-      "profiler": {
-        "torch": {"method": "msprof", "b1_us": 21.8, "b32_us": 112.8},
-        "ascendc": {"method": "msprof", "b1_us": 18.6, "b32_us": 328.6}
+        {
+          "operator": "where",
+          "route": "ascendc",
+          "severity": "P3",
+          "description": "B=64 performance 9245us vs Torch 2180us — needs optimization."
+        }
+      ],
+      "warnings": [
+        "PyPTO：release 有覆盖声明，但没有可展示的结构化性能记录"
+      ],
+      "release_notes": {
+        "rc3_fix": null,
+        "post_rc3_fix": null,
+        "post_rc3_change": null
       },
-      "limitations": [{"route": "ascendc", "severity": "P3", "description": "B=32 性能 328.6µs (Torch 112.8µs)"}]
+      "completeness_gates": []
     },
     "expand": {
+      "name": "expand",
       "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
-      "formula": "Y[b,i,j] = X[b,i,0]",
+      "status_zh": "有限制完成",
+      "formula": "Y[b,i,j] = X[b,i,0] (Duplicate per-row)",
       "shape": "X [B,256,1], Y [B,256,384]",
       "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (torch.expand().clone())"},
-      "profiler": {
-        "torch": {"method": "msprof", "b1_us": 13.0, "b64_us": 105.0},
-        "ascendc": {"method": "msprof", "b1_us": 15.0, "b64_us": 115.0}
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "bitwise",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO: FULL — B=1..64 all PASS"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO: FULL — B=1..64 all PASS"
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "Torch/AscendC/PyPTO: FULL — B=1..64 all PASS"
+        }
+      },
+      "correctness_coverage": "Torch/AscendC/PyPTO: FULL — B=1..64 all PASS",
+      "profiler_coverage": "FULL — msprof all 3 routes (repeat=3, warmup=200, loops=100)",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 13.02,
+              "all_device_us": 20.188,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
+              "kernels_per_call": 5.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/torch_b1.json",
+              "sha256": "0e4ecafdc3d32c50e6b6a2a56b8e064ebeb0837e45a067e78ed8e98acc74f5dd",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 15.04,
+              "all_device_us": 3048.827,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "expand_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/ascendc_b1.json",
+              "sha256": "44310ae8e50dd4a21fdebbfa78a9aa050b24e9af58906e2c63029b95bc6ae3d1",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 110.3,
+              "all_device_us": 39083.833,
+              "executor_us": 26890.98,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_expand_row",
+              "kernels_per_call": 791.05,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/pypto_b1.json",
+              "sha256": "d066d5c3ec25e68e480bfbd5d42c15ee495c8e86d0cb6dcbc5603c5dfdec8b5f",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.48,
+              "all_device_us": 21.557,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
+              "kernels_per_call": 5.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/torch_b2.json",
+              "sha256": "7202bb1b8b530a389ab80a03c45bd4943e69cff26ffc522e062b8e8093a22e3c",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 16.32,
+              "all_device_us": 3140.123,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "expand_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/ascendc_b2.json",
+              "sha256": "84b21aa2d90521d3a30f608021f83d24f90ce9126fb3f03cd35adae84426a2f7",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 156.24,
+              "all_device_us": 76812.663,
+              "executor_us": 52857.446,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_expand_row",
+              "kernels_per_call": 1582.09,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/pypto_b2.json",
+              "sha256": "70aaa3ff66064fec07f05f7da4522561857d1602ccfb0ccd3d6ea2f8f7be0c66",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 13.36,
+              "all_device_us": 22.026,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
+              "kernels_per_call": 5.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/torch_b4.json",
+              "sha256": "47aa97a4845c7edfa2b6b0782d630ac996c39ee6dd626621a723ec7a935690a8",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 19.84,
+              "all_device_us": 3501.027,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "expand_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/ascendc_b4.json",
+              "sha256": "ba9960a20884559129e5e7407afdc1ab028136a2f0c622667329edf54ecaad94",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 142.82,
+              "all_device_us": 155007.229,
+              "executor_us": 106369.114,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_expand_row",
+              "kernels_per_call": 3164.17,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/pypto_b4.json",
+              "sha256": "8409d7a2754494b3233b0a125d11f70ba05544509e78406e9763063e07600fa2",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.38,
+              "all_device_us": 23.64,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
+              "kernels_per_call": 5.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/torch_b8.json",
+              "sha256": "3f43d72cef59032b5c9795a0da8caeb24d1873727e4a481eed6496eb5303d2fe",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 27.72,
+              "all_device_us": 6275.942,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "expand_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/ascendc_b8.json",
+              "sha256": "0e6988b0303584972ebdc6e00e75b2eca2c99248c7c3a2b9f7a90c85d094851d",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 165.86,
+              "all_device_us": 311213.719,
+              "executor_us": 213621.346,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_expand_row",
+              "kernels_per_call": 6328.33,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/pypto_b8.json",
+              "sha256": "c02ad2872124989f009c8cf20a4cb2bdef07260ede89c775baefaca5c41f90df",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 11.94,
+              "all_device_us": 25.052,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
+              "kernels_per_call": 5.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/torch_b16.json",
+              "sha256": "90e4642a761de644d6d35213048f94b06d2569bfbf6d84a04491986c694e1fcc",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 49.66,
+              "all_device_us": 12284.831,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "expand_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/ascendc_b16.json",
+              "sha256": "f53c85dd08b92d39ed32bee7a3bf2bfb6aaf06cf5a23d48789457d0329b5f99c",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 229.72,
+              "all_device_us": 625020.655,
+              "executor_us": 430822.875,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_expand_row",
+              "kernels_per_call": 12656.65,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/pypto_b16.json",
+              "sha256": "eff64e1a1347051f2987f41f461746c3521470e354dd672cdadfc2f841f4d2ed",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.42,
+              "all_device_us": 33.485,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
+              "kernels_per_call": 5.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/torch_b32.json",
+              "sha256": "973b20580adf112049990ce67d8402675d3f8876b4f1b3ca46daa4c0b71b8588",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 91.8,
+              "all_device_us": 239.63338,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "expand_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/ascendc_b32FIX.json",
+              "sha256": "17281adedc5941758d471121fb0bbfa1696c5ca43c08924bac203dcdf3041993",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 2918.7,
+              "all_device_us": 12655.97514,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_expand_row",
+              "kernels_per_call": 25313.29,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/pypto_b32.json",
+              "sha256": "d4c9055bd7b74cce80b4ab9e3e99a1acd8043f2bc2e86bd1be82ac71b324bb05",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "64": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 17.5,
+              "all_device_us": 0.47357,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
+              "kernels_per_call": 5.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/torch_b64.json",
+              "sha256": "bf22fb649c4b36df6e3757296d7984c53e70b8c8f27700c8c62d0db24650ba0c",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 177.86,
+              "all_device_us": 48298.528,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "expand_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/ascendc_b64.json",
+              "sha256": "652e68f0cfa4d08fb8c5ec3ab069f841b3e9f74a7f9f48168682d6ded12bd817",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "pypto": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 2796.34,
+              "all_device_us": 25075.01139,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIC",
+              "kernel_name": "PYPTO_expand_row",
+              "kernels_per_call": 50626.57,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/expand/reports/parsed/pypto_b64.json",
+              "sha256": "b60f030e91dcdd7e6d4c77fe36a6dac7860c180ff089684c91a27e3e113be91a",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 21,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
       },
       "limitations": [
-        {"route": "pypto", "severity": "P2", "description": "原生 expand_clone 2D 输出错误；用 torch.expand().clone() workaround (33600× 提升)"}
-      ]
+        {
+          "operator": "expand",
+          "route": "all",
+          "severity": "INFO",
+          "description": "PyPTO uses torch.expand().clone() workaround (was 16384× AICPU dispatch, now 1 materialize kernel). ~33600x improvement in RC-3."
+        },
+        {
+          "operator": "expand",
+          "route": "pypto",
+          "severity": "P2",
+          "description": "Per-row AICPU dispatch originally ~3000 us. RC-3: torch.expand().clone() 33600x improvement."
+        }
+      ],
+      "warnings": [],
+      "release_notes": {
+        "rc3_fix": "Replaced per-row AICPU dispatch loop with single torch.expand().clone() materialize call. 16384 kernel launches → 1. ~33600x faster.",
+        "post_rc3_fix": null,
+        "post_rc3_change": null
+      },
+      "completeness_gates": []
     },
     "transpose": {
+      "name": "transpose",
       "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
+      "status_zh": "有限制完成",
       "formula": "Y[b,j,i] = X[b,i,j]",
       "shape": "X [B,256,384], Y [B,384,256]",
       "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 解封)"},
-      "profiler": {
-        "torch": {"method": "msprof", "b1_us": 14.1, "b64_us": 135.0},
-        "ascendc": {"method": "msprof", "b1_us": 106.2, "b64_us": 5050.0}
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "bitwise",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL (B=1..64 bitwise); RC-2 UNBLOCKED"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL (B=1..64 bitwise); RC-2 UNBLOCKED"
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "Torch+AscendC+PyPTO FULL (B=1..64 bitwise); RC-2 UNBLOCKED"
+        }
+      },
+      "correctness_coverage": "Torch+AscendC+PyPTO FULL (B=1..64 bitwise); RC-2 UNBLOCKED",
+      "profiler_coverage": "FULL — msprof Torch+AscendC (B=1..64, repeat=5); PyPTO not profiled",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 14.1,
+              "all_device_us": 82.359,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/torch_b1.json",
+              "sha256": "715df2c4de54c484358e820be060bb2141c4cd5d9f11b50c59e652e7237f8d3b",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 106.2,
+              "all_device_us": 692.526,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "transpose_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/ascendc_b1.json",
+              "sha256": "94a5c2245eedee6f27999f251470093e9ca2239e573bc52ccf4098bbb41de08d",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 16.68,
+              "all_device_us": 88.291,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/torch_b2.json",
+              "sha256": "12416910c09c9cc930c0e53d0817972ce3ea000dd43baf7685dfd549c527fb34",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 199.84,
+              "all_device_us": 1345.145,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "transpose_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/ascendc_b2.json",
+              "sha256": "3c9a65ed4430dc4a50dc716046d6339bf532773adad99f0c03900515da1aee49",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 22.48,
+              "all_device_us": 89.618,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/torch_b4.json",
+              "sha256": "cd92a381395238ec0ad3a2ee3bff63e209d99836620472bc8c6208e879fad880",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 385.62,
+              "all_device_us": 2642.91,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "transpose_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/ascendc_b4.json",
+              "sha256": "c0bf83ba4ca380ad5f9592a9ddc82c79a8bc092f74f47a014ac77bda3ef8b3f9",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 19.26,
+              "all_device_us": 86.096,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/torch_b8.json",
+              "sha256": "5b454e48b4c370670e7b2eba35be43564caf3923e96a0e416b67dd5dc6153ce3",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 762.3,
+              "all_device_us": 5272.676,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "transpose_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/ascendc_b8.json",
+              "sha256": "c765594b24bf8892410dfb0987d106fe15d9f5d8690cad9fe64568aab590cb9d",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 20.18,
+              "all_device_us": 99.836,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/torch_b16.json",
+              "sha256": "6bf4da98c777abfe546e805e4c6b06ba2734fecaa44ec4774c2e4e0a61c766f7",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 1510.6,
+              "all_device_us": 10517.667,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "transpose_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/ascendc_b16.json",
+              "sha256": "0858f23f1d88ec5c55e07e49ba32ef0668edf789d83920fd7dd5126de257f5ff",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 26.2,
+              "all_device_us": 122.163,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/torch_b32.json",
+              "sha256": "63e854640afc1aeab1c79e699230d2bb74c627990e82813543082a8d1b5d5ca2",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 3014.6,
+              "all_device_us": 21008.479,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "transpose_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/ascendc_b32.json",
+              "sha256": "53102124bb6a32290814459fbe9c0429465883a32fae8206d0a2702865d30948",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          },
+          "64": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 37.64,
+              "all_device_us": 176.919,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/torch_b64.json",
+              "sha256": "1230215cc73b945db65ca008c3792cd549b3f2c234a90e3f1233ef076d4ca9ab",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 6016.54,
+              "all_device_us": 41980.095,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "transpose_kernel",
+              "kernels_per_call": 7.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/transpose/reports/parsed/ascendc_b64.json",
+              "sha256": "f02e01e8d13cd52841a8429c875d06078a18a43dc80dfe5fad8446f9efba1412",
+              "integrity": "VERIFIED",
+              "comparable": true
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 14,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
       },
       "limitations": [
-        {"route": "ascendc", "severity": "P3", "description": "TRUE_DEVICE tile-transpose 使用 GetValue/SetValue, B=64 5050µs"},
-        {"route": "pypto", "severity": "P2", "description": "tile_shape 对 >1K 元素失效 (RC2 修复为 64×256)"}
+        {
+          "operator": "transpose",
+          "route": "all",
+          "severity": "INFO",
+          "description": "AscendC TRUE_DEVICE tile-transpose, uses GetValue/SetValue."
+        },
+        {
+          "operator": "transpose",
+          "route": "ascendc",
+          "severity": "P3",
+          "description": "B=64 performance 5050us vs Torch 135us — GetValue/SetValue bottleneck."
+        }
+      ],
+      "warnings": [
+        "PyPTO：release 有覆盖声明，但没有可展示的结构化性能记录"
+      ],
+      "release_notes": {
+        "rc3_fix": null,
+        "post_rc3_fix": null,
+        "post_rc3_change": null
+      },
+      "completeness_gates": []
+    },
+    "reduce_sum": {
+      "name": "reduce_sum",
+      "status": "COMPLETE_WITH_LIMITATION",
+      "status_zh": "有限制完成",
+      "formula": "Y[b,i] = sum_j X[b,i,j]",
+      "shape": "X [B,256,384], Y [B,256]",
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "FP16 accumulation (atol=0.01, rtol=0.01, require_bitwise=False)",
+      "correctness": {
+        "torch": {
+          "status": "PARTIAL",
+          "detail": "62/70",
+          "passed": 62,
+          "total": 70
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "FP32 70/70 PASS; FP16 21/70 PARTIAL",
+          "passed": 70,
+          "total": 70
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "70/70",
+          "passed": 70,
+          "total": 70
+        }
+      },
+      "correctness_coverage": "Torch 62/70; AscendC FP16 21/70; AscendC FP32 70/70 (NEW); PyPTO 70/70",
+      "profiler_coverage": "FULL — msprof Torch+AscendC (B=1..64, repeat=5); PyPTO not profiled",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 15.96,
+              "all_device_us": 14.499,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIV",
+              "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/torch_b1.json",
+              "sha256": "b95349a160640938fa88c5c3c9abf24871d2b2e78e731c66fcc4fdade57aa8d6",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 19.28,
+              "all_device_us": 4069.394,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "reduce_sum_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/ascendc_b1.json",
+              "sha256": "273ba36baac6d970542d0865dc40fcf3b864705b683ff66652661deb55a3c5e3",
+              "integrity": "VERIFIED",
+              "comparable": false,
+              "comparison_note": "该记录对应旧 FP16 累积路线，不能代表新版 FP32 内核"
+            }
+          },
+          "2": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 17.98,
+              "all_device_us": 15.319,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIV",
+              "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/torch_b2.json",
+              "sha256": "6c3e90bf892e8527d7a1cbd0814f27305c3a8bd0b188beb7ddebf87df7797efc",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 21.08,
+              "all_device_us": 4141.308,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "reduce_sum_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/ascendc_b2.json",
+              "sha256": "c6c211838f086400f24eb5d17fdc66f6ca2d60db1321c1708cdeae50aaf35f64",
+              "integrity": "VERIFIED",
+              "comparable": false,
+              "comparison_note": "该记录对应旧 FP16 累积路线，不能代表新版 FP32 内核"
+            }
+          },
+          "4": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 16.94,
+              "all_device_us": 14.963,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIV",
+              "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/torch_b4.json",
+              "sha256": "0f879a022740293df5ad769241e4c412c9e39b40383dc30a3ba410b06d7092ca",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 27.94,
+              "all_device_us": 4264.953,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "reduce_sum_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/ascendc_b4.json",
+              "sha256": "872fe878624dfa50cbc6d1108692ee98b0aba8ab33f3b6af182c45ad0c09d4f4",
+              "integrity": "VERIFIED",
+              "comparable": false,
+              "comparison_note": "该记录对应旧 FP16 累积路线，不能代表新版 FP32 内核"
+            }
+          },
+          "8": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 18.44,
+              "all_device_us": 17.537,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIV",
+              "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/torch_b8.json",
+              "sha256": "acfe70d9ed74d5bf3d26e2abe48994478f89d463018df1a9b58ea51f364575fb",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 44.52,
+              "all_device_us": 7048.125,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "reduce_sum_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/ascendc_b8.json",
+              "sha256": "f7c8605645996e7fe90b340a11a8cd920fd351d302d898c1e290473d4314185c",
+              "integrity": "VERIFIED",
+              "comparable": false,
+              "comparison_note": "该记录对应旧 FP16 累积路线，不能代表新版 FP32 内核"
+            }
+          },
+          "16": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 18.5,
+              "all_device_us": 19.769,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_MIX_AIV",
+              "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
+              "kernels_per_call": 3.0,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/torch_b16.json",
+              "sha256": "b879ed9b3ca482ca68ad3d2185161ab1e709f8e1558d09f1d4ab5e017ea8eb9d",
+              "integrity": "VERIFIED",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 81.24,
+              "all_device_us": 13411.275,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "reduce_sum_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/ascendc_b16.json",
+              "sha256": "ba1a8110d3eaa63608419e346b133f1a70e82b409edb0be626beebe89dfaf439",
+              "integrity": "VERIFIED",
+              "comparable": false,
+              "comparison_note": "该记录对应旧 FP16 累积路线，不能代表新版 FP32 内核"
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "NO_KERNEL_EVIDENCE",
+              "primary_us": null,
+              "all_device_us": null,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "N/A",
+              "kernel_name": "N/A",
+              "kernels_per_call": null,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/torch_b32.json",
+              "sha256": "ef727a3b6a0dc854af67599e732ab331c5454f8627fe4d066b36cff16d2d095f",
+              "integrity": "VERIFIED",
+              "comparable": false
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 154.86,
+              "all_device_us": 26350.008,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "reduce_sum_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/ascendc_b32.json",
+              "sha256": "8116fe893852d21b93e9e029fc9426bb21c4cf187cccac554bb0320e79be0fc1",
+              "integrity": "VERIFIED",
+              "comparable": false,
+              "comparison_note": "该记录对应旧 FP16 累积路线，不能代表新版 FP32 内核"
+            }
+          },
+          "64": {
+            "torch": {
+              "metric_status": "NO_KERNEL_EVIDENCE",
+              "primary_us": null,
+              "all_device_us": null,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "N/A",
+              "kernel_name": "N/A",
+              "kernels_per_call": null,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/torch_b64.json",
+              "sha256": "ef727a3b6a0dc854af67599e732ab331c5454f8627fe4d066b36cff16d2d095f",
+              "integrity": "VERIFIED",
+              "comparable": false
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 301.32,
+              "all_device_us": 52263.17,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AIVEC",
+              "kernel_name": "reduce_sum_kernel",
+              "kernels_per_call": 281.92,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "PARSED_PROFILER",
+              "source": "operators/reduce_sum/reports/parsed/ascendc_b64.json",
+              "sha256": "5bd693ae75354a78133a9533dcaa6944eec5cc2a6359279a1963d88157c37dde",
+              "integrity": "VERIFIED",
+              "comparable": false,
+              "comparison_note": "该记录对应旧 FP16 累积路线，不能代表新版 FP32 内核"
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "PARSED_PROFILER",
+          "ascendc": "PARSED_PROFILER",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 0,
+          "verified": 14,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 2
+        }
+      },
+      "limitations": [
+        {
+          "operator": "reduce_sum",
+          "route": "all",
+          "severity": "INFO",
+          "description": "FP16 output overflow for values > 65504 (expected)."
+        },
+        {
+          "operator": "reduce_sum",
+          "route": "ascendc_fp16",
+          "severity": "P1",
+          "description": "FP16 accum precision exceeds atol=0.01 for 384-element reduction (21/70). FP32 accum kernel available (70/70)."
+        }
+      ],
+      "warnings": [
+        "存在零 kernel 占位文件，已转换为 N/A",
+        "PyPTO：release 有覆盖声明，但没有可展示的结构化性能记录"
+      ],
+      "release_notes": {
+        "rc3_fix": "Implemented FP32 accumulation via wrapper-level cast. 70/70 PASS (was 21/70 FP16 accum).",
+        "post_rc3_fix": "Added dedicated Ascend C FP32 accumulation kernel: Cast FP16→FP32 → ReduceSum<float> → Cast FP16. 70/70 PASS. Accuracy 3.5× better than FP16.",
+        "post_rc3_change": null
+      },
+      "completeness_gates": []
+    },
+    "matmul": {
+      "name": "matmul",
+      "status": "COMPLETE",
+      "status_zh": "完全完成",
+      "formula": "Y[b,h,:,:] = A[b,h,:,:] @ B[b,h,:,:]",
+      "shape": "A [B,12,256,256], B [B,12,256,32], Y [B,12,256,32]",
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
+      ],
+      "precision": "atol=0.01, rtol=0.01",
+      "correctness": {
+        "torch": {
+          "status": "PASS",
+          "detail": "PASS (all 6 batches, atol=0.01)"
+        },
+        "ascendc": {
+          "status": "PASS",
+          "detail": "PASS (all 6 batches, max_abs=0.015625)"
+        },
+        "pypto": {
+          "status": "PASS",
+          "detail": "PASS (all 6 batches, max_abs=0.015-0.031)"
+        }
+      },
+      "correctness_coverage": "FULL (all 3 routes)",
+      "profiler_coverage": "FULL (Torch + Ascend C msprof; PyPTO N/A)",
+      "performance": {
+        "primary_metric": "primary_compute_kernel_us",
+        "unit": "µs",
+        "batches": {
+          "1": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 12.2,
+              "all_device_us": 38.0,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AICORE",
+              "kernel_name": "aclnnMatmul_BatchMatMulNd_BatchMatMulV2",
+              "kernels_per_call": 7,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "CURRENT_RELEASE",
+              "source": "reports/release/current_release.json#/operators/matmul/routes/torch/profiler",
+              "sha256": "7bfa48d258708327d14db60f3d457dfe56e847ee60b7eae33e9f434d443f780f",
+              "integrity": "RELEASE_SOURCE",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 6.4,
+              "all_device_us": null,
+              "executor_us": null,
+              "tflops": 7.86,
+              "kernel_type": "KERNEL_AICORE (__cube__ kernel)",
+              "kernel_name": "matmul_kernel",
+              "kernels_per_call": 1,
+              "block_dim": 12,
+              "method": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+              "source_kind": "CURRENT_RELEASE",
+              "source": "reports/release/current_release.json#/operators/matmul/routes/ascendc/profiler",
+              "sha256": "7bfa48d258708327d14db60f3d457dfe56e847ee60b7eae33e9f434d443f780f",
+              "integrity": "RELEASE_SOURCE",
+              "comparable": true
+            }
+          },
+          "32": {
+            "torch": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 63.3,
+              "all_device_us": 224.6,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AICORE",
+              "kernel_name": "aclnnMatmul_BatchMatMulNd_BatchMatMulV2",
+              "kernels_per_call": 7,
+              "block_dim": null,
+              "method": "msprof",
+              "source_kind": "CURRENT_RELEASE",
+              "source": "reports/release/current_release.json#/operators/matmul/routes/torch/profiler",
+              "sha256": "7bfa48d258708327d14db60f3d457dfe56e847ee60b7eae33e9f434d443f780f",
+              "integrity": "RELEASE_SOURCE",
+              "comparable": true
+            },
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 37.0,
+              "all_device_us": null,
+              "executor_us": null,
+              "tflops": 43.53,
+              "kernel_type": "KERNEL_AICORE (__cube__ kernel)",
+              "kernel_name": "matmul_kernel",
+              "kernels_per_call": 1,
+              "block_dim": 20,
+              "method": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+              "source_kind": "CURRENT_RELEASE",
+              "source": "reports/release/current_release.json#/operators/matmul/routes/ascendc/profiler",
+              "sha256": "7bfa48d258708327d14db60f3d457dfe56e847ee60b7eae33e9f434d443f780f",
+              "integrity": "RELEASE_SOURCE",
+              "comparable": true
+            }
+          },
+          "2": {
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 8.1,
+              "all_device_us": null,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AICORE (__cube__ kernel)",
+              "kernel_name": "matmul_kernel",
+              "kernels_per_call": 1,
+              "block_dim": null,
+              "method": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+              "source_kind": "CURRENT_RELEASE",
+              "source": "reports/release/current_release.json#/operators/matmul/routes/ascendc/profiler",
+              "sha256": "7bfa48d258708327d14db60f3d457dfe56e847ee60b7eae33e9f434d443f780f",
+              "integrity": "RELEASE_SOURCE",
+              "comparable": true
+            }
+          },
+          "4": {
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 9.3,
+              "all_device_us": null,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AICORE (__cube__ kernel)",
+              "kernel_name": "matmul_kernel",
+              "kernels_per_call": 1,
+              "block_dim": null,
+              "method": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+              "source_kind": "CURRENT_RELEASE",
+              "source": "reports/release/current_release.json#/operators/matmul/routes/ascendc/profiler",
+              "sha256": "7bfa48d258708327d14db60f3d457dfe56e847ee60b7eae33e9f434d443f780f",
+              "integrity": "RELEASE_SOURCE",
+              "comparable": true
+            }
+          },
+          "8": {
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 12.7,
+              "all_device_us": null,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AICORE (__cube__ kernel)",
+              "kernel_name": "matmul_kernel",
+              "kernels_per_call": 1,
+              "block_dim": null,
+              "method": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+              "source_kind": "CURRENT_RELEASE",
+              "source": "reports/release/current_release.json#/operators/matmul/routes/ascendc/profiler",
+              "sha256": "7bfa48d258708327d14db60f3d457dfe56e847ee60b7eae33e9f434d443f780f",
+              "integrity": "RELEASE_SOURCE",
+              "comparable": true
+            }
+          },
+          "16": {
+            "ascendc": {
+              "metric_status": "AVAILABLE",
+              "primary_us": 20.7,
+              "all_device_us": null,
+              "executor_us": null,
+              "tflops": null,
+              "kernel_type": "KERNEL_AICORE (__cube__ kernel)",
+              "kernel_name": "matmul_kernel",
+              "kernels_per_call": 1,
+              "block_dim": null,
+              "method": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+              "source_kind": "CURRENT_RELEASE",
+              "source": "reports/release/current_release.json#/operators/matmul/routes/ascendc/profiler",
+              "sha256": "7bfa48d258708327d14db60f3d457dfe56e847ee60b7eae33e9f434d443f780f",
+              "integrity": "RELEASE_SOURCE",
+              "comparable": true
+            }
+          }
+        },
+        "route_sources": {
+          "torch": "CURRENT_RELEASE",
+          "ascendc": "CURRENT_RELEASE",
+          "pypto": "PARSED_PROFILER"
+        },
+        "evidence_stats": {
+          "release_source": 8,
+          "verified": 0,
+          "unmanifested": 0,
+          "mismatch": 0,
+          "no_kernel_evidence": 0
+        }
+      },
+      "limitations": [
+        {
+          "operator": "matmul",
+          "route": "ascendc",
+          "severity": "P3",
+          "description": "N=32 limits Cube utilization to ~48%. Torch faster at B≥16."
+        },
+        {
+          "operator": "matmul",
+          "route": "pypto",
+          "severity": "P2",
+          "description": "Auto-tiling FC4000 broken. 4D JIT compile timeout for large shapes."
+        }
+      ],
+      "warnings": [
+        "PyPTO：release 有覆盖声明，但没有可展示的结构化性能记录"
+      ],
+      "release_notes": {
+        "rc3_fix": null,
+        "post_rc3_fix": null,
+        "post_rc3_change": "Multi-core batch dispatch: 1 kernel call, blockDim=12..20, per-core matrix loop"
+      },
+      "completeness_gates": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
       ]
     }
   },
+  "post_rc3_fixes": {
+    "fix_matmul_multicore_batch": "MatMul: 从 12-384 串行 kernel → 1 多核并行。B=32: 9521→37µs (257×), TFLOPS 0.17→43.53",
+    "fix_reduce_sum_fp32_kernel": "ReduceSum: 新增 Ascend C FP32 累积内核, FP16→FP32→ReduceSum→FP16, 精度 3.5× 提升",
+    "fix_add_correctness_reference": "Add: 参考数据改用 FP16 链式累积, 77/77 位精确 PASS",
+    "fix_dashboard_chinese": "Dashboard 全面中文化, 含算子现状、性能数据、问题列表"
+  },
   "known_limitations": [
-    {"operator": "reduce_sum", "route": "ascendc_fp16", "severity": "P1", "description": "FP16 累积 384 元素归约精度不足 (21/70)"},
-    {"operator": "or", "route": "pypto", "severity": "P1", "description": "无 logical_or API，用 bitwise_or 替代"},
-    {"operator": "matmul", "route": "ascendc", "severity": "P3", "description": "N=32 限制 Cube 利用率 ~48%"},
-    {"operator": "matmul", "route": "pypto", "severity": "P2", "description": "自动 tiling 完全损坏 (FC4000)"},
-    {"operator": "add", "route": "pypto", "severity": "P2", "description": "3 次二元加法 → 9 内核事件/调用"},
-    {"operator": "where", "route": "ascendc", "severity": "P3", "description": "B=64 性能差 (9245µs vs Torch 2180µs)"},
-    {"operator": "transpose", "route": "ascendc", "severity": "P3", "description": "B=64 性能差 (5050µs vs Torch 135µs)"},
-    {"operator": "div", "route": "ascendc", "severity": "P3", "description": "B=32 性能差 (329µs vs Torch 113µs)"}
+    {
+      "operator": "or",
+      "route": "pypto",
+      "severity": "P1",
+      "description": "Uses bitwise_or (no logical_or API). Correct for 0/1 bool."
+    },
+    {
+      "operator": "reduce_sum",
+      "route": "ascendc_fp16",
+      "severity": "P1",
+      "description": "FP16 accum precision exceeds atol=0.01 for 384-element reduction (21/70). FP32 accum kernel available (70/70)."
+    },
+    {
+      "operator": "matmul",
+      "route": "ascendc",
+      "severity": "P3",
+      "description": "N=32 limits Cube utilization to ~48%. Torch faster at B≥16."
+    },
+    {
+      "operator": "matmul",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "Auto-tiling FC4000 broken. 4D JIT compile timeout for large shapes."
+    },
+    {
+      "operator": "expand",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "Per-row AICPU dispatch originally ~3000 us. RC-3: torch.expand().clone() 33600x improvement."
+    },
+    {
+      "operator": "where",
+      "route": "ascendc",
+      "severity": "P3",
+      "description": "B=64 performance 9245us vs Torch 2180us — needs optimization."
+    },
+    {
+      "operator": "transpose",
+      "route": "ascendc",
+      "severity": "P3",
+      "description": "B=64 performance 5050us vs Torch 135us — GetValue/SetValue bottleneck."
+    },
+    {
+      "operator": "div",
+      "route": "ascendc",
+      "severity": "P3",
+      "description": "B=32 performance 329us vs Torch 113us."
+    }
   ],
-  "pypto_limits": [
-    "自动 tiling 系统不可靠 (matmul 完全损坏, div/transpose 需手动覆盖)",
-    "dtype 推断不一致 (equal 误判输出类型)",
-    "广播支持有限 (div 触发参数错误)",
-    "AICPU 调度开销 ~50-140µs/调用",
-    "MIX_AIC 内核比纯 AIVEC 重",
-    "算子链分解导致多内核事件 (add 4→9 内核)"
-  ],
-  "ascendc_summary": {
-    "TRUE_CUBE": ["matmul"],
-    "TRUE_DEVICE": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum"],
-    "post_rc3_changes": [
-      "matmul: 多核批调度 (1 kernel/call, 257× 加速)",
-      "reduce_sum: 新增 FP32 累积内核 (精度 3.5× 提升)"
-    ]
-  }
+  "validation_freeze": "2026-07-17T15:00:00Z",
+  "validation_freeze_report": "reports/validation_freeze/"
 }
