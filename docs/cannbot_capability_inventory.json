@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "repo_path": "/home/developer/.cannbot/repo",
+    "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
+    "cannbot_commit_message": "更新ascend2cuda工作流init脚本，与直调工作流init脚本入参对齐",
+    "project_dir": "/mnt/workspace/cannbot_ascendc_vs_pypto",
+    "inventory_generated": "2026-07-17T09:00:00Z",
+    "index_version": "2"
+  },
+  "plugins": {
+    "ops-direct-invoke": {
+      "id": "ops-direct-invoke",
+      "path": "plugins-official/ops-direct-invoke/",
+      "scenarios": ["Ascend C kernel direct invoke development", "Vector/Cube operator benchmark comparison"],
+      "agents": ["ascendc-kernel-architect", "ascendc-kernel-design-reviewer", "ascendc-kernel-developer", "ascendc-kernel-reviewer"],
+      "version": "1.0.0",
+      "installed": true,
+      "in_use": true,
+      "misuse_warning": "Do NOT use when target requires ACLNN/GEIR/算子仓 structure"
+    },
+    "ops-direct-invoke-flash": {
+      "id": "ops-direct-invoke-flash",
+      "path": "plugins-official/ops-direct-invoke-flash/",
+      "scenarios": ["Ascend C flash template variant", "Simpler single-skill pipeline"],
+      "agents": ["ops-direct-invoke-flash-reviewer"],
+      "installed": true,
+      "in_use": false,
+      "misuse_warning": "Use only when flash template variant is explicitly requested"
+    },
+    "ops-registry-invoke": {
+      "id": "ops-registry-invoke",
+      "path": "plugins-official/ops-registry-invoke/",
+      "scenarios": ["ACLNN/GEIR registration", "算子仓 standard operators"],
+      "agents": ["ascendc-ops-architect", "ascendc-ops-developer", "ascendc-ops-reviewer", "ascendc-ops-tester"],
+      "installed": true,
+      "in_use": false,
+      "misuse_warning": "Do NOT use for simple direct benchmark with <<<>>> only"
+    },
+    "pypto-op-orchestrator": {
+      "id": "pypto-op-orchestrator",
+      "path": "plugins-official/pypto-op-orchestrator/",
+      "scenarios": ["PyPTO operator end-to-end development", "Python API rapid prototyping"],
+      "agents": ["pypto-op-analyst", "pypto-op-developer", "pypto-op-perf-tuner"],
+      "installed": true,
+      "in_use": true,
+      "misuse_warning": "Do NOT use for Ascend C native development"
+    },
+    "ops-code-reviewer": {
+      "id": "ops-code-reviewer",
+      "path": "plugins-official/ops-code-reviewer/",
+      "scenarios": ["Ascend C code review", "Safety/spec compliance audit"],
+      "agents": ["ascendc-code-summarizer", "ascendc-ops-reviewer"],
+      "installed": true,
+      "in_use": false,
+      "misuse_warning": "Do NOT use for non-Ascend-C code review"
+    },
+    "catlass-op-generator": {
+      "id": "catlass-op-generator",
+      "path": "plugins-official/catlass-op-generator/",
+      "scenarios": ["Catlass template assembly for Cube/MatMul"],
+      "agents": ["catlass-op-architect", "catlass-op-generator", "catlass-op-reviewer"],
+      "installed": true,
+      "in_use": false,
+      "misuse_warning": "Do NOT use when standard Cube APIs suffice or when using PyPTO Cube"
+    }
+  },
+  "agents": {
+    "ascendc-kernel-architect": { "plugin": "ops-direct-invoke", "stage": "Design", "project_loaded": true },
+    "ascendc-kernel-design-reviewer": { "plugin": "ops-direct-invoke", "stage": "Design Review", "project_loaded": true },
+    "ascendc-kernel-developer": { "plugin": "ops-direct-invoke", "stage": "Development", "project_loaded": true },
+    "ascendc-kernel-reviewer": { "plugin": "ops-direct-invoke", "stage": "Review", "project_loaded": true },
+    "ascendc-perf-analysis-expert": { "plugin": "ops-direct-invoke", "stage": "Performance", "project_loaded": true },
+    "ascendc-perf-impl-expert": { "plugin": "ops-direct-invoke", "stage": "Performance", "project_loaded": true },
+    "pypto-op-analyst": { "plugin": "pypto-op-orchestrator", "stage": "Stages 3-4", "project_loaded": true },
+    "pypto-op-developer": { "plugin": "pypto-op-orchestrator", "stage": "Stages 5-6", "project_loaded": true },
+    "pypto-op-perf-tuner": { "plugin": "pypto-op-orchestrator", "stage": "Stage 7", "project_loaded": true },
+    "ascendc-ops-architect": { "plugin": "ops-registry-invoke", "stage": "Design", "project_loaded": false },
+    "ascendc-ops-developer": { "plugin": "ops-registry-invoke", "stage": "Development", "project_loaded": false },
+    "ascendc-ops-reviewer": { "plugin": "ops-registry-invoke", "stage": "Review", "project_loaded": false },
+    "ascendc-ops-tester": { "plugin": "ops-registry-invoke", "stage": "Test", "project_loaded": false },
+    "ascendc-code-summarizer": { "plugin": "ops-code-reviewer", "stage": "Review", "project_loaded": true },
+    "catlass-op-architect": { "plugin": "catlass-op-generator", "stage": "Design", "project_loaded": true },
+    "catlass-op-generator-agent": { "plugin": "catlass-op-generator", "stage": "Generation", "project_loaded": true },
+    "catlass-op-reviewer": { "plugin": "catlass-op-generator", "stage": "Review", "project_loaded": true }
+  },
+  "skills_ascendc": [
+    {"name": "ascendc-api-best-practices", "category": "knowledge", "task": "API usage guidance", "loaded": true},
+    {"name": "ascendc-code-review", "category": "review", "task": "Code review methodology", "loaded": true},
+    {"name": "ascendc-crash-debug", "category": "debug", "task": "Crash/hang diagnosis", "loaded": true},
+    {"name": "ascendc-direct-invoke-template", "category": "template", "task": "Project scaffolding", "loaded": true},
+    {"name": "ascendc-docs-gen", "category": "doc", "task": "Document generation", "loaded": true},
+    {"name": "ascendc-docs-search", "category": "knowledge", "task": "API doc search", "loaded": true},
+    {"name": "ascendc-env-check", "category": "tool", "task": "Environment verification", "loaded": true},
+    {"name": "ascendc-kernel-develop-workflow", "category": "workflow", "task": "Full development workflow", "loaded": true},
+    {"name": "ascendc-npu-arch", "category": "knowledge", "task": "NPU architecture queries", "loaded": true},
+    {"name": "ascendc-perf-optimize", "category": "performance", "task": "Kernel performance optimization", "loaded": true},
+    {"name": "ascendc-performance-best-practices", "category": "knowledge", "task": "Performance reference", "loaded": true},
+    {"name": "ascendc-precision-debug", "category": "debug", "task": "Precision issue diagnosis", "loaded": true},
+    {"name": "ascendc-regbase-best-practice", "category": "knowledge", "task": "RegBase API guidance", "loaded": true},
+    {"name": "ascendc-runtime-debug", "category": "debug", "task": "Runtime error diagnosis", "loaded": true},
+    {"name": "ascendc-st-design", "category": "test", "task": "ST test case design", "loaded": true},
+    {"name": "ascendc-task-focus", "category": "tool", "task": "Task focus management", "loaded": true},
+    {"name": "ascendc-tiling-design", "category": "knowledge", "task": "Tiling strategy design", "loaded": true},
+    {"name": "ascendc-ut-develop", "category": "test", "task": "UT development", "loaded": true},
+    {"name": "ascendc-whitebox-design", "category": "test", "task": "Whitebox test design", "loaded": true},
+    {"name": "cann-env-setup", "category": "tool", "task": "CANN installation guide", "loaded": true},
+    {"name": "ops-precision-standard", "category": "knowledge", "task": "Precision tolerance standards", "loaded": true},
+    {"name": "ops-profiling", "category": "performance", "task": "NPU profiling and analysis", "loaded": true},
+    {"name": "ops-simulator", "category": "simulation", "task": "CANN Simulator usage", "loaded": true},
+    {"name": "ascendc-blaze-best-practice", "category": "knowledge", "task": "Blaze/MatMul best practices", "loaded": true},
+    {"name": "ascendc-simt-best-practices", "category": "knowledge", "task": "SIMT programming best practices", "loaded": true},
+    {"name": "descendc-simt-tiling-design", "category": "knowledge", "task": "SIMT tiling design", "loaded": true}
+  ],
+  "skills_pypto": [
+    {"name": "pypto-intent-understand", "category": "spec", "task": "Intent understanding to SPEC", "loaded": true},
+    {"name": "pypto-api-explore", "category": "api", "task": "API feasibility exploration", "loaded": true},
+    {"name": "pypto-golden-generate", "category": "golden", "task": "Golden reference generation", "loaded": true},
+    {"name": "pypto-op-design", "category": "design", "task": "Operator design generation", "loaded": true},
+    {"name": "pypto-op-develop", "category": "develop", "task": "Operator code implementation", "loaded": true},
+    {"name": "pypto-op-perf-tune", "category": "perf", "task": "Performance tuning", "loaded": true},
+    {"name": "pypto-precision-compare", "category": "debug", "task": "Intermediate result comparison", "loaded": true},
+    {"name": "pypto-precision-debug", "category": "debug", "task": "Precision issue debugging", "loaded": true}
+  ],
+  "skills_additional": [
+    {"name": "catlass-op-design", "category": "knowledge", "task": "Catlass component selection", "loaded": true},
+    {"name": "catlass-op-develop", "category": "template", "task": "Catlass kernel generation", "loaded": true},
+    {"name": "catlass-op-perf-tune", "category": "perf", "task": "Catlass kernel tuning", "loaded": true},
+    {"name": "ops-direct-invoke-workflow", "category": "workflow", "task": "Direct invoke workflow", "loaded": true}
+  ]
+}

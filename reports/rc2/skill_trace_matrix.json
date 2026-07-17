@@ -1,0 +1,35 @@
+{
+  "audit_complete": true,
+  "skill_trace_files_found": 0,
+  "ascendc_route": {
+    "LEGACY_UNVERIFIED_SKILL_USAGE": 12,
+    "NO_SKILL_EVIDENCE": 0,
+    "TRACE_VERIFIED": 0
+  },
+  "pypto_route": {
+    "LEGACY_UNVERIFIED_SKILL_USAGE": 6,
+    "NON_COMPLIANT": 6,
+    "NO_SKILL_EVIDENCE": 0,
+    "TRACE_VERIFIED": 0
+  },
+  "orchestrator_state_summary": {
+    "present": 6,
+    "absent": 6,
+    "operators_with_state": ["div", "expand", "matmul", "mul", "reduce_sum", "relu", "transpose"],
+    "operators_without_state": ["add", "equal", "not", "or", "where"]
+  },
+  "per_operator": {
+    "add": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "NON_COMPLIANT", "orchestrator_state": false},
+    "div": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "NON_COMPLIANT", "orchestrator_state": false},
+    "equal": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "NON_COMPLIANT", "orchestrator_state": false},
+    "expand": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "LEGACY_UNVERIFIED_SKILL_USAGE", "orchestrator_state": true},
+    "matmul": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "LEGACY_UNVERIFIED_SKILL_USAGE", "orchestrator_state": true},
+    "mul": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "LEGACY_UNVERIFIED_SKILL_USAGE", "orchestrator_state": true},
+    "not": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "NON_COMPLIANT", "orchestrator_state": false},
+    "or": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "NON_COMPLIANT", "orchestrator_state": false},
+    "reduce_sum": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "LEGACY_UNVERIFIED_SKILL_USAGE", "orchestrator_state": true},
+    "relu": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "LEGACY_UNVERIFIED_SKILL_USAGE", "orchestrator_state": true},
+    "transpose": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "LEGACY_UNVERIFIED_SKILL_USAGE", "orchestrator_state": true},
+    "where": {"ascendc": "LEGACY_UNVERIFIED_SKILL_USAGE", "pypto": "NON_COMPLIANT", "orchestrator_state": false}
+  }
+}

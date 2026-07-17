@@ -1,0 +1,25 @@
+{
+  "gate_tests": [
+    {
+      "id": "g1_classification",
+      "description": "G1: Classification gate requires task_context.json with all 4 axes",
+      "test_command": "python3 tools/check_gate.py --gate G1 --json",
+      "expected": "G1 shows passed or properly explains why not",
+      "prerequisite": "reports/runtime/task_context.json exists"
+    },
+    {
+      "id": "g8_correctness_hard",
+      "description": "G8: Correctness is NEVER overridable",
+      "config_check": "config/gates.yaml overrides.G8.allowed must be false",
+      "expected": "false",
+      "rationale": "Ranking implementations without correctness invalidates all comparisons"
+    },
+    {
+      "id": "g13_review_override",
+      "description": "G13: Code Review override must record approver and risks",
+      "config_check": "config/gates.yaml overrides.G13.must_record contains override_reason and approver",
+      "expected": "Both fields present",
+      "restriction": "Override results are DRAFT only, never formal ranking"
+    }
+  ]
+}

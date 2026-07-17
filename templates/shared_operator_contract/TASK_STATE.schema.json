@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Task State Schema",
+  "description": "Mandatory TASK_STATE.json schema for every operator",
+  "type": "object",
+  "required": [
+    "operator",
+    "backend_route",
+    "semantic_class",
+    "hardware_path",
+    "task_mode",
+    "lifecycle_stage",
+    "active_plugin",
+    "active_agent",
+    "required_skills",
+    "loaded_skills",
+    "cannbot_commit",
+    "correctness_gate",
+    "profile_gate",
+    "next_action",
+    "release_eligibility"
+  ],
+  "properties": {
+    "operator": {"type": "string", "description": "Operator name"},
+    "backend_route": {
+      "type": "string",
+      "enum": ["TORCH", "ASCENDC_DIRECT", "ASCENDC_REGISTRY", "PYPTO", "CATLASS", "PROJECT_INFRA"],
+      "description": "Backend route classification"
+    },
+    "semantic_class": {
+      "type": "string",
+      "enum": ["ELEMENTWISE", "REDUCTION", "MATMUL", "GEMM", "LAYOUT", "LOGICAL", "UNKNOWN_NEEDS_ANALYSIS"],
+      "description": "Semantic classification of the operator"
+    },
+    "hardware_path": {
+      "type": "string",
+      "enum": ["VECTOR", "CUBE", "MIXED", "VECTOR_OR_SPECIALIZED_DATA_MOVE", "CUBE_OR_MIXED_EPILOGUE"],
+      "description": "Hardware execution path"
+    },
+    "task_mode": {
+      "type": "string",
+      "enum": [
+        "NEW_DEVELOPMENT", "CONTINUE_DEVELOPMENT", "RECOVER_INTERRUPTED",
+        "FUNCTIONAL_REPAIR", "PRECISION_REPAIR", "BUILD_REPAIR", "RUNTIME_REPAIR",
+        "PERFORMANCE_OPTIMIZATION", "MEASUREMENT_AUDIT", "CODE_REVIEW",
+        "RELEASE_AUDIT", "MIGRATION", "FRAMEWORK_PATCH"
+      ],
+      "description": "Task mode"
+    },
+    "lifecycle_stage": {
+      "type": "string",
+      "enum": [
+        "PREFLIGHT", "SPEC", "API_ANALYSIS", "GOLDEN_DATA", "DESIGN",
+        "IMPLEMENTATION", "BUILD", "CORRECTNESS", "PRECISION_FIX",
+        "BASELINE_PROFILE", "OPTIMIZATION", "FINAL_PROFILE",
+        "REVIEW", "RELEASE", "ARCHIVE"
+      ],
+      "description": "Current lifecycle stage"
+    },
+    "active_plugin": {"type": "string", "description": "Currently active plugin"},
+    "active_agent": {"type": "string", "description": "Currently active agent"},
+    "required_skills": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Skills required for this stage"
+    },
+    "loaded_skills": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Skills loaded so far"
+    },
+    "cannbot_commit": {"type": "string", "description": "Cannbot repo commit hash"},
+    "source_hash": {"type": "string", "description": "SHA256 of source code state"},
+    "binary_hash": {"type": "string", "description": "SHA256 of compiled binary / JIT artifact"},
+    "correctness_gate": {
+      "type": "string",
+      "enum": ["PENDING", "PASS", "FAIL", "NOT_APPLICABLE"],
+      "description": "Correctness gate status"
+    },
+    "profile_gate": {
+      "type": "string",
+      "enum": ["PENDING", "PASS", "FAIL", "NOT_APPLICABLE"],
+      "description": "Profile gate status"
+    },
+    "pending_issues": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "List of pending issues"
+    },
+    "next_action": {"type": "string", "description": "Next action to take"},
+    "last_successful_checkpoint": {"type": "string", "description": "Last successful checkpoint"},
+    "permission_blockers": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Permission blockers"
+    },
+    "release_eligibility": {"type": "boolean", "description": "Whether this operator is release-eligible"}
+  }
+}

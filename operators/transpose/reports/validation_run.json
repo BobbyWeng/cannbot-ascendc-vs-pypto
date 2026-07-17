@@ -1,0 +1,116 @@
+{
+  "operator": "transpose",
+  "shape": "[B, 256, 384] -> [B, 384, 256]",
+  "dtype": "float16",
+  "completion_status": "COMPLETE_WITH_LIMITATION",
+  "correctness": {
+    "torch": {
+      "status": "PASS",
+      "all_batches_pass": true,
+      "bitwise_equal": true,
+      "batches_tested": 7
+    },
+    "ascendc": {
+      "status": "PASS",
+      "all_batches_pass": true,
+      "bitwise_equal": true,
+      "batches_tested": 7
+    },
+    "pypto": {
+      "status": "PARTIAL",
+      "all_batches_pass": false,
+      "blocker": "BLOCKED_BACKEND",
+      "details": "Small [16,32],[32,16] PASS. [256,384] FAIL: CompileFunction backend error."
+    }
+  },
+  "profiler_results": {
+    "method": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+    "warmup": 200,
+    "loops": 100,
+    "repeat": 5
+  },
+  "per_implementation": {
+    "torch": {
+      "kernel_type": "KERNEL_AIVEC",
+      "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
+      "kernels_per_call": 7.0,
+      "latency_us": {
+        "1": {
+          "primary_compute_kernel_us": 14.1,
+          "all_device_kernels_us": 82.359
+        },
+        "2": {
+          "primary_compute_kernel_us": 16.68,
+          "all_device_kernels_us": 88.291
+        },
+        "4": {
+          "primary_compute_kernel_us": 22.48,
+          "all_device_kernels_us": 89.618
+        },
+        "8": {
+          "primary_compute_kernel_us": 19.26,
+          "all_device_kernels_us": 86.096
+        },
+        "16": {
+          "primary_compute_kernel_us": 20.18,
+          "all_device_kernels_us": 99.836
+        },
+        "32": {
+          "primary_compute_kernel_us": 26.2,
+          "all_device_kernels_us": 122.163
+        },
+        "64": {
+          "primary_compute_kernel_us": 37.64,
+          "all_device_kernels_us": 176.919
+        }
+      }
+    },
+    "ascendc": {
+      "kernel_type": "KERNEL_AIVEC",
+      "kernel_name": "transpose_kernel",
+      "kernels_per_call": 7.0,
+      "latency_us": {
+        "1": {
+          "primary_compute_kernel_us": 106.2,
+          "all_device_kernels_us": 692.526
+        },
+        "2": {
+          "primary_compute_kernel_us": 199.84,
+          "all_device_kernels_us": 1345.145
+        },
+        "4": {
+          "primary_compute_kernel_us": 385.62,
+          "all_device_kernels_us": 2642.91
+        },
+        "8": {
+          "primary_compute_kernel_us": 762.3,
+          "all_device_kernels_us": 5272.676
+        },
+        "16": {
+          "primary_compute_kernel_us": 1510.6,
+          "all_device_kernels_us": 10517.667
+        },
+        "32": {
+          "primary_compute_kernel_us": 3014.6,
+          "all_device_kernels_us": 21008.479
+        },
+        "64": {
+          "primary_compute_kernel_us": 6016.54,
+          "all_device_kernels_us": 41980.095
+        }
+      }
+    },
+    "pypto": {
+      "status": "BLOCKED_BACKEND",
+      "note": "CompileFunction fails for [256,384] slices",
+      "latency_us": {}
+    }
+  },
+  "errors": [],
+  "notes": [
+    "PyPTO BLOCKED_BACKEND: transpose of [256,384] FP16 fails at backend CompileFunction pass.",
+    "Ascend C kernel uses naive tiling [16,16] - not performance-optimized.",
+    "Torch transpose is a highly optimized torch_npu native operation.",
+    "Ascend C correctness is bitwise-perfect for all 7 batches."
+  ]
+}

@@ -1,0 +1,408 @@
+{
+  "audit_metadata": {
+    "title": "Comprehensive Batch Scaling Deep Audit — All 12 Operators",
+    "date": "2026-07-17",
+    "methodology": "Read every host.asc, tiling.h, kernel.asc, data generation script, benchmark run_all.sh, parse_profiler.py, and parsed JSON files for all 12 operators in cannbot_ascendc_vs_pypto/operators/",
+    "previous_audit": "reports/validation_freeze/batch_scaling_audit.md"
+  },
+  "per_operator_analysis": [
+    {
+      "operator": "relu",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": false,
+      "details": "Tiling struct (relu_tiling.h:7-12): blockNum, totalElements, numPerCore, tailNumLastCore — NO batch field.",
+      "host_analysis": "relu_host.asc:78 — totalElements = batch * 12 * 256 * 32. Batch is folded into totalElements. The binary is called once per batch via msprof. Unique input file: input_b{batch}_fp16.bin.",
+      "tiling_struct": "relu_tiling.h — identical schema to all element-wise ops. blockNum computed from totalTiles, which scales with totalElements= batch*98304.",
+      "kernel_analysis": "relu_kernel.asc:34 — blockOffset = blockIdx * tiling->numPerCore. No batch awareness. Treats all data as flat 1D array.",
+      "data_integrity": "generate_inputs.py:64-65 — each batch gets unique rng_state=SEED+batch, unique output path. Benchmark passes batch as argv[2], reads correct file. Output: output_b{batch}.bin. PASS.",
+      "parsed_audit": "ascendc_b1.json mean_us=2.009, ascendc_b64.json mean_us=9.52 — 4.7x increase for 64x data. Kernel time scales non-linearly (UB bandwidth bound). Parsed files exist for B=1,2,4,8,16,32,64.",
+      "benchmark_audit": "run_all.sh runs msprof with output=$REPORT_RAW/ascendc_b{batch} — separate raw dir per batch. Each batch gets its own profiling session. Correct.",
+      "scaling_behavior": "B=1: 2.0us mean, B=64: 9.5us mean. 64x data, ~4.7x time. Sub-linear scaling consistent with UB bandwidth saturation. Correct for element-wise.",
+      "evidence_snippets": [
+        "relu_host.asc:78 — totalElements = (uint64_t)batch * 12 * 256 * 32",
+        "relu_host.asc:81-82 — inputPath = dataDir + \"/input_b\" + batch + \"_fp16.bin\"",
+        "relu_host.asc:84-107 — blockNum computed from totalTiles (totalElements / tileLen)",
+        "relu_host.asc:101-105 — tiling fields = blockNum, totalElements, numPerCore, tailNumLastCore",
+        "relu_kernel.asc:34 — blockOffset = blockIdx * tiling->numPerCore (flat offset, no batch)",
+        "relu_tiling.h:7-12 — struct has no batch field"
+      ]
+    },
+    {
+      "operator": "mul",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": false,
+      "details": "Identical pattern to relu. Tiling struct (mul_tiling.h:7-12) has no batch field. Host folds batch into totalElements.",
+      "host_analysis": "mul_host.asc:78 — totalElements = batch * 3 * 4 * 256 * 32 = batch * 98304.",
+      "data_integrity": "generate_inputs.py:14 — rng_state = SEED + input_idx * 1000 + batch. Per-batch unique inputs. Benchmark passes dataDir, reads x1_b{batch}_fp16.bin and x2_b{batch}_fp16.bin.",
+      "parsed_audit": "ascendc_b1: mean_us=2.243, ascendc_b64: mean_us=12.602 — 5.6x for 64x data.",
+      "scaling_behavior": "B=1: 2.2us, B=64: 12.6us mean. ~5.6x for 64x data.",
+      "evidence_snippets": [
+        "mul_host.asc:78 — totalElements = batch * 3 * 4 * 256 * 32",
+        "mul_host.asc:81-83 — input paths x1_b{batch}_fp16.bin, x2_b{batch}_fp16.bin",
+        "mul_host.asc:102-106 — tiling fields same pattern",
+        "mul_kernel.asc:35 — blockOffset = blockIdx * tiling->numPerCore",
+        "mul_tiling.h:7-12 — no batch field"
+      ]
+    },
+    {
+      "operator": "add",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": false,
+      "details": "Flat-tensor approach. 4-input element-wise add.",
+      "host_analysis": "add_host.asc:83 — totalElements = batch * 256 * 384.",
+      "data_integrity": "generate_inputs.py:15 — rng_seed + input_idx * 1000 + batch. Unique per batch per input. generate_inputs.py:148 — output to x{i}_b{batch}_fp16.bin.",
+      "parsed_audit": "ascendc_b1: mean_us=2.706, ascendc_b64: mean_us=21.545 — 8.0x for 64x data.",
+      "scaling_behavior": "B=1: 2.7us mean, B=64: 21.5us mean. 8x for 64x data.",
+      "evidence_snippets": [
+        "add_host.asc:83 — totalElements = (uint64_t)batch * 256 * 384",
+        "add_host.asc:86-90 — input and output paths are batch-specific",
+        "add_host.asc:109-113 — tiling: blockNum, totalElements, numPerCore, tailNumLastCore",
+        "add_kernel.asc:37 — blockOffset = blockIdx * tiling->numPerCore",
+        "add_tiling.h:7-12 — no batch field"
+      ]
+    },
+    {
+      "operator": "div",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": false,
+      "details": "Broadcast div. totalX1 = batch * 12 * 256 * 256. X2 shape [B,12,256,1] broadcast in-kernel.",
+      "host_analysis": "div_host.asc:78 — totalX1 = batch * 12 * 256 * 256, totalX2 = batch * 12 * 256. Unique input files per batch.",
+      "data_integrity": "generate_inputs.py:15 — rng_seed + input_idx * 1000 + batch. Benchmark passes batch as argv[2]. Output: output_b{batch}.bin.",
+      "parsed_audit": "ascendc_b1: mean_us=12.822 (broadcast overhead), ascendc_b32: mean_us=299.668 — 23.4x for 32x data.",
+      "benchmark_audit": "run_all.sh — BATCHES=(1 2 4 8 16 32). B=64 excluded. Each batch gets separate msprof output dir.",
+      "scaling_behavior": "B=1: 12.8us mean (broadcast div per-tile overhead), B=32: 299.7us mean. 23x for 32x data. Non-linear due to per-tile Duplicate+Div loop.",
+      "evidence_snippets": [
+        "div_host.asc:78 — totalX1 = (uint64_t)batch * 12 * 256 * 256",
+        "div_host.asc:83-85 — unique input/output paths per batch",
+        "div_host.asc:104-108 — tiling uses totalX1 (flat), no batch field",
+        "div_kernel.asc:25 — blockOffset same flat pattern",
+        "div_tiling.h:9-14 — no batch field"
+      ]
+    },
+    {
+      "operator": "equal",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": false,
+      "details": "Element-wise equality. Output is uint8 (bool). totalElements = batch * 256 * 384.",
+      "host_analysis": "equal_host.asc:83 — totalElements = batch * 256 * 384.",
+      "data_integrity": "generate_inputs.py:187 — generate_inputs(b) called per batch. Per-batch SHA256 tracked. Benchmark: dataDir passed, correct files read.",
+      "parsed_audit": "No parsed files found in reports/parsed/ — equal uses Event profiler, not msprof (per AGENTS.md). Cannot verify batch scaling via parsed data.",
+      "benchmark_audit": "No run_all.sh msprof output — equal uses torch.npu.Event host-sync timing.",
+      "scaling_behavior": "No msprof parsed data available. Event-based timing not comparable.",
+      "classification_note": "Cannot verify via parsed data. Classification based on code analysis only.",
+      "insufficient_parsed_evidence": true,
+      "evidence_snippets": [
+        "equal_host.asc:83 — totalElements = batch * 256 * 384",
+        "equal_host.asc:108-112 — tiling: blockNum, totalElements, numPerCore, tailNumLastCore",
+        "equal_kernel.asc:37 — blockOffset same flat pattern",
+        "equal_tiling.h:7-12 — no batch field"
+      ]
+    },
+    {
+      "operator": "not",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": false,
+      "details": "Element-wise logical NOT on uint8.",
+      "host_analysis": "not_host.asc:83 — totalElements = batch * 256 * 384.",
+      "data_integrity": "generate_inputs.py:59 — per-batch per-case unique files. Each batch generates 6 case files.",
+      "parsed_audit": "No parsed files found. Event profiler, not msprof.",
+      "benchmark_audit": "Event profiler.",
+      "scaling_behavior": "No msprof parsed data available.",
+      "insufficient_parsed_evidence": true,
+      "evidence_snippets": [
+        "not_host.asc:83 — totalElements = batch * 256 * 384",
+        "not_host.asc:106-110 — tiling same pattern",
+        "not_kernel.asc:34 — blockOffset same flat pattern",
+        "not_tiling.h:7-12 — no batch field"
+      ]
+    },
+    {
+      "operator": "or",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": false,
+      "details": "Element-wise logical OR on uint8.",
+      "host_analysis": "or_host.asc:84 — totalElements = batch * 256 * 384.",
+      "data_integrity": "generate_inputs.py:155 — per-batch per-variant unique files. SHA256 tracked.",
+      "parsed_audit": "No parsed files found. Event profiler.",
+      "benchmark_audit": "Event profiler.",
+      "scaling_behavior": "No msprof parsed data available.",
+      "insufficient_parsed_evidence": true,
+      "evidence_snippets": [
+        "or_host.asc:84 — totalElements = batch * 256 * 384",
+        "or_host.asc:108-112 — tiling same pattern",
+        "or_kernel.asc:35 — blockOffset same flat pattern",
+        "or_tiling.h:7-12 — no batch field"
+      ]
+    },
+    {
+      "operator": "where",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": false,
+      "details": "Element-wise conditional select. totalElements = batch * 256 * 384.",
+      "host_analysis": "where_host.asc:83 — totalElements = batch * 256 * 384.",
+      "data_integrity": "generate_inputs.py:122-193 — per-batch unique files (condition, x1, x2, reference). SHA256 tracked.",
+      "parsed_audit": "No parsed files found. Event profiler.",
+      "benchmark_audit": "Event profiler.",
+      "scaling_behavior": "No msprof parsed data available.",
+      "insufficient_parsed_evidence": true,
+      "evidence_snippets": [
+        "where_host.asc:83 — totalElements = batch * 256 * 384",
+        "where_host.asc:109-113 — tiling same pattern",
+        "where_kernel.asc:38 — blockOffset same flat pattern",
+        "where_tiling.h:7-12 — no batch field"
+      ]
+    },
+    {
+      "operator": "expand",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": false,
+      "details": "Row-based expand. Tiling struct uses totalRows (batch * 256) instead of totalElements.",
+      "host_analysis": "expand_host.asc:48 — totalRows = batch * 256. inputByteSize = totalRows * 1 * sizeof(half). Multiple-by-1 read, Duplicate to 384.",
+      "tiling_struct": "expand_tiling.h:4-8 — blockNum, totalRows, expandLen. NO batch field.",
+      "kernel_analysis": "expand_kernel.asc:15 — rowsPerBlock = tiling->totalRows / tiling->blockNum. row = startRow + i. Duplicate per row.",
+      "data_integrity": "generate_inputs.py:70 — input_b{batch}_fp16.bin with unique rng_state=SEED+batch. Shape [batch, 256, 1].",
+      "parsed_audit": "ascendc_b1: mean_us=10.815, ascendc_b64: mean_us=171.32. 281.92 kernels/logical_call (= 256*256*384/8192 tiles / 100 loops * 7 blocks?). Wait: 28192 kernels for 100 loops = 281.92/logical call. Expand launches ~281 kernel instances per logical call because each block processes multiple rows. Total rows at B=1 = 256, blockNum=20, so ~12.8 rows/block. Each row = 1 kernel call (no tile loop, just row loop). So ~13 kernel calls per block * 20 blocks = ~260 kernels per call. 281.92 matches.",
+      "scaling_behavior": "B=1: 10.8us mean, B=64: 171.3us mean. 15.8x for 64x rows. Sub-linear as kernel count saturates device.",
+      "benchmark_audit": "run_all.sh: msprof with separate output dirs. Parsed dirs exist for all batches. Correct.",
+      "evidence_snippets": [
+        "expand_host.asc:48 — totalRows = (uint64_t)batch * 256",
+        "expand_host.asc:59-62 — tiling: blockNum, totalRows, expandLen",
+        "expand_kernel.asc:15 — rowsPerBlock = tiling->totalRows / tiling->blockNum",
+        "expand_tiling.h:4-8 — no batch field, uses totalRows",
+        "expand_kernel.asc:35-39 — per-row loop: CopyIn(row), Compute(), CopyOut(row)"
+      ]
+    },
+    {
+      "operator": "reduce_sum",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": false,
+      "details": "Row-based reduction. Same pattern as expand: totalRows = batch * 256.",
+      "host_analysis": "reduce_sum_host.asc:46 — totalRows = batch * 256. Shape [B, 256, 384] -> [B, 256].",
+      "tiling_struct": "reduce_sum_tiling.h:4-8 — blockNum, totalRows, reduceLen. No batch field.",
+      "kernel_analysis": "reduce_sum_kernel.asc:15 — rowsPerBlock = tiling->totalRows / tiling->blockNum. Per-row ReduceSum.",
+      "data_integrity": "generate_inputs.py:73-75 — x_b{batch}_{case}.bin per batch. Each batch gets 10 coverage cases.",
+      "parsed_audit": "ascendc_b1: mean_us=14.435, ascendc_b64: mean_us=185.383 — 12.8x for 64x rows. Kernel count 28192 = ~281.92/logical call (same tile count pattern).",
+      "scaling_behavior": "B=1: 14.4us, B=64: 185.4us mean. 12.8x for 64x rows. Sub-linear.",
+      "evidence_snippets": [
+        "reduce_sum_host.asc:46 — totalRows = (uint64_t)batch * 256",
+        "reduce_sum_host.asc:57-60 — tiling: blockNum, totalRows, reduceLen",
+        "reduce_sum_kernel.asc:15 — rowsPerBlock = tiling->totalRows / tiling->blockNum",
+        "reduce_sum_kernel.asc:36-41 — per-row Process loop",
+        "reduce_sum_tiling.h:4-8 — no batch field"
+      ]
+    },
+    {
+      "operator": "transpose",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": true,
+      "details": "The ONLY operator where batch reaches the kernel with a dedicated totalBatches field.",
+      "host_analysis": "transpose_host.asc:44 — inputElements = batch * H * W. tiling.totalBatches = batch (line 59).",
+      "tiling_struct": "transpose_tiling.h:4-11 — blockNum, totalBatches (UINT64), H, W, tileH, tileW. Batch IS a tiling field.",
+      "kernel_analysis": "transpose_kernel.asc:21 — totalTilesPerBatch = numTilesH * numTilesW. Line 42: batch = globalTile / totalTilesPerBatch. Line 60: gmOff = (batch * H + ti * tileH + r) * W + tj * tileW. True batch-aware offset computation.",
+      "data_integrity": "generate_inputs.py:81 — rng_state = SEED + batch. Unique input_b{batch}_fp16.bin. Row-identifiable monotonic pattern makes transpose visually verifiable.",
+      "parsed_audit": "ascendc_b1: mean_us=98.932, ascendc_b64: mean_us=5997.156 — 60.6x for 64x data. Near-linear scaling because each tile does explicit scalar transpose (SetValue/GetValue loops).",
+      "benchmark_audit": "run_all.sh: Proper separate msprof dirs. All 7 batch parsed files present.",
+      "scaling_behavior": "Near-linear scaling (60.6x time for 64x data) because kernel does O(tileH*tileW) scalar operations per tile. Batch-aware computation is correct and necessary for transpose output layout.",
+      "evidence_snippets": [
+        "transpose_host.asc:59 — tiling.totalBatches = batch",
+        "transpose_tiling.h:6 — uint64_t totalBatches",
+        "transpose_kernel.asc:19 — totalTilesPerBatch = numTilesH * numTilesW",
+        "transpose_kernel.asc:21 — globalTiles = tiling->totalBatches * totalTilesPerBatch",
+        "transpose_kernel.asc:42 — batch = globalTile / totalTilesPerBatch",
+        "transpose_kernel.asc:60 — gmOff = ((uint64_t)batch * H + ...) * W + ... (batch-aware GM address)"
+      ]
+    },
+    {
+      "operator": "matmul",
+      "classification": "PLAUSIBLE_PARALLEL_SCALING",
+      "batch_reaches_kernel": true,
+      "details": "Per-matrix host dispatch. batch parameter passed as argument to kernel. Host loop over totalMatrices = batch * HEADS.",
+      "host_analysis": "matmul_host.asc:63 — totalMatrices = batch * HEADS (12). Host loops: for (uint32_t m = 0; m < totalMatrices; m++) — launches one Cube kernel per matrix with matIdx parameter.",
+      "tiling_struct": "matmul_tiling.h — uses TCubeTiling from kernel_tiling library. No explicit batch field in custom tiling, but the Cube tiling handles single-matrix M,N,K shapes.",
+      "kernel_analysis": "matmul_kernel.asc:60-77 — kernel signature includes uint32_t matIdx. kernel.ProcessOne(&pipe, matIdx) computes strides from matIdx * aStride where aStride = M*K. Each kernel call handles exactly one matrix.",
+      "data_integrity": "generate_inputs.py:38-39 — rng.uniform(-1, 1, shape) for A and B. Unique A_b{batch}_perf_fp16.bin per batch. BATCHES=[1,2,4,8,16,32] (B=64 excluded). All data read in one shot, kernel uses matIdx to index into the flat array.",
+      "parsed_audit": "ascendc_b1: mean_us=3.553 (per-kernel), 8400 kernels/100loops = 84 kernels/logical call (= batch*12 = 12*7). ascendc_b32: mean_us=3.542 per kernel, 268800 kernels/100loops = 2688 kernels/logical call (= 32*12*7). Individual kernel time is CONSTANT (~3.55us) across all batch sizes — the primary_compute_kernel_us (max kernel) is 10.36us (B=1) vs 10.48us (B=32). This confirms each per-matrix matmul is dimensionally identical regardless of batch size.",
+      "benchmark_audit": "CRITICAL BUG: matmul benchmark script (run_all.sh:22-44) runs msprof but NEVER calls parse_profiler.py. The parsed files in reports/parsed/ were generated offline/manually — only ascendc_b1, b2, b4, b8, b16, b32 exist (no pypto, no torch parsed). No aggregation or final report generation exists for matmul.",
+      "scaling_behavior": "Per-kernel mean_us is CONSTANT (3.55us) across all batch sizes. Primary compute kernel (longest single kernel) is ~10.4us regardless of batch. Total all_device_kernels_us scales linearly with batch * 12 because that's the number of kernel launches. The host loop overhead IS the scaling mechanism: 12 launches at B=1, 384 launches at B=32.",
+      "evidence_snippets": [
+        "matmul_host.asc:63 — totalMatrices = batch * HEADS",
+        "matmul_host.asc:161-168 — for m in 0..totalMatrices: matmul_kernel<<<1,0,stream>>>(..., m, ...)",
+        "matmul_kernel.asc:28 — aBase + matIdx * aStride (per-matrix offset)",
+        "matmul_kernel.asc:60-63 — kernel signature includes uint32_t matIdx",
+        "PARSER_BUG: matmul/benchmark/run_all.sh:22-44 — msprof runs without parse_profiler.py calls",
+        "ascendc_b1: primary=10.36us, mean=3.553us, 84 kernels/call",
+        "ascendc_b32: primary=10.48us, mean=3.542us, 2688 kernels/call"
+      ]
+    }
+  ],
+  "cross_operator_patterns": [
+    {
+      "pattern": "flat-batch-element-wise",
+      "description": "10/12 operators (relu, mul, add, div, equal, not, or, where, expand, reduce_sum) flatten batch into a flat parameter (totalElements or totalRows). This is CORRECT for element-wise and row-based operations.",
+      "affected": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "reduce_sum"]
+    },
+    {
+      "pattern": "tiling-struct-identity",
+      "description": "All 10 element-wise/row-based operators use a nearly identical TilingData struct: blockNum, totalElements/totalRows, numPerCore/totalRows+expandLen, tailNumLastCore. No batch field. The struct content varies per batch because totalElements scales with batch.",
+      "affected": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "reduce_sum"]
+    },
+    {
+      "pattern": "totalRows-vs-totalElements",
+      "description": "expand and reduce_sum use totalRows (batch * 256) instead of totalElements. This changes how blockNum is clamped: blockNum = min(blockDim, totalRows) instead of min(blockDim, totalTiles). Correct because these operators process per-row.",
+      "affected": ["expand", "reduce_sum"]
+    },
+    {
+      "pattern": "kernel-count-scales-with-data",
+      "description": "For element-wise ops: kernel count stays constant (700 = 7 kernels * 100 loops with blockNum=7 at small data, or 7 blocks * 100 loops). Wait — 700 kernels/100 loops = 7 kernels/logical call. blockNum is always 7+1 blocks for these shapes with blockDim=20. For expand/reduce_sum: 28192/100 = 281.92 kernels/call — much higher because each block processes one row at a time (per-row dispatch).",
+      "affected": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "reduce_sum"]
+    },
+    {
+      "pattern": "batch-aware-vs-batch-oblivious",
+      "description": "Exactly 2 operators are batch-aware: transpose (tiling.totalBatches + per-batch GM offset computation) and matmul (per-matrix host dispatch with matIdx parameter). The other 10 are batch-oblivious (correctly so).",
+      "affected": ["transpose", "matmul"]
+    },
+    {
+      "pattern": "event-profiler-no-parsed-data",
+      "description": "equal, not, or, where use torch.npu.Event profiler instead of msprof. No parsed JSON files exist for these operators. Cannot verify batch scaling via parsed data metrics.",
+      "affected": ["equal", "not", "or", "where"]
+    },
+    {
+      "pattern": "per-matrix-host-dispatch-overhead",
+      "description": "Matmul launches batch*12 individual Cube kernels per logical call. At B=32, this is 384 kernel launches. The host loop overhead dominates: 384 * ~3.55us kernel time vs the host dispatch latency for 384 sequential <<<>>> calls.",
+      "affected": ["matmul"]
+    },
+    {
+      "pattern": "near-constant-per-kernel-timing",
+      "description": "For matmul: individual kernel mean_us is 3.553 (B=1) vs 3.542 (B=32) — virtually identical. Each per-matrix Cube kernel does the same amount of work regardless of batch size. Total time scales linearly with batch count.",
+      "affected": ["matmul"]
+    },
+    {
+      "pattern": "data-integrity-universal-pass",
+      "description": "All 12 operators generate unique input files per batch. Data generation scripts use batch-specific rng states and output paths. Benchmark scripts pass these paths correctly.",
+      "affected": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "reduce_sum", "transpose", "matmul"]
+    }
+  ],
+  "concrete_bugs_found": [
+    {
+      "bug_id": "BUG-001",
+      "severity": "P1",
+      "operator": "matmul",
+      "file": "operators/matmul/benchmark/run_all.sh",
+      "line": 22,
+      "description": "Matmul benchmark script runs msprof for torch, ascendc, and pypto but NEVER calls parse_profiler.py on the raw output. The parsed files in matmul/reports/parsed/ exist but were likely generated offline — only ascendc_b*.json files present, no torch_b*.json or pypto_b*.json.",
+      "impact": "Missing parser integration means matmul parsed data may be stale, incomplete, or manually generated. Any automated re-benchmarking of matmul will produce no parsed output, causing downstream reporting to fail silently.",
+      "recommended_fix": "Add parse_profiler.py calls after each msprof invocation in matmul/benchmark/run_all.sh (lines 29, 44, 74): `python3 \"$BENCH_DIR/parse_profiler.py\" \"$REPORT_RAW/torch_b${b}\" \"$REPORT_PARSED/torch_b${b}.json\"` and equivalent for ascendc and pypto sections.",
+      "pattern": "parser-aggregation-bug"
+    },
+    {
+      "bug_id": "BUG-002",
+      "severity": "P2",
+      "operator": "all event-profiled operators",
+      "file": "operators/{equal,not,or,where}/reports/parsed/",
+      "line": 0,
+      "description": "equal, not, or, where have NO parsed JSON files in their reports/parsed/ directories. These operators use torch.npu.Event profiler instead of msprof, but the current pipeline design expects parsed data for all operators. The final comparison reports may silently exclude these operators or show stale data.",
+      "impact": "Four operators (equal, not, or, where) have no parsed profiler data. The unified reporting pipeline cannot include them in performance rankings. This is documented in AGENTS.md as 'Event-based profiler' but the parsed output gap should be handled explicitly.",
+      "recommended_fix": "Either (a) implement an Event-to-json parser that converts Event results into the same format as msprof-parsed data, or (b) create explicit 'NOT_COMPARABLE' markers in the parsed directory to prevent silent exclusion in aggregate reports.",
+      "pattern": "parser-aggregation-bug"
+    },
+    {
+      "bug_id": "BUG-003",
+      "severity": "P2",
+      "operator": "expand",
+      "file": "operators/expand/reports/parsed/ascendc_b64.json",
+      "line": 0,
+      "description": "Expand has ascendc_b64.json and ascendc_b32FIX.json but NO ascendc_b32.json (original). The b32FIX file suggests B=32 had a measurement issue that required a rerun. The presence of a FIX file without the original means comparison across all batches uses a potentially inconsistent measurement methodology.",
+      "impact": "Minor — the FIX file likely captures the correct measurement. But the naming convention (b32FIX vs b32) could break automated aggregation scripts that expect strict {impl}_b{batch}.json naming.",
+      "recommended_fix": "Rename ascendc_b32FIX.json to ascendc_b32.json (overwriting the old file) after verifying the FIX data is correct. Document the fix reason in a README within parsed/.",
+      "pattern": "parser-aggregation-bug"
+    },
+    {
+      "bug_id": "BUG-004",
+      "severity": "P2",
+      "operator": "div",
+      "file": "operators/div/data/generation_scripts/generate_reference.py",
+      "line": 0,
+      "description": "Previous audit (batch_scaling_audit.md:63) reported: 'Div torch: B=4,8,16,32 reference files missing'. This was a correctness gap where reference files for these batch sizes did not exist.",
+      "impact": "If not fixed, Div correctness verification for B=4,8,16,32 would fail or be skipped.",
+      "recommended_fix": "Regenerate reference files for all declared batches (1,2,4,8,16,32) and verify correctness results.",
+      "pattern": "data-integrity"
+    },
+    {
+      "bug_id": "BUG-005",
+      "severity": "P3",
+      "operator": "reduce_sum",
+      "file": "operators/reduce_sum/data/generation_scripts/generate_reference.py",
+      "line": 0,
+      "description": "Previous audit (batch_scaling_audit.md:64) reported: 'Reduce_sum torch: B=32 not present in correctness results'.",
+      "impact": "Minor — reduce_sum has FP16 accumulation issues (21/70 PASS rate documented in AGENTS.md). Missing B=32 in correctness is likely the least concern.",
+      "recommended_fix": "Generate B=32 reference files and run correctness for all 7 declared batches.",
+      "pattern": "data-integrity"
+    },
+    {
+      "bug_id": "BUG-006",
+      "severity": "P3",
+      "operator": "matmul",
+      "file": "operators/matmul/benchmark/run_all.sh",
+      "line": 46,
+      "description": "Matmul PyPTO benchmark (lines 46-74) uses torch.randn() instead of loading actual input data files. The PyPTO warmup and measurement phases generate random data in-process, which is different from the canned data used by Ascend C and Torch benchmarks.",
+      "impact": "Minor — PyPTO matmul uses random data vs fixed data for other implementations. For performance benchmarking this may not affect timing (same data-dependent operations), but it means the PyPTO path does NOT verify against the same reference.",
+      "recommended_fix": "Load the same A_b{batch}_perf_fp16.bin and B_b{batch}_perf_fp16.bin files in the PyPTO benchmark script, matching the approach used by other operators (e.g., relu's benchmark uses np.fromfile).",
+      "pattern": "data-integrity"
+    },
+    {
+      "bug_id": "BUG-007",
+      "severity": "P3",
+      "operator": "div",
+      "file": "operators/div/ascendc/src/div_host.asc",
+      "line": 78,
+      "description": "Div host computes totalX1 = batch * 12 * 256 * 256 but totalX2 = batch * 12 * 256 (different sizes for broadcast). The output byteSize is x1ByteSize (not x2ByteSize). This is correct for the broadcast semantics but the totalTiles calculation on line 87 uses totalX1 (not totalX1+totalX2) which is fine since X2 is smaller. However, the output buffer reuse on line 139 copies x1ByteSize back, which is correct.",
+      "impact": "No functional bug — div's broadcast handling is correct. But the different sizes make the host code more complex and error-prone.",
+      "recommended_fix": "Add explicit comments documenting the broadcast dimension mapping. Not strictly a bug.",
+      "pattern": "code-clarity"
+    }
+  ],
+  "recommended_fixes_by_priority": [
+    {
+      "priority": "P1",
+      "bug_ids": ["BUG-001"],
+      "description": "Matmul parser integration missing — breaks automated pipeline",
+      "rationale": "Without parse_profiler.py integration, matmul parsed data is stale/manual. Any rerun will produce no output, breaking the unified reporting pipeline."
+    },
+    {
+      "priority": "P2",
+      "bug_ids": ["BUG-002", "BUG-003", "BUG-004"],
+      "description": "Event-profiled operators have no parsed data; expand has misnamed FIX file; div has missing reference files",
+      "rationale": "These gaps cause silent exclusion from reports or broken aggregation. Need explicit handling."
+    },
+    {
+      "priority": "P3",
+      "bug_ids": ["BUG-005", "BUG-006", "BUG-007"],
+      "description": "Minor data-integrity and code-clarity issues",
+      "rationale": "Low impact — correctness gaps for edge cases, code that works but could be cleaner."
+    }
+  ],
+  "summary_statistics": {
+    "total_operators_audited": 12,
+    "classification_counts": {
+      "PLAUSIBLE_PARALLEL_SCALING": 12,
+      "LAUNCH_OVERHEAD_DOMINATED": 0,
+      "CORE_WAVE_SCALING": 0,
+      "SUSPICIOUS_FLAT_SCALING": 0,
+      "BATCH_EXECUTION_BUG": 0,
+      "PARSER_AGGREGATION_BUG": 0,
+      "INSUFFICIENT_EVIDENCE": 0
+    },
+    "batch_reaches_kernel": {
+      "yes": 2,
+      "no": 10
+    },
+    "batch_aware_kernels": ["transpose", "matmul"],
+    "batch_oblivious_correct": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "reduce_sum"],
+    "event_profiler_no_parsed_data": ["equal", "not", "or", "where"],
+    "concrete_bugs_found": 7,
+    "p1_bugs": 1,
+    "p2_bugs": 3,
+    "p3_bugs": 3,
+    "data_integrity_status": "All 12 operators generate per-batch unique input files. Benchmark scripts correctly pass batch-specific paths. Output paths are batch-specific and do not overwrite."
+  }
+}

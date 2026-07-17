@@ -1,0 +1,65 @@
+{
+  "project": "cannbot_ascendc_vs_pypto",
+  "phase": "rc2",
+  "started_at": "2026-07-17T00:00:00Z",
+  "previous_release": "1.1-rc1",
+  "phase_status": {
+    "phase_0_initialization": "completed",
+    "phase_1_completeness": "in_progress",
+    "phase_2_pypto_fixes": "completed",
+    "phase_3_ascendc_perf": "completed",
+    "phase_4_unified_release": "in_progress"
+  },
+  "phase_0": {
+    "rc2_state_created": true,
+    "npu_queue_setup": true,
+    "operator_scan_complete": true,
+    "issue_register_empty": true,
+    "candidate_register_empty": true,
+    "permission_deferred_empty": true
+  },
+  "phase_1": {
+    "logical_msprof": "pending_npu",
+    "batch_scaling_audit": "completed",
+    "parser_traceability": "completed",
+    "skill_trace": "completed",
+    "sha256": "completed"
+  },
+  "phase_2": {
+    "matmul_minimal_sample": "completed",
+    "matmul_version_matrix": "completed",
+    "div_equivalent": "completed",
+    "where_select_cast": "completed",
+    "transpose_tile_graph": "completed",
+    "equal_representation": "completed"
+  },
+  "phase_3": {
+    "transpose_vectorize": "completed",
+    "transpose_recorrectness": "completed",
+    "transpose_remsprof": "completed"
+  },
+  "phase_4": {
+    "parsed": "completed",
+    "final_comparison": "completed",
+    "current_release": "completed",
+    "dashboard": "completed",
+    "readme": "completed"
+  },
+  "release_version": "1.2-rc2",
+  "release_artifacts": {
+    "reports/final/final_comparison.md": "updated",
+    "reports/release/current_release.json": "updated",
+    "dashboard/dashboard.json": "updated",
+    "reports/operator_summary.json": "updated",
+    "reports/operator_summary.md": "updated",
+    "reports/release/limitation_matrix.json": "updated",
+    "reports/release/limitation_matrix.md": "updated",
+    "operators/div/README.md": "updated (PyPTO UNBLOCKED RC-2)",
+    "operators/equal/README.md": "updated (PyPTO UNBLOCKED RC-2)",
+    "operators/matmul/README.md": "updated (PyPTO UNBLOCKED RC-2)",
+    "operators/transpose/README.md": "updated (PyPTO UNBLOCKED RC-2 + AscendC perf)",
+    "operators/where/README.md": "updated (PyPTO UNBLOCKED RC-2)",
+    "RELEASE_CHANGELOG.md": "updated"
+  },
+  "last_updated": "2026-07-17T23:00:00Z"
+}

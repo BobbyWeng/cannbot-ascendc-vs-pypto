@@ -1,0 +1,17 @@
+{
+  "results": [
+    {
+      "test": "smoke_2d",
+      "status": "PASS"
+    },
+    {
+      "test": "shape_gate_2d",
+      "status": "PASS"
+    },
+    {
+      "test": "shape_gate_3d",
+      "status": "PASS"
+    }
+  ],
+  "all_pass": true
+}

@@ -1,0 +1,264 @@
+{
+  "audit_metadata": {
+    "date": "2026-07-17",
+    "scope": "cannbot_ascendc_vs_pypto comprehensive parser traceability audit",
+    "method": "CPU-only file audit: parser code analysis, parsed JSON cross-reference, raw data inspection, benchmark script review, final report verification",
+    "operators_audited": 11,
+    "parsed_files_checked": 170,
+    "raw_directories_inspected": 108,
+    "benchmark_scripts_reviewed": 12,
+    "final_reports_cross_referenced": 6
+  },
+  "parser_audit": {
+    "file": "common/profiler/parse_profiler.py",
+    "lines": 145,
+    "bugs": [
+      {
+        "id": "BUG-1",
+        "severity": "high",
+        "title": "primary_compute_kernel_us = max single kernel across ALL iterations, not per-call",
+        "location": "line 61",
+        "detail": "Selects max dur from all kernel events in all 100 iterations. This is the absolute worst-case kernel from the entire profiling session, not a representative per-call metric.",
+        "impact": "Value is inflated by any outlier iteration with a long single kernel."
+      },
+      {
+        "id": "BUG-2",
+        "severity": "critical",
+        "title": "No per-call primary compute kernel metric",
+        "location": "lines 72-94",
+        "detail": "The parser computes kernel_type_breakdown[X]['per_call_us'] = total_us / loops, which is the SUM of all kernel events of that type per call, not the primary (max) kernel duration. There is no field for primary_compute_kernel_us / loops.",
+        "impact": "Final reports for add incorrectly use per_call_us as the primary_compute_kernel_us for PyPTO (136.03 vs 132.123 for b1)."
+      },
+      {
+        "id": "BUG-3",
+        "severity": "high",
+        "title": "No raw statistics (min, median, P90, std, CV) from msprof trace",
+        "location": "lines 72-94",
+        "detail": "Only mean_us is extracted per kernel type. No distribution statistics. This contrasts with the host-side Ascend C benchmark binary which outputs median/min/p90/std/CV.",
+        "impact": "Cannot assess kernel duration variance from msprof parsed data."
+      },
+      {
+        "id": "BUG-4",
+        "severity": "medium",
+        "title": "kernels_per_logical_call = total_kernels / loops — includes AICPU events",
+        "location": "line 69",
+        "detail": "The denominator is all kernel events including AICPU executor events. For PyPTO with 2 AICPU + 1 MIX_AIC per call, this gives 3.01, which includes non-compute executors.",
+        "impact": "Misleading for compute kernel comparison."
+      },
+      {
+        "id": "BUG-5",
+        "severity": "low",
+        "title": "AICPU filtering via substring check",
+        "location": "line 59",
+        "detail": "'AICPU' not in e['type'] — substring match. A kernel named 'KERNEL_MY_AICPU_CUSTOM' would be misclassified as AICPU.",
+        "impact": "Low risk with current kernel naming, but fragile."
+      },
+      {
+        "id": "BUG-6",
+        "severity": "medium",
+        "title": "AICPU-only fallback selects executor as primary compute",
+        "location": "lines 62-63",
+        "detail": "If all kernel events are AICPU (no compute kernels found), the max AICPU executor becomes the 'primary compute kernel.'",
+        "impact": "Would silently misrepresent the compute kernel. Verify CONFIRMED in expand pypto parsed data."
+      },
+      {
+        "id": "BUG-7",
+        "severity": "critical",
+        "title": "No provenance tracking (source hash, raw dir hash, parser version)",
+        "location": "lines 72-101",
+        "detail": "The parser output contains no fields identifying: which PROF_* directory was parsed, the SHA256 of the raw msprof JSON, the SHA256 of the kernel binary, or the parser version.",
+        "impact": "ZERO traceability from parsed data back to the source binary. Cannot verify which profiling run produced the data."
+      },
+      {
+        "id": "BUG-8",
+        "severity": "high",
+        "title": "--loops parameter is caller-trusted with no validation",
+        "location": "line 111, 69-70",
+        "detail": "Default loops=100. The caller passes this value. If the caller is wrong (e.g., profiled 50 iterations but passes --loops 100), all per-call metrics are off by 2x. No cross-check against kernel_count.",
+        "impact": "Silent data corruption if the parameter is wrong."
+      },
+      {
+        "id": "BUG-9",
+        "severity": "low",
+        "title": "Mult-kernel operators: single primary_compute_kernel_us hides second kernel type",
+        "location": "lines 58-63",
+        "detail": "Only the single max kernel event is reported as primary. For multi-kernel operators where a second kernel type contributes significant total time, this is misleading.",
+        "impact": "Partial picture for multi-kernel operators."
+      }
+    ],
+    "functionality": {
+      "find_prof_dir": "Picks first PROF_* directory in reverse sorted order (most recent). Correct.",
+      "find_task_time_csv": "Searches for task_time*.csv. Never actually used by parse_profiler.py. Dead code.",
+      "find_trace_file": "Searches for msprof_*.json. Correctly finds the Chrome trace file.",
+      "parse_trace_json": "Parses Chrome trace format. Filters for ph='X' (complete events). Uses Task Type arg for kernel classification.",
+      "aggregate_device_kernels": "In profiler_utils.py. Alternative parser that operates on raw event lists. Has logical_call_marker filtering. Not used by parse_profiler.py."
+    }
+  },
+  "operator_data_audit": {
+    "msprof_ops_with_parsed_data": {
+      "relu": {
+        "torch": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"},
+        "ascendc": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"},
+        "pypto": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"}
+      },
+      "mul": {
+        "torch": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"},
+        "ascendc": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"},
+        "pypto": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"}
+      },
+      "add": {
+        "torch": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"},
+        "ascendc": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"},
+        "pypto": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"}
+      },
+      "div": {
+        "torch": {"batches": [1,2,4,8,16,32], "parsed_count": 6, "raw_dirs": 6, "source_hash": "NONE"},
+        "ascendc": {"batches": [1,2,4,8,16,32], "parsed_count": 6, "raw_dirs": 6, "source_hash": "NONE"},
+        "pypto": {"batches": [], "parsed_count": 0, "raw_dirs": 0, "source_hash": "NONE", "note": "BLOCKED_BACKEND — no PyPTO impl"}
+      },
+      "expand": {
+        "torch": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"},
+        "ascendc": {"batches": [1,2,4,8,16,32,64], "parsed_count": 8, "raw_dirs": 8, "source_hash": "NONE", "note": "Includes b32FIX (re-run after b32 failed with 'no kernel events') and aggregate.json (old format)"},
+        "pypto": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"}
+      },
+      "transpose": {
+        "torch": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"},
+        "ascendc": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"},
+        "pypto": {"batches": [], "parsed_count": 0, "raw_dirs": 0, "source_hash": "NONE", "note": "BLOCKED_BACKEND — no PyPTO impl"}
+      },
+      "matmul": {
+        "torch": {"batches": [1,2,4,8,16,32], "parsed_count": 6, "raw_dirs": 6, "source_hash": "NONE"},
+        "ascendc": {"batches": [1,2,4,8,16,32], "parsed_count": 6, "raw_dirs": 6, "source_hash": "NONE"},
+        "pypto": {"batches": [], "parsed_count": 0, "raw_dirs": 0, "source_hash": "NONE", "note": "BLOCKED_BACKEND — no PyPTO impl"}
+      },
+      "reduce_sum": {
+        "torch": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE", "note": "b32 has 'no kernel events' in parsed"},
+        "ascendc": {"batches": [1,2,4,8,16,32,64], "parsed_count": 7, "raw_dirs": 7, "source_hash": "NONE"},
+        "pypto": {"batches": [], "parsed_count": 0, "raw_dirs": 0, "source_hash": "NONE", "note": "PyPTO impl exists but no profiler data"}
+      }
+    },
+    "event_only_ops_no_parsed_data": {
+      "not": {
+        "status": "Has raw result.json (torch/ascendc/pypto x 7 batches each), NO parsed directory",
+        "final_report": "final_comparison.json exists with all 7 batches",
+        "measurement_method": "torch.npu.Event host-sync (NOT msprof)",
+        "traceability": "FINAL report values match raw result.json values. PASS traceability but NOT comparable with msprof ops."
+      },
+      "or": {
+        "status": "Has raw result.json (torch only? b1 was found), NO parsed directory",
+        "measurement_method": "torch.npu.Event host-sync (NOT msprof)",
+        "traceability": "Raw result.json exists for torch only. No parsed JSON."
+      },
+      "equal": {
+        "status": "Has raw result.json (torch only), NO parsed directory",
+        "measurement_method": "torch.npu.Event host-sync (NOT msprof)",
+        "traceability": "Raw result.json exists for torch only. No parsed JSON."
+      },
+      "where": {
+        "status": "Has raw result.json (torch only), NO parsed directory",
+        "measurement_method": "torch.npu.Event host-sync (NOT msprof)",
+        "traceability": "Raw result.json exists for torch only. No parsed JSON."
+      }
+    },
+    "missing_fields_across_all_parsed": {
+      "source_hash": "NONE in 100% of parsed files",
+      "binary_hash": "NONE in 100% of parsed files",
+      "raw_msprof_dir": "NONE in 100% of parsed files",
+      "parser_version": "NONE in 100% of parsed files",
+      "per_iteration_min_us": "NONE in 100% of parsed files",
+      "per_iteration_median_us": "NONE in 100% of parsed files",
+      "per_iteration_p90_us": "NONE in 100% of parsed files",
+      "per_iteration_std_us": "NONE in 100% of parsed files",
+      "per_iteration_cv": "NONE in 100% of parsed files"
+    },
+    "old_format_files": {
+      "expand/aggregate.json": "Uses by_type (not kernel_type_breakdown), kernels_per_call (not kernels_per_logical_call), primary_compute_type (not primary_kernel_type), all_device_kernels_us (not _per_call). Contains host_events_count",
+      "transpose/aggregate.json": "Same old format",
+      "expand/ascendc_b32FIX.json": "Intermediate format: missing logical_calls, has host_events_count and by_type but uses primary_compute_kernel_us field name"
+    }
+  },
+  "final_report_cross_validation": {
+    "add": {
+      "torch": {"traceability": "PASS", "detail": "final['primary_compute_kernel_us'] == parsed['primary_compute_kernel_us'] for all 7 batches"},
+      "ascendc": {"traceability": "PASS", "detail": "final['primary_compute_kernel_us'] == parsed['primary_compute_kernel_us'] for all 7 batches"},
+      "pypto": {"traceability": "FAIL", "detail": "final['primary_compute_kernel_us'] == parsed['kernel_type_breakdown']['KERNEL_MIX_AIC']['per_call_us'] (WRONG FIELD — should be primary_compute_kernel_us)"}
+    },
+    "mul": {
+      "torch": {"traceability": "FAIL", "detail": "ALL 7 batches: final values (e.g. 3.876) do not match parsed['primary_compute_kernel_us'] (9.0), parsed['kernel_type_breakdown']['KERNEL_AIVEC']['mean_us'] (2.768), or parsed['kernel_type_breakdown']['KERNEL_AIVEC']['per_call_us'] (19.378). UNTRACEABLE. Ratio: final=3.876 vs per_call=19.378 = 1/5. Generated by unknown parser."},
+      "ascendc": {"traceability": "FAIL", "detail": "Same issue. final=3.14 vs parsed['primary_compute_kernel_us']=11.16. Final is ~1/3.55 of parsed primary."},
+      "pypto": {"traceability": "FAIL", "detail": "final=57.703 vs parsed['primary_compute_kernel_us']=221.724. Final is ~1/3.84 of parsed primary. UNTRACEABLE."}
+    },
+    "relu": {
+      "torch": {"traceability": "FAIL", "detail": "final=2.635 vs parsed['primary_compute_kernel_us']=10.08. UNTRACEABLE."},
+      "ascendc": {"traceability": "FAIL", "detail": "final=2.142 vs parsed['primary_compute_kernel_us']=9.5. UNTRACEABLE."},
+      "pypto": {"traceability": "FAIL", "detail": "final=51.887 vs parsed['primary_compute_kernel_us']=106.622. UNTRACEABLE."}
+    },
+    "not": {
+      "all": {"traceability": "PASS", "detail": "Event-based. final report values match raw result.json values directly."}
+    }
+  },
+  "benchmark_script_audit": {
+    "torch_benchmark_scripts": {
+      "pattern": "Use torch.npu.Event for timing, NOT msprof",
+      "save_path": "{op}/torch/benchmark_results.json (NOT reports/raw/)",
+      "profiler_integration": "NONE — scripts do not invoke msprof or parse_profiler.py",
+      "discrepancy": "These are a SEPARATE measurement pipeline from the msprof-based reports/parsed data"
+    },
+    "run_profiler.py": {
+      "torch_integration": "Generates and runs inline Python scripts with msprof (for arithmetic ops) or Event timing (for logical ops)",
+      "ascendc_integration": "Runs compiled binary direct, parses RESULT line from stdout",
+      "pypto_integration": "Only supports 'not' and 'or' — inline Event-based scripts",
+      "parse_profiler_invocation": "NEVER calls parse_profiler.py. Parsing done separately/manually.",
+      "output_path": "Saves result.json to {op}/reports/raw/{impl}_b{batch}/ (msprof ops) or reports/raw/{impl}/b{batch}/ (Event ops)"
+    },
+    "path_inconsistencies": {
+      "msprof_ops": "reports/raw/{impl}_b{batch}/PROF_*/mindstudio_profiler_output/msprof_*.json",
+      "event_ops": "reports/raw/{impl}/b{batch}/result.json",
+      "parsed_output": "reports/parsed/{impl}_b{batch}.json (both types)"
+    }
+  },
+  "traceability_csv": [
+    {"metric_name": "primary_compute_kernel_us", "value": 10.08, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/parsed/torch_b1.json", "raw_source": "operators/relu/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 9.5, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/parsed/ascendc_b1.json", "raw_source": "operators/relu/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 106.622, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/parsed/pypto_b1.json", "raw_source": "operators/relu/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 9.0, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/mul/reports/parsed/torch_b1.json", "raw_source": "operators/mul/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 11.16, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/mul/reports/parsed/ascendc_b1.json", "raw_source": "operators/mul/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 221.724, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/mul/reports/parsed/pypto_b1.json", "raw_source": "operators/mul/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 10.04, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/add/reports/parsed/torch_b1.json", "raw_source": "operators/add/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 13.78, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/add/reports/parsed/ascendc_b1.json", "raw_source": "operators/add/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 132.123, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/add/reports/parsed/pypto_b1.json", "raw_source": "operators/add/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 18.64, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/div/reports/parsed/ascendc_b1.json", "raw_source": "operators/div/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 21.8, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/div/reports/parsed/torch_b1.json", "raw_source": "operators/div/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 10.36, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/matmul/reports/parsed/ascendc_b1.json", "raw_source": "operators/matmul/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 12.22, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/matmul/reports/parsed/torch_b1.json", "raw_source": "operators/matmul/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 15.04, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/expand/reports/parsed/ascendc_b1.json", "raw_source": "operators/expand/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 13.02, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/expand/reports/parsed/torch_b1.json", "raw_source": "operators/expand/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 110.3, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/expand/reports/parsed/pypto_b1.json", "raw_source": "operators/expand/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 106.2, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/transpose/reports/parsed/ascendc_b1.json", "raw_source": "operators/transpose/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 14.1, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/transpose/reports/parsed/torch_b1.json", "raw_source": "operators/transpose/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 15.96, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/reduce_sum/reports/parsed/torch_b1.json", "raw_source": "operators/reduce_sum/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "primary_compute_kernel_us", "value": 19.28, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/reduce_sum/reports/parsed/ascendc_b1.json", "raw_source": "operators/reduce_sum/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "final_report_primary_compute_kernel_us", "value": 2.635, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/final/final_comparison.json", "raw_source": "UNTRACEABLE", "parser_version": "unknown", "source_hash": null, "binary_hash": null, "verified": "FAIL"},
+    {"metric_name": "final_report_primary_compute_kernel_us", "value": 2.142, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/final/final_comparison.json", "raw_source": "UNTRACEABLE", "parser_version": "unknown", "source_hash": null, "binary_hash": null, "verified": "FAIL"},
+    {"metric_name": "final_report_primary_compute_kernel_us", "value": 51.887, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/final/final_comparison.json", "raw_source": "UNTRACEABLE", "parser_version": "unknown", "source_hash": null, "binary_hash": null, "verified": "FAIL"},
+    {"metric_name": "final_report_primary_compute_kernel_us", "value": 3.876, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/mul/reports/final/final_comparison.json", "raw_source": "UNTRACEABLE", "parser_version": "unknown", "source_hash": null, "binary_hash": null, "verified": "FAIL"},
+    {"metric_name": "final_report_primary_compute_kernel_us", "value": 3.14, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/mul/reports/final/final_comparison.json", "raw_source": "UNTRACEABLE", "parser_version": "unknown", "source_hash": null, "binary_hash": null, "verified": "FAIL"},
+    {"metric_name": "final_report_primary_compute_kernel_us", "value": 57.703, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/mul/reports/final/final_comparison.json", "raw_source": "UNTRACEABLE", "parser_version": "unknown", "source_hash": null, "binary_hash": null, "verified": "FAIL"},
+    {"metric_name": "final_report_primary_compute_kernel_us", "value": 10.04, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/add/reports/final/final_comparison.json", "raw_source": "operators/add/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "final_report_primary_compute_kernel_us", "value": 13.78, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/add/reports/final/final_comparison.json", "raw_source": "operators/add/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "final_report_primary_compute_kernel_us", "value": 136.03, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/add/reports/final/final_comparison.json", "raw_source": "operators/add/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "FIELD_MISMATCH"},
+    {"metric_name": "kernels_per_logical_call", "value": 7.0, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/parsed/torch_b1.json", "raw_source": "operators/relu/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "kernels_per_logical_call", "value": 7.0, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/parsed/ascendc_b1.json", "raw_source": "operators/relu/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "kernels_per_logical_call", "value": 3.01, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/parsed/pypto_b1.json", "raw_source": "operators/relu/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "all_device_kernels_us_per_call", "value": 18.352, "batch": 1, "implementation": "torch", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/parsed/torch_b1.json", "raw_source": "operators/relu/reports/raw/torch_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "all_device_kernels_us_per_call", "value": 14.063, "batch": 1, "implementation": "ascendc", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/parsed/ascendc_b1.json", "raw_source": "operators/relu/reports/raw/ascendc_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "all_device_kernels_us_per_call", "value": 190.668, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/parsed/pypto_b1.json", "raw_source": "operators/relu/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "aicpu_executor_us_per_call", "value": 139.54, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/relu/reports/parsed/pypto_b1.json", "raw_source": "operators/relu/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "aicpu_executor_us_per_call", "value": 150.523, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/mul/reports/parsed/pypto_b1.json", "raw_source": "operators/mul/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "aicpu_executor_us_per_call", "value": 326.871, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/add/reports/parsed/pypto_b1.json", "raw_source": "operators/add/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "aicpu_executor_us_per_call", "value": 26890.98, "batch": 1, "implementation": "pypto", "measurement_level": "device_kernel", "parsed_source": "operators/expand/reports/parsed/pypto_b1.json", "raw_source": "operators/expand/reports/raw/pypto_b1/PROF_*", "parser_version": "current", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "median_us", "value": 6.4, "batch": 1, "implementation": "ascendc", "measurement_level": "host_event", "parsed_source": "operators/not/reports/raw/ascendc/b1/result.json", "raw_source": null, "parser_version": "none", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "median_us", "value": 127.53, "batch": 1, "implementation": "torch", "measurement_level": "host_event", "parsed_source": "operators/not/reports/raw/torch/b1/result.json", "raw_source": null, "parser_version": "none", "source_hash": null, "binary_hash": null, "verified": "PASS"},
+    {"metric_name": "median_us", "value": 136.57, "batch": 1, "implementation": "pypto", "measurement_level": "host_event", "parsed_source": "operators/not/reports/raw/pypto/b1/result.json", "raw_source": null, "parser_version": "none", "source_hash": null, "binary_hash": null, "verified": "PASS"}
+  ]
+}

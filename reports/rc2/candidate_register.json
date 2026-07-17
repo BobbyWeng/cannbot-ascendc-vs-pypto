@@ -1,0 +1,4 @@
+{
+  "description": "Register of all candidates attempted during RC-2 fixes. Each candidate links to operators/<op>/pypto/diagnostics/candidate_<id>/",
+  "candidates": []
+}

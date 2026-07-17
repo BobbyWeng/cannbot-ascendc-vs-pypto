@@ -1,0 +1,7 @@
+{
+  "description": "NPU serialization queue. Only one task runs at a time via scripts/run_with_npu_lock.sh",
+  "queue": [],
+  "completed": [],
+  "failed": [],
+  "active": null
+}

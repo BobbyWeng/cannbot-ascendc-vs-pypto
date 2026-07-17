@@ -1,5 +1,42 @@
 # Release Changelog
 
+## v1.2-rc2 (2026-07-17)
+
+### PyPTO Unblocked — RC-2
+
+| Operator | RC-1 Status | RC-2 Status | Root Cause | Workaround |
+|----------|-------------|-------------|-----------|------------|
+| **matmul** | BLOCKED_BACKEND | **UNBLOCKED** | Cube tiling FC4000 invalid tile values | `set_cube_tile_shapes([16,32],[16,32],[16,32])` |
+| **div** | BLOCKED_BACKEND (P0) | **UNBLOCKED** | tile_shape(1024,2048) too large | Changed to (128,1024) |
+| **where** | BLOCKED_BACKEND | **UNBLOCKED** | uint8 condition → ExpandFunction bug | Convert uint8→bool in wrapper |
+| **transpose** | BLOCKED_BACKEND | **UNBLOCKED** | tile_shape(128,1024) too large | Changed to (64,256) |
+| **equal** | BLOCKED_BACKEND | **UNBLOCKED** | DT_FP16 output + ta>64 for BOOL | DT_BOOL output + ta≤64 |
+
+### Ascend C Perf — RC-2
+
+| Operator | Change | Improvement |
+|----------|--------|-------------|
+| **transpose** | Tile size 32×32 + double buffering | ~13-18% across all batches |
+
+### Phase 1 Completeness
+
+| Area | Status |
+|------|--------|
+| Batch scaling audit | ✅ All 12 operators classified PLAUSIBLE_PARALLEL_SCALING |
+| Parser traceability | ⚠️ 9 bugs identified (needs per-iteration stats and provenance) |
+| Skill Trace | ✅ All 24 route-instances documented (LEGACY_UNVERIFIED_SKILL_USAGE) |
+| SHA256SUMS | ✅ All 12 operators have valid SHA256SUMS (8 were fixed) |
+
+### Known Limitations (RC-2)
+
+| Operator | Route | Severity | Description |
+|----------|-------|:--------:|-------------|
+| or | PyPTO | P1 | Uses bitwise_or, no logical_or API |
+| reduce_sum | all | P1 | FP16 accum precision > atol=0.01 |
+| matmul | PyPTO | P2 | max_abs 0.015-0.031 (FP16 accum) |
+| expand | PyPTO | P2 | AICPU dispatch ~3000 us |
+| add | PyPTO | P2 | Correctness B=2..64 not persisted |
+
 ## v1.1 (2026-07-16)
 
 ### Status Changes

@@ -1,0 +1,244 @@
+{
+  "results": [
+    {
+      "operator": "reduce_sum",
+      "variant": "torch",
+      "batch": 1,
+      "case": "random_finite",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "output_shape": [
+        1,
+        256
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 16.430599689483643,
+        "mean_us": 16.459919929504395,
+        "min_us": 16.2090003490448,
+        "max_us": 16.938799619674683,
+        "p90_us": 16.938799619674683,
+        "std_us": 0.2586851762865842,
+        "cv": 0.01571606529038402
+      },
+      "input_bytes": 196608,
+      "output_bytes": 512,
+      "total_bytes": 197120
+    },
+    {
+      "operator": "reduce_sum",
+      "variant": "torch",
+      "batch": 2,
+      "case": "random_finite",
+      "shape": [
+        2,
+        256,
+        384
+      ],
+      "output_shape": [
+        2,
+        256
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 16.032400131225586,
+        "mean_us": 16.1041202545166,
+        "min_us": 15.870000123977661,
+        "max_us": 16.481800079345703,
+        "p90_us": 16.481800079345703,
+        "std_us": 0.21011282406554546,
+        "cv": 0.013047146987530516
+      },
+      "input_bytes": 393216,
+      "output_bytes": 1024,
+      "total_bytes": 394240
+    },
+    {
+      "operator": "reduce_sum",
+      "variant": "torch",
+      "batch": 4,
+      "case": "random_finite",
+      "shape": [
+        4,
+        256,
+        384
+      ],
+      "output_shape": [
+        4,
+        256
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 16.211999654769897,
+        "mean_us": 16.163919925689697,
+        "min_us": 15.989799499511719,
+        "max_us": 16.361000537872314,
+        "p90_us": 16.361000537872314,
+        "std_us": 0.14647591379753258,
+        "cv": 0.009061905433269004
+      },
+      "input_bytes": 786432,
+      "output_bytes": 2048,
+      "total_bytes": 788480
+    },
+    {
+      "operator": "reduce_sum",
+      "variant": "torch",
+      "batch": 8,
+      "case": "random_finite",
+      "shape": [
+        8,
+        256,
+        384
+      ],
+      "output_shape": [
+        8,
+        256
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 16.330000162124634,
+        "mean_us": 16.153679847717285,
+        "min_us": 15.846799612045288,
+        "max_us": 16.37660026550293,
+        "p90_us": 16.37660026550293,
+        "std_us": 0.2496516766057505,
+        "cv": 0.015454786708616698
+      },
+      "input_bytes": 1572864,
+      "output_bytes": 4096,
+      "total_bytes": 1576960
+    },
+    {
+      "operator": "reduce_sum",
+      "variant": "torch",
+      "batch": 16,
+      "case": "random_finite",
+      "shape": [
+        16,
+        256,
+        384
+      ],
+      "output_shape": [
+        16,
+        256
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 16.498600244522095,
+        "mean_us": 16.685680150985718,
+        "min_us": 16.45140051841736,
+        "max_us": 17.03279972076416,
+        "p90_us": 17.03279972076416,
+        "std_us": 0.2658465354703063,
+        "cv": 0.01593261605548643
+      },
+      "input_bytes": 3145728,
+      "output_bytes": 8192,
+      "total_bytes": 3153920
+    },
+    {
+      "operator": "reduce_sum",
+      "variant": "torch",
+      "batch": 32,
+      "case": "random_finite",
+      "shape": [
+        32,
+        256,
+        384
+      ],
+      "output_shape": [
+        32,
+        256
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 15.902600288391113,
+        "mean_us": 15.839959859848022,
+        "min_us": 15.145599842071533,
+        "max_us": 16.252399682998657,
+        "p90_us": 16.252399682998657,
+        "std_us": 0.37042766829849316,
+        "cv": 0.02338564438142757
+      },
+      "input_bytes": 6291456,
+      "output_bytes": 16384,
+      "total_bytes": 6307840
+    },
+    {
+      "operator": "reduce_sum",
+      "variant": "torch",
+      "batch": 64,
+      "case": "random_finite",
+      "shape": [
+        64,
+        256,
+        384
+      ],
+      "output_shape": [
+        64,
+        256
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 16.20919942855835,
+        "mean_us": 16.224720001220703,
+        "min_us": 15.95080018043518,
+        "max_us": 16.583399772644043,
+        "p90_us": 16.583399772644043,
+        "std_us": 0.22880813837014224,
+        "cv": 0.014102439878957995
+      },
+      "input_bytes": 12582912,
+      "output_bytes": 32768,
+      "total_bytes": 12615680
+    }
+  ],
+  "framework": "torch",
+  "operator": "reduce_sum"
+}

@@ -1,0 +1,146 @@
+# Gate Contract — Canonical Gate Definitions
+# Each gate has an ID, description, check method, and failure action.
+# tools/check_gate.py reads this file to verify gate state.
+
+gates:
+  - id: G0
+    name: Environment
+    description: "NPU device available, CANN installed, compiler ready"
+    check: "environment/preflight.sh exits 0"
+    failure_action: "BLOCKED_ENVIRONMENT"
+    failure_message: "Environment not ready. Run ascendc-env-check first."
+    order: 0
+
+  - id: G1
+    name: Classification
+    description: "Task classification complete (backend route, hardware path, task mode, lifecycle stage)"
+    check: "reports/runtime/task_context.json exists and contains all 4 classification fields"
+    failure_action: "HALT"
+    failure_message: "Task must be classified before any work proceeds. Create task_context.json."
+    order: 1
+
+  - id: G2
+    name: Plugin/Skill Loaded
+    description: "Required plugin loaded, required skills loaded per skill_routing.yaml"
+    check: "verify_cannbot_usage.py --stage plugin_load"
+    failure_action: "HALT"
+    failure_message: "Required plugin or skill not loaded. Check skill_routing.yaml matching rules."
+    order: 2
+
+  - id: G3
+    name: Spec
+    description: "Operator spec exists and is complete"
+    check: "SPEC.yaml exists with operator_name, inputs, outputs, shape_constraints, precision_requirements"
+    failure_action: "RETRY_STAGE"
+    failure_message: "Spec incomplete. Missing required fields."
+    order: 3
+
+  - id: G4
+    name: API Evidence
+    description: "API feasibility explored and documented"
+    check: "API_REPORT.md or equivalent exists with API mapping, constraints, feasibility decision"
+    failure_action: "RETRY_STAGE"
+    failure_message: "API evidence missing. Explore available APIs first."
+    order: 4
+
+  - id: G5
+    name: Golden/Data
+    description: "Golden reference and test data exist"
+    check: "Golden reference runs successfully; data directory populated"
+    failure_action: "RETRY_STAGE"
+    failure_message: "Golden reference or test data missing/invalid."
+    order: 5
+
+  - id: G6
+    name: Design Review
+    description: "Design reviewed and approved"
+    check: "DESIGN.md exists with API mapping, tiling strategy, loop structure, risks"
+    failure_action: "RETRY_STAGE"
+    failure_message: "Design incomplete or not reviewed."
+    order: 6
+
+  - id: G7
+    name: Build/JIT
+    description: "Kernel builds or JIT compiles successfully"
+    check: "Build exit code 0 (Ascend C) or no CompileFunction error (PyPTO)"
+    failure_action: "RETRY_OR_BLOCKED"
+    failure_message: "Build/JIT failed. See build output for details."
+    order: 7
+
+  - id: G8
+    name: Correctness
+    description: "Functional correctness verified"
+    check: "All test batches pass within spec-defined tolerance"
+    failure_action: "BLOCKED_ACCURACY"
+    failure_message: "Correctness failed. Cannot proceed to profiling."
+    order: 8
+    overridable: false  # correctness is NEVER overridable
+
+  - id: G9
+    name: Precision
+    description: "Precision meets spec-defined tolerance"
+    check: "Precision report shows PASS for all dtype/shape combinations"
+    failure_action: "PRECISION_FIX_LOOP"
+    failure_message: "Precision not met. Enter precision fix loop."
+    order: 9
+
+  - id: G10
+    name: Baseline Profile
+    description: "Baseline performance profile collected"
+    check: "msprof raw data exists; kernels mapped; primary_compute_kernel_us recorded"
+    failure_action: "RETRY_STAGE"
+    failure_message: "Baseline profile missing or incomplete."
+    order: 10
+
+  - id: G11
+    name: Optimization
+    description: "Limited optimization iterations complete"
+    check: "Optimization candidates evaluated; winner selected; perf improvement documented"
+    failure_action: "RETRY_STAGE"
+    failure_message: "Optimization incomplete. Must complete at least one optimization iteration."
+    order: 11
+
+  - id: G12
+    name: Final Profile
+    description: "Final performance profile collected after optimization"
+    check: "Final msprof data parsed and compared with baseline"
+    failure_action: "RETRY_STAGE"
+    failure_message: "Final profile missing. Re-profile after optimization."
+    order: 12
+
+  - id: G13
+    name: Code Review
+    description: "Code reviewed by independent reviewer agent"
+    check: "REVIEW.md or equivalent exists with PASS/PASS_WITH_NOTES decision"
+    failure_action: "HALT"
+    failure_message: "Code review not complete or failed. Must pass review."
+    order: 13
+
+  - id: G14
+    name: Release
+    description: "All artifacts verified, SHA256SUMS current, reports consistent"
+    check: "scripts/pre_release_gate.sh exits 0"
+    failure_action: "HALT"
+    failure_message: "Release gate failed. Run pre_release_gate.sh to diagnose."
+    order: 14
+
+  - id: G15
+    name: Archive
+    description: "Archive created without build cache, verified against SHA256SUMS"
+    check: "Archive tar.gz exists; SHA256SUMS verification passes for archived artifacts"
+    failure_action: "WARN"
+    failure_message: "Archive missing or inconsistent. Run archive step."
+    order: 15
+
+# Override rules
+overrides:
+  G8:
+    allowed: false  # correctness is NEVER overridable
+    rationale: "Ranking implementations without correctness invalidates all comparisons."
+  G13:
+    allowed: true
+    must_record:
+      - override_reason
+      - approver
+      - risks
+    restriction: "Override must NOT enter formal ranking. Results are DRAFT only."

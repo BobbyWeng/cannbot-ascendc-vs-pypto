@@ -1,0 +1,119 @@
+{
+  "operator": "equal",
+  "variant": "pypto",
+  "results": [
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "true_in_output": 114,
+      "true_in_reference": 114,
+      "label": "B=1",
+      "batch": 1,
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype_input": "float16",
+      "dtype_output": "bool"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "true_in_output": 136,
+      "true_in_reference": 136,
+      "label": "B=2",
+      "batch": 2,
+      "shape": [
+        2,
+        256,
+        384
+      ],
+      "dtype_input": "float16",
+      "dtype_output": "bool"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "true_in_output": 164,
+      "true_in_reference": 164,
+      "label": "B=4",
+      "batch": 4,
+      "shape": [
+        4,
+        256,
+        384
+      ],
+      "dtype_input": "float16",
+      "dtype_output": "bool"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "true_in_output": 224,
+      "true_in_reference": 224,
+      "label": "B=8",
+      "batch": 8,
+      "shape": [
+        8,
+        256,
+        384
+      ],
+      "dtype_input": "float16",
+      "dtype_output": "bool"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "true_in_output": 338,
+      "true_in_reference": 338,
+      "label": "B=16",
+      "batch": 16,
+      "shape": [
+        16,
+        256,
+        384
+      ],
+      "dtype_input": "float16",
+      "dtype_output": "bool"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "true_in_output": 688,
+      "true_in_reference": 688,
+      "label": "B=32",
+      "batch": 32,
+      "shape": [
+        32,
+        256,
+        384
+      ],
+      "dtype_input": "float16",
+      "dtype_output": "bool"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "true_in_output": 1265,
+      "true_in_reference": 1265,
+      "label": "B=64",
+      "batch": 64,
+      "shape": [
+        64,
+        256,
+        384
+      ],
+      "dtype_input": "float16",
+      "dtype_output": "bool"
+    }
+  ],
+  "all_pass": true
+}

@@ -1,6 +1,7 @@
 {
-  "release_version": "1.1",
-  "generated_at": "2026-07-17T00:10:00Z",
+  "release_version": "1.2-rc2",
+  "generated_at": "2026-07-17T23:00:00Z",
+  "validation_freeze": "2026-07-17T23:00:00Z",
   "git_commit": "3b3f10283aa49d66261e0184d579e4b9c693cf35",
   "environment": {
     "platform": "Ascend 910B",
@@ -25,54 +26,30 @@
       "shape": "[B,12,256,32]",
       "formula": "Y = max(X, 0)",
       "dtype": "FP16",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32,
-        64
-      ],
+      "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise (signed-zero exempted)",
-      "correctness_coverage": "Torch/AscendC/PyPTO: FULL \u2014 all 7 batches PASS",
-      "profiler_coverage": "FULL \u2014 msprof all 3 routes"
+      "correctness_coverage": "Torch/AscendC/PyPTO: FULL — all 7 batches PASS",
+      "profiler_coverage": "FULL — msprof all 3 routes"
     },
     "mul": {
       "final_status": "COMPLETE",
       "shape": "[B,3,4,256,32]",
       "formula": "Y = X1 * X2",
       "dtype": "FP16",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32,
-        64
-      ],
+      "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
       "correctness_coverage": "Torch/AscendC/PyPTO: FULL",
-      "profiler_coverage": "FULL \u2014 msprof all 3 routes"
+      "profiler_coverage": "FULL — msprof all 3 routes"
     },
     "add": {
       "final_status": "COMPLETE_WITH_LIMITATION",
       "shape": "[B,256,384]",
       "formula": "Y = ((X1+X2)+X3)+X4",
       "dtype": "FP16",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32,
-        64
-      ],
+      "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
       "correctness_coverage": "Torch/AscendC FULL; PyPTO B=1 only persisted",
-      "profiler_coverage": "FULL \u2014 msprof all 3 routes",
+      "profiler_coverage": "FULL — msprof all 3 routes",
       "limitation": "PyPTO correctness B=2..64 not persisted to JSON"
     },
     "div": {
@@ -80,75 +57,44 @@
       "shape": "X1 [B,12,256,256], X2 [B,12,256,1]",
       "formula": "Y = X1 / X2 (broadcast)",
       "dtype": "FP16",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32
-      ],
-      "precision": "atol=1e-3, rtol=1e-3",
-      "correctness_coverage": "Torch+AscendC FULL (B=1..32); PyPTO N/A",
-      "profiler_coverage": "Torch+AscendC msprof B=1..32; PyPTO N/A",
-      "limitation": "PyPTO broadcast Div fails at backend CompileFunction"
+      "batches": [1, 2, 4, 8, 16, 32],
+      "precision": "bitwise (was atol=1e-3, rtol=1e-3)",
+      "correctness_coverage": "Torch+AscendC+PyPTO FULL (B=1..32) — RC-2 UNBLOCKED",
+      "profiler_coverage": "Torch+AscendC msprof B=1..32; PyPTO not profiled",
+      "rc2_fix": "tile_shape(1024,2048) was too large; changed to (128,1024). Dtype mismatch in test also fixed. All 6 batches pass bitwise (max_abs=0.0)."
     },
     "equal": {
       "final_status": "COMPLETE_WITH_LIMITATION",
       "shape": "[B,12,256,256] (bool output)",
       "formula": "Y = (X1 == X2)",
       "dtype": "FP16 input, bool output",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32,
-        64
-      ],
+      "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise (bool)",
-      "correctness_coverage": "Torch+AscendC FULL; PyPTO BLOCKED_BACKEND_EQUAL",
-      "profiler_coverage": "PARTIAL \u2014 torch.npu.Event/aclrtEvent, NOT msprof",
-      "limitation": "No msprof profiling. PyPTO BLOCKED_BACKEND_EQUAL."
+      "correctness_coverage": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED",
+      "profiler_coverage": "PARTIAL — torch.npu.Event/aclrtEvent, NOT msprof",
+      "limitation": "No msprof profiling.",
+      "rc2_fix": "Two root causes: (1) output was DT_FP16 instead of DT_BOOL (packed bitmask), (2) BOOL output requires ta≤64 in tile shape. All 7 batches pass bitwise."
     },
     "not": {
       "final_status": "COMPLETE",
       "shape": "[B,12,256,256] (bool output)",
       "formula": "Y = NOT X",
       "dtype": "Bool",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32,
-        64
-      ],
+      "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise (bool)",
       "correctness_coverage": "Torch PASS; AscendC PASS (42/42 cases); PyPTO PASS",
-      "profiler_coverage": "PARTIAL \u2014 torch.npu.Event/aclrtEvent, NOT msprof",
-      "limitation": "Profiler is Event-based, not msprof. Not comparable with arithmetic.",
-      "correction": "Previous FAIL was caused by old correctness script. All 42 cases PASS with current script."
+      "profiler_coverage": "PARTIAL — torch.npu.Event/aclrtEvent, NOT msprof",
+      "limitation": "Profiler is Event-based, not msprof. Not comparable with arithmetic."
     },
     "or": {
       "final_status": "COMPLETE_WITH_LIMITATION",
       "shape": "[B,12,256,256] (bool output)",
       "formula": "Y = X1 OR X2",
       "dtype": "Bool",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32,
-        64
-      ],
+      "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise (bool)",
       "correctness_coverage": "Torch PASS; AscendC PASS (49/49 cases); PyPTO PASS (bitwise_or for 0/1)",
-      "profiler_coverage": "PARTIAL \u2014 torch.npu.Event/aclrtEvent, NOT msprof",
+      "profiler_coverage": "PARTIAL — torch.npu.Event/aclrtEvent, NOT msprof",
       "limitation": "PyPTO uses bitwise_or (no logical_or API in framework). Correct for bool 0/1 inputs. Profiler Event-based."
     },
     "where": {
@@ -156,93 +102,54 @@
       "shape": "[B,12,256,256]",
       "formula": "Y = condition ? X1 : X2",
       "dtype": "FP16",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32,
-        64
-      ],
+      "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
-      "correctness_coverage": "Torch+AscendC FULL; PyPTO BLOCKED_BACKEND_WHERE_SELECT",
-      "profiler_coverage": "PARTIAL \u2014 torch.npu.Event/aclrtEvent, NOT msprof",
-      "limitation": "No msprof. PyPTO BLOCKED_BACKEND_WHERE_SELECT."
+      "correctness_coverage": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED",
+      "profiler_coverage": "PARTIAL — torch.npu.Event/aclrtEvent, NOT msprof",
+      "limitation": "No msprof.",
+      "rc2_fix": "uint8 condition → backend TiledWhereOperation ExpandFunction bug. Workaround: convert uint8→bool in wrapper (DT_BOOL condition). All 7 batches pass bitwise."
     },
     "expand": {
       "final_status": "COMPLETE_WITH_LIMITATION",
       "shape": "X [B,256,1], Y [B,256,384]",
       "formula": "Y[b,i,j] = X[b,i,0] (Duplicate per-row)",
       "dtype": "FP16",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32,
-        64
-      ],
+      "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
-      "correctness_coverage": "Torch/AscendC/PyPTO: FULL \u2014 B=1..64 all PASS",
-      "profiler_coverage": "FULL \u2014 msprof all 3 routes (repeat=3, warmup=200, loops=100)",
-      "limitation": "PyPTO uses per-row AICPU dispatch (~3000 us, not compute kernel). Not comparable. AscendC is TRUE_DEVICE_IMPLEMENTATION (Duplicate).",
-      "status_change": "PARTIAL \u2192 COMPLETE_WITH_LIMITATION"
+      "correctness_coverage": "Torch/AscendC/PyPTO: FULL — B=1..64 all PASS",
+      "profiler_coverage": "FULL — msprof all 3 routes (repeat=3, warmup=200, loops=100)",
+      "limitation": "PyPTO uses per-row AICPU dispatch (~3000 us, not compute kernel). Not comparable. AscendC is TRUE_DEVICE_IMPLEMENTATION (Duplicate)."
     },
     "transpose": {
       "final_status": "COMPLETE_WITH_LIMITATION",
       "shape": "X [B,256,384], Y [B,384,256]",
       "formula": "Y[b,j,i] = X[b,i,j]",
       "dtype": "FP16",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32,
-        64
-      ],
+      "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
-      "correctness_coverage": "Torch+AscendC FULL (B=1..64 bitwise); PyPTO small shapes PASS, large BLOCKED",
-      "profiler_coverage": "FULL \u2014 msprof Torch+AscendC (B=1..64, repeat=5); PyPTO N/A",
-      "limitation": "PyPTO [256,384] BLOCKED_BACKEND at CompileFunction. AscendC TRUE_DEVICE tile-transpose, but uses GetValue/SetValue.",
-      "status_change": "PARTIAL \u2192 COMPLETE_WITH_LIMITATION"
+      "correctness_coverage": "Torch+AscendC+PyPTO FULL (B=1..64 bitwise); RC-2 UNBLOCKED",
+      "profiler_coverage": "FULL — msprof Torch+AscendC (B=1..64, repeat=5); PyPTO not profiled",
+      "limitation": "AscendC TRUE_DEVICE tile-transpose, uses GetValue/SetValue.",
+      "rc2_fix": "tile_shape(128,1024) was too large. Changed to (64,256). All shapes up to 2048×2048 pass bitwise.",
+      "rc2_ascendc_perf": "Optimized kernel: tile size 32×32 (up from 16×16) + double buffering. ~13-18% improvement."
     },
     "reduce_sum": {
       "final_status": "COMPLETE_WITH_LIMITATION",
       "shape": "X [B,256,384], Y [B,256]",
       "formula": "Y[b,i] = sum_j X[b,i,j]",
       "dtype": "FP16",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32,
-        64
-      ],
+      "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "FP16 accumulation (atol=0.01, rtol=0.01, require_bitwise=False)",
       "correctness_coverage": "Torch 62/70 PASS; AscendC 21/70 PASS; PyPTO 21/70 PASS",
-      "profiler_coverage": "FULL \u2014 msprof Torch+AscendC (B=1..64, repeat=5); PyPTO not profiled",
-      "limitation": "FP16 accumulation for 384-element reduction exceeds atol=0.01 (max_abs~0.03). AscendC and PyPTO both use native FP16 accum. Torch uses FP32 accum.",
-      "status_change": "PARTIAL \u2192 COMPLETE_WITH_LIMITATION"
+      "profiler_coverage": "FULL — msprof Torch+AscendC (B=1..64, repeat=5); PyPTO not profiled",
+      "limitation": "FP16 accumulation for 384-element reduction exceeds atol=0.01 (max_abs~0.03). AscendC and PyPTO both use native FP16 accum. Torch uses FP32 accum."
     },
     "matmul": {
       "final_status": "COMPLETE",
       "shape": "A [B,12,256,256], B [B,12,256,32], Y [B,12,256,32]",
       "formula": "Y[b,h,:,:] = A[b,h,:,:] @ B[b,h,:,:]",
       "dtype": "FP16",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32
-      ],
+      "batches": [1, 2, 4, 8, 16, 32],
       "precision": "atol=0.01, rtol=0.01",
       "cube_class": true,
       "routes": {
@@ -278,64 +185,42 @@
           }
         },
         "pypto": {
-          "implementation_status": "BLOCKED_BACKEND",
-          "correctness": "N/A",
-          "limitation": "FC4000 Cube tiling invalid tile values. All matmul shapes fail.",
+          "implementation_status": "COMPLETE_WITH_LIMITATION",
+          "correctness": "PASS (all 6 batches, max_abs=0.015-0.031)",
+          "limitation": "FP16 accumulation causes max_abs ~0.015-0.031. Not bitwise.",
+          "rc2_fix": "Manual set_cube_tile_shapes([16,32],[16,32],[16,32]) workaround. All shapes compile and run.",
           "profiler": {
             "status": "N/A"
           }
         }
       },
-      "correctness_coverage": "FULL (Torch + Ascend C; PyPTO N/A)",
+      "correctness_coverage": "FULL (all 3 routes)",
       "profiler_coverage": "FULL (Torch + Ascend C msprof; PyPTO N/A)",
-      "dashboard_synced": true,
-      "completeness_gates": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13
-      ]
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     }
   },
+  "validation_freeze_report": "reports/validation_freeze/",
+  "rc1_fixes": {
+    "fix_profiler_parser": "primary_compute_kernel_us now correctly returns KERNEL_MIX_AIC for PyPTO instead of KERNEL_AICPU executor",
+    "fix_div_correctness": "B=4,8,16,32 reference files existed; re-ran correctness. All 6 batches PASS now.",
+    "fix_relu_torch_correctness": "torch/correctness_results.json was missing; generated. All 7 batches PASS.",
+    "fix_reduce_sum_parsed": "14 parsed JSON files generated from existing msprof raw data (was missing)",
+    "fix_performance_csv": "All values now use primary_compute_kernel_us consistently"
+  },
+  "rc2_fixes": {
+    "fix_matmul_pypto": "Manual set_cube_tile_shapes([16,32],[16,32],[16,32]) workaround unblocked PyPTO MatMul. All shapes compile and run. FP16 accum causes max_abs~0.015-0.031.",
+    "fix_div_pypto": "tile_shape(1024,2048) too large → changed to (128,1024). Dtype mismatch in test fixed. All 6 batches pass bitwise.",
+    "fix_where_pypto": "uint8 condition→backend ExpandFunction bug. Workaround: convert uint8→bool in wrapper. All 7 batches pass bitwise.",
+    "fix_transpose_pypto": "tile_shape(128,1024) too large → changed to (64,256). All shapes up to 2048×2048 pass bitwise.",
+    "fix_equal_pypto": "Output was DT_FP16 instead of DT_BOOL. BOOL output requires ta≤64. Both fixed. All 7 batches pass bitwise.",
+    "fix_transpose_ascendc_perf": "Optimized kernel: tile size 32×32 + double buffering. ~13-18% improvement across all batches."
+  },
   "known_limitations": [
-    {
-      "operator": "div",
-      "route": "pypto",
-      "severity": "P0",
-      "description": "Broadcast Div fails at backend CompileFunction"
-    },
     {
       "operator": "or",
       "route": "pypto",
       "severity": "P1",
       "description": "Uses bitwise_or (no logical_or API). Correct for 0/1 bool."
-    },
-    {
-      "operator": "transpose",
-      "route": "pypto",
-      "severity": "P1",
-      "description": "Large [256,384] BLOCKED_BACKEND CompileFunction"
-    },
-    {
-      "operator": "equal",
-      "route": "pypto",
-      "severity": "P1",
-      "description": "BLOCKED_BACKEND_EQUAL"
-    },
-    {
-      "operator": "where",
-      "route": "pypto",
-      "severity": "P1",
-      "description": "BLOCKED_BACKEND_WHERE_SELECT"
     },
     {
       "operator": "reduce_sum",
@@ -344,10 +229,16 @@
       "description": "FP16 accum precision exceeds atol=0.01 for 384-element reduction"
     },
     {
+      "operator": "matmul",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "max_abs ~0.015-0.031 due to FP16 accumulation (not bitwise)"
+    },
+    {
       "operator": "expand",
       "route": "pypto",
       "severity": "P2",
-      "description": "Per-row AICPU dispatch ~3000 us \u2014 not a compute kernel"
+      "description": "Per-row AICPU dispatch ~3000 us — not a compute kernel"
     },
     {
       "operator": "add",
@@ -357,23 +248,15 @@
     }
   ],
   "ascendc_implementation_audit": {
-    "TRUE_CUBE_IMPLEMENTATION": [
-      "matmul"
-    ],
-    "TRUE_DEVICE_IMPLEMENTATION": [
-      "relu",
-      "mul",
-      "add",
-      "div",
-      "equal",
-      "not",
-      "or",
-      "where",
-      "expand",
-      "transpose",
-      "reduce_sum"
-    ],
+    "TRUE_CUBE_IMPLEMENTATION": ["matmul"],
+    "TRUE_DEVICE_IMPLEMENTATION": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum"],
     "HOST_PRECOMPUTE_FALLBACK": [],
     "note": "All 11 operators have genuine Ascend C device-side kernels verified by source code AND correctness runs on NPU."
+  },
+  "rc2_phase1_completeness": {
+    "batch_scaling_audit": "All 12 operators classified PLAUSIBLE_PARALLEL_SCALING",
+    "parser_traceability": "9 bugs identified; needs per-iteration stats and provenance",
+    "skill_trace": "All 24 route-instances documented (LEGACY_UNVERIFIED_SKILL_USAGE)",
+    "sha256": "All 12 operators have valid SHA256SUMS (8 were fixed)"
   }
 }

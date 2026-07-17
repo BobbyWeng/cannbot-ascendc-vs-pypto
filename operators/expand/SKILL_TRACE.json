@@ -1,0 +1,26 @@
+{
+  "operator": "expand",
+  "generated_at": "2026-07-17T00:00:00Z",
+  "routes": {
+    "ascendc": {
+      "status": "LEGACY_UNVERIFIED_SKILL_USAGE",
+      "tasks": [
+        {"task": "kernel_develop", "timestamp": "LEGACY", "skill": "ascendc-kernel-develop-workflow", "usage": "confirmed_by_code_pattern", "evidence_paths": ["ascendc/src/expand_kernel.asc", "ascendc/src/expand_host.asc", "ascendc/CMakeLists.txt"]},
+        {"task": "api_best_practices", "timestamp": "LEGACY", "skill": "ascendc-api-best-practices", "usage": "confirmed_by_code_pattern", "evidence_paths": ["ascendc/src/expand_kernel.asc"]},
+        {"task": "tiling_design", "timestamp": "LEGACY", "skill": "ascendc-tiling-design", "usage": "confirmed_by_code_pattern", "evidence_paths": ["ascendc/src/expand_tiling.h"]}
+      ],
+      "note": "Code patterns match Cannbot skills but no formal skill trace was recorded at development time."
+    },
+    "pypto": {
+      "status": "NON_COMPLIANT",
+      "tasks": [
+        {"task": "intent_understanding", "timestamp": "LEGACY", "skill": "pypto-intent-understand", "usage": "confirmed_by_artifact", "evidence_paths": ["pypto/SPEC/"]},
+        {"task": "api_exploration", "timestamp": "LEGACY", "skill": "pypto-api-explore", "usage": "confirmed_by_artifact", "evidence_paths": ["pypto/API_REPORT/"]},
+        {"task": "golden_generation", "timestamp": "LEGACY", "skill": "pypto-golden-generate", "usage": "confirmed_by_artifact", "evidence_paths": ["pypto/golden/expand_golden.py"]},
+        {"task": "design", "timestamp": "LEGACY", "skill": "pypto-op-design", "usage": "confirmed_by_artifact", "evidence_paths": ["pypto/DESIGN/"]},
+        {"task": "implementation", "timestamp": "LEGACY", "skill": "pypto-op-develop", "usage": "confirmed_by_artifact", "evidence_paths": ["pypto/src/expand_impl.py"]}
+      ],
+      "note": "PyPTO skill artifacts exist but SPEC/API_REPORT/DESIGN subdirectory contents are missing (empty dirs). .orchestrator_state.json missing at operator root. Also BLOCKED_BACKEND."
+    }
+  }
+}

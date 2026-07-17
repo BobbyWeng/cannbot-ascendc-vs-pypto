@@ -1,0 +1,231 @@
+# Skill Selection Matrix — Canonical Routing Rules
+# This file defines which skills to load based on task classification.
+# AGENTS.md references this file; do NOT duplicate these rules in AGENTS.md.
+
+routing:
+
+  # ============================================================
+  # Backend: ASCENDC_DIRECT
+  # ============================================================
+  - id: ascendc_direct_new_dev
+    match:
+      backend: ASCENDC_DIRECT
+      task_mode: NEW_DEVELOPMENT
+    required_skills:
+      - descendc-env-check
+      - descendc-kernel-develop-workflow
+      - descendc-direct-invoke-template
+      - descendc-docs-search
+      - descendc-api-best-practices
+      - descendc-tiling-design
+      - ops-precision-standard
+    vector_append:
+      - descendc-api-best-practices  # Vector-specific API guidance
+    cube_append:
+      - descendc-blaze-best-practice
+      - descendc-performance-best-practices
+    review_append:
+      - descendc-code-review
+    stages:
+      preflight: [ascendc-env-check]
+      design: [ascendc-kernel-architect]
+      design_review: [ascendc-kernel-design-reviewer]
+      implement: [ascendc-kernel-developer]
+      review: [ascendc-kernel-reviewer]
+      performance: [ascendc-perf-analysis-expert, ascendc-perf-impl-expert]
+      release: [ops-code-reviewer]
+
+  - id: ascendc_direct_repair
+    match:
+      backend: ASCENDC_DIRECT
+      task_mode: [BUILD_REPAIR, RUNTIME_REPAIR]
+    required_skills:
+      - descendc-runtime-debug
+      - descendc-env-check
+      - descendc-docs-search
+      - descendc-kernel-develop-workflow
+    suspected_crash_append:
+      - descendc-crash-debug
+    stages:
+      diagnose: [ascendc-kernel-developer]
+      fix: [ascendc-kernel-developer]
+      review: [ascendc-kernel-reviewer]
+
+  - id: ascendc_direct_precision
+    match:
+      backend: ASCENDC_DIRECT
+      task_mode: PRECISION_REPAIR
+    required_skills:
+      - descendc-precision-debug
+      - descendc-api-best-practices
+      - descendc-docs-search
+      - ops-precision-standard
+    stages:
+      diagnose: [ascendc-kernel-developer]
+      fix: [ascendc-kernel-developer]
+      review: [ascendc-kernel-reviewer]
+
+  - id: ascendc_direct_perf
+    match:
+      backend: ASCENDC_DIRECT
+      task_mode: PERFORMANCE_OPTIMIZATION
+    required_skills:
+      - ops-profiling
+      - descendc-tiling-design
+      - descendc-api-best-practices
+      - descendc-npu-arch
+    vector_append:
+      - descendc-api-best-practices
+    cube_append:
+      - descendc-blaze-best-practice
+      - descendc-perf-optimize
+    stages:
+      baseline: [ascendc-perf-analysis-expert]
+      optimize: [ascendc-kernel-developer, ascendc-perf-impl-expert]
+      review: [ascendc-kernel-reviewer]
+
+  # ============================================================
+  # Backend: PYPTO
+  # ============================================================
+  - id: pypto_new_dev
+    match:
+      backend: PYPTO
+      task_mode: [NEW_DEVELOPMENT, CONTINUE_DEVELOPMENT, RECOVER_INTERRUPTED]
+    # PyPTO stages are managed by pypto-op-orchestrator state machine.
+    # Skills are auto-bound per stage; this matrix only documents the mapping.
+    stage_skills:
+      1: [pypto-intent-understand]
+      2: [pypto-api-explore]
+      3: [pypto-golden-generate]
+      4: [pypto-op-design]
+      5: [pypto-op-develop]
+      6: [pypto-precision-debug, pypto-precision-compare]
+      7: [pypto-op-perf-tune]
+    stage_agents:
+      1: []  # direct skill call
+      2: []  # direct skill call
+      3: [pypto-op-analyst]
+      4: [pypto-op-analyst]
+      5: [pypto-op-developer]
+      6: [pypto-op-developer]
+      7: [pypto-op-perf-tuner]
+
+  - id: pypto_backend_repair
+    match:
+      backend: PYPTO
+      task_mode: FRAMEWORK_PATCH
+    required_skills:
+      - pypto-api-explore
+      - pypto-op-design
+      - pypto-op-develop
+    precision_fallback:
+      - pypto-precision-debug
+    perf_fallback:
+      - pypto-op-perf-tune
+    stages:
+      recover_state: [pypto-op-orchestrator]  # main agent
+      api_re_explore: [pypto-api-explore]
+      minimal_repro: [pypto-op-developer]
+      fix_attempt: [pypto-op-developer]
+      verify: [pypto-op-developer]
+
+  # ============================================================
+  # Backend: ASCENDC_REGISTRY
+  # ============================================================
+  - id: ascendc_registry_dev
+    match:
+      backend: ASCENDC_REGISTRY
+      task_mode: NEW_DEVELOPMENT
+    required_skills:
+      - ops-registry-invoke-workflow
+      - ascendc-env-check
+      - ascendc-docs-search
+      - ascendc-code-review
+    stages:
+      preflight: [ascendc-env-check]
+      design: [ascendc-ops-architect]
+      implement: [ascendc-ops-developer]
+      test: [ascendc-ops-tester]
+      review: [ascendc-ops-reviewer]
+
+  # ============================================================
+  # Backend: CATLASS
+  # ============================================================
+  - id: catlass_dev
+    match:
+      backend: CATLASS
+      task_mode: NEW_DEVELOPMENT
+    required_skills:
+      - catlass-op-design
+      - catlass-op-develop
+      - catlass-op-perf-tune
+      - ascendc-env-check
+    stages:
+      design: [catlass-op-architect]
+      generate: [catlass-op-generator]
+      review: [catlass-op-reviewer]
+
+  # ============================================================
+  # Backend: TORCH (baseline only)
+  # ============================================================
+  - id: torch_baseline
+    match:
+      backend: TORCH
+    required_skills: []
+    # Inline — main agent handles torch correctness and profiling directly.
+    stages:
+      correctness: inline
+      benchmark: inline
+      kernel_mapping: inline
+
+# ============================================================
+# Architecture-specific skill appends
+# ============================================================
+hardware_path_rules:
+  VECTOR:
+    audit_requirements:
+      - GM_UB_pipeline
+      - queue_buffer
+      - vector_API
+      - mask_repeat
+      - alignment
+      - tail_handling
+      - blockDim
+      - totalElements
+      - batch_stride
+      - double_buffer
+      - scalar_fallback
+      - effective_bandwidth
+    forbidden:
+      - large_scale_GetValue_SetValue_scalar_loop
+      - host_precompute
+      - identity_kernel
+      - prefix_only_validation
+
+  CUBE:
+    audit_requirements:
+      - M_N_K
+      - matrix_count
+      - A_B_C_layout
+      - ND_NZ_format
+      - L1_buffer
+      - L0A_L0B_L0C
+      - Cube_MMAD
+      - Fixpipe
+      - accumulation_dtype
+      - tile_M_N_K
+      - blockDim
+      - matrix_per_core
+      - double_buffer
+      - pipeline_depth
+      - format_conversion
+      - workspace
+      - epilogue
+      - TFLOPS
+      - cube_kernel_evidence
+    forbidden:
+      - vector_elementwise_mul_as_matmul
+      - ACLNN_wrapper_as_custom_cube
+      - host_matmul
+      - kernel_latency_without_TFLOPS
+      - hardcoded_tile_without_shape_boundary

@@ -1,249 +1,268 @@
 {
-  "generated_from": "reports/release/current_release.json",
-  "generated_at": "2026-07-16T23:45:00Z",
-  "release": "v1.1",
+  "mode": "release",
+  "release_version": "1.2-rc2",
+  "generated_at": "2026-07-17T23:00:00Z",
+  "environment": {
+    "platform": "Ascend 910B",
+    "cann_version": "9.0.0",
+    "python": "3.11",
+    "profiler": "msprof with --ascendcl=on --ai-core=on --task-time=l0",
+    "warmup": 200,
+    "profiled_loops": 100,
+    "repeat": "5 (expand used repeat=3 due to runtime >2h)",
+    "primary_metric": "primary_compute_kernel_us"
+  },
   "operator_count": 12,
-  "batches": {
-    "arithmetic_ops_v1": {
-      "count": 4,
-      "profiler": "msprof"
-    },
-    "logical_ops_v1": {
-      "count": 4,
-      "profiler": "torch.npu.Event (NOT_COMPARABLE)"
-    },
-    "layout_reduce_v1": {
-      "count": 3,
-      "profiler": "msprof (expand, transpose, reduce_sum)"
-    }
-  },
   "status_summary": {
-    "COMPLETE": 3,
-    "COMPLETE_WITH_LIMITATION": 8,
-    "INCOMPLETE": 0
+    "COMPLETE": 4,
+    "COMPLETE_WITH_LIMITATION": 8
   },
+  "batches": {},
   "operators": {
     "relu": {
       "status": "COMPLETE",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "PASS"
-      },
-      "profiler": {
-        "torch": 2.6,
-        "ascendc": 2.1,
-        "pypto": 51.9,
-        "tool": "msprof"
-      }
+      "formula": "Y = max(X, 0)",
+      "shape": "[B,12,256,32]",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise (signed-zero exempted)",
+      "limitation": "",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 10.08, "ascendc": 9.5, "pypto": 106.62, "tool": "msprof"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": []
     },
     "mul": {
       "status": "COMPLETE",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "PASS"
-      },
-      "profiler": {
-        "torch": 9.0,
-        "ascendc": 11.2,
-        "pypto": 51.5,
-        "tool": "msprof"
-      }
-    },
-    "not": {
-      "status": "COMPLETE",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "PASS"
-      },
-      "profiler": {
-        "torch": 127.5,
-        "ascendc": 6.4,
-        "pypto": 136.6,
-        "tool": "torch.npu.Event"
-      }
+      "formula": "Y = X1 * X2",
+      "shape": "[B,3,4,256,32]",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise",
+      "limitation": "",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 9.0, "ascendc": 11.16, "pypto": 221.72, "tool": "msprof"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": []
     },
     "add": {
       "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "PASS_B1_ONLY"
-      },
-      "profiler": {
-        "torch": 10.0,
-        "ascendc": 13.8,
-        "pypto": 136.0,
-        "tool": "msprof"
-      }
+      "formula": "Y = ((X1+X2)+X3)+X4",
+      "shape": "[B,256,384]",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise",
+      "limitation": "PyPTO correctness B=2..64 not persisted to JSON",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 10.04, "ascendc": 13.78, "pypto": 132.12, "tool": "msprof"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": []
     },
     "div": {
       "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "BLOCKED_BACKEND"
-      },
-      "profiler": {
-        "torch": 21.8,
-        "ascendc": 18.6,
-        "pypto": "N/A",
-        "tool": "msprof"
-      }
+      "formula": "Y = X1 / X2 (broadcast)",
+      "shape": "X1 [B,12,256,256], X2 [B,12,256,1]",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32],
+      "precision": "bitwise (was atol=1e-3, rtol=1e-3)",
+      "limitation": "",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 21.8, "ascendc": 18.64, "pypto": "N/A", "tool": "msprof"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": [],
+      "rc2_note": "PyPTO UNBLOCKED RC-2: tile_shape(128,1024). All 6 batches bitwise."
     },
     "equal": {
       "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "BLOCKED_BACKEND_EQUAL"
-      },
-      "profiler": {
-        "torch": 12.2,
-        "ascendc": 41.8,
-        "pypto": "N/A",
-        "tool": "torch.npu.Event"
-      }
+      "formula": "Y = (X1 == X2)",
+      "shape": "[B,12,256,256] (bool output)",
+      "dtype": "FP16 input, bool output",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise (bool)",
+      "limitation": "No msprof profiling.",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 12.2, "ascendc": 41.8, "pypto": "N/A", "tool": "torch.npu.Event"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": [],
+      "rc2_note": "PyPTO UNBLOCKED RC-2: DT_BOOL output + ta≤64 tile shape. All 7 batches bitwise."
+    },
+    "not": {
+      "status": "COMPLETE",
+      "formula": "Y = NOT X",
+      "shape": "[B,12,256,256] (bool output)",
+      "dtype": "Bool",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise (bool)",
+      "limitation": "Profiler is Event-based, not msprof. Not comparable with arithmetic.",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 127.5, "ascendc": 6.4, "pypto": 136.6, "tool": "torch.npu.Event"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": []
     },
     "or": {
       "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "BITWISE_OR"
-      },
-      "profiler": {
-        "torch": 256.3,
-        "ascendc": 6.5,
-        "pypto": 148.8,
-        "tool": "torch.npu.Event"
-      }
+      "formula": "Y = X1 OR X2",
+      "shape": "[B,12,256,256] (bool output)",
+      "dtype": "Bool",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise (bool)",
+      "limitation": "PyPTO uses bitwise_or (no logical_or API in framework). Correct for bool 0/1 inputs. Profiler Event-based.",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 256.3, "ascendc": 6.5, "pypto": 148.8, "tool": "torch.npu.Event"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": []
     },
     "where": {
       "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "BLOCKED_BACKEND_WHERE_SELECT"
-      },
-      "profiler": {
-        "torch": 131.9,
-        "ascendc": 238.6,
-        "pypto": "N/A",
-        "tool": "torch.npu.Event"
-      }
+      "formula": "Y = condition ? X1 : X2",
+      "shape": "[B,12,256,256]",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise",
+      "limitation": "No msprof.",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 131.9, "ascendc": 238.6, "pypto": "N/A", "tool": "torch.npu.Event"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": [],
+      "rc2_note": "PyPTO UNBLOCKED RC-2: uint8→bool DT_BOOL condition workaround. All 7 batches bitwise."
     },
     "expand": {
       "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "PASS"
-      },
-      "profiler": {
-        "torch": 13.0,
-        "ascendc": 15.0,
-        "pypto": 3084.5,
-        "tool": "msprof(r3)",
-        "note": "PyPTO AICPU dispatch"
-      }
+      "formula": "Y[b,i,j] = X[b,i,0] (Duplicate per-row)",
+      "shape": "X [B,256,1], Y [B,256,384]",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise",
+      "limitation": "PyPTO uses per-row AICPU dispatch (~3000 us, not compute kernel). Not comparable. AscendC is TRUE_DEVICE_IMPLEMENTATION (Duplicate).",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 13.02, "ascendc": 15.04, "pypto": 110.3, "tool": "msprof(r3)"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": []
     },
     "transpose": {
       "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "PARTIAL_SMALL"
-      },
-      "profiler": {
-        "torch": 14.1,
-        "ascendc": 106.2,
-        "pypto": "N/A",
-        "tool": "msprof"
-      }
+      "formula": "Y[b,j,i] = X[b,i,j]",
+      "shape": "X [B,256,384], Y [B,384,256]",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "bitwise",
+      "limitation": "AscendC TRUE_DEVICE tile-transpose, uses GetValue/SetValue.",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 14.1, "ascendc": 106.2, "pypto": "N/A", "tool": "msprof"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": [],
+      "rc2_note": "PyPTO UNBLOCKED RC-2: tile_shape(64,256). All shapes up to 2048×2048 bitwise. AscendC perf: tile 32×32 + double buffer ~13-18% improvement."
     },
     "reduce_sum": {
       "status": "COMPLETE_WITH_LIMITATION",
-      "correctness": {
-        "torch": "62/70",
-        "ascendc": "21/70",
-        "pypto": "21/70",
-        "note": "FP16 accum precision"
-      },
-      "profiler": {
-        "torch": 16.4,
-        "ascendc": 14.4,
-        "pypto": "N/A",
-        "tool": "msprof"
-      }
+      "formula": "Y[b,i] = sum_j X[b,i,j]",
+      "shape": "X [B,256,384], Y [B,256]",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "FP16 accumulation (atol=0.01, rtol=0.01, require_bitwise=False)",
+      "limitation": "FP16 accumulation for 384-element reduction exceeds atol=0.01 (max_abs~0.03). AscendC and PyPTO both use native FP16 accum. Torch uses FP32 accum.",
+      "correctness": {"torch": "N/A", "ascendc": "N/A", "pypto": "N/A"},
+      "profiler": {"torch": 15.96, "ascendc": 19.28, "pypto": "N/A", "tool": "msprof"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": []
     },
     "matmul": {
       "status": "COMPLETE",
       "formula": "Y[b,h,:,:] = A[b,h,:,:] @ B[b,h,:,:]",
       "shape": "A [B,12,256,256], B [B,12,256,32], Y [B,12,256,32]",
       "dtype": "FP16",
-      "batches": [
-        1,
-        2,
-        4,
-        8,
-        16,
-        32
-      ],
+      "batches": [1, 2, 4, 8, 16, 32],
       "precision": "atol=0.01, rtol=0.01",
-      "cube_badge": "Cube v1",
-      "limitation": "PyPTO BLOCKED_BACKEND (FC4000 Cube tiling). Ascend C uses per-matrix dispatch.",
-      "correctness": {
-        "torch": "PASS",
-        "ascendc": "PASS",
-        "pypto": "N/A"
-      },
-      "profiler": {
-        "torch": {
-          "status": "COMPLETE",
-          "method": "msprof",
-          "kernel_type": "KERNEL_AICORE",
-          "b1_primary_us": 12.2,
-          "b32_primary_us": 63.3,
-          "b1_all_devices_us": 38.0,
-          "b32_all_devices_us": 224.6
-        },
-        "ascendc": {
-          "status": "COMPLETE",
-          "method": "msprof + aclrtEvent",
-          "kernel_type": "KERNEL_AICORE (__cube__ kernel)",
-          "ascendc_impl": "TRUE_CUBE_IMPLEMENTATION",
-          "cube_api": "AscendC::Matmul from lib/matmul_intf.h",
-          "b1_primary_us": 10.4,
-          "b32_primary_us": 10.5,
-          "b1_host_latency_us": 74.5,
-          "b32_host_latency_us": 2416.3
-        },
-        "pypto": {
-          "status": "N/A"
-        }
-      },
-      "profiler_tool": "msprof",
-      "report_path": "operators/matmul/reports/final/final_comparison.md",
-      "archive": "archives/cannbot_ascendc_vs_pypto_matmul_v1.tar.gz",
-      "completeness_gates": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13
-      ],
-      "cube_template": "templates/cube_operator_template/"
+      "limitation": "",
+      "correctness": {"torch": "PASS (all 6 batches, atol=0.01)", "ascendc": "PASS (all 6 batches, max_abs=0.015625)", "pypto": "PASS (all 6 batches, max_abs=0.015-0.031)"},
+      "profiler": {"torch": 12.22, "ascendc": 10.36, "pypto": "N/A", "tool": "msprof"},
+      "profiler_tool": "NONE",
+      "report_path": "",
+      "archive": "none",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      "rc2_note": "PyPTO UNBLOCKED RC-2: set_cube_tile_shapes([16,32],[16,32],[16,32]) workaround. FP16 accum max_abs=0.015-0.031."
     }
-  }
+  },
+  "known_limitations": [
+    {
+      "operator": "or",
+      "route": "pypto",
+      "severity": "P1",
+      "description": "Uses bitwise_or (no logical_or API). Correct for 0/1 bool."
+    },
+    {
+      "operator": "reduce_sum",
+      "route": "all",
+      "severity": "P1",
+      "description": "FP16 accum precision exceeds atol=0.01 for 384-element reduction"
+    },
+    {
+      "operator": "matmul",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "max_abs ~0.015-0.031 due to FP16 accumulation (not bitwise)"
+    },
+    {
+      "operator": "expand",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "Per-row AICPU dispatch ~3000 us — not a compute kernel"
+    },
+    {
+      "operator": "add",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "Correctness B=2..64 not persisted to JSON"
+    }
+  ],
+  "ascendc_implementation_audit": {
+    "TRUE_CUBE_IMPLEMENTATION": ["matmul"],
+    "TRUE_DEVICE_IMPLEMENTATION": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum"],
+    "HOST_PRECOMPUTE_FALLBACK": [],
+    "note": "All 11 operators have genuine Ascend C device-side kernels verified by source code AND correctness runs on NPU."
+  },
+  "archive_references": {
+    "relu": "none",
+    "mul": "none",
+    "add": "none",
+    "div": "none",
+    "equal": "none",
+    "not": "none",
+    "or": "none",
+    "where": "none",
+    "expand": "none",
+    "transpose": "none",
+    "reduce_sum": "none",
+    "matmul": "none"
+  },
+  "rc2_fixes_applied": [
+    "matmul_pypto_unblocked",
+    "div_pypto_unblocked",
+    "where_pypto_unblocked",
+    "transpose_pypto_unblocked",
+    "equal_pypto_unblocked",
+    "transpose_ascendc_perf_improved"
+  ]
 }

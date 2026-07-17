@@ -1,0 +1,56 @@
+{
+  "project": "cannbot_ascendc_vs_pypto",
+  "phase": "rc3",
+  "started_at": "2026-07-17T23:30:00Z",
+  "previous_release": "1.2-rc2",
+  "phase_status": {
+    "phase_A_perf_hardening": "in_progress",
+    "phase_B_logical_ops": "pending",
+    "phase_C_pypto_framework": "in_progress",
+    "phase_D_regression_test": "pending",
+    "phase_E_release_pipeline": "pending",
+    "phase_F_dashboard": "pending",
+    "phase_G_final_audit": "pending"
+  },
+  "phase_A": {
+    "expand_pypto": "in_progress",
+    "reduce_sum_fp32": "in_progress",
+    "transpose_perf_continued": "pending"
+  },
+  "phase_B": {
+    "equal_msprof": "pending",
+    "not_msprof": "pending",
+    "or_msprof": "pending",
+    "where_msprof": "pending",
+    "parser_unified": "pending"
+  },
+  "phase_C": {
+    "div_shape_matrix": "pending",
+    "where_native_select": "pending",
+    "equal_representation": "pending",
+    "matmul_autotiling": "pending"
+  },
+  "phase_D": {
+    "regression_framework": "pending",
+    "regression_correctness": "pending",
+    "regression_profiler": "pending",
+    "regression_dashboard": "pending",
+    "regression_parser": "pending",
+    "regression_release": "pending"
+  },
+  "phase_E": {
+    "release_py": "pending",
+    "one_command_flow": "pending"
+  },
+  "phase_F": {
+    "dashboard_v2": "pending"
+  },
+  "phase_G": {
+    "final_correctness": "pending",
+    "final_profiling": "pending",
+    "final_release": "pending",
+    "final_dashboard": "pending",
+    "final_sha256": "pending"
+  },
+  "last_updated": "2026-07-17T23:30:00Z"
+}

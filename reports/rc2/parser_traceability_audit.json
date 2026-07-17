@@ -1,0 +1,22 @@
+{
+  "audit_complete": true,
+  "parser_bugs": [
+    {"id": "PAR-BUG-01", "severity": "HIGH", "description": "primary_compute_kernel_us is max single kernel across ALL iterations, not per-call"},
+    {"id": "PAR-BUG-02", "severity": "HIGH", "description": "No per-iteration statistics (min/median/P90/std/CV)"},
+    {"id": "PAR-BUG-03", "severity": "HIGH", "description": "No provenance tracking (source_hash, raw_dir, parser_version)"},
+    {"id": "PAR-BUG-04", "severity": "MEDIUM", "description": "AICPU executor may be selected as primary if no compute kernel exists"},
+    {"id": "PAR-BUG-05", "severity": "MEDIUM", "description": "relu and mul final report values UNTRACEABLE — values don't match any parsed field"},
+    {"id": "PAR-BUG-06", "severity": "MEDIUM", "description": "Add final report PyPTO values use per_call_us instead of primary_compute_kernel_us (labeling error)"},
+    {"id": "PAR-BUG-07", "severity": "MEDIUM", "description": "equal/not/or/where: Zero parsed data — Event-based only"},
+    {"id": "PAR-BUG-08", "severity": "MEDIUM", "description": "170+ parsed files lack source/binary hashes"},
+    {"id": "PAR-BUG-09", "severity": "LOW", "description": "No regression test suite for parser correctness"}
+  ],
+  "operators_with_parsed_data": ["add", "div", "expand", "matmul", "mul", "reduce_sum", "relu", "transpose"],
+  "operators_without_parsed_data": ["equal", "not", "or", "where"],
+  "traceability_matrix": {
+    "traceable": ["add", "div", "expand", "matmul", "mul", "reduce_sum", "transpose"],
+    "partially_traceable": ["relu"],
+    "untraceable": ["equal", "not", "or", "where"],
+    "notes": "relu torch B1=2.635us in final report cannot be verified from parsed data (parsed primary=10.08)"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "results": [
+    {
+      "operator": "transpose",
+      "variant": "torch",
+      "batch": 64,
+      "shape": [
+        64,
+        384,
+        256
+      ],
+      "dtype": "float16",
+      "config": {
+        "warmup": 200,
+        "loops": 100,
+        "repeat": 5
+      },
+      "latency_us": {
+        "count": 5,
+        "median_us": 25.629398822784424,
+        "mean_us": 25.613359451293945,
+        "min_us": 25.278398990631104,
+        "max_us": 25.84280014038086,
+        "p90_us": 25.84280014038086,
+        "std_us": 0.20375355560565994,
+        "cv": 0.007954971935372836,
+        "effective_bandwidth_gbps": 1828.95
+      }
+    }
+  ],
+  "framework": "torch",
+  "operator": "transpose"
+}

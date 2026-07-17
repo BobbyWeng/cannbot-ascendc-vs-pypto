@@ -1,0 +1,33 @@
+Plugin,Agent,Skill,Task,When
+ops-direct-invoke,ascendc-kernel-architect,ascendc-tiling-design,Tiling strategy,"New development, optimization"
+ops-direct-invoke,ascendc-kernel-architect,ascendc-api-best-practices,API guidance,"New development, precision fix"
+ops-direct-invoke,ascendc-kernel-architect,ascendc-docs-search,API lookup,"New development, repair"
+ops-direct-invoke,ascendc-kernel-architect,ascendc-kernel-develop-workflow,Full workflow reference,"New development"
+ops-direct-invoke,ascendc-kernel-architect,npu-arch,Architecture info,"New development, Cube"
+ops-direct-invoke,ascendc-kernel-architect,ascendc-blaze-best-practice,Cube best practices,Cube operators
+ops-direct-invoke,ascendc-kernel-design-reviewer,,Design review,"New development"
+ops-direct-invoke,ascendc-kernel-developer,ascendc-direct-invoke-template,Project scaffolding,"New development"
+ops-direct-invoke,ascendc-kernel-developer,ascendc-api-best-practices,API usage,"New development, repair"
+ops-direct-invoke,ascendc-kernel-developer,ascendc-docs-search,API lookup,"New development, repair"
+ops-direct-invoke,ascendc-kernel-developer,ascendc-precision-debug,Precision diagnosis,"Precision repair"
+ops-direct-invoke,ascendc-kernel-developer,ops-precision-standard,Tolerance reference,"Precision repair"
+ops-direct-invoke,ascendc-kernel-developer,ops-profiling,Performance collection,Performance optimization
+ops-direct-invoke,ascendc-kernel-developer,ascendc-tiling-design,Tiling tuning,Performance optimization
+ops-direct-invoke,ascendc-kernel-developer,ascendc-perf-optimize,Performance methods,Performance optimization
+ops-direct-invoke,ascendc-perf-analysis-expert,ops-profiling,Profiling,"Performance optimization"
+ops-direct-invoke,ascendc-perf-impl-expert,ascendc-tiling-design,Tuning,"Performance optimization"
+ops-direct-invoke,ascendc-kernel-reviewer,ascendc-code-review,Code review,"New development, repair, optimization"
+ops-direct-invoke,ascendc-kernel-reviewer,ops-profiling,Performance verification,Pre-release
+pypto-op-orchestrator,(direct),pypto-intent-understand,Spec generation,Stage 1
+pypto-op-orchestrator,(direct),pypto-api-explore,API exploration,Stage 2
+pypto-op-orchestrator,pypto-op-analyst,pypto-golden-generate,Golden generation,Stage 3
+pypto-op-orchestrator,pypto-op-analyst,pypto-op-design,Design generation,Stage 4
+pypto-op-orchestrator,pypto-op-developer,pypto-op-develop,Code implementation,Stage 5
+pypto-op-orchestrator,pypto-op-developer,pypto-precision-debug,Precision debugging,Stage 6
+pypto-op-orchestrator,pypto-op-developer,pypto-precision-compare,Result comparison,Stage 6
+pypto-op-orchestrator,pypto-op-perf-tuner,pypto-op-perf-tune,Performance tuning,Stage 7
+ops-code-reviewer,ascendc-code-summarizer,ascendc-code-review,Code summarization,Review
+ops-code-reviewer,ascendc-ops-reviewer,ascendc-code-review,Code review,Review
+catlass-op-generator,catlass-op-architect,catlass-op-design,Component selection,Catlass design
+catlass-op-generator,catlass-op-generator,catlass-op-develop,Kernel generation,Catlass generation
+catlass-op-generator,catlass-op-reviewer,catlass-op-perf-tune,Performance tuning,Catlass review

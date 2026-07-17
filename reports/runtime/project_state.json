@@ -1,0 +1,30 @@
+{
+  "project": "cannbot_ascendc_vs_pypto",
+  "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
+  "last_updated": "2026-07-17T09:00:00Z",
+  "operators": {
+    "relu": "COMPLETE",
+    "mul": "COMPLETE",
+    "not": "COMPLETE_WITH_LIMITATION",
+    "matmul": "COMPLETE_WITH_LIMITATION",
+    "add": "COMPLETE_WITH_LIMITATION",
+    "div": "COMPLETE_WITH_LIMITATION",
+    "equal": "COMPLETE_WITH_LIMITATION",
+    "or": "COMPLETE_WITH_LIMITATION",
+    "where": "COMPLETE_WITH_LIMITATION",
+    "expand": "COMPLETE_WITH_LIMITATION",
+    "transpose": "COMPLETE_WITH_LIMITATION",
+    "reduce_sum": "COMPLETE_WITH_LIMITATION"
+  },
+  "gates": {
+    "G3_SPEC": "PASS",
+    "G8_CORRECTNESS": "PASS_WITH_LIMITATIONS",
+    "G13_CODE_REVIEW": "NOT_PERFORMED"
+  },
+  "process_refactored": true,
+  "pending_actions": [
+    "Create TASK_STATE.json for all operators",
+    "Run code review (G13) before next release",
+    "Re-profile Event-based operators with msprof"
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "validation_freeze": "2026-07-17",
+  "project": "cannbot_ascendc_vs_pypto",
+  "release": "v1.1",
+  "total_operators": 12,
+  "status_summary": {
+    "COMPLETE": 4,
+    "COMPLETE_WITH_LIMITATION": 8,
+    "INCOMPLETE": 0
+  },
+  "profiler_methodology_breakdown": {
+    "msprof_uniform": ["relu", "mul", "add", "div", "matmul", "expand", "transpose", "reduce_sum"],
+    "event_based": ["not", "or", "equal", "where"]
+  },
+  "trustworthy_ranking_ops": ["relu", "mul", "add", "div", "matmul", "expand", "transpose", "reduce_sum"],
+  "partial_trust_ops": ["not", "or", "equal", "where"],
+  "data_inconsistencies_found": [
+    {
+      "op": "mul",
+      "issue": "final_comparison.json torch B1 primary=3.876, parsed data says 9.0. Dashboard uses 9.0 (correct)."
+    },
+    {
+      "op": "operator_summary",
+      "issue": "Excluded matmul. Had 11 operators, source of truth has 12."
+    },
+    {
+      "op": "dashboard",
+      "issue": "Status summary said 3 COMPLETE, source of truth says 4 COMPLETE."
+    }
+  ],
+  "correctness_gaps": [
+    {
+      "op": "div",
+      "issue": "Torch B=4,8,16,32 reference files missing. all_pass=true but 4/6 batches SKIPPED.",
+      "severity": "MEDIUM"
+    },
+    {
+      "op": "reduce_sum",
+      "issue": "Ascend C and PyPTO at 21/70 PASS due to FP16 accumulation precision vs FP32 reference.",
+      "severity": "KNOWN"
+    },
+    {
+      "op": "add",
+      "issue": "PyPTO correctness B=2..64 not persisted to JSON. B=1 only.",
+      "severity": "LOW"
+    }
+  ],
+  "sha256sums_coverage": {
+    "valid": ["relu", "mul", "add", "div"],
+    "empty": ["equal", "not", "or"],
+    "broken_format": ["where"],
+    "comment_only": ["matmul"],
+    "missing": ["expand", "transpose", "reduce_sum"]
+  },
+  "skill_trace_coverage": {
+    "skill_trace_md_found": 0,
+    "total_operators": 12
+  },
+  "ascendc_host_fallback": {
+    "confirmed_device_side": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum", "matmul"],
+    "confirmed_host_fallback": []
+  },
+  "pypto_orchestrator_compliance": {
+    "compliant": ["div", "expand", "matmul", "mul", "reduce_sum", "relu", "transpose"],
+    "non_compliant": ["add", "equal", "not", "or", "where"]
+  },
+  "backend_limitations": [
+    {"op": "div", "issue": "Broadcast Div CompileFunction failure"},
+    {"op": "equal", "issue": "pypto.eq produces wrong packed-bitmask output"},
+    {"op": "matmul", "issue": "Cube tiling FC4000 — all shapes fail"},
+    {"op": "transpose", "issue": "CompileFunction for >1000 elements"},
+    {"op": "where", "issue": "Condition dtype expansion mismatch"}
+  ],
+  "operator_detail": {
+    "relu": {
+      "status": "COMPLETE",
+      "trustworthy": true,
+      "profiler": "msprof",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "orchestrator",
+      "correctness": "PASS (7/7 batches)"
+    },
+    "mul": {
+      "status": "COMPLETE",
+      "trustworthy": true,
+      "profiler": "msprof",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "orchestrator",
+      "correctness": "PASS (7/7 batches)"
+    },
+    "not": {
+      "status": "COMPLETE",
+      "trustworthy": "partial",
+      "profiler": "Event",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "non_compliant_no_state",
+      "correctness": "PASS (42/42 cases)"
+    },
+    "matmul": {
+      "status": "COMPLETE",
+      "trustworthy": true,
+      "profiler": "msprof",
+      "ascendc_impl": "TRUE_CUBE",
+      "pypto_source": "orchestrator_blocked_backend",
+      "correctness": "Torch+AscendC PASS (6 batches)"
+    },
+    "add": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "trustworthy": true,
+      "profiler": "msprof",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "non_compliant_no_state",
+      "correctness": "PyPTO B=1 only persisted"
+    },
+    "div": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "trustworthy": true,
+      "profiler": "msprof",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "orchestrator_blocked_backend",
+      "correctness": "Torch B=4,8,16,32 data gap"
+    },
+    "equal": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "trustworthy": "partial",
+      "profiler": "Event",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "non_compliant_no_state",
+      "correctness": "Torch+AscendC PASS"
+    },
+    "or": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "trustworthy": "partial",
+      "profiler": "Event",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "non_compliant_no_state",
+      "correctness": "AscendC corrected (49/49)"
+    },
+    "where": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "trustworthy": "partial",
+      "profiler": "Event",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "non_compliant_no_state",
+      "correctness": "Torch+AscendC PASS"
+    },
+    "expand": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "trustworthy": true,
+      "profiler": "msprof(r3)",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "orchestrator",
+      "correctness": "PASS (7/7 batches)"
+    },
+    "transpose": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "trustworthy": true,
+      "profiler": "msprof",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "orchestrator_blocked_backend",
+      "correctness": "Torch+AscendC PASS"
+    },
+    "reduce_sum": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "trustworthy": true,
+      "profiler": "msprof",
+      "ascendc_impl": "TRUE_DEVICE",
+      "pypto_source": "orchestrator",
+      "correctness": "Torch 62/70, AscendC 21/70"
+    }
+  }
+}

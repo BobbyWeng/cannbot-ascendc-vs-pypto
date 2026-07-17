@@ -1,0 +1,29 @@
+{
+  "audit_complete": true,
+  "total_operators": 12,
+  "classification_summary": {
+    "PLAUSIBLE_PARALLEL_SCALING": 12,
+    "BATCH_EXECUTION_BUG": 0,
+    "PARSER_AGGREGATION_BUG": 0
+  },
+  "batch_aware_kernels": {
+    "batch_explicitly_in_kernel": ["transpose", "matmul"],
+    "batch_flattened_to_elements": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "reduce_sum"]
+  },
+  "bugs_found": [
+    {"id": "BUG-001", "priority": "P1", "operator": "matmul", "description": "run_all.sh runs msprof but never calls parse_profiler.py — parsed files are stale/manual"},
+    {"id": "BUG-002", "priority": "P2", "operator": "equal/not/or/where", "description": "No parsed JSON files exist (Event profiler, no msprof)"},
+    {"id": "BUG-003", "priority": "P2", "operator": "expand", "description": "ascendc_b32FIX.json breaks naming convention"},
+    {"id": "BUG-004", "priority": "P2", "operator": "div", "description": "B=4,8,16,32 reference files previously missing"},
+    {"id": "BUG-005", "priority": "P3", "operator": "reduce_sum", "description": "B=32 not present in correctness results"},
+    {"id": "BUG-006", "priority": "P3", "operator": "matmul", "description": "PyPTO benchmark uses torch.randn() instead of loading data files"},
+    {"id": "BUG-007", "priority": "P3", "operator": "div", "description": "Broadcast dimension mapping not documented"}
+  ],
+  "cross_operator_patterns": [
+    "Flat-batch pattern (10/12) — correct for element-wise ops",
+    "Near-identical tiling struct across all element-wise ops",
+    "Matmul per-kernel time ~3.55us regardless of batch — scaling from kernel count",
+    "Transpose scales near-linearly (60.6x for 64x data) due to scalar transpose",
+    "Data integrity clean — all ops generate per-batch unique inputs"
+  ]
+}

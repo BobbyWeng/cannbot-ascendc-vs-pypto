@@ -1,0 +1,4 @@
+{
+  "description": "Register of all issues found during RC-2. Each issue has id, severity (P0/P1/P2), status (open/investigating/fixed/blocked), and evidence.",
+  "issues": []
+}

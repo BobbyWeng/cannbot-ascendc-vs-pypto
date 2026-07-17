@@ -55,8 +55,12 @@ def parse_trace_json(trace_path, loops=100):
 
     total_dur = sum(e['dur_us'] for e in kernel_events)
 
-    # Find primary compute kernel (usually the most frequent or the largest AIC type)
-    primary = max(kernel_events, key=lambda e: e['dur_us'])
+    # Find primary compute kernel: prefer non-AICPU compute kernels over AICPU executors
+    compute_kernels = [e for e in kernel_events if 'AICPU' not in e['type']]
+    if compute_kernels:
+        primary = max(compute_kernels, key=lambda e: e['dur_us'])
+    else:
+        primary = max(kernel_events, key=lambda e: e['dur_us'])
 
     # Count unique compute kernel types (not AICPU)
     compute_types = [t for t in by_type if 'AICPU' not in t]

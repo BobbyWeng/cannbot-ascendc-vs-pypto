@@ -1,63 +1,556 @@
-<!DOCTYPE html><html><head><title>Cannbot Dashboard — v1.1</title>
-<style>body{font-family:monospace;margin:20px;max-width:1200px}
-table{border-collapse:collapse;margin:10px 0}
-th,td{border:1px solid #999;padding:6px 10px;text-align:center}
-th{background:#eee}.pass{background:#dfd}.fail{background:#fdd}
-.blocked{background:#ffd}.limited{background:#ffe0b0}.partial{background:#e0e0ff}
-h2{margin-top:24px;border-bottom:1px solid #ccc}.note{color:#666;font-size:0.9em}</style></head><body>
-<h1>Cannbot: Ascend C vs PyPTO — v1.1 Dashboard</h1>
-<p>Source of truth: <code>reports/release/current_release.json</code></p>
-<p>Total: 11 operators — 3 COMPLETE, 8 COMPLETE_WITH_LIMITATION</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyPTO Operator Dashboard v1.1</title>
+<style>/* PyPTO Dashboard — Dark Theme */
+:root {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+  --bg-hover: #30363d;
+  --border: #30363d;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #6e7681;
+  --accent-blue: #58a6ff;
+  --accent-green: #3fb950;
+  --accent-yellow: #d29922;
+  --accent-red: #f85149;
+  --accent-purple: #bc8cff;
+  --accent-orange: #f0883e;
+  --accent-cyan: #39d2c0;
+}
 
-<h2>Arithmetic Operations — msprof profiler</h2>
-<table>
-<tr><th>Op</th><th>Status</th><th>Torch</th><th>AscendC</th><th>PyPTO</th><th>B1 Torch</th><th>B1 AscendC</th><th>B1 PyPTO</th><th>Fastest</th></tr>
-<tr><td>relu</td><td class="pass">COMPLETE</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="pass">PASS</td><td>2.6 us</td><td>2.1 us</td><td>51.9 us</td><td>AscendC</td></tr>
-<tr><td>mul</td><td class="pass">COMPLETE</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="pass">PASS</td><td>9.0 us</td><td>11.2 us</td><td>51.5 us</td><td>Torch</td></tr>
-<tr><td>add</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="pass">PASS</td><td>10.0 us</td><td>13.8 us</td><td>136.0 us</td><td>Torch</td></tr>
-<tr><td>div</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">BLOCKED</td><td>21.8 us</td><td>18.6 us</td><td>N/A</td><td>AscendC</td></tr>
-</table>
+* { margin:0; padding:0; box-sizing:border-box; }
 
-<h2>Logical/Comparison — torch.npu.Event (NOT comparable with msprof)</h2>
-<table>
-<tr><th>Op</th><th>Status</th><th>Torch</th><th>AscendC</th><th>PyPTO</th><th>B1 Torch</th><th>B1 AscendC</th><th>Correctness</th></tr>
-<tr><td>not</td><td class="pass">COMPLETE</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="pass">PASS</td><td>127.5 us</td><td>6.4 us</td><td>AscendC corrected: 42/42 PASS</td></tr>
-<tr><td>equal</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">BLOCKED</td><td>12.2 us</td><td>41.8 us</td><td>Torch+AscendC PASS</td></tr>
-<tr><td>or</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">bitwise_or</td><td>256.3 us</td><td>6.5 us</td><td>AscendC corrected: 49/49 PASS</td></tr>
-<tr><td>where</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">BLOCKED</td><td>131.9 us</td><td>238.6 us</td><td>Torch+AscendC PASS</td></tr>
-</table>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
 
-<h2>Layout/Reduce — msprof profiler</h2>
-<table>
-<tr><th>Op</th><th>Status</th><th>Torch</th><th>AscendC</th><th>PyPTO</th><th>B1 Torch</th><th>B1 AscendC</th><th>B1 PyPTO</th><th>Correctness</th></tr>
-<tr><td>expand</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="pass">PASS</td><td>13.0 us</td><td>15.0 us</td><td>3084 us*</td><td>All PASS bitwise</td></tr>
-<tr><td>transpose</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">PASS</td><td class="pass">PASS</td><td class="blocked">Partial</td><td>14.1 us</td><td>106.2 us</td><td>N/A</td><td>Torch+AscendC PASS</td></tr>
-<tr><td>reduce_sum</td><td class="limited">COMPLETE_WITH_LIMITATION</td><td class="pass">62/70</td><td class="blocked">21/70</td><td class="blocked">21/70</td><td>16.4 us</td><td>14.4 us</td><td>N/A</td><td>FP16 accum precision</td></tr>
-</table>
-<p class="note">*PyPTO expand = per-row AICPU dispatch, not compute kernel</p>
+a { color: var(--accent-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-<h2>Key Changes in v1.1</h2>
-<ul>
-<li><strong>Not</strong>: Ascend C corrected FAIL→PASS (42/42, old script bug)</li>
-<li><strong>Or</strong>: Ascend C corrected FAIL→PASS (49/49, old script bug)</li>
-<li><strong>Expand</strong>: PARTIAL→COMPLETE_WITH_LIMITATION (full validation completed)</li>
-<li><strong>Transpose</strong>: PARTIAL→COMPLETE_WITH_LIMITATION (full Torch+AscendC validated)</li>
-<li><strong>ReduceSum</strong>: PARTIAL→COMPLETE_WITH_LIMITATION (FP16 accum documented)</li>
-</ul>
+.header {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header h1 { font-size: 20px; font-weight: 600; }
+.header .subtitle { color: var(--text-secondary); font-size: 13px; margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.header-right .update-time { color: var(--text-muted); font-size: 12px; }
+.header-right .badge { background: var(--accent-blue); color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
 
-<h2>Known Limitations (P0)</h2>
-<ul><li><strong>Div PyPTO</strong> — Broadcast Div fails at backend CompileFunction</li></ul>
-<p>See <code>reports/release/limitation_matrix.md</code> for full list.</p>
+.toolbar {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.toolbar input {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  width: 240px;
+  outline: none;
+}
+.toolbar input:focus { border-color: var(--accent-blue); }
 
-<h2>Archives</h2>
-<ul>
-<li><a href="archives/cannbot_ascendc_vs_pypto_relu_v1.tar.gz">relu v1</a></li>
-<li><a href="archives/cannbot_ascendc_vs_pypto_mul_v1.tar.gz">mul v1</a></li>
-<li><a href="archives/cannbot_ascendc_vs_pypto_add_v1.tar.gz">add v1</a></li>
-<li><a href="archives/cannbot_ascendc_vs_pypto_div_v2.tar.gz">div v2</a></li>
-<li><a href="archives/cannbot_ascendc_vs_pypto_equal_v4.tar.gz">equal v4</a></li>
-<li><a href="archives/cannbot_ascendc_vs_pypto_not_v4.tar.gz">not v4</a></li>
-<li><a href="archives/cannbot_ascendc_vs_pypto_or_v4.tar.gz">or v4</a></li>
-<li><a href="archives/cannbot_ascendc_vs_pypto_where_v4.tar.gz">where v4</a></li>
-</ul>
-</body></html>
+.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+.summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.summary-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
+.summary-card .value { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.summary-card .label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+.summary-card.color-blue .value { color: var(--accent-blue); }
+.summary-card.color-green .value { color: var(--accent-green); }
+.summary-card.color-red .value { color: var(--accent-red); }
+.summary-card.color-yellow .value { color: var(--accent-yellow); }
+.summary-card.color-purple .value { color: var(--accent-purple); }
+.summary-card.color-orange .value { color: var(--accent-orange); }
+
+.progress-bar { background: var(--bg-tertiary); border-radius: 6px; height: 8px; overflow: hidden; margin-top: 8px; }
+.progress-bar .fill { height: 100%; border-radius: 6px; transition: width 0.3s; }
+
+table { width: 100%; border-collapse: collapse; background: var(--bg-secondary); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+th { background: var(--bg-tertiary); padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { color: var(--text-primary); }
+th .sort-arrow { margin-left: 4px; opacity: 0.5; }
+th.sorted .sort-arrow { opacity: 1; }
+td { padding: 10px 14px; border-top: 1px solid var(--border); font-size: 14px; }
+tr { cursor: pointer; }
+tr:hover { background: var(--bg-hover); }
+
+.status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+.status-badge.completed { background: rgba(63,185,80,0.15); color: var(--accent-green); }
+.status-badge.in_progress { background: rgba(210,153,34,0.15); color: var(--accent-yellow); }
+.status-badge.planned { background: rgba(110,118,129,0.15); color: var(--text-muted); }
+.status-badge.blocked { background: rgba(248,81,73,0.15); color: var(--accent-red); }
+.status-badge.pass { background: rgba(63,185,80,0.15); color: var(--accent-green); }
+.status-badge.fail { background: rgba(248,81,73,0.15); color: var(--accent-red); }
+.status-badge.unknown { background: rgba(110,118,129,0.15); color: var(--text-muted); }
+
+.detail-view { display: none; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px; }
+.detail-view.visible { display: block; }
+.detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.detail-header h2 { font-size: 24px; }
+.detail-close { background: none; border: 1px solid var(--border); color: var(--text-secondary); padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+.detail-close:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.info-item { background: var(--bg-tertiary); border-radius: 6px; padding: 12px 16px; }
+.info-item .label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.info-item .value { font-size: 15px; font-weight: 500; }
+
+.section { margin-bottom: 24px; }
+.section h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.tab { padding: 8px 16px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); border-bottom: 2px solid transparent; transition: all 0.2s; }
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.limitation-item { background: var(--bg-tertiary); border-radius: 6px; padding: 12px 16px; margin-bottom: 8px; }
+.limitation-item .sev-p0 { color: var(--accent-red); font-weight: 600; }
+.limitation-item .sev-p1 { color: var(--accent-yellow); font-weight: 600; }
+.limitation-item .sev-p2 { color: var(--accent-orange); font-weight: 600; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.summary-card, .detail-view.visible { animation: fadeIn 0.3s ease-out; }
+
+@media (max-width: 768px) {
+  .summary-cards { grid-template-columns: repeat(2, 1fr); }
+  .info-grid { grid-template-columns: repeat(2, 1fr); }
+  .toolbar input { width: 160px; }
+}
+</style>
+</head>
+<body>
+<div id="loading" style="display:flex;align-items:center;justify-content:center;min-height:100vh;color:var(--text-muted);font-size:18px">
+  Loading dashboard...
+</div>
+
+<div id="app" style="display:none">
+  <div class="header">
+    <div>
+      <h1>PyPTO Operator Dashboard</h1>
+      <div class="subtitle">Release Mode — Source: reports/release/current_release.json</div>
+    </div>
+    <div class="header-right">
+      <span class="badge">0/12 completed</span>
+      <span class="update-time" id="update-time"></span>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" id="search" placeholder="Search operators...">
+    <label style="color:var(--text-muted);font-size:13px">Sort by: click table headers</label>
+  </div>
+
+  <div class="container">
+    <p>Release v1.1 — 2026-07-17T00:10:00Z</p>
+
+    <div class="summary-cards" id="summary-cards"></div>
+
+    <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:13px;color:var(--text-secondary)">Overall Completion</span>
+        <span style="font-size:13px;font-weight:600" id="progress-text"></span>
+      </div>
+      <div class="progress-bar">
+        <div class="fill" id="progress-fill" style="background:var(--accent-green)"></div>
+      </div>
+    </div>
+
+    <table id="op-table">
+      <thead>
+        <tr>
+          <th data-sort="name">Operator <span class="sort-arrow">▲</span></th>
+          <th data-sort="status">Status <span class="sort-arrow"></span></th>
+          <th>Torch</th>
+          <th>Ascend C</th>
+          <th>PyPTO</th>
+          <th>Correctness</th>
+          <th>B1 Perf</th>
+          <th>Profiler</th>
+        </tr>
+      </thead>
+      <tbody id="op-table-body"></tbody>
+    </table>
+
+    <div class="detail-view" id="detail-view">
+      <div class="detail-header">
+        <h2 id="detail-title">Operator Detail</h2>
+        <button class="detail-close" onclick="closeDetail()">Close</button>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item"><div class="label">Formula</div><div class="value" id="info-formula">-</div></div>
+        <div class="info-item"><div class="label">Shape</div><div class="value" id="info-shape">-</div></div>
+        <div class="info-item"><div class="label">Dtype</div><div class="value" id="info-dtype">-</div></div>
+        <div class="info-item"><div class="label">Batches</div><div class="value" id="info-batches">-</div></div>
+        <div class="info-item"><div class="label">Precision</div><div class="value" id="info-precision">-</div></div>
+        <div class="info-item"><div class="label">Status</div><div class="value" id="info-status">-</div></div>
+        <div class="info-item"><div class="label">Limitation</div><div class="value" id="info-limitation">-</div></div>
+        <div class="info-item"><div class="label">Archive</div><div class="value" id="info-archive">-</div></div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" data-tab="correctness" onclick="switchTab('correctness')">Correctness</div>
+        <div class="tab" data-tab="performance" onclick="switchTab('performance')">Performance</div>
+        <div class="tab" data-tab="limitations" onclick="switchTab('limitations')">Limitations</div>
+      </div>
+
+      <div class="tab-content active" id="tab-correctness">
+        <div class="section">
+          <h3>Correctness Summary</h3>
+          <div id="corr-status" style="margin-bottom:12px"></div>
+        </div>
+        <div class="section">
+          <h3>Per-Route Results</h3>
+          <table>
+            <thead><tr><th>Route</th><th>Result</th><th>Tool</th></tr></thead>
+            <tbody id="corr-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-performance">
+        <div class="section">
+          <h3>Profiler Metrics</h3>
+          <table>
+            <thead><tr><th>Route</th><th>Method</th><th>B1 Latency</th></tr></thead>
+            <tbody id="perf-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-limitations">
+        <div class="section">
+          <h3>Known Limitations</h3>
+          <div id="limitations-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>// PyPTO Dashboard — Interactive
+let dashboardData = null;
+let currentOp = null;
+let currentTab = 'correctness';
+let sortField = 'name';
+let sortAsc = true;
+
+function init() {
+  fetch('./dashboard.json')
+    .then(r => r.json())
+    .then(data => {
+      dashboardData = data;
+      renderSummary(data);
+      renderTable(data);
+      setupSearch();
+      setupSort();
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+    })
+    .catch(err => {
+      document.getElementById('loading').textContent = 'Failed to load dashboard.json: ' + err.message;
+    });
+}
+
+function renderSummary(data) {
+  if (data.mode === 'release') {
+    const s = data.status_summary || {};
+    const total = data.operator_count || 0;
+    const cards = [
+      { label: 'Total Operators', value: total, cls: 'color-blue' },
+    ];
+    for (const [status, count] of Object.entries(s)) {
+      const cls = status.startsWith('COMPLETE') ? 'color-green' : status === 'PARTIAL' ? 'color-yellow' : 'color-red';
+      cards.push({ label: status, value: count, cls: cls });
+    }
+    const container = document.getElementById('summary-cards');
+    container.innerHTML = cards.map(c => `
+      <div class="summary-card ${c.cls}">
+        <div class="value">${c.value}</div>
+        <div class="label">${c.label}</div>
+      </div>
+    `).join('');
+
+    const compl = (s['COMPLETE'] || 0) + (s['COMPLETE_WITH_LIMITATION'] || 0);
+    const pct = total > 0 ? Math.round(compl / total * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = pct + '% (' + compl + '/' + total + ')';
+    document.getElementById('update-time').textContent = 'Release: ' + data.generated_at;
+    return;
+  }
+
+  const s = data.summary;
+  const cards = [
+    { label: 'Total Operators', value: s.total, cls: 'color-blue' },
+    { label: 'Completed', value: s.completed, cls: 'color-green' },
+    { label: 'Torch Ready', value: s.torch_done, cls: 'color-cyan' },
+    { label: 'Ascend C Ready', value: s.ascendc_done, cls: 'color-purple' },
+    { label: 'PyPTO Ready', value: s.pypto_done, cls: 'color-orange' },
+    { label: 'Correctness PASS', value: s.pass_count, cls: 'color-green' },
+    { label: 'Correctness FAIL', value: s.fail_count, cls: 'color-red' },
+    { label: 'Blocked', value: s.blocked, cls: 'color-yellow' },
+  ];
+  const container = document.getElementById('summary-cards');
+  container.innerHTML = cards.map(c => `
+    <div class="summary-card ${c.cls}">
+      <div class="value">${c.value}</div>
+      <div class="label">${c.label}</div>
+    </div>
+  `).join('');
+
+  const pct = s.total > 0 ? Math.round(s.completed / s.total * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = pct + '% (' + s.completed + '/' + s.total + ')';
+  document.getElementById('update-time').textContent = 'Generated: ' + data.generated_at;
+}
+
+function renderTable(data) {
+  if (data.mode === 'release') {
+    renderReleaseTable(data);
+    return;
+  }
+  renderDevTable(data);
+}
+
+function renderReleaseTable(data) {
+  const ops = Object.entries(data.operators).map(([name, op]) => ({ name: name, ...op }));
+  ops.sort((a, b) => {
+    const order = { 'COMPLETE': 0, 'COMPLETE_WITH_LIMITATION': 1, 'PARTIAL': 2, 'INCOMPLETE': 3 };
+    let va = (order[a.status] ?? 99);
+    let vb = (order[b.status] ?? 99);
+    return sortAsc ? va - vb : vb - va;
+  });
+
+  const tbody = document.getElementById('op-table-body');
+  tbody.innerHTML = ops.map(op => {
+    const statusCls = op.status.startsWith('COMPLETE') ? 'completed' : op.status === 'PARTIAL' ? 'in_progress' : 'unknown';
+    const torchC = op.correctness?.torch || 'N/A';
+    const ascendcC = op.correctness?.ascendc || 'N/A';
+    const pyptoC = op.correctness?.pypto || 'N/A';
+
+    const corrStr = [torchC, ascendcC, pyptoC].every(c => c.startsWith('PASS'))
+      ? '<span class="status-badge pass">PASS</span>'
+      : [torchC, ascendcC, pyptoC].some(c => c.startsWith('FAIL'))
+        ? '<span class="status-badge fail">FAIL</span>'
+        : '<span class="status-badge unknown">MIXED</span>';
+
+    const torchP = op.profiler?.torch || {};
+    const ascendcP = op.profiler?.ascendc || {};
+    const pyptoP = op.profiler?.pypto || {};
+    const b1 = torchP.b1_us != null ? 'T:' + Number(torchP.b1_us).toFixed(1) + 'us' : '';
+    const b1a = ascendcP.b1_us != null ? ' A:' + Number(ascendcP.b1_us).toFixed(1) + 'us' : '';
+    const b1p = pyptoP.b1_us != null ? ' P:' + Number(pyptoP.b1_us).toFixed(1) + 'us' : '';
+    const b1Str = (b1 + b1a + b1p) || 'N/A';
+
+    const profilerTool = op.profiler_tool || 'N/A';
+
+    return `<tr onclick="showDetail('${op.name}')">
+      <td><strong>${op.name}</strong></td>
+      <td><span class="status-badge ${statusCls}">${op.status}</span></td>
+      <td style="font-size:12px">${torchC}</td>
+      <td style="font-size:12px">${ascendcC}</td>
+      <td style="font-size:12px">${pyptoC}</td>
+      <td>${corrStr}</td>
+      <td style="font-size:12px">${b1Str}</td>
+      <td style="font-size:12px">${profilerTool}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderDevTable(data) {
+  const ops = [...(data.operators || [])];
+  ops.sort((a, b) => {
+    let va = String(a[sortField] || '').toLowerCase();
+    let vb = String(b[sortField] || '').toLowerCase();
+    if (sortField === 'status') {
+      const order = { completed: 0, in_progress: 1, planned: 2, blocked: 3 };
+      const da = order[a.status] || 99;
+      const db = order[b.status] || 99;
+      return sortAsc ? da - db : db - da;
+    }
+    if (sortField === 'name') {
+      return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    }
+    return 0;
+  });
+
+  const tbody = document.getElementById('op-table-body');
+  tbody.innerHTML = ops.map(op => {
+    const corr = op.correctness_all_pass === true ? '<span class="status-badge pass">PASS</span>' :
+                 op.correctness_all_pass === false ? '<span class="status-badge fail">FAIL</span>' :
+                 '<span class="status-badge unknown">N/A</span>';
+    const torchKt = op.kernel_types?.torch?.join(', ') || 'N/A';
+    const ascendcKt = op.kernel_types?.ascendc?.join(', ') || 'N/A';
+    const pyptoKt = op.kernel_types?.pypto?.join(', ') || 'N/A';
+    return `<tr onclick="showDevDetail('${op.name}')">
+      <td><strong>${op.name}</strong></td>
+      <td><span class="status-badge ${op.status}">${op.status}</span></td>
+      <td>${torchKt}</td>
+      <td>${ascendcKt}</td>
+      <td>${pyptoKt}</td>
+      <td>${corr}</td>
+      <td style="font-size:12px">${op.last_update}</td>
+    </tr>`;
+  }).join('');
+
+  document.querySelectorAll('#op-table th').forEach(th => {
+    const field = th.dataset.sort;
+    th.classList.toggle('sorted', field === sortField);
+    const arrow = th.querySelector('.sort-arrow');
+    if (arrow && field === sortField) {
+      arrow.textContent = sortAsc ? ' ▲' : ' ▼';
+    }
+  });
+}
+
+function setupSearch() {
+  document.getElementById('search').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    const rows = document.querySelectorAll('#op-table-body tr');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(q) ? '' : 'none';
+    });
+  });
+}
+
+function setupSort() {
+  document.querySelectorAll('#op-table th').forEach(th => {
+    th.addEventListener('click', () => {
+      const field = th.dataset.sort;
+      if (!field) return;
+      if (sortField === field) {
+        sortAsc = !sortAsc;
+      } else {
+        sortField = field;
+        sortAsc = true;
+      }
+      renderTable(dashboardData);
+    });
+  });
+}
+
+function showDetail(opName) {
+  if (dashboardData.mode === 'release') {
+    showReleaseDetail(opName);
+  } else {
+    showDevDetail(opName);
+  }
+}
+
+function showReleaseDetail(opName) {
+  const op = dashboardData.operators[opName];
+  if (!op) return;
+  currentOp = op;
+
+  document.getElementById('detail-view').classList.add('visible');
+  document.getElementById('detail-title').textContent = opName + ' — Operator Detail';
+
+  document.getElementById('info-formula').textContent = op.formula || 'N/A';
+  document.getElementById('info-shape').textContent = op.shape || 'N/A';
+  document.getElementById('info-dtype').textContent = op.dtype || 'N/A';
+  document.getElementById('info-batches').textContent = (op.batches || []).join(', ') || 'N/A';
+  document.getElementById('info-precision').textContent = op.precision || 'N/A';
+  const statusCls = op.status.startsWith('COMPLETE') ? 'completed' : op.status === 'PARTIAL' ? 'in_progress' : 'unknown';
+  document.getElementById('info-status').innerHTML = '<span class="status-badge ' + statusCls + '">' + op.status + '</span>';
+  document.getElementById('info-limitation').textContent = op.limitation || 'None';
+  document.getElementById('info-archive').textContent = op.archive || 'none';
+
+  renderReleaseCorrectness(op);
+  renderReleasePerformance(op);
+
+  if (dashboardData.known_limitations) {
+    const opLimits = dashboardData.known_limitations.filter(l => l.operator === opName);
+    const container = document.getElementById('limitations-content');
+    if (opLimits.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-muted)">No known limitations for this operator.</p>';
+    } else {
+      container.innerHTML = opLimits.map(l => {
+        const sevClass = 'sev-' + l.severity.toLowerCase();
+        return '<div class="limitation-item"><span class="' + sevClass + '">[' + l.severity + ']</span> ' + l.route + ': ' + l.description + ' <span style="color:var(--text-muted);font-size:12px">(' + l.blocker_type + ')</span></div>';
+      }).join('');
+    }
+  }
+
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector('[data-tab="correctness"]').classList.add('active');
+  document.getElementById('tab-correctness').classList.add('active');
+  document.getElementById('detail-view').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderReleaseCorrectness(op) {
+  const corr = op.correctness || {};
+  const allPass = Object.values(corr).every(c => String(c).startsWith('PASS'));
+  const allFail = Object.values(corr).every(c => String(c).startsWith('FAIL'));
+  const statusHtml = allPass ? '<span class="status-badge pass" style="font-size:16px;padding:4px 16px">ALL PASS</span>' :
+                     allFail ? '<span class="status-badge fail" style="font-size:16px;padding:4px 16px">ALL FAIL</span>' :
+                     '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">MIXED</span>';
+  document.getElementById('corr-status').innerHTML = statusHtml;
+
+  const impls = ['torch', 'ascendc', 'pypto'];
+  let html = '';
+  for (const impl of impls) {
+    const c = corr[impl] || 'N/A';
+    html += '<tr><td>' + impl + '</td><td>' + c + '</td><td style="font-size:12px">' + (op.profiler?.[impl]?.method || 'N/A') + '</td></tr>';
+  }
+  document.getElementById('corr-table-body').innerHTML = html;
+}
+
+function renderReleasePerformance(op) {
+  const profiler = op.profiler || {};
+  const impls = ['torch', 'ascendc', 'pypto'];
+  let html = '';
+  for (const impl of impls) {
+    const p = profiler[impl] || {};
+    const method = p.method || 'N/A';
+    const lat = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
+    html += '<tr><td>' + impl + '</td><td>' + method + '</td><td>' + lat + '</td></tr>';
+  }
+  document.getElementById('perf-table-body').innerHTML = html;
+}
+
+function closeDetail() {
+  document.getElementById('detail-view').classList.remove('visible');
+  currentOp = null;
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

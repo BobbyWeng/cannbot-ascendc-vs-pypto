@@ -1,0 +1,98 @@
+{
+  "test_scenarios": [
+    {
+      "id": "vector_new_dev",
+      "description": "Vector new development dry-run (ReLU-like)",
+      "task_context": {
+        "operator": "test_relu",
+        "backend_route": "ASCENDC_DIRECT",
+        "semantic_class": "ELEMENTWISE",
+        "hardware_path": "VECTOR",
+        "task_mode": "NEW_DEVELOPMENT",
+        "lifecycle_stage": "PREFLIGHT",
+        "active_plugin": "ops-direct-invoke",
+        "active_agent": "ascendc-kernel-architect",
+        "required_skills": [
+          "ascendc-env-check",
+          "ascendc-kernel-develop-workflow",
+          "ascendc-direct-invoke-template",
+          "ascendc-docs-search",
+          "ascendc-api-best-practices",
+          "ascendc-tiling-design",
+          "ops-precision-standard"
+        ],
+        "loaded_skills": [],
+        "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
+        "correctness_gate": "PENDING",
+        "profile_gate": "PENDING",
+        "next_action": "PREFLIGHT"
+      },
+      "expected_plugin": "ops-direct-invoke",
+      "expected_agents": ["ascendc-kernel-architect", "ascendc-kernel-design-reviewer", "ascendc-kernel-developer", "ascendc-kernel-reviewer"],
+      "expected_gates": ["G0", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10", "G11", "G12", "G13", "G14", "G15"],
+      "must_block_g8_override": true,
+      "forbidden_practices": ["Bypass agent, call skills directly"]
+    },
+    {
+      "id": "cube_perf_opt",
+      "description": "Cube performance optimization dry-run (MatMul-like)",
+      "task_context": {
+        "operator": "test_matmul",
+        "backend_route": "ASCENDC_DIRECT",
+        "semantic_class": "MATMUL",
+        "hardware_path": "CUBE",
+        "task_mode": "PERFORMANCE_OPTIMIZATION",
+        "lifecycle_stage": "BASELINE_PROFILE",
+        "active_plugin": "ops-direct-invoke",
+        "active_agent": "ascendc-perf-analysis-expert",
+        "required_skills": [
+          "ops-profiling",
+          "ascendc-tiling-design",
+          "ascendc-api-best-practices",
+          "ascendc-npu-arch",
+          "ascendc-blaze-best-practice",
+          "ascendc-perf-optimize"
+        ],
+        "loaded_skills": ["ops-profiling", "ascendc-tiling-design", "ascendc-api-best-practices", "ascendc-npu-arch"],
+        "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
+        "correctness_gate": "PASS",
+        "profile_gate": "PASS",
+        "next_action": "BASELINE_PROFILE"
+      },
+      "expected_plugin": "ops-direct-invoke",
+      "expected_agents": ["ascendc-perf-analysis-expert", "ascendc-perf-impl-expert", "ascendc-kernel-developer", "ascendc-kernel-reviewer"],
+      "expected_gates": ["G10", "G11", "G12", "G13"],
+      "prerequisite_g8_must_pass": true,
+      "forbidden_practices": ["Optimize without profiler evidence"]
+    },
+    {
+      "id": "pypto_backend_repair",
+      "description": "PyPTO backend/CompileFunction repair dry-run",
+      "task_context": {
+        "operator": "test_op",
+        "backend_route": "PYPTO",
+        "semantic_class": "ELEMENTWISE",
+        "hardware_path": "VECTOR",
+        "task_mode": "FRAMEWORK_PATCH",
+        "lifecycle_stage": "BUILD",
+        "active_plugin": "pypto-op-orchestrator",
+        "active_agent": "pypto-op-developer",
+        "required_skills": [
+          "pypto-api-explore",
+          "pypto-op-design",
+          "pypto-op-develop"
+        ],
+        "loaded_skills": ["pypto-api-explore", "pypto-op-design"],
+        "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
+        "correctness_gate": "PENDING",
+        "profile_gate": "PENDING",
+        "next_action": "LOAD_ORCHESTRATOR_STATE"
+      },
+      "expected_plugin": "pypto-op-orchestrator",
+      "expected_agents": ["pypto-op-analyst", "pypto-op-developer"],
+      "expected_gates": ["G1", "G2", "G3", "G4", "G5", "G6", "G7"],
+      "must_not_block_without_systematic_diagnosis": true,
+      "forbidden_practices": ["Immediately BLOCKED_BACKEND without ≥3 candidates"]
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "warmup_compliance": {"all": 200, "compliant": true},
+  "loops_compliance": {"all": 100, "compliant": true},
+  "repeat_compliance": {"standard": 5, "compliant_ops": 11, "exception": ["expand(3)"], "exception_reason": "runtime >2h"},
+  "profiler_methodology": {
+    "msprof": ["relu", "mul", "add", "div", "matmul", "expand", "transpose", "reduce_sum"],
+    "torch_npu_Event": ["equal", "not", "or", "where"]
+  },
+  "measurement_uniform": {
+    "fully_uniform_msprof": ["relu", "mul", "add", "expand"],
+    "partial_msprof_2routes": ["div", "matmul", "transpose", "reduce_sum"],
+    "event_based_only": ["equal", "not", "or", "where"]
+  },
+  "data_inconsistencies": [
+    {
+      "op": "mul",
+      "type": "parsed_vs_final_report",
+      "description": "final_comparison.json torch B1 primary=3.876, parsed=9.0",
+      "authoritative": "parsed data (9.0)"
+    },
+    {
+      "op": "reduce_sum",
+      "type": "stale_report",
+      "description": "provisional report says profiler PENDING, release CSV already has profiler values"
+    },
+    {
+      "op": "div",
+      "type": "incomplete_correctness",
+      "description": "torch B=4,8,16,32 reference files missing, all_pass=true displayed"
+    }
+  ],
+  "sha256sums": {
+    "valid": ["relu", "mul", "add", "div"],
+    "empty_0bytes": ["equal", "not", "or"],
+    "broken_format": ["where"],
+    "comment_only_no_hashes": ["matmul"],
+    "missing": ["expand", "transpose", "reduce_sum"]
+  }
+}

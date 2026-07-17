@@ -1,0 +1,35 @@
+{
+  "recovery_scenarios": [
+    {
+      "id": "recover_interrupted_ascendc",
+      "description": "Recover interrupted Ascend C development",
+      "state_hint": {
+        "task_context_exists": true,
+        "task_state_exists": true,
+        "last_checkpoint": "IMPLEMENTATION",
+        "gates_passed": ["G0", "G1", "G2", "G3", "G4", "G5", "G6"]
+      },
+      "expected_recovery_action": "Resume from IMPLEMENTATION, re-verify G6 artifacts, proceed to G7"
+    },
+    {
+      "id": "recover_interrupted_pypto",
+      "description": "Recover interrupted PyPTO development",
+      "state_hint": {
+        "orchestrator_state_exists": true,
+        "orchestrator_current_stage": 4,
+        "stage_status": {"1": "completed", "2": "completed", "3": "completed", "4": "in_progress"}
+      },
+      "expected_recovery_action": "Resume from Stage 4, re-verify Stage 3 golden, proceed with design"
+    },
+    {
+      "id": "recover_artifact_modified",
+      "description": "Recover with upstream artifact modified",
+      "state_hint": {
+        "sha256_changed": true,
+        "upstream_stage": 3,
+        "current_stage": 5
+      },
+      "expected_recovery_action": "Fall back to stage 3, re-verify, re-generate downstream"
+    }
+  ]
+}
