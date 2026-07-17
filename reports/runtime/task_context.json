@@ -4,7 +4,7 @@
   "semantic_class": "UNKNOWN_NEEDS_ANALYSIS",
   "hardware_path": "N/A",
   "task_mode": "FUNCTIONAL_REPAIR",
-  "lifecycle_stage": "REVIEW",
+  "lifecycle_stage": "RELEASE",
   "active_plugin": "inline",
   "active_agent": "primary-agent",
   "required_skills": [
@@ -16,6 +16,6 @@
   "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
   "correctness_gate": "NOT_APPLICABLE_PROJECT_INFRA",
   "profile_gate": "PASS_DASHBOARD_DATA_AUDIT",
-  "next_action": "Deploy the validated Chinese dashboard to ubuntu-dev, then commit and push the branch",
-  "last_successful_checkpoint": "Dashboard v3 generator, regression checks, JavaScript syntax, and browser validation passed"
+  "next_action": "No pending action; monitor the deployed dashboard for new release data",
+  "last_successful_checkpoint": "Chinese Dashboard v3 deployed to ubuntu-dev, browser-validated, committed, and pushed"
 }
