@@ -24,6 +24,7 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent.parent
 OPERATORS = BASE / "operators"
 OUT = BASE / "dashboard"
+BATCH_SIZES = [1, 2, 4, 8, 16, 32, 64]
 
 # ---------------------------------------------------------------------------
 # Release-mode data loader
@@ -213,6 +214,110 @@ def rank_routes(profiler_records):
     return {"status": "RANKED", "winner": fastest.get("_route_key"), "speedup": None}
 
 
+def validate_batch_records(entry, batch_manifest, release_sha256):
+    """Validate each batch value against its own published or parsed source."""
+    declared_batches = set(entry.get("batches", []))
+    profiler = entry.get("profiler", {})
+    sources = entry.get("batch_sources", {})
+    result = {}
+
+    for route_key, scaling in entry.get("batch_scaling", {}).items():
+        route_result = {}
+        base_validation = profiler.get(route_key, {}).get("validation", {})
+        for batch in BATCH_SIZES:
+            metric_key = f"b{batch}_us"
+            value = scaling.get(metric_key)
+            if not _finite_positive(value):
+                continue
+            source = sources.get(route_key, {}).get(metric_key, {})
+            reasons = []
+
+            if batch not in declared_batches:
+                reasons.append("BATCH_NOT_IN_RELEASE")
+            if not base_validation.get("rank_eligible"):
+                reasons.extend(base_validation.get("reasons", []) or [base_validation.get("status", "ROUTE_NOT_VERIFIED")])
+
+            source_kind = source.get("source_kind")
+            source_sha = source.get("sha256", "")
+            expected_sha = batch_manifest.get(route_key, {}).get(batch)
+            if source_kind == "published":
+                if source_sha != release_sha256:
+                    reasons.append("RELEASE_HASH_MISMATCH")
+            elif source_kind == "parsed_msprof":
+                if not expected_sha:
+                    reasons.append("UNMANIFESTED")
+                elif source_sha != expected_sha:
+                    reasons.append("HASH_MISMATCH")
+                if source.get("method") != "msprof":
+                    reasons.append("METHOD_MISMATCH")
+                if source.get("metric") != "primary_compute_kernel_us":
+                    reasons.append("METRIC_MISMATCH")
+            else:
+                reasons.append("MISSING_SOURCE")
+
+            reasons = list(dict.fromkeys(reason for reason in reasons if reason))
+            route_result[str(batch)] = {
+                "status": "VERIFIED" if not reasons else reasons[0],
+                "rank_eligible": not reasons,
+                "reasons": reasons,
+                "source": source.get("source", "N/A"),
+                "source_kind": source_kind or "N/A",
+                "source_sha256": source_sha if _SHA256_RE.match(str(source_sha)) else None,
+                "manifest_sha256": expected_sha if _SHA256_RE.match(str(expected_sha or "")) else None,
+                "metric_contract": "primary_compute_kernel_us",
+            }
+        if route_result:
+            result[route_key] = route_result
+    return result
+
+
+def rank_batches(entry):
+    """Build the B=1..64 comparison after route validation has completed.
+
+    Values from an unverified route remain visible, but only routes whose
+    profiler record passed validate_record() may participate in ranking.
+    Batches outside the release contract are also display-only.
+    """
+    declared_batches = set(entry.get("batches", []))
+    scaling = entry.get("batch_scaling", {})
+    profiler = entry.get("profiler", {})
+    batch_validation = entry.get("batch_validation", {})
+    result = {}
+
+    for batch in BATCH_SIZES:
+        metric_key = f"b{batch}_us"
+        values = {}
+        eligible = []
+        for route_key in ["torch", "ascendc", "pypto"]:
+            value = scaling.get(route_key, {}).get(metric_key)
+            if value is None:
+                value = profiler.get(route_key, {}).get(metric_key)
+            if _finite_positive(value):
+                values[route_key] = float(value)
+                if batch_validation.get(route_key, {}).get(str(batch), {}).get("rank_eligible"):
+                    eligible.append((route_key, float(value)))
+
+        if batch not in declared_batches:
+            status = "BATCH_NOT_IN_RELEASE"
+            winner = None
+        elif len(eligible) < 2:
+            status = "INSUFFICIENT_VERIFIED_ROUTES"
+            winner = None
+        else:
+            status = "RANKED"
+            winner = min(eligible, key=lambda item: item[1])[0]
+
+        result[str(batch)] = {
+            "batch": batch,
+            "declared": batch in declared_batches,
+            "values": values,
+            "eligible_routes": [route for route, _ in eligible],
+            "status": status,
+            "winner": winner,
+        }
+    return result
+
+
 def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sha256, op_dir, manifest_lookup):
     """Extract profiler for a route with full provenance and validation."""
 
@@ -291,8 +396,8 @@ def load_release(path):
       - routes.*.profiler (structured profiler data — matmul only)
       - known_limitations, ascendc_implementation_audit
 
-    Profiler data for non-matmul operators is supplemented from
-    dashboard/dashboard.json (pre-built from parsed msprof data, checked into git).
+    Profiler data for non-matmul operators is supplemented from exact
+    operators/*/reports/parsed/*_bN.json files and checked against SHA256SUMS.
     """
     raw = json.loads(Path(path).read_text())
 
@@ -309,12 +414,14 @@ def load_release(path):
         except (json.JSONDecodeError, OSError):
             pass
 
-    # Build manifest lookup: op_name -> {route_key: expected_sha256}
+    # Build manifest lookups for B=1 route validation and every batch.
     # SHA256SUMS format: <hash>  <path> or <hash> *<path>
     # Path must match relative to operator directory
     manifest_lookup = {}
+    batch_manifest_lookup = {}
     for op_name in raw.get("operators", {}):
         manifest_lookup[op_name] = {}
+        batch_manifest_lookup[op_name] = {rk: {} for rk in ["torch", "ascendc", "pypto"]}
         sha_path = BASE / "operators" / op_name / "SHA256SUMS"
         if sha_path.exists():
             for line in sha_path.read_text().strip().split('\n'):
@@ -326,10 +433,12 @@ def load_release(path):
                 if len(parts) == 2:
                     f_hash = parts[0]
                     f_path = parts[1].lstrip('*')
-                    # Use exact relative path match
-                    for rk in ["torch", "ascendc", "pypto"]:
-                        expected = f"reports/parsed/{rk}_b1.json"
-                        if f_path == expected:
+                    match = re.fullmatch(r"reports/parsed/(torch|ascendc|pypto)_b(1|2|4|8|16|32|64)\.json", f_path)
+                    if match:
+                        rk, batch_text = match.groups()
+                        batch = int(batch_text)
+                        batch_manifest_lookup[op_name][rk][batch] = f_hash
+                        if batch == 1:
                             manifest_lookup[op_name][rk] = f_hash
 
     # Get release metadata raw — no modification
@@ -361,26 +470,73 @@ def load_release(path):
                 p["_route_key"] = rk
                 profiler[rk] = p
 
-        # 3. Batch scaling: from routes.*.profiler (per-batch keys)
+        # 3. Batch scaling: current_release has priority; each missing batch is
+        # supplemented from its exact parsed msprof file and SHA256-checked.
         batch_scaling = {}
+        batch_sources = {}
         for rk in ["torch", "ascendc", "pypto"]:
             r = routes.get(rk, {}) if isinstance(routes, dict) else {}
             p = r.get("profiler", {}) if isinstance(r, dict) else {}
             if isinstance(p, dict):
                 bs = {}
-                for bk in ["b1_us", "b2_us", "b4_us", "b8_us", "b16_us", "b32_us", "b64_us"]:
+                route_sources = {}
+                for bk in [f"b{batch}_us" for batch in BATCH_SIZES]:
                     if bk in p and p[bk] is not None:
                         bs[bk] = p[bk]
+                        route_sources[bk] = {
+                            "source": "current_release.json",
+                            "source_kind": "published",
+                            "sha256": release_sha256,
+                            "method": "msprof",
+                            "metric": "primary_compute_kernel_us",
+                        }
+                if p.get("b1_primary_us") is not None:
+                    bs.setdefault("b1_us", p["b1_primary_us"])
+                    route_sources.setdefault("b1_us", {
+                        "source": "current_release.json", "source_kind": "published",
+                        "sha256": release_sha256, "method": "msprof", "metric": "primary_compute_kernel_us",
+                    })
+                if p.get("b32_primary_us") is not None:
+                    bs.setdefault("b32_us", p["b32_primary_us"])
+                    route_sources.setdefault("b32_us", {
+                        "source": "current_release.json", "source_kind": "published",
+                        "sha256": release_sha256, "method": "msprof", "metric": "primary_compute_kernel_us",
+                    })
                 if bs:
                     batch_scaling[rk] = bs
+                    batch_sources[rk] = route_sources
 
-        # Also try dashboard.json for batch scaling
-        if not batch_scaling and dj_ops and name in dj_ops:
-            dj_bs = dj_ops[name].get("batch_scaling", {})
-            for rk in ["torch", "ascendc", "pypto"]:
-                if rk in dj_bs and dj_bs[rk]:
-                    if rk not in batch_scaling:
-                        batch_scaling[rk] = dj_bs[rk]
+        for rk in ["torch", "ascendc", "pypto"]:
+            target = batch_scaling.setdefault(rk, {})
+            route_sources = batch_sources.setdefault(rk, {})
+            for batch in BATCH_SIZES:
+                bk = f"b{batch}_us"
+                if bk in target:
+                    continue
+                parsed_path = op_dir / "reports" / "parsed" / f"{rk}_b{batch}.json"
+                if not parsed_path.exists():
+                    continue
+                try:
+                    parsed = json.loads(parsed_path.read_text())
+                except (json.JSONDecodeError, OSError):
+                    continue
+                value = parsed.get("primary_compute_kernel_us")
+                if not _finite_positive(value):
+                    continue
+                file_sha = hashlib.sha256(parsed_path.read_bytes()).hexdigest()
+                target[bk] = value
+                route_sources[bk] = {
+                    "source": str(parsed_path.relative_to(BASE)),
+                    "source_kind": "parsed_msprof",
+                    "sha256": file_sha,
+                    # Older parsed-msprof schema omitted profiler_type; the
+                    # canonical reports/parsed path and metric contract identify it.
+                    "method": parsed.get("profiler_type", "msprof"),
+                    "metric": "primary_compute_kernel_us",
+                }
+            if not target:
+                batch_scaling.pop(rk, None)
+                batch_sources.pop(rk, None)
 
         # 4. Build operator entry
         entry = {
@@ -393,6 +549,7 @@ def load_release(path):
             "correctness": correctness,
             "profiler": profiler,
             "batch_scaling": batch_scaling,
+            "batch_sources": batch_sources,
             "report_path": op.get("report_path", ""),
             "archive": op.get("archive", "none"),
         }
@@ -448,6 +605,11 @@ def load_release(path):
         # Compute ranking
         ranking = rank_routes(prof)
         entry["ranking"] = ranking
+        entry["batch_validation"] = validate_batch_records(
+            entry, batch_manifest_lookup.get(op_name, {}), release_sha256
+        )
+        entry["batch_ranking"] = rank_batches(entry)
+        entry.pop("batch_sources", None)
         if ranking["status"] == "INSUFFICIENT_VERIFIED_ROUTES":
             validation_summary["insufficient_routes"] += 1
 
@@ -509,10 +671,10 @@ def load_release(path):
             "performance_matrix_used": False,
             "data_priority": [
                 "1. current_release.json routes.*.profiler (published, exact)",
-                "2. operators/*/reports/parsed/*.json (msprof, SHA256-verified at build time)",
+                "2. operators/*/reports/parsed/*_bN.json (per-batch msprof, SHA256-verified at build time)",
                 "3. UNMANIFESTED data: display-only, not ranked"
             ],
-            "provenance": "All profiler records carry source, source_kind, sha256, integrity, and comparable per entry.",
+            "provenance": "All route and batch profiler records carry source, source_kind, SHA256 evidence, and validation before ranking.",
         },
     }
     return result
@@ -963,6 +1125,20 @@ def generate_html(dashboard):
 
     <div id="validation-summary" class="summary-cards" style="margin-bottom:12px"></div>
 
+    <div id="summary-drilldown" class="drilldown-panel">
+      <div class="detail-header">
+        <div>
+          <h2 id="drilldown-title">状态明细</h2>
+          <p id="drilldown-description" class="drilldown-description"></p>
+        </div>
+        <button class="detail-close" onclick="closeSummaryDrilldown()">关闭</button>
+      </div>
+      <table>
+        <thead><tr><th>算子</th><th>路线</th><th>Batch</th><th>状态与依据</th></tr></thead>
+        <tbody id="drilldown-table-body"></tbody>
+      </table>
+    </div>
+
     <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">
       <div style="display:flex;justify-content:space-between;margin-bottom:6px">
         <span style="font-size:13px;color:var(--text-secondary)">总体完成度</span>
@@ -1033,6 +1209,16 @@ def generate_html(dashboard):
             <thead><tr><th>路线</th><th>方法与来源</th><th>主计算核延迟</th></tr></thead>
             <tbody id="perf-table-body"></tbody>
           </table>
+        </div>
+        <div class="section">
+          <h3>按 Batch 性能对比（先验证，后排名）</h3>
+          <p class="batch-note">覆盖 B=1、2、4、8、16、32、64。未通过路线验证或未纳入发布批次的数据仅展示，不参与最快路线计算。</p>
+          <div class="table-scroll">
+            <table id="batch-perf-table">
+              <thead><tr><th>Batch</th><th>Torch</th><th>Ascend C</th><th>PyPTO</th><th>验证后排名</th></tr></thead>
+              <tbody id="batch-perf-body"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -1127,6 +1313,9 @@ a:hover { text-decoration: underline; }
 
 .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
 .summary-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
+.summary-card.clickable { cursor: pointer; transition: border-color 0.2s, transform 0.2s, background 0.2s; }
+.summary-card.clickable:hover, .summary-card.clickable.active { border-color: var(--accent-blue); background: var(--bg-hover); transform: translateY(-2px); }
+.summary-card.clickable:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
 .summary-card .value { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
 .summary-card .label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
 .summary-card.color-blue .value { color: var(--accent-blue); }
@@ -1159,6 +1348,14 @@ tr:hover { background: var(--bg-hover); }
 
 .detail-view { display: none; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 24px; }
 .detail-view.visible { display: block; }
+.drilldown-panel { display: none; background: var(--bg-secondary); border: 1px solid var(--accent-blue); border-radius: 8px; padding: 20px; margin: 0 0 24px; }
+.drilldown-panel.visible { display: block; animation: fadeIn 0.25s ease-out; }
+.drilldown-description, .batch-note { color: var(--text-secondary); font-size: 12px; margin: 4px 0 12px; }
+.table-scroll { overflow-x: auto; }
+.batch-value { white-space: nowrap; }
+.batch-value.winner { color: var(--accent-green); font-weight: 700; }
+.batch-display-only { display: block; color: var(--accent-yellow); font-size: 10px; margin-top: 2px; }
+.rank-note { color: var(--text-secondary); font-size: 11px; }
 .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .detail-header h2 { font-size: 24px; }
 .detail-close { background: none; border: 1px solid var(--border); color: var(--text-secondary); padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; }
@@ -1229,10 +1426,13 @@ const VALIDATION_ZH = {
   METRIC_MISMATCH: '性能指标不一致',
   METRIC_INVALID: '性能数值无效',
   MISSING_SOURCE: '缺少数据来源',
+  BATCH_NOT_IN_RELEASE: '未纳入发布批次',
+  ROUTE_NOT_VERIFIED: '路线未验证',
 };
 const RANKING_ZH = {
   RANKED: '已排名',
   INSUFFICIENT_VERIFIED_ROUTES: '可信路线不足，不排名',
+  BATCH_NOT_IN_RELEASE: '未纳入发布批次，不排名',
 };
 const LIMITATION_ZH = {
   'Uses bitwise_or (no logical_or API). Correct for 0/1 bool.': '缺少 logical_or API，当前使用 bitwise_or；对 0/1 布尔输入结果正确。',
@@ -1304,15 +1504,18 @@ function renderSummary(data) {
     const s = data.status_summary || {};
     const total = data.operator_count || 0;
     const cards = [
-      { label: '算子总数', value: total, cls: 'color-blue' },
+      { key: 'ALL', label: '算子总数', value: total, cls: 'color-blue' },
     ];
     for (const [status, count] of Object.entries(s)) {
       const cls = status.startsWith('COMPLETE') ? 'color-green' : status === 'PARTIAL' ? 'color-yellow' : 'color-red';
-      cards.push({ label: statusZh(status), value: count, cls: cls });
+      cards.push({ key: status, label: statusZh(status), value: count, cls: cls });
     }
     const container = document.getElementById('summary-cards');
     container.innerHTML = cards.map(c => `
-      <div class="summary-card ${c.cls}">
+      <div class="summary-card clickable ${c.cls}" role="button" tabindex="0"
+           onclick="showSummaryDrilldown('operator_status','${c.key}')"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showSummaryDrilldown('operator_status','${c.key}')}"
+           title="点击查看对应算子与 Batch">
         <div class="value">${c.value}</div>
         <div class="label">${c.label}</div>
       </div>
@@ -1329,18 +1532,23 @@ function renderSummary(data) {
     const vContainer = document.getElementById('validation-summary');
     if (vContainer && vs.total_operators) {
       const vCards = [
-        { label: '已验证且可排名', value: vs.verified_rankable || 0, cls: 'color-green' },
-        { label: '已验证但不可比较', value: vs.verified_not_comparable || 0, cls: 'color-yellow' },
-        { label: '未入清单', value: vs.unmanifested || 0, cls: 'color-orange' },
-        { label: '哈希不匹配', value: vs.hash_mismatch || 0, cls: 'color-red' },
-        { label: '正确性未通过', value: vs.correctness_not_pass || 0, cls: 'color-red' },
-        { label: '实现版本不匹配', value: vs.variant_mismatch || 0, cls: 'color-red' },
-        { label: '缺少性能数据', value: vs.missing_profiler || 0, cls: 'color-yellow' },
-        { label: '可信路线不足', value: vs.insufficient_routes || 0, cls: 'color-yellow' },
+        { key: 'verified_rankable', label: '已验证且可排名', value: vs.verified_rankable || 0, cls: 'color-green' },
+        { key: 'verified_not_comparable', label: '已验证但不可比较', value: vs.verified_not_comparable || 0, cls: 'color-yellow' },
+        { key: 'unmanifested', label: '未入清单', value: vs.unmanifested || 0, cls: 'color-orange' },
+        { key: 'hash_mismatch', label: '哈希不匹配', value: vs.hash_mismatch || 0, cls: 'color-red' },
+        { key: 'correctness_not_pass', label: '正确性未通过', value: vs.correctness_not_pass || 0, cls: 'color-red' },
+        { key: 'variant_mismatch', label: '实现版本不匹配', value: vs.variant_mismatch || 0, cls: 'color-red' },
+        { key: 'missing_profiler', label: '缺少性能数据', value: vs.missing_profiler || 0, cls: 'color-yellow' },
+        { key: 'insufficient_routes', label: '可信路线不足', value: vs.insufficient_routes || 0, cls: 'color-yellow' },
       ];
-      vContainer.innerHTML = vCards.map(c =>
-        '<div class="summary-card ' + c.cls + '"><div class="value">' + c.value + '</div><div class="label">' + c.label + '</div></div>'
-      ).join('');
+      vContainer.innerHTML = vCards.map(c => `
+        <div class="summary-card clickable ${c.cls}" role="button" tabindex="0"
+             onclick="showSummaryDrilldown('validation','${c.key}')"
+             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showSummaryDrilldown('validation','${c.key}')}"
+             title="点击查看对应算子、路线与 Batch">
+          <div class="value">${c.value}</div><div class="label">${c.label}</div>
+        </div>
+      `).join('');
     }
     return;
   }
@@ -1368,6 +1576,114 @@ function renderSummary(data) {
   document.getElementById('progress-fill').style.width = pct + '%';
   document.getElementById('progress-text').textContent = pct + '% (' + s.completed + '/' + s.total + ')';
   document.getElementById('update-time').textContent = '生成时间：' + data.generated_at;
+}
+
+const DRILLDOWN_LABELS = {
+  ALL: '算子总数',
+  COMPLETE: '完全完成',
+  COMPLETE_WITH_LIMITATION: '有限制完成',
+  PARTIAL: '部分完成',
+  INCOMPLETE: '未完成',
+  verified_rankable: '已验证且可排名',
+  verified_not_comparable: '已验证但不可比较',
+  unmanifested: '未入清单',
+  hash_mismatch: '哈希不匹配',
+  correctness_not_pass: '正确性未通过',
+  variant_mismatch: '实现版本不匹配',
+  missing_profiler: '缺少性能数据',
+  insufficient_routes: '可信路线不足',
+};
+
+function routeBatchText(op, route, expectedOnly = false) {
+  const scaling = op.batch_scaling?.[route] || {};
+  const actual = Object.keys(scaling)
+    .map(key => Number((key.match(/^b(\d+)_us$/) || [])[1]))
+    .filter(Number.isFinite)
+    .sort((a, b) => a - b);
+  const batches = (!expectedOnly && actual.length) ? actual : (op.batches || []);
+  return batches.length ? batches.map(batch => 'B=' + batch).join('、') : '无';
+}
+
+function validationKeyMatches(key, validation) {
+  const reasons = validation.reasons || [];
+  if (key === 'verified_rankable') return validation.rank_eligible === true;
+  if (key === 'verified_not_comparable') return reasons.includes('NOT_COMPARABLE');
+  if (key === 'unmanifested') return reasons.includes('UNMANIFESTED');
+  if (key === 'hash_mismatch') return reasons.includes('HASH_MISMATCH') || reasons.includes('RELEASE_HASH_MISMATCH');
+  if (key === 'correctness_not_pass') return reasons.includes('CORRECTNESS_NOT_PASS');
+  if (key === 'variant_mismatch') return reasons.includes('WRONG_VARIANT');
+  return false;
+}
+
+function showSummaryDrilldown(kind, key) {
+  if (!dashboardData || dashboardData.mode !== 'release') return;
+  const rows = [];
+  const operators = dashboardData.operators || {};
+
+  for (const [opName, op] of Object.entries(operators)) {
+    if (kind === 'operator_status') {
+      if (key === 'ALL' || op.status === key) {
+        rows.push({
+          op: opName,
+          route: '全部路线',
+          batches: (op.batches || []).map(batch => 'B=' + batch).join('、') || '无',
+          evidence: statusZh(op.status),
+        });
+      }
+      continue;
+    }
+
+    if (key === 'missing_profiler') {
+      for (const route of ['torch', 'ascendc', 'pypto']) {
+        if (!op.profiler?.[route]) {
+          rows.push({ op: opName, route: routeZh(route), batches: routeBatchText(op, route, true), evidence: '未找到性能采样记录' });
+        }
+      }
+      continue;
+    }
+
+    if (key === 'insufficient_routes') {
+      if (op.ranking?.status === 'INSUFFICIENT_VERIFIED_ROUTES') {
+        const eligible = Object.entries(op.profiler || {})
+          .filter(([, record]) => record.validation?.rank_eligible)
+          .map(([route]) => routeZh(route));
+        rows.push({
+          op: opName,
+          route: eligible.length ? eligible.join('、') : '无可信路线',
+          batches: (op.batches || []).map(batch => 'B=' + batch).join('、') || '无',
+          evidence: '可信路线 ' + eligible.length + ' 条，至少需要 2 条',
+        });
+      }
+      continue;
+    }
+
+    for (const route of ['torch', 'ascendc', 'pypto']) {
+      const validation = op.profiler?.[route]?.validation;
+      if (!validation || !validationKeyMatches(key, validation)) continue;
+      const reasonText = (validation.reasons || []).map(validationZh).join('；');
+      rows.push({
+        op: opName,
+        route: routeZh(route),
+        batches: routeBatchText(op, route),
+        evidence: validation.rank_eligible ? '路线验证通过，可参与对应 Batch 排名' : (reasonText || validationZh(validation.status)),
+      });
+    }
+  }
+
+  document.getElementById('drilldown-title').textContent = (DRILLDOWN_LABELS[key] || key) + ' — 明细';
+  document.getElementById('drilldown-description').textContent = kind === 'operator_status'
+    ? '按算子发布状态列出正式覆盖的 Batch。'
+    : '按性能路线验证结果列出算子、路线及已采集或期望的 Batch；排名始终在验证通过后执行。';
+  document.getElementById('drilldown-table-body').innerHTML = rows.length
+    ? rows.map(row => `<tr onclick="showDetail('${row.op}')"><td><strong>${row.op}</strong></td><td>${row.route}</td><td style="font-size:12px">${row.batches}</td><td style="font-size:12px">${row.evidence}</td></tr>`).join('')
+    : '<tr><td colspan="4" style="color:var(--text-muted);text-align:center">当前没有对应记录。</td></tr>';
+  const panel = document.getElementById('summary-drilldown');
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function closeSummaryDrilldown() {
+  document.getElementById('summary-drilldown').classList.remove('visible');
 }
 
 function renderTable(data) {
@@ -1651,6 +1967,30 @@ function renderReleasePerformance(op) {
   }
 
   document.getElementById('perf-table-body').innerHTML = html;
+
+  const batchRows = Object.values(op.batch_ranking || {}).sort((a, b) => a.batch - b.batch);
+  const batchHtml = batchRows.map(row => {
+    const cells = impls.map(impl => {
+      const value = row.values?.[impl];
+      if (value == null) return '<td class="batch-value">—</td>';
+      const eligible = (row.eligible_routes || []).includes(impl);
+      const winnerCls = row.winner === impl ? ' winner' : '';
+      const winnerMark = row.winner === impl ? '★ ' : '';
+      let annotation = '';
+      if (!row.declared) {
+        annotation = '<span class="batch-display-only">仅展示：未纳入发布批次</span>';
+      } else if (!eligible) {
+        const val = op.batch_validation?.[impl]?.[String(row.batch)] || {};
+        annotation = '<span class="batch-display-only">仅展示：' + validationZh(val.status) + '</span>';
+      }
+      return '<td class="batch-value' + winnerCls + '">' + winnerMark + Number(value).toFixed(2) + ' µs' + annotation + '</td>';
+    }).join('');
+    const rankText = row.status === 'RANKED'
+      ? '<strong>' + routeZh(row.winner) + '</strong><div class="rank-note">仅比较已验证路线</div>'
+      : '<span class="rank-note">' + rankingZh(row.status) + '</span>';
+    return '<tr><td><strong>B=' + row.batch + '</strong>' + (row.declared ? '' : '<span class="batch-display-only">未发布</span>') + '</td>' + cells + '<td>' + rankText + '</td></tr>';
+  }).join('');
+  document.getElementById('batch-perf-body').innerHTML = batchHtml || '<tr><td colspan="5">暂无批次性能数据。</td></tr>';
 }
 
 function closeDetail() {

@@ -235,6 +235,52 @@ def _check_ranking_edge_cases(operators):
     return errors
 
 
+def _check_batch_ranking(operators):
+    """Every operator exposes B=1..64 and ranks only validated routes."""
+    errors = []
+    expected_batches = {"1", "2", "4", "8", "16", "32", "64"}
+    for op_name, op in operators.items():
+        rows = op.get("batch_ranking", {})
+        if set(rows) != expected_batches:
+            errors.append(f"{op_name}/batch_ranking: batches={sorted(rows)}, expected B=1..64")
+            continue
+        declared = set(op.get("batches", []))
+        batch_validation = op.get("batch_validation", {})
+        for batch_key, row in rows.items():
+            batch = int(batch_key)
+            values = row.get("values", {})
+            eligible = row.get("eligible_routes", [])
+            for route in values:
+                if not batch_validation.get(route, {}).get(batch_key):
+                    errors.append(f"{op_name}/B={batch}/{route}: value missing per-batch validation")
+            for route in eligible:
+                if route not in values:
+                    errors.append(f"{op_name}/B={batch}: eligible route {route} has no value")
+                validation = batch_validation.get(route, {}).get(batch_key, {})
+                if not validation.get("rank_eligible"):
+                    errors.append(f"{op_name}/B={batch}: unverified batch route {route} entered ranking")
+                if validation.get("source_kind") == "parsed_msprof":
+                    if not validation.get("source_sha256") or validation.get("source_sha256") != validation.get("manifest_sha256"):
+                        errors.append(f"{op_name}/B={batch}/{route}: parsed SHA256 not verified")
+            if batch not in declared:
+                if row.get("status") != "BATCH_NOT_IN_RELEASE" or row.get("winner") is not None:
+                    errors.append(f"{op_name}/B={batch}: undeclared batch must be display-only")
+            elif len(eligible) >= 2:
+                if row.get("status") != "RANKED":
+                    errors.append(f"{op_name}/B={batch}: {len(eligible)} verified routes but not ranked")
+                expected_winner = min(eligible, key=lambda route: float(values[route]))
+                if row.get("winner") != expected_winner:
+                    errors.append(f"{op_name}/B={batch}: winner={row.get('winner')}, expected {expected_winner}")
+            elif row.get("status") != "INSUFFICIENT_VERIFIED_ROUTES" or row.get("winner") is not None:
+                errors.append(f"{op_name}/B={batch}: insufficient verified routes must not produce winner")
+
+    relu_rows = operators.get("relu", {}).get("batch_ranking", {})
+    for batch in expected_batches:
+        if len(relu_rows.get(batch, {}).get("values", {})) != 3:
+            errors.append(f"relu/B={batch}: expected Torch, Ascend C, and PyPTO values")
+    return errors
+
+
 def check_dashboard(filepath: str, expected_count: int = 12):
     errors = []
     warnings = []
@@ -261,6 +307,7 @@ def check_dashboard(filepath: str, expected_count: int = 12):
     errors.extend(_check_profiler_validation(operators))
     errors.extend(_check_validation_summary(data, operators))
     errors.extend(_check_ranking_edge_cases(operators))
+    errors.extend(_check_batch_ranking(operators))
 
     for op_name in EXPECTED_OPERATORS:
         if op_name not in operators:
@@ -322,6 +369,11 @@ def check_index_html(index_html_path: str, dashboard_json_path: str):
         '可信路线不足',
         '排名状态：',
         '仅展示，不排名',
+        '按 Batch 性能对比（先验证，后排名）',
+        'id="batch-perf-body"',
+        'id="summary-drilldown"',
+        'showSummaryDrilldown',
+        '点击查看对应算子、路线与 Batch',
     ]
     for text in required_zh:
         if text not in html:

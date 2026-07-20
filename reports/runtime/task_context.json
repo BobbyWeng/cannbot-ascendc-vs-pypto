@@ -4,7 +4,7 @@
   "semantic_class": "UNKNOWN_NEEDS_ANALYSIS",
   "hardware_path": "N/A",
   "task_mode": "FUNCTIONAL_REPAIR",
-  "lifecycle_stage": "REVIEW",
+  "lifecycle_stage": "ARCHIVE",
   "active_plugin": "inline",
   "active_agent": "primary-agent",
   "required_skills": [
@@ -15,7 +15,7 @@
   ],
   "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
   "correctness_gate": "NOT_APPLICABLE_PROJECT_INFRA",
-  "profile_gate": "PASS_DASHBOARD_VALIDATION",
-  "next_action": "Commit and push the browser-validated Chinese Dashboard branch; no operator release is being performed",
-  "last_successful_checkpoint": "Dashboard JSON, embedded HTML, deterministic generation, JavaScript syntax, regression suite, Cannbot usage, and browser UI validation all passed"
+  "profile_gate": "PASS_MULTI_BATCH_DASHBOARD_VALIDATION",
+  "next_action": "None — multi-batch Dashboard implementation and validation are complete",
+  "last_successful_checkpoint": "B=1..64 exact parsed-msprof SHA256 validation, validation-first ranking, clickable status drilldowns, regression, determinism, JavaScript syntax, Cannbot usage, and browser interaction checks passed"
 }
