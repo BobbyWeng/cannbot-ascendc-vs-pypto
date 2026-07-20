@@ -1,18 +1,28 @@
 {
-  "error": "no kernel events found",
-  "kernel_count": 0,
-  "logical_calls": 0,
-  "kernels_per_logical_call": 0,
-  "all_device_kernels_us_per_call": 0,
-  "primary_compute_kernel_us": 0,
-  "primary_kernel_name": "",
-  "primary_kernel_type": "",
-  "kernel_names": [],
-  "kernel_types": [],
-  "kernel_type_breakdown": {},
-  "compute_kernel_types": [],
+  "kernel_count": 28192,
+  "logical_calls": 100,
+  "kernels_per_logical_call": 281.92,
+  "all_device_kernels_us_per_call": 24783.537,
+  "primary_compute_kernel_us": 94.242,
+  "primary_kernel_name": "expand_kernel",
+  "primary_kernel_type": "KERNEL_AIVEC",
+  "kernel_names": [
+    "expand_kernel"
+  ],
+  "kernel_types": [
+    "KERNEL_AIVEC"
+  ],
+  "kernel_type_breakdown": {
+    "KERNEL_AIVEC": {
+      "count": 28192,
+      "total_us": 2478353.7,
+      "mean_us": 87.91,
+      "per_call_us": 24783.537
+    }
+  },
+  "compute_kernel_types": [
+    "KERNEL_AIVEC"
+  ],
   "executor_kernel_types": [],
-  "total_kernel_duration_all_iters_us": 0,
-  "parser_version": "1.2-rc3",
-  "profiler_type": "msprof"
+  "total_kernel_duration_all_iters_us": 2478353.7
 }

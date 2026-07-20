@@ -1,7 +1,8 @@
-operator,batch,ascendc_aclrtEvent_us,ascendc_msprof_primary_kernel_us,torch_torchEvent_us,torch_msprof_primary_kernel_us,pypto_status,ratio_ascendc_vs_torch_host
-div,1,12.6,,14.84,,N/A,0.85
-div,2,21.4,,14.07,,N/A,1.52
-div,4,43.4,,18.9,,N/A,2.3
-div,8,75.1,,31.49,,N/A,2.39
-div,16,176.2,,57.66,,N/A,3.06
-div,32,328.6,306.5,112.8,126.2,N/A,2.91
+batch,torch_primary_us,torch_kernels_per_call,torch_kernel_type,torch_all_device_us,torch_kernel_name,ascendc_primary_us,ascendc_kernels_per_call,ascendc_kernel_type,ascendc_all_device_us,ascendc_kernel_name,pypto_primary_us,pypto_kernels_per_call,pypto_kernel_type,pypto_all_device_us,pypto_kernel_name
+1,21.8,7.0,KERNEL_AIVEC,52.525,aclnnDiv_RealDivAiCore_RealDiv,18.64,7.0,KERNEL_AIVEC,89.753,div_kernel,N/A,N/A,N/A,N/A,N/A
+2,27.321,7.0,KERNEL_AIVEC,77.735,aclnnDiv_RealDivAiCore_RealDiv,28.941,7.0,KERNEL_AIVEC,164.051,div_kernel,N/A,N/A,N/A,N/A,N/A
+4,33.041,7.0,KERNEL_AIVEC,127.573,aclnnDiv_RealDivAiCore_RealDiv,50.941,7.0,KERNEL_AIVEC,319.831,div_kernel,N/A,N/A,N/A,N/A,N/A
+8,49.261,7.0,KERNEL_AIVEC,215.678,aclnnDiv_RealDivAiCore_RealDiv,101.062,7.0,KERNEL_AIVEC,669.279,div_kernel,N/A,N/A,N/A,N/A,N/A
+16,75.341,7.0,KERNEL_AIVEC,403.688,aclnnDiv_RealDivAiCore_RealDiv,156.763,7.0,KERNEL_AIVEC,1059.065,div_kernel,N/A,N/A,N/A,N/A,N/A
+32,126.203,42.0,KERNEL_AIVEC,1702.948,aclnnDiv_RealDivAiCore_RealDiv,306.526,7.0,KERNEL_AIVEC,2097.675,div_kernel,N/A,N/A,N/A,N/A,N/A
+64,256.465,1.0,KERNEL_AIVEC,243.006,aclnnDiv_RealDivAiCore_RealDiv,687.094,7.0,KERNEL_AIVEC,4766.24,div_kernel,N/A,N/A,N/A,N/A,N/A

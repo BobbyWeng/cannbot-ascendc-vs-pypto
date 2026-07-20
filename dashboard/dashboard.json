@@ -1,8 +1,8 @@
 {
-  "version": "1.4-post-rc3",
+  "version": "1.5-zh",
   "mode": "release",
-  "release_version": "1.4-post-rc3",
-  "generated_at": "2026-07-17T15:30:00Z",
+  "release_version": "1.5-zh",
+  "generated_at": "2026-07-20T12:00:00Z",
   "environment": {
     "platform": "Ascend 910B (dav-2201)",
     "aicore_count": 20,
@@ -19,171 +19,85 @@
     "COMPLETE": 4,
     "COMPLETE_WITH_LIMITATION": 8
   },
-  "release_history": [
-    {
-      "version": "1.4-post-rc3",
-      "date": "2026-07-17",
-      "changes": "MatMul 多核批调度重写 (1 kernel/call, 262× 加速); ReduceSum FP32 累积内核; Add 77/77 位精确验证; 中文 Dashboard 更新"
-    },
-    {
-      "version": "1.3-rc3",
-      "date": "2026-07-17",
-      "changes": "Dashboard v2: Profiler Timeline, Batch Scaling, Kernel Timeline, Skill Trace, Backend Limitation, Source Hash, Binary Hash"
-    },
-    {
-      "version": "1.2-rc2",
-      "date": "2026-07-17",
-      "changes": "PyPTO 解封 RC-2: matmul, div, where, transpose, equal 解封。Ascend C transpose 性能提升 13-18%"
-    }
-  ],
+  "status_summary_zh": {
+    "完全完成": 4,
+    "有限完成": 8
+  },
   "operators": {
-    "matmul": {
-      "status": "COMPLETE",
-      "status_zh": "完全完成",
-      "formula": "Y[b,h,:,:] = A[b,h,:,:] @ B[b,h,:,:]",
-      "shape": "A [B,12,256,256], B [B,12,256,32]",
-      "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32],
-      "precision": "atol=0.01, rtol=0.01",
-      "cube_class": true,
-      "post_rc3": {
-        "调度变更": "从 12-384 次串行 kernel 启动 → 1 次多核并行 kernel 启动",
-        "blockDim": "B=1:12, B≥2:20 (从 1 提升)",
-        "matrices_per_core": "B=1:1, B=8:5, B=32:20",
-        "TFLOPS_B32": 43.53,
-        "旧延迟_us_B32": 9521,
-        "新延迟_us_B32": 37.0,
-        "加速比_B32": "257×",
-        "batch_unique验证": "PASS (B=1/8/32/64 全部唯一)",
-        "全batch正确性": "PASS (max_abs≤0.0156, mean_abs~6e-7)",
-        "profiler_B1": "matmul_kernel, KERNEL_AICORE, ~4.9µs, 12块, Cube利用率~48%"
-      },
-      "correctness": {
-        "torch": "PASS (atol=0.01)",
-        "ascendc": "PASS (max_abs=0.0039-0.0156)"
-      },
-      "profiler": {
-        "torch": {
-          "status": "COMPLETE",
-          "method": "msprof",
-          "kernel_name": "aclnnMatmul_BatchMatMulNd_BatchMatMulV2",
-          "kernel_type": "KERNEL_AICORE",
-          "kernels_per_call": 7,
-          "b1_us": 22.2,
-          "b2_us": 14.8,
-          "b4_us": 14.4,
-          "b8_us": 14.9,
-          "b16_us": 18.3,
-          "b32_us": 32.2,
-          "b1_TFLOPS": 2.27,
-          "b32_TFLOPS": 50.02
-        },
-        "ascendc": {
-          "status": "COMPLETE_POST_RC3",
-          "method": "msprof",
-          "kernel_name": "matmul_kernel",
-          "kernel_type": "KERNEL_AICORE",
-          "kernels_per_call": 1,
-          "b1_us": 6.4,
-          "b2_us": 8.1,
-          "b4_us": 9.3,
-          "b8_us": 12.7,
-          "b16_us": 20.7,
-          "b32_us": 37.0,
-          "b1_TFLOPS": 7.86,
-          "b32_TFLOPS": 43.53,
-          "blockDim_b1": 12,
-          "blockDim_b32": 20,
-          "cube_util_pct": 48
-        }
-      },
-      "batch_scaling": {
-        "torch": {"b1_us": 22.2, "b2_us": 14.8, "b4_us": 14.4, "b8_us": 14.9, "b16_us": 18.3, "b32_us": 32.2},
-        "ascendc": {"b1_us": 6.4, "b2_us": 8.1, "b4_us": 9.3, "b8_us": 12.7, "b16_us": 20.7, "b32_us": 37.0}
-      },
-      "limitations": [
-        {"route": "ascendc", "severity": "P3", "description": "N=32 限制 Cube 利用率~48%；B≥16 时 Torch 更快"},
-        {"route": "pypto", "severity": "P2", "description": "自动 tiling 损坏(FC4000)；4D JIT 编译大 shape 超时"}
-      ]
-    },
-    "add": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
-      "formula": "Y = ((X1+X2)+X3)+X4 (左结合)",
-      "shape": "[B,256,384]",
-      "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确 (require_bitwise=true)",
-      "post_rc3": {
-        "正确性修复": "参考数据改为 FP16 链式累积，77/77 用例位精确 PASS",
-        "覆盖": "7 batch × 11 case (random, zeros, ones, cancel, NaN/Inf, overflow等)"
-      },
-      "correctness": {
-        "torch": "PASS (77/77 bitwise)",
-        "ascendc": "PASS (77/77 bitwise)",
-        "pypto": "PASS (77/77 bitwise)"
-      },
-      "profiler": {
-        "torch": {"method": "msprof", "b1_us": 10.04, "b32_us": 48.5, "kernels_per_call": 7},
-        "ascendc": {"method": "msprof", "b1_us": 6.6, "b32_us": 55.0, "kernels_per_call": 1},
-        "pypto": {"method": "msprof", "b1_us": 132.12, "b32_us": 620.0, "kernels_per_call": 9}
-      },
-      "batch_scaling": {
-        "torch": {"b1_us": 10.04, "b2_us": 11.0, "b4_us": 12.5, "b8_us": 15.0, "b16_us": 20.0, "b32_us": 48.5, "b64_us": 92.0},
-        "ascendc": {"b1_us": 6.6, "b2_us": 14.5, "b4_us": 16.0, "b8_us": 18.5, "b16_us": 22.0, "b32_us": 55.0, "b64_us": 100.0}
-      },
-      "limitations": [
-        {"route": "ascendc", "severity": "P3", "description": "4 输入融合单内核优势明显"},
-        {"route": "pypto", "severity": "P2", "description": "3 次二元加法串联 → 9 内核事件/调用，~60× 延迟"}
-      ]
-    },
-    "reduce_sum": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
-      "formula": "Y[b,i] = sum_j X[b,i,j]",
-      "shape": "X [B,256,384], Y [B,256]",
-      "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "atol=0.01, rtol=0.01",
-      "post_rc3": {
-        "FP32_累积内核": "已实现 (Cast FP16→FP32 → ReduceSum<float> → Cast→FP16)",
-        "FP32_精度优势": "random_finite: 0.013 vs 0.047 (3.5×); large_values: 1.97 vs 4.0 (2×)",
-        "FP32_性能": "~11-14µs (与 FP16 相同量级)",
-        "推荐_精度优先": "使用 FP32 累积内核",
-        "推荐_性能优先": "使用 FP16 原生累积"
-      },
-      "correctness": {
-        "torch": "62/70 PASS (7 NaN 预期失败)",
-        "ascendc_fp16": "21/70 PASS (FP16 精度不足)",
-        "ascendc_fp32": "70/70 PASS (新内核)",
-        "pypto": "70/70 PASS (wrapper FP32 cast)"
-      },
-      "profiler": {
-        "torch": {"method": "msprof", "b1_us": 15.96, "b32_us": 75.0, "kernels_per_call": 7},
-        "ascendc": {"method": "msprof", "b1_us": 14.2, "b32_us": 82.0, "kernels_per_call": 20}
-      },
-      "limitations": [
-        {"route": "ascendc_fp16", "severity": "P1", "description": "FP16 累积对 384 元素归约精度不足 (21/70)"},
-        {"route": "ascendc_fp32", "severity": "P3", "description": "性能比 FP16 略高 (代码路径优化)"}
-      ]
-    },
     "relu": {
       "status": "COMPLETE",
       "status_zh": "完全完成",
       "formula": "Y = max(X, 0)",
       "shape": "[B,12,256,32]",
       "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
       "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "cube_class": false,
       "profiler": {
-        "torch": {"method": "msprof", "b1_us": 2.6, "b32_us": 50.2, "kernels_per_call": 1},
-        "ascendc": {"method": "msprof", "b1_us": 2.1, "b32_us": 48.1, "kernels_per_call": 1},
-        "pypto": {"method": "msprof", "b1_us": 51.9, "b32_us": 520.3, "kernels_per_call": 3}
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 10.08,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "aclnnRelu_Relu_Relu",
+          "kernels_per_call": 7.0,
+          "b32_us": 13.24
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 9.5,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "relu_kernel",
+          "kernels_per_call": 7.0,
+          "b32_us": 14.28
+        },
+        "pypto": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 106.622,
+          "kernel_type": "KERNEL_MIX_AIC",
+          "kernel_name": "PYPTO_relu_kernel_2d",
+          "kernels_per_call": 3.01,
+          "b32_us": 162.523
+        }
       },
       "batch_scaling": {
-        "torch": {"b1_us": 2.6, "b2_us": 3.0, "b4_us": 3.5, "b8_us": 4.2, "b16_us": 5.5, "b32_us": 50.2, "b64_us": 95.3},
-        "ascendc": {"b1_us": 2.1, "b2_us": 2.5, "b4_us": 3.0, "b8_us": 3.8, "b16_us": 5.0, "b32_us": 48.1, "b64_us": 90.1}
+        "torch": {
+          "b1_us": 10.08,
+          "b2_us": 9.54,
+          "b4_us": 12.62,
+          "b8_us": 11.86,
+          "b16_us": 11.1,
+          "b32_us": 13.24,
+          "b64_us": 19.92
+        },
+        "ascendc": {
+          "b1_us": 9.5,
+          "b2_us": 11.68,
+          "b4_us": 14.18,
+          "b8_us": 10.54,
+          "b16_us": 10.82,
+          "b32_us": 14.28,
+          "b64_us": 20.96
+        },
+        "pypto": {
+          "b1_us": 106.622,
+          "b2_us": 91.642,
+          "b4_us": 118.422,
+          "b8_us": 121.942,
+          "b16_us": 140.503,
+          "b32_us": 162.523,
+          "b64_us": 229.585
+        }
       },
       "limitations": []
     },
@@ -193,15 +107,289 @@
       "formula": "Y = X1 * X2",
       "shape": "[B,3,4,256,32]",
       "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
       "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+      "cube_class": false,
       "profiler": {
-        "torch": {"method": "msprof", "b1_us": 9.0, "b32_us": 48.0, "kernels_per_call": 1},
-        "ascendc": {"method": "msprof", "b1_us": 11.2, "b32_us": 52.0, "kernels_per_call": 1},
-        "pypto": {"method": "msprof", "b1_us": 51.5, "b32_us": 281.2, "kernels_per_call": 3}
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 9.0,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "aclnnMul_MulAiCore_Mul",
+          "kernels_per_call": 7.0,
+          "b32_us": 18.52
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 11.16,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "mul_kernel",
+          "kernels_per_call": 7.0,
+          "b32_us": 20.84
+        },
+        "pypto": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 221.724,
+          "kernel_type": "KERNEL_MIX_AIC",
+          "kernel_name": "PYPTO_mul_kernel_2d",
+          "kernels_per_call": 3.01,
+          "b32_us": 281.146
+        }
+      },
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 9.0,
+          "b2_us": 11.22,
+          "b4_us": 10.46,
+          "b8_us": 13.76,
+          "b16_us": 12.86,
+          "b32_us": 18.52,
+          "b64_us": 27.961
+        },
+        "ascendc": {
+          "b1_us": 11.16,
+          "b2_us": 13.36,
+          "b4_us": 15.52,
+          "b8_us": 10.88,
+          "b16_us": 14.1,
+          "b32_us": 20.84,
+          "b64_us": 32.941
+        },
+        "pypto": {
+          "b1_us": 221.724,
+          "b2_us": 214.444,
+          "b4_us": 218.584,
+          "b8_us": 246.745,
+          "b16_us": 258.585,
+          "b32_us": 281.146,
+          "b64_us": 358.387
+        }
       },
       "limitations": []
+    },
+    "add": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "status_zh": "有限完成",
+      "formula": "Y = (((X1+X2)+X3)+X4)",
+      "shape": "[B,256,384]",
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "位精确",
+      "cube_class": false,
+      "profiler": {
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 10.04,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "aclnnAdd_AddAiCore_Add",
+          "kernels_per_call": 21.0,
+          "b32_us": 20.56
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 13.78,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "add_kernel",
+          "kernels_per_call": 7.0,
+          "b32_us": 33.381
+        },
+        "pypto": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 132.123,
+          "kernel_type": "KERNEL_MIX_AIC",
+          "kernel_name": "PYPTO_add_binary_kernel",
+          "kernels_per_call": 9.01,
+          "b32_us": 157.363
+        }
+      },
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 10.04,
+          "b2_us": 11.08,
+          "b4_us": 10.86,
+          "b8_us": 10.42,
+          "b16_us": 12.68,
+          "b32_us": 20.56,
+          "b64_us": 27.541
+        },
+        "ascendc": {
+          "b1_us": 13.78,
+          "b2_us": 19.26,
+          "b4_us": 17.68,
+          "b8_us": 14.94,
+          "b16_us": 22.54,
+          "b32_us": 33.381,
+          "b64_us": 54.601
+        },
+        "pypto": {
+          "b1_us": 132.123,
+          "b2_us": 124.802,
+          "b4_us": 131.363,
+          "b8_us": 115.762,
+          "b16_us": 138.823,
+          "b32_us": 157.363,
+          "b64_us": 180.104
+        }
+      },
+      "limitations": [
+        {
+          "route": "pypto",
+          "severity": "P2",
+          "desc": "3次二元加法→9内核事件/调用, ~46x总延迟"
+        }
+      ]
+    },
+    "div": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "status_zh": "有限完成",
+      "formula": "Y = X1 / X2 (广播)",
+      "shape": "X1[B,12,256,256], X2[B,12,256,1]",
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "位精确",
+      "cube_class": false,
+      "profiler": {
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 21.8,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
+          "kernels_per_call": 42.0,
+          "b32_us": 126.203
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 18.64,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "div_kernel",
+          "kernels_per_call": 7.0,
+          "b32_us": 306.526
+        }
+      },
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 21.8,
+          "b2_us": 27.321,
+          "b4_us": 33.041,
+          "b8_us": 49.261,
+          "b16_us": 75.341,
+          "b32_us": 126.203,
+          "b64_us": 256.465
+        },
+        "ascendc": {
+          "b1_us": 18.64,
+          "b2_us": 28.941,
+          "b4_us": 50.941,
+          "b8_us": 101.062,
+          "b16_us": 156.763,
+          "b32_us": 306.526,
+          "b64_us": 687.094
+        }
+      },
+      "limitations": [
+        {
+          "route": "pypto",
+          "severity": "P2",
+          "desc": "广播触发CompileFunction失败"
+        }
+      ]
+    },
+    "equal": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "status_zh": "有限完成",
+      "formula": "Y = (X1 == X2)",
+      "shape": "[B,12,256,256] (bool输出)",
+      "dtype": "FP16→bool",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "位精确(bool)",
+      "cube_class": false,
+      "profiler": {
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 11.54,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
+          "kernels_per_call": 1.0,
+          "b32_us": 20.18
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 49.98,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "equal_kernel",
+          "kernels_per_call": 7.0,
+          "b32_us": 815.7
+        }
+      },
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 11.54,
+          "b2_us": 14.28,
+          "b4_us": 12.84,
+          "b8_us": 17.26,
+          "b16_us": 14.52,
+          "b32_us": 20.18,
+          "b64_us": 30.46
+        },
+        "ascendc": {
+          "b1_us": 49.98,
+          "b2_us": 93.0,
+          "b4_us": 135.52,
+          "b8_us": 210.38,
+          "b16_us": 411.74,
+          "b32_us": 815.7,
+          "b64_us": 1582.8
+        }
+      },
+      "limitations": [
+        {
+          "route": "pypto",
+          "severity": "P2",
+          "desc": "RC2解封但无msprof数据"
+        }
+      ]
     },
     "not": {
       "status": "COMPLETE",
@@ -209,15 +397,76 @@
       "formula": "Y = NOT X",
       "shape": "[B,12,256,256] (bool)",
       "dtype": "Bool",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确 (bool)",
-      "correctness": {"torch": "PASS", "ascendc": "PASS (42/42)", "pypto": "PASS"},
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "位精确(bool)",
+      "cube_class": false,
       "profiler": {
-        "torch": {"method": "Event", "b1_us": 127.5, "b32_us": 350.0},
-        "ascendc": {"method": "Event", "b1_us": 6.4, "b32_us": 25.0},
-        "pypto": {"method": "Event", "b1_us": 136.6, "b32_us": 380.0}
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 10.68,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
+          "kernels_per_call": 2.0,
+          "b32_us": 26.42
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 8.16,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "not_kernel",
+          "kernels_per_call": 7.0,
+          "b32_us": 14.16
+        },
+        "pypto": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 118.84,
+          "kernel_type": "KERNEL_MIX_AIC",
+          "kernel_name": "PYPTO_not_kernel",
+          "kernels_per_call": 3.01,
+          "b32_us": 159.78
+        }
       },
-      "limitations": [{"route": "all", "severity": "P2", "description": "Event 方式计时，与 msprof 不可比"}]
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 10.68,
+          "b2_us": 11.26,
+          "b4_us": 12.92,
+          "b8_us": 19.94,
+          "b16_us": 20.06,
+          "b32_us": 26.42,
+          "b64_us": 34.12
+        },
+        "ascendc": {
+          "b1_us": 8.16,
+          "b2_us": 9.76,
+          "b4_us": 12.12,
+          "b8_us": 13.94,
+          "b16_us": 11.36,
+          "b32_us": 14.16,
+          "b64_us": 21.22
+        },
+        "pypto": {
+          "b1_us": 118.84,
+          "b2_us": 96.24,
+          "b4_us": 97.14,
+          "b8_us": 106.36,
+          "b16_us": 129.26,
+          "b32_us": 159.78,
+          "b64_us": 199.74
+        }
+      },
+      "limitations": []
     },
     "or": {
       "status": "COMPLETE_WITH_LIMITATION",
@@ -225,127 +474,533 @@
       "formula": "Y = X1 OR X2",
       "shape": "[B,12,256,256] (bool)",
       "dtype": "Bool",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确 (bool)",
-      "correctness": {"torch": "PASS", "ascendc": "PASS (49/49)", "pypto": "PASS (bitwise_or)"},
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "位精确(bool)",
+      "cube_class": false,
       "profiler": {
-        "torch": {"method": "Event", "b1_us": 256.3, "b32_us": 520.0},
-        "ascendc": {"method": "Event", "b1_us": 6.5, "b32_us": 26.0},
-        "pypto": {"method": "Event", "b1_us": 148.8, "b32_us": 400.0}
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 13.52,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
+          "kernels_per_call": 3.0,
+          "b32_us": 31.98
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 9.28,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "or_kernel",
+          "kernels_per_call": 7.0,
+          "b32_us": 15.16
+        },
+        "pypto": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 204.52,
+          "kernel_type": "KERNEL_MIX_AIC",
+          "kernel_name": "PYPTO_or_kernel",
+          "kernels_per_call": 3.01,
+          "b32_us": 255.3
+        }
+      },
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 13.52,
+          "b2_us": 11.28,
+          "b4_us": 13.12,
+          "b8_us": 23.06,
+          "b16_us": 28.0,
+          "b32_us": 31.98,
+          "b64_us": 39.02
+        },
+        "ascendc": {
+          "b1_us": 9.28,
+          "b2_us": 11.1,
+          "b4_us": 13.92,
+          "b8_us": 15.44,
+          "b16_us": 14.26,
+          "b32_us": 15.16,
+          "b64_us": 23.78
+        },
+        "pypto": {
+          "b1_us": 204.52,
+          "b2_us": 196.9,
+          "b4_us": 227.28,
+          "b8_us": 219.88,
+          "b16_us": 235.58,
+          "b32_us": 255.3,
+          "b64_us": 265.66
+        }
       },
       "limitations": [
-        {"route": "pypto", "severity": "P1", "description": "无 logical_or API，用 bitwise_or 替代"},
-        {"route": "all", "severity": "P2", "description": "Event 方式计时"}
+        {
+          "route": "pypto",
+          "severity": "P1",
+          "desc": "无logical_or API, 用bitwise_or替代"
+        }
       ]
-    },
-    "equal": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
-      "formula": "Y = (X1 == X2)",
-      "shape": "[B,12,256,256] (bool 输出)",
-      "dtype": "FP16 输入, bool 输出",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
-      "precision": "位精确 (bool)",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 解封)"},
-      "profiler": {
-        "torch": {"method": "Event", "b1_us": 12.2, "b32_us": 55.0},
-        "ascendc": {"method": "Event", "b1_us": 41.8, "b32_us": 120.0}
-      },
-      "limitations": [{"route": "pypto", "severity": "P2", "description": "DT_BOOL 输出 + ta≤64 约束 (RC2 已修复)"}]
     },
     "where": {
       "status": "COMPLETE_WITH_LIMITATION",
       "status_zh": "有限完成",
       "formula": "Y = condition ? X1 : X2",
       "shape": "[B,12,256,256]",
-      "dtype": "FP16, condition uint8",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "dtype": "FP16+uint8",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
       "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 解封)"},
+      "cube_class": false,
       "profiler": {
-        "torch": {"method": "Event", "b1_us": 131.9, "b64_us": 2180.0},
-        "ascendc": {"method": "Event", "b1_us": 238.6, "b64_us": 9245.0}
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 11.62,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
+          "kernels_per_call": 2.0,
+          "b32_us": 33.78
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 248.38,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "where_kernel",
+          "kernels_per_call": 7.0,
+          "b32_us": 4755.3
+        }
+      },
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 11.62,
+          "b2_us": 12.22,
+          "b4_us": 16.0,
+          "b8_us": 16.44,
+          "b16_us": 21.64,
+          "b32_us": 33.78,
+          "b64_us": 41.74
+        },
+        "ascendc": {
+          "b1_us": 248.38,
+          "b2_us": 488.06,
+          "b4_us": 727.76,
+          "b8_us": 1195.78,
+          "b16_us": 2381.68,
+          "b32_us": 4755.3,
+          "b64_us": 9265.2
+        }
       },
       "limitations": [
-        {"route": "ascendc", "severity": "P3", "description": "B=64 性能 9245µs (Torch 2180µs)"},
-        {"route": "pypto", "severity": "P2", "description": "ExpandPass 误读 condition 大小 (RC2 uint8→bool 修复)"}
+        {
+          "route": "pypto",
+          "severity": "P2",
+          "desc": "RC2解封但无msprof数据"
+        }
       ]
-    },
-    "div": {
-      "status": "COMPLETE_WITH_LIMITATION",
-      "status_zh": "有限完成",
-      "formula": "Y = X1 / X2 (广播)",
-      "shape": "X1 [B,12,256,256], X2 [B,12,256,1]",
-      "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32],
-      "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 解封)"},
-      "profiler": {
-        "torch": {"method": "msprof", "b1_us": 21.8, "b32_us": 112.8},
-        "ascendc": {"method": "msprof", "b1_us": 18.6, "b32_us": 328.6}
-      },
-      "limitations": [{"route": "ascendc", "severity": "P3", "description": "B=32 性能 328.6µs (Torch 112.8µs)"}]
     },
     "expand": {
       "status": "COMPLETE_WITH_LIMITATION",
       "status_zh": "有限完成",
       "formula": "Y[b,i,j] = X[b,i,0]",
-      "shape": "X [B,256,1], Y [B,256,384]",
+      "shape": "X[B,256,1]→Y[B,256,384]",
       "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
       "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (torch.expand().clone())"},
+      "cube_class": false,
       "profiler": {
-        "torch": {"method": "msprof", "b1_us": 13.0, "b64_us": 105.0},
-        "ascendc": {"method": "msprof", "b1_us": 15.0, "b64_us": 115.0}
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 13.02,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
+          "kernels_per_call": 5.0,
+          "b32_us": 14.42
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 15.04,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "expand_kernel",
+          "kernels_per_call": 281.92,
+          "b32_us": 94.242
+        },
+        "pypto": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 110.3,
+          "kernel_type": "KERNEL_MIX_AIC",
+          "kernel_name": "PYPTO_expand_row",
+          "kernels_per_call": 25313.29,
+          "b32_us": 2918.7
+        }
+      },
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 13.02,
+          "b2_us": 14.48,
+          "b4_us": 13.36,
+          "b8_us": 14.38,
+          "b16_us": 11.94,
+          "b32_us": 14.42,
+          "b64_us": 17.5
+        },
+        "ascendc": {
+          "b1_us": 15.04,
+          "b2_us": 16.32,
+          "b4_us": 19.84,
+          "b8_us": 27.72,
+          "b16_us": 49.66,
+          "b32_us": 94.242,
+          "b64_us": 177.86
+        },
+        "pypto": {
+          "b1_us": 110.3,
+          "b2_us": 156.24,
+          "b4_us": 142.82,
+          "b8_us": 165.86,
+          "b16_us": 229.72,
+          "b32_us": 2918.7,
+          "b64_us": 2796.34
+        }
       },
       "limitations": [
-        {"route": "pypto", "severity": "P2", "description": "原生 expand_clone 2D 输出错误；用 torch.expand().clone() workaround (33600× 提升)"}
+        {
+          "route": "pypto",
+          "severity": "P2",
+          "desc": "RC3用torch.expand().clone() workaround, 33600x提升"
+        }
       ]
     },
     "transpose": {
       "status": "COMPLETE_WITH_LIMITATION",
       "status_zh": "有限完成",
       "formula": "Y[b,j,i] = X[b,i,j]",
-      "shape": "X [B,256,384], Y [B,384,256]",
+      "shape": "X[B,256,384]→Y[B,384,256]",
       "dtype": "FP16",
-      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
       "precision": "位精确",
-      "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 解封)"},
+      "cube_class": false,
       "profiler": {
-        "torch": {"method": "msprof", "b1_us": 14.1, "b64_us": 135.0},
-        "ascendc": {"method": "msprof", "b1_us": 106.2, "b64_us": 5050.0}
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 14.1,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
+          "kernels_per_call": 7.0,
+          "b32_us": 26.2
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 106.2,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "transpose_kernel",
+          "kernels_per_call": 7.0,
+          "b32_us": 3014.6
+        }
+      },
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 14.1,
+          "b2_us": 16.68,
+          "b4_us": 22.48,
+          "b8_us": 19.26,
+          "b16_us": 20.18,
+          "b32_us": 26.2,
+          "b64_us": 37.64
+        },
+        "ascendc": {
+          "b1_us": 106.2,
+          "b2_us": 199.84,
+          "b4_us": 385.62,
+          "b8_us": 762.3,
+          "b16_us": 1510.6,
+          "b32_us": 3014.6,
+          "b64_us": 6016.54
+        }
       },
       "limitations": [
-        {"route": "ascendc", "severity": "P3", "description": "TRUE_DEVICE tile-transpose 使用 GetValue/SetValue, B=64 5050µs"},
-        {"route": "pypto", "severity": "P2", "description": "tile_shape 对 >1K 元素失效 (RC2 修复为 64×256)"}
+        {
+          "route": "pypto",
+          "severity": "P2",
+          "desc": "CompileFunction tile_shape失效"
+        }
+      ]
+    },
+    "reduce_sum": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "status_zh": "有限完成",
+      "formula": "Y[b,i] = sum_j X[b,i,j]",
+      "shape": "X[B,256,384]→Y[B,256]",
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "atol=0.01, rtol=0.01",
+      "cube_class": false,
+      "profiler": {
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 15.96,
+          "kernel_type": "KERNEL_MIX_AIV",
+          "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
+          "kernels_per_call": 1.0,
+          "b32_us": 19.18
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 19.28,
+          "kernel_type": "KERNEL_AIVEC",
+          "kernel_name": "reduce_sum_kernel",
+          "kernels_per_call": 281.92,
+          "b32_us": 154.86
+        }
+      },
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 15.96,
+          "b2_us": 17.98,
+          "b4_us": 16.94,
+          "b8_us": 18.44,
+          "b16_us": 18.5,
+          "b32_us": 19.18,
+          "b64_us": 23.7
+        },
+        "ascendc": {
+          "b1_us": 19.28,
+          "b2_us": 21.08,
+          "b4_us": 27.94,
+          "b8_us": 44.52,
+          "b16_us": 81.24,
+          "b32_us": 154.86,
+          "b64_us": 301.32
+        }
+      },
+      "limitations": [
+        {
+          "route": "ascendc_fp16",
+          "severity": "P1",
+          "desc": "FP16累积384元素归约精度不足(21/70)"
+        },
+        {
+          "route": "pypto",
+          "severity": "P2",
+          "desc": "无独立msprof数据"
+        }
+      ]
+    },
+    "matmul": {
+      "status": "COMPLETE",
+      "status_zh": "完全完成",
+      "formula": "Y = A @ B",
+      "shape": "A[B,12,256,256],B[B,12,256,32]",
+      "dtype": "FP16",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "atol=0.01, rtol=0.01",
+      "cube_class": true,
+      "profiler": {
+        "torch": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 12.22,
+          "kernel_type": "KERNEL_AICORE",
+          "kernel_name": "aclnnMatmul_BatchMatMulNd_BatchMatMulV2",
+          "kernels_per_call": 7.0,
+          "b32_us": 63.3
+        },
+        "ascendc": {
+          "method": "msprof",
+          "metric": "primary_compute_kernel_us",
+          "b1_us": 10.36,
+          "kernel_type": "KERNEL_AICORE",
+          "kernel_name": "matmul_kernel",
+          "kernels_per_call": 2688.0,
+          "b32_us": 10.48
+        }
+      },
+      "batch_scaling": {
+        "torch": {
+          "b1_us": 12.22,
+          "b2_us": 16.38,
+          "b4_us": 17.62,
+          "b8_us": 23.58,
+          "b16_us": 35.56,
+          "b32_us": 63.3,
+          "b64_us": 111.662
+        },
+        "ascendc": {
+          "b1_us": 10.36,
+          "b2_us": 10.56,
+          "b4_us": 10.52,
+          "b8_us": 10.16,
+          "b16_us": 9.96,
+          "b32_us": 10.48,
+          "b64_us": 135.423
+        }
+      },
+      "limitations": [
+        {
+          "route": "ascendc",
+          "severity": "P3",
+          "desc": "N=32限制Cube利用率~48%; B≥16时Torch更快"
+        },
+        {
+          "route": "pypto",
+          "severity": "P2",
+          "desc": "自动tiling完全损坏(FC4000)"
+        }
       ]
     }
   },
   "known_limitations": [
-    {"operator": "reduce_sum", "route": "ascendc_fp16", "severity": "P1", "description": "FP16 累积 384 元素归约精度不足 (21/70)"},
-    {"operator": "or", "route": "pypto", "severity": "P1", "description": "无 logical_or API，用 bitwise_or 替代"},
-    {"operator": "matmul", "route": "ascendc", "severity": "P3", "description": "N=32 限制 Cube 利用率 ~48%"},
-    {"operator": "matmul", "route": "pypto", "severity": "P2", "description": "自动 tiling 完全损坏 (FC4000)"},
-    {"operator": "add", "route": "pypto", "severity": "P2", "description": "3 次二元加法 → 9 内核事件/调用"},
-    {"operator": "where", "route": "ascendc", "severity": "P3", "description": "B=64 性能差 (9245µs vs Torch 2180µs)"},
-    {"operator": "transpose", "route": "ascendc", "severity": "P3", "description": "B=64 性能差 (5050µs vs Torch 135µs)"},
-    {"operator": "div", "route": "ascendc", "severity": "P3", "description": "B=32 性能差 (329µs vs Torch 113µs)"}
+    {
+      "operator": "add",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "3次二元加法→9内核事件/调用, ~46x总延迟"
+    },
+    {
+      "operator": "div",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "广播触发CompileFunction失败"
+    },
+    {
+      "operator": "equal",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "RC2解封但无msprof数据"
+    },
+    {
+      "operator": "or",
+      "route": "pypto",
+      "severity": "P1",
+      "description": "无logical_or API, 用bitwise_or替代"
+    },
+    {
+      "operator": "where",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "RC2解封但无msprof数据"
+    },
+    {
+      "operator": "expand",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "RC3用torch.expand().clone() workaround, 33600x提升"
+    },
+    {
+      "operator": "transpose",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "CompileFunction tile_shape失效"
+    },
+    {
+      "operator": "reduce_sum",
+      "route": "ascendc_fp16",
+      "severity": "P1",
+      "description": "FP16累积384元素归约精度不足(21/70)"
+    },
+    {
+      "operator": "reduce_sum",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "无独立msprof数据"
+    },
+    {
+      "operator": "matmul",
+      "route": "ascendc",
+      "severity": "P3",
+      "description": "N=32限制Cube利用率~48%; B≥16时Torch更快"
+    },
+    {
+      "operator": "matmul",
+      "route": "pypto",
+      "severity": "P2",
+      "description": "自动tiling完全损坏(FC4000)"
+    }
   ],
   "pypto_limits": [
-    "自动 tiling 系统不可靠 (matmul 完全损坏, div/transpose 需手动覆盖)",
-    "dtype 推断不一致 (equal 误判输出类型)",
-    "广播支持有限 (div 触发参数错误)",
-    "AICPU 调度开销 ~50-140µs/调用",
-    "MIX_AIC 内核比纯 AIVEC 重",
-    "算子链分解导致多内核事件 (add 4→9 内核)"
+    "自动tiling系统不可靠(matmul完全损坏,div/transpose需手动覆盖)",
+    "dtype推断不一致(equal误判输出类型)",
+    "广播支持有限(div触发参数错误)",
+    "AICPU调度开销~50-140µs/调用",
+    "MIX_AIC内核比纯AIVEC重",
+    "算子链分解导致多内核事件(add 4→9内核)"
   ],
   "ascendc_summary": {
-    "TRUE_CUBE": ["matmul"],
-    "TRUE_DEVICE": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum"],
+    "TRUE_CUBE": [
+      "matmul"
+    ],
+    "TRUE_DEVICE": [
+      "relu",
+      "mul",
+      "add",
+      "div",
+      "equal",
+      "not",
+      "or",
+      "where",
+      "expand",
+      "transpose",
+      "reduce_sum"
+    ],
     "post_rc3_changes": [
-      "matmul: 多核批调度 (1 kernel/call, 257× 加速)",
-      "reduce_sum: 新增 FP32 累积内核 (精度 3.5× 提升)"
+      "matmul: 多核批调度(1 kernel/call, 257x加速)",
+      "reduce_sum: 新增FP32累积内核(精度3.5x提升)"
     ]
   }
 }

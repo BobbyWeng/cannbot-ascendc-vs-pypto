@@ -1,25 +1,8 @@
-metric,torch,ascendc,pypto
-correctness,PASS B=1..64,PASS B=1..64,PASS B=1..64
-b1_primary_compute_kernel_us,13.02,15.04,3084.48
-b1_all_device_kernels_us,20.188,3048.827,39083.833
-b1_kernel_count,500,28192,79105
-b2_primary_compute_kernel_us,14.48,16.32,2965.24
-b2_all_device_kernels_us,21.557,3140.123,76812.663
-b2_kernel_count,500,28192,158209
-b4_primary_compute_kernel_us,13.36,19.84,3172.16
-b4_all_device_kernels_us,22.026,3501.027,155007.229
-b4_kernel_count,500,28192,316417
-b8_primary_compute_kernel_us,14.38,27.72,3721.78
-b8_all_device_kernels_us,23.64,6275.942,311213.719
-b8_kernel_count,500,28192,632833
-b16_primary_compute_kernel_us,11.94,49.66,3082.56
-b16_all_device_kernels_us,25.052,12284.831,625020.655
-b16_kernel_count,500,28192,1265665
-b32_primary_compute_kernel_us,14.42,91.8,2918.7
-b32_all_device_kernels_us,33.485,23963.338,1265597.514
-b32_kernel_count,500,28192,2531329
-b64_primary_compute_kernel_us,17.5,177.86,2796.34
-b64_all_device_kernels_us,47.357,48298.528,2507501.139
-b64_kernel_count,500,28192,5062657
-device_side,yes,yes,yes (per-row JIT)
-status,COMPLETE,COMPLETE,COMPLETE
+batch,torch_primary_us,torch_kernels_per_call,torch_kernel_type,torch_all_device_us,torch_kernel_name,ascendc_primary_us,ascendc_kernels_per_call,ascendc_kernel_type,ascendc_all_device_us,ascendc_kernel_name,pypto_primary_us,pypto_kernels_per_call,pypto_kernel_type,pypto_all_device_us,pypto_kernel_name
+1,13.02,5.0,KERNEL_AIVEC,20.188,aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo,15.04,281.92,KERNEL_AIVEC,3048.827,expand_kernel,110.3,791.05,KERNEL_MIX_AIC,39083.833,PYPTO_expand_row
+2,14.48,5.0,KERNEL_AIVEC,21.557,aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo,16.32,281.92,KERNEL_AIVEC,3140.123,expand_kernel,156.24,1582.09,KERNEL_MIX_AIC,76812.663,PYPTO_expand_row
+4,13.36,5.0,KERNEL_AIVEC,22.026,aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo,19.84,281.92,KERNEL_AIVEC,3501.027,expand_kernel,142.82,3164.17,KERNEL_MIX_AIC,155007.229,PYPTO_expand_row
+8,14.38,5.0,KERNEL_AIVEC,23.64,aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo,27.72,281.92,KERNEL_AIVEC,6275.942,expand_kernel,165.86,6328.33,KERNEL_MIX_AIC,311213.719,PYPTO_expand_row
+16,11.94,5.0,KERNEL_AIVEC,25.052,aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo,49.66,281.92,KERNEL_AIVEC,12284.831,expand_kernel,229.72,12656.65,KERNEL_MIX_AIC,625020.655,PYPTO_expand_row
+32,14.42,5.0,KERNEL_AIVEC,33.485,aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo,94.242,281.92,KERNEL_AIVEC,24783.537,expand_kernel,2918.7,25313.29,KERNEL_MIX_AIC,12655.97514,PYPTO_expand_row
+64,17.5,5.0,KERNEL_AIVEC,0.47357,aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo,177.86,281.92,KERNEL_AIVEC,48298.528,expand_kernel,2796.34,50626.57,KERNEL_MIX_AIC,25075.01139,PYPTO_expand_row

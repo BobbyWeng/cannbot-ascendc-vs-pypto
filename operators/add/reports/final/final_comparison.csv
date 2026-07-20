@@ -1,8 +1,8 @@
-batch,torch_primary_us,torch_all_dev_us,torch_kptype,ascendc_primary_us,ascendc_all_dev_us,ascendc_kptype,pypto_compute_us,pypto_all_dev_us,pypto_kptype
-1,10.04,57.793,KERNEL_AIVEC,13.78,18.944,KERNEL_AIVEC,136.03,462.9,KERNEL_MIX_AIC
-2,11.08,58.601,KERNEL_AIVEC,19.26,22.919,KERNEL_AIVEC,139.345,471.404,KERNEL_MIX_AIC
-4,10.86,62.929,KERNEL_AIVEC,17.68,26.264,KERNEL_AIVEC,144.892,485.146,KERNEL_MIX_AIC
-8,10.42,72.519,KERNEL_AIVEC,14.94,33.378,KERNEL_AIVEC,156.495,528.198,KERNEL_MIX_AIC
-16,12.68,89.853,KERNEL_AIVEC,22.54,50.342,KERNEL_AIVEC,176.376,569.455,KERNEL_MIX_AIC
-32,20.56,122.557,KERNEL_AIVEC,33.381,83.864,KERNEL_AIVEC,210.826,645.057,KERNEL_MIX_AIC
-64,27.541,229.447,KERNEL_AIVEC,54.601,150.813,KERNEL_AIVEC,260.94,778.684,KERNEL_MIX_AIC
+batch,torch_primary_us,torch_kernels_per_call,torch_kernel_type,torch_all_device_us,torch_kernel_name,ascendc_primary_us,ascendc_kernels_per_call,ascendc_kernel_type,ascendc_all_device_us,ascendc_kernel_name,pypto_primary_us,pypto_kernels_per_call,pypto_kernel_type,pypto_all_device_us,pypto_kernel_name
+1,10.04,21.0,KERNEL_AIVEC,57.793,aclnnAdd_AddAiCore_Add,13.78,7.0,KERNEL_AIVEC,18.944,add_kernel,132.123,9.01,KERNEL_MIX_AIC,462.9,PYPTO_add_binary_kernel
+2,11.08,21.0,KERNEL_AIVEC,58.601,aclnnAdd_AddAiCore_Add,19.26,7.0,KERNEL_AIVEC,22.919,add_kernel,124.802,9.01,KERNEL_MIX_AIC,471.404,PYPTO_add_binary_kernel
+4,10.86,21.0,KERNEL_AIVEC,62.929,aclnnAdd_AddAiCore_Add,17.68,7.0,KERNEL_AIVEC,26.264,add_kernel,131.363,9.01,KERNEL_MIX_AIC,485.146,PYPTO_add_binary_kernel
+8,10.42,21.0,KERNEL_AIVEC,72.519,aclnnAdd_AddAiCore_Add,14.94,7.0,KERNEL_AIVEC,33.378,add_kernel,115.762,9.01,KERNEL_MIX_AIC,528.198,PYPTO_add_binary_kernel
+16,12.68,21.0,KERNEL_AIVEC,89.853,aclnnAdd_AddAiCore_Add,22.54,7.0,KERNEL_AIVEC,50.342,add_kernel,138.823,9.01,KERNEL_MIX_AIC,569.455,PYPTO_add_binary_kernel
+32,20.56,21.0,KERNEL_AIVEC,122.557,aclnnAdd_AddAiCore_Add,33.381,7.0,KERNEL_AIVEC,83.864,add_kernel,157.363,9.01,KERNEL_MIX_AIC,645.057,PYPTO_add_binary_kernel
+64,27.541,21.0,KERNEL_AIVEC,229.447,aclnnAdd_AddAiCore_Add,54.601,7.0,KERNEL_AIVEC,150.813,add_kernel,180.104,9.01,KERNEL_MIX_AIC,778.684,PYPTO_add_binary_kernel

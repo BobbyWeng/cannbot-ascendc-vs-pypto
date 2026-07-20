@@ -1,8 +1,8 @@
-Batch,torch_median_us,torch_mean_us,torch_cv,ascendc_median_us,ascendc_mean_us,ascendc_cv,pypto_median_us,pypto_mean_us,pypto_cv
-1,256.3,256.5,0.6,6.5,7.1,10.6,148.8,149.4,0.6
-2,315.0,315.0,0.4,6.6,7.1,10.6,149.1,148.7,0.7
-4,434.1,433.5,0.3,7.9,7.9,1.4,142.3,142.4,0.6
-8,748.6,747.7,0.2,7.9,7.9,0.6,148.4,148.5,0.1
-16,1139.4,1140.4,0.2,6.4,6.4,1.2,141.1,141.1,0.7
-32,2072.8,2071.1,0.2,7.2,7.2,0.0,146.1,146.5,1.1
-64,4587.9,4594.0,0.4,12.2,12.2,0.2,146.5,146.7,0.6
+batch,torch_primary_us,torch_kernels_per_call,torch_kernel_type,torch_all_device_us,torch_kernel_name,ascendc_primary_us,ascendc_kernels_per_call,ascendc_kernel_type,ascendc_all_device_us,ascendc_kernel_name,pypto_primary_us,pypto_kernels_per_call,pypto_kernel_type,pypto_all_device_us,pypto_kernel_name
+1,13.52,3.0,KERNEL_AIVEC,282.673,aclnnLogicalOr_LogicalOrAiCore_LogicalOr,9.28,7.0,KERNEL_AIVEC,15.918,or_kernel,204.52,3.01,KERNEL_MIX_AIC,190.687,PYPTO_or_kernel
+2,11.28,3.0,KERNEL_AIVEC,351.641,aclnnLogicalOr_LogicalOrAiCore_LogicalOr,11.1,7.0,KERNEL_AIVEC,17.842,or_kernel,196.9,3.01,KERNEL_MIX_AIC,189.207,PYPTO_or_kernel
+4,13.12,3.0,KERNEL_AIVEC,484.56,aclnnLogicalOr_LogicalOrAiCore_LogicalOr,13.92,7.0,KERNEL_AIVEC,20.727,or_kernel,227.28,3.01,KERNEL_MIX_AIC,190.368,PYPTO_or_kernel
+8,23.06,3.0,KERNEL_AIVEC,778.781,aclnnLogicalOr_LogicalOrAiCore_LogicalOr,15.44,7.0,KERNEL_AIVEC,24.886,or_kernel,219.88,3.01,KERNEL_MIX_AIC,200.265,PYPTO_or_kernel
+16,28.0,3.0,KERNEL_AIVEC,1194.264,aclnnLogicalOr_LogicalOrAiCore_LogicalOr,14.26,7.0,KERNEL_AIVEC,34.299,or_kernel,235.58,3.01,KERNEL_MIX_AIC,218.277,PYPTO_or_kernel
+32,31.98,3.0,KERNEL_AIVEC,2126.646,aclnnLogicalOr_LogicalOrAiCore_LogicalOr,15.16,7.0,KERNEL_AIVEC,52.492,or_kernel,255.3,3.01,KERNEL_MIX_AIC,253.296,PYPTO_or_kernel
+64,39.02,3.0,KERNEL_AIVEC,4473.417,aclnnLogicalOr_LogicalOrAiCore_LogicalOr,23.78,7.0,KERNEL_AIVEC,87.054,or_kernel,265.66,3.01,KERNEL_MIX_AIC,291.056,PYPTO_or_kernel

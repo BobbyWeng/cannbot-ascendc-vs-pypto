@@ -1,5 +1,8 @@
-metric,torch,pypto,ascendc
-correctness,PASS B=1..64,PASS (core cases; documented FP16 precision),PASS (host fallback)
-profiler,PENDING,PENDING,HOST_FALLBACK_NOT_COMPARABLE
-device_side,yes,yes (FP16 accum),NO (identity kernel only)
-status,COMPLETE,PARTIAL (precision edge cases),INCOMPLETE
+batch,torch_primary_us,torch_kernels_per_call,torch_kernel_type,torch_all_device_us,torch_kernel_name,ascendc_primary_us,ascendc_kernels_per_call,ascendc_kernel_type,ascendc_all_device_us,ascendc_kernel_name,pypto_primary_us,pypto_kernels_per_call,pypto_kernel_type,pypto_all_device_us,pypto_kernel_name
+1,15.96,3.0,KERNEL_MIX_AIV,14.499,aclnnReduceSum_ReduceSumOpAiCore_ReduceSum,19.28,281.92,KERNEL_AIVEC,4069.394,reduce_sum_kernel,N/A,N/A,N/A,N/A,N/A
+2,17.98,3.0,KERNEL_MIX_AIV,15.319,aclnnReduceSum_ReduceSumOpAiCore_ReduceSum,21.08,281.92,KERNEL_AIVEC,4141.308,reduce_sum_kernel,N/A,N/A,N/A,N/A,N/A
+4,16.94,3.0,KERNEL_MIX_AIV,14.963,aclnnReduceSum_ReduceSumOpAiCore_ReduceSum,27.94,281.92,KERNEL_AIVEC,4264.953,reduce_sum_kernel,N/A,N/A,N/A,N/A,N/A
+8,18.44,3.0,KERNEL_MIX_AIV,17.537,aclnnReduceSum_ReduceSumOpAiCore_ReduceSum,44.52,281.92,KERNEL_AIVEC,7048.125,reduce_sum_kernel,N/A,N/A,N/A,N/A,N/A
+16,18.5,3.0,KERNEL_MIX_AIV,19.769,aclnnReduceSum_ReduceSumOpAiCore_ReduceSum,81.24,281.92,KERNEL_AIVEC,13411.275,reduce_sum_kernel,N/A,N/A,N/A,N/A,N/A
+32,19.18,1.0,KERNEL_MIX_AIV,8.865,aclnnReduceSum_ReduceSumOpAiCore_ReduceSum,154.86,281.92,KERNEL_AIVEC,26350.008,reduce_sum_kernel,N/A,N/A,N/A,N/A,N/A
+64,23.7,1.0,KERNEL_MIX_AIV,12.738,aclnnReduceSum_ReduceSumOpAiCore_ReduceSum,301.32,281.92,KERNEL_AIVEC,52263.17,reduce_sum_kernel,N/A,N/A,N/A,N/A,N/A

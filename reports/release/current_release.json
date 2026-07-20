@@ -29,7 +29,8 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise (signed-zero exempted)",
       "correctness_coverage": "Torch/AscendC/PyPTO: FULL — all 7 batches PASS",
-      "profiler_coverage": "FULL — msprof all 3 routes"
+      "profiler_coverage": "FULL — msprof all 3 routes",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     },
     "mul": {
       "final_status": "COMPLETE",
@@ -39,7 +40,8 @@
       "batches": [1, 2, 4, 8, 16, 32, 64],
       "precision": "bitwise",
       "correctness_coverage": "Torch/AscendC/PyPTO: FULL",
-      "profiler_coverage": "FULL — msprof all 3 routes"
+      "profiler_coverage": "FULL — msprof all 3 routes",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     },
     "add": {
       "final_status": "COMPLETE_WITH_LIMITATION",
@@ -62,7 +64,8 @@
       "precision": "bitwise (was atol=1e-3, rtol=1e-3)",
       "correctness_coverage": "Torch+AscendC+PyPTO FULL (B=1..32) — RC-2 UNBLOCKED",
       "profiler_coverage": "Torch+AscendC msprof B=1..32; PyPTO not profiled",
-      "rc2_fix": "tile_shape(1024,2048) was too large; changed to (128,1024). Dtype mismatch in test also fixed. All 6 batches pass bitwise (max_abs=0.0)."
+      "rc2_fix": "tile_shape(1024,2048) was too large; changed to (128,1024). Dtype mismatch in test also fixed. All 6 batches pass bitwise (max_abs=0.0).",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     },
     "equal": {
       "final_status": "COMPLETE_WITH_LIMITATION",
@@ -74,7 +77,8 @@
       "correctness_coverage": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED",
       "profiler_coverage": "FULL — msprof all 3 routes (torch+ascendc AIVEC; pypto MIX_AIC)",
       "limitation": "",
-      "rc2_fix": "Two root causes: (1) output was DT_FP16 instead of DT_BOOL (packed bitmask), (2) BOOL output requires ta≤64 in tile shape. All 7 batches pass bitwise."
+      "rc2_fix": "Two root causes: (1) output was DT_FP16 instead of DT_BOOL (packed bitmask), (2) BOOL output requires ta≤64 in tile shape. All 7 batches pass bitwise.",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     },
     "not": {
       "final_status": "COMPLETE",
@@ -85,7 +89,8 @@
       "precision": "bitwise (bool)",
       "correctness_coverage": "Torch PASS; AscendC PASS (42/42 cases); PyPTO PASS",
       "profiler_coverage": "FULL — msprof all 3 routes (torch+ascendc AIVEC; pypto MIX_AIC)",
-      "limitation": ""
+      "limitation": "",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     },
     "or": {
       "final_status": "COMPLETE_WITH_LIMITATION",
@@ -96,7 +101,8 @@
       "precision": "bitwise (bool)",
       "correctness_coverage": "Torch PASS; AscendC PASS (49/49 cases); PyPTO PASS (bitwise_or for 0/1)",
       "profiler_coverage": "FULL — msprof all 3 routes (torch+ascendc AIVEC; pypto MIX_AIC)",
-      "limitation": "PyPTO uses bitwise_or (no logical_or API in framework). Correct for bool 0/1 inputs."
+      "limitation": "PyPTO uses bitwise_or (no logical_or API in framework). Correct for bool 0/1 inputs.",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     },
     "where": {
       "final_status": "COMPLETE_WITH_LIMITATION",
@@ -108,7 +114,8 @@
       "correctness_coverage": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED",
       "profiler_coverage": "FULL — msprof torch+ascendc (AIVEC); pypto N/A (no pypto impl)",
       "limitation": "",
-      "rc2_fix": "uint8 condition → backend TiledWhereOperation ExpandFunction bug. Workaround: convert uint8→bool in wrapper (DT_BOOL condition). All 7 batches pass bitwise."
+      "rc2_fix": "uint8 condition → backend TiledWhereOperation ExpandFunction bug. Workaround: convert uint8→bool in wrapper (DT_BOOL condition). All 7 batches pass bitwise.",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     },
     "expand": {
       "final_status": "COMPLETE_WITH_LIMITATION",
@@ -120,7 +127,8 @@
       "correctness_coverage": "Torch/AscendC/PyPTO: FULL — B=1..64 all PASS",
       "profiler_coverage": "FULL — msprof all 3 routes (repeat=3, warmup=200, loops=100)",
       "limitation": "PyPTO uses torch.expand().clone() workaround (was 16384× AICPU dispatch, now 1 materialize kernel). ~33600x improvement in RC-3.",
-      "rc3_fix": "Replaced per-row AICPU dispatch loop with single torch.expand().clone() materialize call. 16384 kernel launches → 1. ~33600x faster."
+      "rc3_fix": "Replaced per-row AICPU dispatch loop with single torch.expand().clone() materialize call. 16384 kernel launches → 1. ~33600x faster.",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     },
     "transpose": {
       "final_status": "COMPLETE_WITH_LIMITATION",
@@ -133,7 +141,8 @@
       "profiler_coverage": "FULL — msprof Torch+AscendC (B=1..64, repeat=5); PyPTO not profiled",
       "limitation": "AscendC TRUE_DEVICE tile-transpose, uses GetValue/SetValue.",
       "rc2_fix": "tile_shape(128,1024) was too large. Changed to (64,256). All shapes up to 2048×2048 pass bitwise.",
-      "rc2_ascendc_perf": "Optimized kernel: tile size 32×32 (up from 16×16) + double buffering. ~13-18% improvement."
+      "rc2_ascendc_perf": "Optimized kernel: tile size 32×32 (up from 16×16) + double buffering. ~13-18% improvement.",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     },
     "reduce_sum": {
       "final_status": "COMPLETE_WITH_LIMITATION",
@@ -146,7 +155,8 @@
       "profiler_coverage": "FULL — msprof Torch+AscendC (B=1..64, repeat=5); PyPTO not profiled",
       "limitation": "FP16 output overflow for values > 65504 (expected).",
       "rc3_fix": "Implemented FP32 accumulation via wrapper-level cast. 70/70 PASS (was 21/70 FP16 accum).",
-      "post_rc3_fix": "Added dedicated Ascend C FP32 accumulation kernel: Cast FP16→FP32 → ReduceSum<float> → Cast FP16. 70/70 PASS. Accuracy 3.5× better than FP16."
+      "post_rc3_fix": "Added dedicated Ascend C FP32 accumulation kernel: Cast FP16→FP32 → ReduceSum<float> → Cast FP16. 70/70 PASS. Accuracy 3.5× better than FP16.",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     },
     "matmul": {
       "final_status": "COMPLETE",

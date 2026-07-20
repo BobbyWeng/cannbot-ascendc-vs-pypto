@@ -1,8 +1,8 @@
-Batch,torch_median_us,torch_mean_us,torch_cv,ascendc_median_us,ascendc_mean_us,ascendc_cv,pypto_median_us,pypto_mean_us,pypto_cv
-1,12.2,12.4,3.0,41.8,41.7,0.1,N/A,N/A,N/A
-2,12.2,12.1,4.5,81.9,81.9,0.0,N/A,N/A,N/A
-4,12.8,12.7,4.1,122.2,122.2,0.1,N/A,N/A,N/A
-8,12.0,12.0,4.0,202.5,202.5,0.0,N/A,N/A,N/A
-16,12.1,12.2,4.5,403.2,403.3,0.0,N/A,N/A,N/A
-32,12.7,11.8,16.4,804.6,804.6,0.0,N/A,N/A,N/A
-64,12.9,12.7,2.7,1567.4,1567.4,0.0,N/A,N/A,N/A
+batch,torch_primary_us,torch_kernels_per_call,torch_kernel_type,torch_all_device_us,torch_kernel_name,ascendc_primary_us,ascendc_kernels_per_call,ascendc_kernel_type,ascendc_all_device_us,ascendc_kernel_name,pypto_primary_us,pypto_kernels_per_call,pypto_kernel_type,pypto_all_device_us,pypto_kernel_name
+1,11.54,1.0,KERNEL_AIVEC,2.904,aclnnEqTensor_EqualAiCore_Equal,49.98,7.0,KERNEL_AIVEC,293.762,equal_kernel,N/A,N/A,N/A,N/A,N/A
+2,14.28,1.0,KERNEL_AIVEC,3.061,aclnnEqTensor_EqualAiCore_Equal,93.0,7.0,KERNEL_AIVEC,574.669,equal_kernel,N/A,N/A,N/A,N/A,N/A
+4,12.84,1.0,KERNEL_AIVEC,3.258,aclnnEqTensor_EqualAiCore_Equal,135.52,7.0,KERNEL_AIVEC,856.686,equal_kernel,N/A,N/A,N/A,N/A,N/A
+8,17.26,1.0,KERNEL_AIVEC,3.714,aclnnEqTensor_EqualAiCore_Equal,210.38,7.0,KERNEL_AIVEC,1418.693,equal_kernel,N/A,N/A,N/A,N/A,N/A
+16,14.52,1.0,KERNEL_AIVEC,4.901,aclnnEqTensor_EqualAiCore_Equal,411.74,7.0,KERNEL_AIVEC,2823.313,equal_kernel,N/A,N/A,N/A,N/A,N/A
+32,20.18,1.0,KERNEL_AIVEC,6.674,aclnnEqTensor_EqualAiCore_Equal,815.7,7.0,KERNEL_AIVEC,5633.081,equal_kernel,N/A,N/A,N/A,N/A,N/A
+64,30.46,1.0,KERNEL_AIVEC,10.302,aclnnEqTensor_EqualAiCore_Equal,1582.8,7.0,KERNEL_AIVEC,10971.543,equal_kernel,N/A,N/A,N/A,N/A,N/A

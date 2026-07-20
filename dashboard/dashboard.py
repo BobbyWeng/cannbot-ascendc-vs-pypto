@@ -64,19 +64,14 @@ def load_release(path):
                 pstat["b1_us"] = p["b1_host_sync_us"]
             profiler[label] = pstat
 
-        # Profiler tool detection from batches
+        # Profiler tool from route profiler data
         profiler_tool = "NONE"
-        for batch_key, batch in raw.get("batches", {}).items():
-            if op.get("shape", "") and any(
-                kw in op.get("shape", "").lower() for kw in batch.get("operators", [name])
-            ):
-                pass
-            if name in batch.get("operators", []):
-                p = batch.get("profiler", "none")
-                profiler_tool = p if p != "none" else "NONE"
-                break
-        else:
-            profiler_tool = "NONE"
+        for route_key, label in [("torch", "torch"), ("ascendc", "ascendc"), ("pypto", "pypto")]:
+            r = routes.get(route_key, {})
+            p = r.get("profiler", {})
+            method = p.get("method", "")
+            if method and method != "N/A":
+                profiler_tool = method.split()[0] if method else "msprof"
 
         ops[name] = {
             "status": op.get("final_status", "UNKNOWN"),
@@ -401,7 +396,25 @@ def get(op_name):
     if latest_mtime:
         data["last_update"] = datetime.fromtimestamp(latest_mtime).strftime("%Y-%m-%d %H:%M")
 
-    # status
+    # status — prefer release JSON final_status when available
+    release_json = load_json(BASE / "reports" / "release" / "current_release.json")
+    if release_json:
+        op_from_release = release_json.get("operators", {}).get(op_name)
+        if op_from_release:
+            fs = op_from_release.get("final_status", "")
+            if fs == "COMPLETE":
+                data["status"] = "completed"
+            elif fs == "COMPLETE_WITH_LIMITATION":
+                data["status"] = "completed"
+            elif fs == "PARTIAL":
+                data["status"] = "in_progress"
+            else:
+                data["status"] = "planned"
+            locked = data["orchestrator"].get("lock_status", "")
+            if "BLOCKED" in locked:
+                data["status"] = "blocked"
+            return data
+
     st = data["orchestrator"].get("current_stage", 0)
     if st >= 7:
         data["status"] = "completed"
@@ -1008,7 +1021,7 @@ function showReleaseDetail(opName) {
     } else {
       container.innerHTML = opLimits.map(l => {
         const sevClass = 'sev-' + l.severity.toLowerCase();
-        return '<div class="limitation-item"><span class="' + sevClass + '">[' + l.severity + ']</span> ' + l.route + ': ' + l.description + ' <span style="color:var(--text-muted);font-size:12px">(' + l.blocker_type + ')</span></div>';
+        return '<div class="limitation-item"><span class="' + sevClass + '">[' + l.severity + ']</span> ' + l.route + ': ' + l.description + '</div>';
       }).join('');
     }
   }
@@ -1102,10 +1115,6 @@ def main():
     out_html = OUT / "index.html"
     out_html.write_text(html, encoding="utf-8")
     print(f"[OK] Written {out_html}")
-
-    # Write CSS (standalone, also embedded in HTML)
-    css = generate_css()
-    (OUT / "dashboard.css").write_text(css, encoding="utf-8")
 
     print(f"\nDashboard ready: {OUT / 'index.html'}")
 

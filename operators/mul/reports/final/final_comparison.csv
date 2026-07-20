@@ -1,8 +1,8 @@
-batch,torch_kernel_type,torch_us,ascendc_kernel_type,ascendc_us,pypto_compute_type,pypto_compute_us,pypto_executor_us,pypto_total_us,fastest
-1,KERNEL_AIVEC,3.876,KERNEL_AIVEC,3.14,KERNEL_MIX_AIC,57.703,119.691,177.394,ascendc
-2,KERNEL_AIVEC,3.952,KERNEL_AIVEC,3.533,KERNEL_MIX_AIC,57.072,117.112,174.185,ascendc
-4,KERNEL_AIVEC,4.225,KERNEL_AIVEC,4.035,KERNEL_MIX_AIC,59.594,117.355,176.95,ascendc
-8,KERNEL_AIVEC,4.843,KERNEL_AIVEC,4.866,KERNEL_MIX_AIC,66.751,125.865,192.616,torch
-16,KERNEL_AIVEC,6.039,KERNEL_AIVEC,6.687,KERNEL_MIX_AIC,93.186,161.424,254.61,torch
-32,KERNEL_AIVEC,8.184,KERNEL_AIVEC,10.432,KERNEL_MIX_AIC,136.389,202.189,338.578,torch
-64,KERNEL_AIVEC,12.523,KERNEL_AIVEC,17.643,KERNEL_MIX_AIC,207.025,289.043,496.068,torch
+batch,torch_primary_us,torch_kernels_per_call,torch_kernel_type,torch_all_device_us,torch_kernel_name,ascendc_primary_us,ascendc_kernels_per_call,ascendc_kernel_type,ascendc_all_device_us,ascendc_kernel_name,pypto_primary_us,pypto_kernels_per_call,pypto_kernel_type,pypto_all_device_us,pypto_kernel_name
+1,9.0,7.0,KERNEL_AIVEC,19.378,aclnnMul_MulAiCore_Mul,11.16,7.0,KERNEL_AIVEC,15.699,mul_kernel,221.724,3.01,KERNEL_MIX_AIC,208.226,PYPTO_mul_kernel_2d
+2,11.22,7.0,KERNEL_AIVEC,19.762,aclnnMul_MulAiCore_Mul,13.36,7.0,KERNEL_AIVEC,17.663,mul_kernel,214.444,3.01,KERNEL_MIX_AIC,203.338,PYPTO_mul_kernel_2d
+4,10.46,7.0,KERNEL_AIVEC,21.124,aclnnMul_MulAiCore_Mul,15.52,7.0,KERNEL_AIVEC,20.174,mul_kernel,218.584,3.01,KERNEL_MIX_AIC,207.36,PYPTO_mul_kernel_2d
+8,13.76,7.0,KERNEL_AIVEC,24.217,aclnnMul_MulAiCore_Mul,10.88,7.0,KERNEL_AIVEC,24.33,mul_kernel,246.745,3.01,KERNEL_MIX_AIC,223.959,PYPTO_mul_kernel_2d
+16,12.86,7.0,KERNEL_AIVEC,30.193,aclnnMul_MulAiCore_Mul,14.1,7.0,KERNEL_AIVEC,33.436,mul_kernel,258.585,3.01,KERNEL_MIX_AIC,285.204,PYPTO_mul_kernel_2d
+32,18.52,7.0,KERNEL_AIVEC,40.922,aclnnMul_MulAiCore_Mul,20.84,7.0,KERNEL_AIVEC,52.158,mul_kernel,281.146,3.01,KERNEL_MIX_AIC,369.522,PYPTO_mul_kernel_2d
+64,27.961,7.0,KERNEL_AIVEC,62.617,aclnnMul_MulAiCore_Mul,32.941,7.0,KERNEL_AIVEC,88.215,mul_kernel,358.387,3.01,KERNEL_MIX_AIC,526.709,PYPTO_mul_kernel_2d

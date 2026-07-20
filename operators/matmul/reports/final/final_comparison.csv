@@ -1,0 +1,8 @@
+batch,torch_primary_us,torch_kernels_per_call,torch_kernel_type,torch_all_device_us,torch_kernel_name,ascendc_primary_us,ascendc_kernels_per_call,ascendc_kernel_type,ascendc_all_device_us,ascendc_kernel_name,pypto_primary_us,pypto_kernels_per_call,pypto_kernel_type,pypto_all_device_us,pypto_kernel_name
+1,12.22,7.0,KERNEL_AICORE,38.027,aclnnMatmul_BatchMatMulNd_BatchMatMulV2,10.36,84.0,KERNEL_AICORE,298.418,matmul_kernel,N/A,N/A,N/A,N/A,N/A
+2,16.38,7.0,KERNEL_AICORE,48.647,aclnnMatmul_BatchMatMulNd_BatchMatMulV2,10.56,168.0,KERNEL_AICORE,599.142,matmul_kernel,N/A,N/A,N/A,N/A,N/A
+4,17.62,7.0,KERNEL_AICORE,57.771,aclnnMatmul_BatchMatMulNd_BatchMatMulV2,10.52,336.0,KERNEL_AICORE,1190.582,matmul_kernel,N/A,N/A,N/A,N/A,N/A
+8,23.58,7.0,KERNEL_AICORE,79.009,aclnnMatmul_BatchMatMulNd_BatchMatMulV2,10.16,672.0,KERNEL_AICORE,2382.437,matmul_kernel,N/A,N/A,N/A,N/A,N/A
+16,35.56,7.0,KERNEL_AICORE,127.732,aclnnMatmul_BatchMatMulNd_BatchMatMulV2,9.96,1344.0,KERNEL_AICORE,4754.979,matmul_kernel,N/A,N/A,N/A,N/A,N/A
+32,63.3,7.0,KERNEL_AICORE,224.6,aclnnMatmul_BatchMatMulNd_BatchMatMulV2,10.48,2688.0,KERNEL_AICORE,9521.267,matmul_kernel,N/A,N/A,N/A,N/A,N/A
+64,111.662,1.0,KERNEL_AICORE,91.801,aclnnMatmul_BatchMatMulNd_BatchMatMulV2,135.423,7.0,KERNEL_AICORE,924.907,matmul_kernel,N/A,N/A,N/A,N/A,N/A

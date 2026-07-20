@@ -1,8 +1,8 @@
-Batch,torch_median_us,torch_mean_us,torch_cv,ascendc_median_us,ascendc_mean_us,ascendc_cv,pypto_median_us,pypto_mean_us,pypto_cv
-1,131.9,131.8,0.4,238.6,238.6,0.0,N/A,N/A,N/A
-2,159.1,159.3,0.7,475.7,475.7,0.0,N/A,N/A,N/A
-4,230.9,230.9,0.5,712.7,712.7,0.0,N/A,N/A,N/A
-8,350.2,350.4,0.6,1186.9,1187.0,0.0,N/A,N/A,N/A
-16,578.3,581.8,1.6,2372.2,2372.1,0.0,N/A,N/A,N/A
-32,1010.9,1011.7,0.4,4742.3,4742.4,0.0,N/A,N/A,N/A
-64,2180.7,2187.0,1.3,9245.7,9245.7,0.0,N/A,N/A,N/A
+batch,torch_primary_us,torch_kernels_per_call,torch_kernel_type,torch_all_device_us,torch_kernel_name,ascendc_primary_us,ascendc_kernels_per_call,ascendc_kernel_type,ascendc_all_device_us,ascendc_kernel_name,pypto_primary_us,pypto_kernels_per_call,pypto_kernel_type,pypto_all_device_us,pypto_kernel_name
+1,11.62,2.0,KERNEL_AIVEC,151.288,aclnnSWhere_SelectV2AiCore_SelectV2,248.38,7.0,KERNEL_AIVEC,1672.58,where_kernel,N/A,N/A,N/A,N/A,N/A
+2,12.22,2.0,KERNEL_AIVEC,182.806,aclnnSWhere_SelectV2AiCore_SelectV2,488.06,7.0,KERNEL_AIVEC,3331.884,where_kernel,N/A,N/A,N/A,N/A,N/A
+4,16.0,2.0,KERNEL_AIVEC,263.728,aclnnSWhere_SelectV2AiCore_SelectV2,727.76,7.0,KERNEL_AIVEC,4992.41,where_kernel,N/A,N/A,N/A,N/A,N/A
+8,16.44,2.0,KERNEL_AIVEC,381.008,aclnnSWhere_SelectV2AiCore_SelectV2,1195.78,7.0,KERNEL_AIVEC,8310.89,where_kernel,N/A,N/A,N/A,N/A,N/A
+16,21.64,2.0,KERNEL_AIVEC,603.466,aclnnSWhere_SelectV2AiCore_SelectV2,2381.68,7.0,KERNEL_AIVEC,16608.061,where_kernel,N/A,N/A,N/A,N/A,N/A
+32,33.78,2.0,KERNEL_AIVEC,1064.886,aclnnSWhere_SelectV2AiCore_SelectV2,4755.3,7.0,KERNEL_AIVEC,33202.546,where_kernel,N/A,N/A,N/A,N/A,N/A
+64,41.74,2.0,KERNEL_AIVEC,2227.753,aclnnSWhere_SelectV2AiCore_SelectV2,9265.2,7.0,KERNEL_AIVEC,64732.68,where_kernel,N/A,N/A,N/A,N/A,N/A
