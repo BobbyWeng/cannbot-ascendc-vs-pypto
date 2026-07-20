@@ -2,6 +2,17 @@
 
 Unified visualization layer for operator development status, correctness, and performance.
 
+## Quick Install (One Command)
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/BobbyWeng/cannbot-ascendc-vs-pypto/main/dashboard/download_dashboard.sh)" _ https://github.com/BobbyWeng/cannbot-ascendc-vs-pypto.git
+cd cannbot-dashboard && python dashboard/dashboard.py --release reports/release/current_release.json
+```
+
+Then open `dashboard/index.html` in your browser.
+
+This clones only `dashboard/` and `reports/release/` (~2MB) via git sparse checkout — no need for the full repository.
+
 ## Development Mode
 
 ```bash
