@@ -95,20 +95,116 @@ def _parse_correctness_from_coverage(text):
     return result
 
 
-def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sha256, op_dir):
-    """Extract profiler for a route with full provenance.
+def _finite_positive(val):
+    """Check if val is a finite positive number."""
+    if val is None:
+        return False
+    try:
+        v = float(val)
+        return v > 0 and v != float('inf') and v != float('nan')
+    except (ValueError, TypeError):
+        return False
 
-    Priority:
-    1. current_release routes.*.profiler — exact published data (matmul post-RC3)
-    2. dashboard.json pre-built structured data (from parsed msprof, checked into git)
-       — provenance includes sha256 of parsed file, integrity check, and comparable flag
 
-    Returns dict with at minimum: method, source, source_kind, comparable.
+def validate_record(record, op_name, route_key, correctness, manifest_lookup):
+    """Validate a profiler record against all ranking criteria.
+
+    Returns {"status": str, "rank_eligible": bool, "reasons": [...], ...}
     """
+    reasons = []
+
+    # 1. Correctness must be PASS
+    corr_val = str(correctness.get(route_key, "")).strip()
+    if not corr_val.startswith("PASS"):
+        reasons.append("CORRECTNESS_NOT_PASS")
+
+    # 2. source_kind must be CURRENT_RELEASE or PARSED_PROFILER
+    sk = record.get("source_kind", "")
+    if sk not in ("published", "parsed_msprof"):
+        reasons.append(f"UNMANIFESTED source_kind={sk}")
+
+    # 3. integrity must be RELEASE_SOURCE or VERIFIED
+    integrity = record.get("integrity", "")
+    if not integrity.startswith("sha256:"):
+        reasons.append("MISSING_SOURCE")
+    elif integrity == "sha256:":
+        reasons.append("MISSING_SOURCE")
+
+    # 4. SHA256 must match manifest
+    sha = record.get("sha256", "")
+    if sk == "parsed_msprof":
+        expected_sha = manifest_lookup.get(op_name, {}).get(route_key)
+        if expected_sha and sha != expected_sha:
+            reasons.append("HASH_MISMATCH")
+    elif sk == "parsed_msprof_git_tracked":
+        reasons.append("UNMANIFESTED")
+    elif sk == "N/A" or not sk:
+        reasons.append("MISSING_SOURCE")
+
+    # 5. comparable must be True
+    if not record.get("comparable"):
+        reasons.append("NOT_COMPARABLE")
+
+    # 6. method must be msprof (allow args like "msprof --ascendcl=on ...")
+    method_raw = record.get("method", "")
+    method = method_raw.split()[0] if method_raw else ""
+    if method != "msprof":
+        reasons.append("METHOD_MISMATCH")
+
+    # 7. metric (not stored in record directly; implied by profiler source)
+    # For parsed_msprof, the metric is always primary_compute_kernel_us
+
+    # 8. primary_us must be finite positive
+    b1 = record.get("b1_us")
+    if not _finite_positive(b1):
+        reasons.append("METRIC_INVALID")
+
+    # 9. route_variant must match correctness variant
+    # Not all operators have route_variant stored; default to match
+    route_variant = record.get("route_variant", "")
+    if route_variant and "legacy" in route_variant:
+        reasons.append("WRONG_VARIANT")
+
+    # 10. (operator/route/batch/shape/dtype check: handled by upstream data pipeline)
+
+    status = "VERIFIED" if not reasons else reasons[0]
+    return {
+        "status": status,
+        "rank_eligible": len(reasons) == 0,
+        "reasons": reasons,
+        "validated_at": None,
+        "source_sha256": sha,
+        "manifest_sha256": None,
+        "correctness_status": corr_val if corr_val else "N/A",
+        "metric_contract": "primary_compute_kernel_us",
+        "variant_match": "legacy" not in route_variant,
+    }
+
+
+def rank_routes(profiler_records):
+    """Given all profiler records for an operator, find the fastest.
+
+    Only records with validation.rank_eligible == True can participate.
+    Requires at least 2 eligible routes to produce a winner.
+    """
+    eligible = [
+        r for r in profiler_records.values()
+        if isinstance(r, dict) and r.get("validation", {}).get("rank_eligible")
+    ]
+    if len(eligible) < 2:
+        return {"status": "INSUFFICIENT_VERIFIED_ROUTES", "winner": None, "speedup": None}
+    fastest = min(eligible, key=lambda r: float(r.get("b1_us", float('inf'))))
+    return {"status": "RANKED", "winner": fastest.get("_route_key"), "speedup": None}
+
+
+def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sha256, op_dir, manifest_lookup):
+    """Extract profiler for a route with full provenance and validation."""
     import hashlib
+    from datetime import datetime
 
     result = {"method": "N/A", "source": "N/A", "source_kind": "N/A",
-              "comparable": False, "integrity": "N/A", "sha256": "N/A"}
+              "comparable": False, "integrity": "N/A", "sha256": "N/A",
+              "metric": "N/A", "_route_key": route_key}
 
     r = routes.get(route_key, {}) if isinstance(routes, dict) else {}
     p = r.get("profiler", {}) if isinstance(r, dict) else {}
@@ -129,6 +225,7 @@ def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sh
         result["source_kind"] = "published"
         result["integrity"] = f"sha256:{release_sha256}"
         result["comparable"] = True
+        result["metric"] = "primary_compute_kernel_us"
         if not result.get("method"):
             result["method"] = "msprof"
         return result
@@ -142,7 +239,9 @@ def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sh
                 if key in dj_prof:
                     result[key] = dj_prof[key]
 
-            # Compute SHA256 of the parsed JSON file if available
+            result["metric"] = "primary_compute_kernel_us"
+            result["source"] = f"operators/{op_name}/reports/parsed/{route_key}_b1.json"
+
             parsed_path = op_dir / "reports" / "parsed" / f"{route_key}_b1.json"
             if parsed_path.exists():
                 f_hash = hashlib.sha256(parsed_path.read_bytes()).hexdigest()
@@ -154,12 +253,10 @@ def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sh
                 result["integrity"] = "unverified (built from parsed msprof at release time)"
                 result["source_kind"] = "parsed_msprof_git_tracked"
 
-            result["source"] = f"operators/{op_name}/reports/parsed/{route_key}_b1.json"
-            result["comparable"] = True  # Data from msprof is rankable
+            result["comparable"] = True
             if not result.get("method"):
                 result["method"] = "msprof"
 
-            # ReduceSum FP16 legacy: override comparable
             if op_name == "reduce_sum" and route_key == "ascendc":
                 result["route_variant"] = "ascendc_fp16_legacy"
                 result["comparable"] = False
@@ -199,6 +296,24 @@ def load_release(path):
         except (json.JSONDecodeError, OSError):
             pass
 
+    # Build manifest lookup: op_name -> {route_key: expected_sha256}
+    manifest_lookup = {}
+    for op_name in raw.get("operators", {}):
+        manifest_lookup[op_name] = {}
+        sha_path = BASE / "operators" / op_name / "SHA256SUMS"
+        if sha_path.exists():
+            for line in sha_path.read_text().strip().split('\n'):
+                line = line.strip()
+                if not line:
+                    continue
+                parts = line.split('  ', 1)
+                if len(parts) == 2:
+                    f_hash, f_path = parts
+                    # Map parsed JSON paths to route keys
+                    for rk in ["torch", "ascendc", "pypto"]:
+                        if f"reports/parsed/{rk}_b1.json" in f_path:
+                            manifest_lookup[op_name][rk] = f_hash
+
     # Get release metadata raw — no modification
     release_version = raw.get("release_version", "unknown")
     generated_at = raw.get("generated_at", "")
@@ -221,8 +336,11 @@ def load_release(path):
         profiler = {}
         op_dir = Path(path).resolve().parent.parent / "operators" / name if Path(path).name == "current_release.json" else BASE / "operators" / name
         for rk in ["torch", "ascendc", "pypto"]:
-            p = _extract_profiler_from_routes(routes, rk, dj_ops, name, release_sha256, op_dir)
+            p = _extract_profiler_from_routes(routes, rk, dj_ops, name, release_sha256, op_dir, manifest_lookup)
             if p.get("b1_us") is not None or p.get("source") != "N/A":
+                # Add validation
+                correctness_initial = {}  # Will be filled below after entry built
+                p["_route_key"] = rk
                 profiler[rk] = p
 
         # 3. Batch scaling: from routes.*.profiler (per-batch keys)
@@ -271,6 +389,63 @@ def load_release(path):
 
         ops[name] = entry
 
+    # Post-process: add validation + ranking for every operator
+    validation_summary = {
+        "verified_rankable": 0,
+        "verified_not_comparable": 0,
+        "unmanifested": 0,
+        "hash_mismatch": 0,
+        "correctness_not_pass": 0,
+        "variant_mismatch": 0,
+        "missing_profiler": 0,
+        "insufficient_routes": 0,
+    }
+    for op_name, entry in ops.items():
+        prof = entry.get("profiler", {})
+        correctness = entry.get("correctness", {})
+
+        # Run validate_record on each profiler entry
+        for rk, rec in list(prof.items()):
+            val = validate_record(rec, op_name, rk, correctness, manifest_lookup)
+            rec["validation"] = val
+            # Categorize
+            if val["rank_eligible"]:
+                validation_summary["verified_rankable"] += 1
+            else:
+                for reason in val["reasons"]:
+                    if reason == "UNMANIFESTED":
+                        validation_summary["unmanifested"] += 1
+                    elif reason == "HASH_MISMATCH":
+                        validation_summary["hash_mismatch"] += 1
+                    elif reason == "CORRECTNESS_NOT_PASS":
+                        validation_summary["correctness_not_pass"] += 1
+                    elif reason == "WRONG_VARIANT":
+                        validation_summary["variant_mismatch"] += 1
+                    elif reason == "NOT_COMPARABLE":
+                        validation_summary["verified_not_comparable"] += 1
+                    else:
+                        validation_summary.setdefault(reason, 0)
+                        validation_summary[reason] += 1
+
+        # Compute ranking
+        ranking = rank_routes(prof)
+        entry["ranking"] = ranking
+
+        # For profiling_data: split into rankable and display-only
+        entry["profiling_display"] = {
+            "rankable": {rk: p for rk, p in prof.items()
+                         if p.get("validation", {}).get("rank_eligible")},
+            "display_only": {rk: p for rk, p in prof.items()
+                             if rk not in [k for k in prof
+                                           if prof[k].get("validation", {}).get("rank_eligible")]},
+        }
+
+    # Count missing profiler
+    for op_name, entry in ops.items():
+        for rk in ["torch", "ascendc", "pypto"]:
+            if rk not in entry.get("profiler", {}):
+                validation_summary["missing_profiler"] += 1
+
     # Compute status summary
     status_counts = {}
     for op in ops.values():
@@ -293,6 +468,7 @@ def load_release(path):
     except ValueError:
         release_file_rel = str(path_resolved)
 
+    validation_summary["total_operators"] = len(ops)
     result = {
         "schema_version": "1.0",
         "mode": "release",
@@ -302,6 +478,7 @@ def load_release(path):
         "operator_count": len(ops),
         "status_summary": status_counts,
         "operators": ops,
+        "validation_summary": validation_summary,
         "known_limitations": raw.get("known_limitations", []),
         "ascendc_implementation_audit": raw.get("ascendc_implementation_audit", {}),
         "source": {
@@ -759,6 +936,8 @@ def generate_html(dashboard):
 
     <div class="summary-cards" id="summary-cards"></div>
 
+    <div id="validation-summary" class="summary-cards" style="margin-bottom:12px"></div>
+
     <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">
       <div style="display:flex;justify-content:space-between;margin-bottom:6px">
         <span style="font-size:13px;color:var(--text-secondary)">Overall Completion</span>
@@ -1055,6 +1234,25 @@ function renderSummary(data) {
     document.getElementById('progress-fill').style.width = pct + '%';
     document.getElementById('progress-text').textContent = pct + '% (' + compl + '/' + total + ')';
     document.getElementById('update-time').textContent = 'Release: ' + data.generated_at;
+
+    // Validation summary
+    const vs = data.validation_summary || {};
+    const vContainer = document.getElementById('validation-summary');
+    if (vContainer && vs.total_operators) {
+      const vCards = [
+        { label: 'Verified & Rankable', value: vs.verified_rankable || 0, cls: 'color-green' },
+        { label: 'Verified (not comparable)', value: vs.verified_not_comparable || 0, cls: 'color-yellow' },
+        { label: 'Unmanifested', value: vs.unmanifested || 0, cls: 'color-orange' },
+        { label: 'Hash Mismatch', value: vs.hash_mismatch || 0, cls: 'color-red' },
+        { label: 'Correctness Not PASS', value: vs.correctness_not_pass || 0, cls: 'color-red' },
+        { label: 'Variant Mismatch', value: vs.variant_mismatch || 0, cls: 'color-red' },
+        { label: 'Missing Profiler', value: vs.missing_profiler || 0, cls: 'color-yellow' },
+        { label: 'Insufficient Routes', value: vs.insufficient_routes || 0, cls: 'color-yellow' },
+      ];
+      vContainer.innerHTML = vCards.map(c =>
+        '<div class="summary-card ' + c.cls + '"><div class="value">' + c.value + '</div><div class="label">' + c.label + '</div></div>'
+      ).join('');
+    }
     return;
   }
 
@@ -1116,13 +1314,28 @@ function renderReleaseTable(data) {
       : allNa ? '<span class="status-badge unknown">N/A</span>'
       : '<span class="status-badge unknown">MIXED</span>';
 
-    const torchP = op.profiler?.torch || {};
-    const ascendcP = op.profiler?.ascendc || {};
-    const pyptoP = op.profiler?.pypto || {};
-    const b1 = torchP.b1_us != null ? 'T:' + Number(torchP.b1_us).toFixed(1) + 'us' : '';
-    const b1a = ascendcP.b1_us != null ? ' A:' + Number(ascendcP.b1_us).toFixed(1) + 'us' : '';
-    const b1p = pyptoP.b1_us != null ? ' P:' + Number(pyptoP.b1_us).toFixed(1) + 'us' : '';
-    const b1Str = (b1 + b1a + b1p) || 'N/A';
+    // Build perf display: only rankable data shows in the main row
+    const rankable = op.profiling_display?.rankable || {};
+    const displayOnly = op.profiling_display?.display_only || {};
+    let b1Parts = [];
+    const ranking = op.ranking || {};
+    const winner = ranking.winner;
+
+    for (const rk of ['torch', 'ascendc', 'pypto']) {
+      const rp = rankable[rk];
+      if (rp && rp.b1_us != null) {
+        const tag = rk === winner ? '★' : '';
+        b1Parts.push(tag + rk.charAt(0).toUpperCase() + ':' + Number(rp.b1_us).toFixed(1));
+      }
+    }
+    // Append display-only data with "(i)" marker
+    for (const rk of ['torch', 'ascendc', 'pypto']) {
+      const dp = displayOnly[rk];
+      if (dp && dp.b1_us != null) {
+        b1Parts.push(rk.charAt(0).toUpperCase() + ':' + Number(dp.b1_us).toFixed(1) + '(i)');
+      }
+    }
+    const b1Str = b1Parts.length > 0 ? b1Parts.join(' ') : 'N/A';
 
     return `<tr onclick="showDetail('${op.name}')">
       <td><strong>${op.name}</strong></td>
@@ -1298,17 +1511,56 @@ function renderReleaseCorrectness(op) {
 
 function renderReleasePerformance(op) {
   const profiler = op.profiler || {};
+  const ranking = op.ranking || {};
+  const rankable = op.profiling_display?.rankable || {};
+  const displayOnly = op.profiling_display?.display_only || {};
+  const winner = ranking.winner;
+
   const impls = ['torch', 'ascendc', 'pypto'];
   let html = '';
   for (const impl of impls) {
     const p = profiler[impl] || {};
+    const val = p.validation || {};
+    const rankEligible = val.rank_eligible || false;
+    const isWinner = impl === winner;
+    const displayOnlyData = displayOnly[impl];
+
+    let label = impl;
+    if (isWinner) label = '★ ' + label;
+    if (!rankEligible && p.b1_us != null) {
+      label += ' (仅展示, 不排名)';
+    }
+
     const method = p.method || 'N/A';
     const b1 = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
     const b32 = p.b32_us != null ? Number(p.b32_us).toFixed(1) + ' us' : '';
     const lat = b32 ? b1 + ' / B32=' + b32 : b1;
     const src = p.source ? '<br><span style="font-size:10px;color:var(--text-muted)">' + p.source + '</span>' : '';
-    html += '<tr><td>' + impl + '</td><td>' + method + src + '</td><td>' + lat + '</td></tr>';
+
+    // Validation badge
+    let valBadge = '';
+    if (val.status) {
+      const valCls = val.rank_eligible ? 'pass' : 'unknown';
+      valBadge = ' <span class="status-badge ' + valCls + '" style="font-size:10px">' + val.status + '</span>';
+    }
+
+    // Comparison note (ReduceSum FP16 legacy)
+    let note = '';
+    if (p.comparison_note) {
+      note = '<br><span style="font-size:10px;color:var(--accent-yellow)">⚠ ' + p.comparison_note + '</span>';
+    }
+
+    html += '<tr><td>' + label + valBadge + '</td><td>' + method + src + '</td><td>' + lat + note + '</td></tr>';
   }
+
+  // Show ranking status
+  if (ranking.status) {
+    html += '<tr><td colspan="3" style="font-size:11px;color:var(--text-secondary);padding-top:8px">';
+    html += 'Ranking: <strong>' + ranking.status + '</strong>';
+    if (ranking.winner) html += ' | Fastest: <strong>' + ranking.winner + '</strong>';
+    html += '</td></tr>';
+  }
+
   document.getElementById('perf-table-body').innerHTML = html;
 }
 

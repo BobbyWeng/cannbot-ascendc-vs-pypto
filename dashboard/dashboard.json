@@ -47,11 +47,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 10.08,
           "b32_us": 13.24,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnRelu_Relu_Relu",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -60,11 +77,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 9.5,
           "b32_us": 14.28,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "relu_kernel",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "pypto": {
           "method": "msprof",
@@ -73,11 +107,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "pypto",
           "b1_us": 106.622,
           "b32_us": 162.523,
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_relu_kernel_2d",
-          "kernels_per_call": 3.01
+          "kernels_per_call": 3.01,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -111,6 +162,106 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/relu/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 10.08,
+            "b32_us": 13.24,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnRelu_Relu_Relu",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/relu/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 9.5,
+            "b32_us": 14.28,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "relu_kernel",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "pypto": {
+            "method": "msprof",
+            "source": "operators/relu/reports/parsed/pypto_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "pypto",
+            "b1_us": 106.622,
+            "b32_us": 162.523,
+            "kernel_type": "KERNEL_MIX_AIC",
+            "kernel_name": "PYPTO_relu_kernel_2d",
+            "kernels_per_call": 3.01,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        }
+      },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
     "mul": {
@@ -141,11 +292,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 9.0,
           "b32_us": 18.52,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnMul_MulAiCore_Mul",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -154,11 +322,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 11.16,
           "b32_us": 20.84,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "mul_kernel",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "pypto": {
           "method": "msprof",
@@ -167,11 +352,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "pypto",
           "b1_us": 221.724,
           "b32_us": 281.146,
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_mul_kernel_2d",
-          "kernels_per_call": 3.01
+          "kernels_per_call": 3.01,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -205,6 +407,106 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/mul/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 9.0,
+            "b32_us": 18.52,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnMul_MulAiCore_Mul",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/mul/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 11.16,
+            "b32_us": 20.84,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "mul_kernel",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "pypto": {
+            "method": "msprof",
+            "source": "operators/mul/reports/parsed/pypto_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "pypto",
+            "b1_us": 221.724,
+            "b32_us": 281.146,
+            "kernel_type": "KERNEL_MIX_AIC",
+            "kernel_name": "PYPTO_mul_kernel_2d",
+            "kernels_per_call": 3.01,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        }
+      },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
     "add": {
@@ -235,11 +537,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 10.04,
           "b32_us": 20.56,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnAdd_AddAiCore_Add",
-          "kernels_per_call": 21.0
+          "kernels_per_call": 21.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -248,11 +567,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 13.78,
           "b32_us": 33.381,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "add_kernel",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "pypto": {
           "method": "msprof",
@@ -261,11 +597,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "pypto",
           "b1_us": 132.123,
           "b32_us": 157.363,
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_add_binary_kernel",
-          "kernels_per_call": 9.01
+          "kernels_per_call": 9.01,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -299,6 +652,106 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/add/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 10.04,
+            "b32_us": 20.56,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnAdd_AddAiCore_Add",
+            "kernels_per_call": 21.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/add/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 13.78,
+            "b32_us": 33.381,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "add_kernel",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "pypto": {
+            "method": "msprof",
+            "source": "operators/add/reports/parsed/pypto_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "pypto",
+            "b1_us": 132.123,
+            "b32_us": 157.363,
+            "kernel_type": "KERNEL_MIX_AIC",
+            "kernel_name": "PYPTO_add_binary_kernel",
+            "kernels_per_call": 9.01,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        }
+      },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
     "div": {
@@ -328,11 +781,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 21.8,
           "b32_us": 126.203,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
-          "kernels_per_call": 42.0
+          "kernels_per_call": 42.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -341,11 +811,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 18.64,
           "b32_us": 306.526,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "div_kernel",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -370,6 +857,76 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/div/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 21.8,
+            "b32_us": 126.203,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
+            "kernels_per_call": 42.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/div/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 18.64,
+            "b32_us": 306.526,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "div_kernel",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        }
+      },
       "_profiler_coverage": "ascendc,torch profiled"
     },
     "equal": {
@@ -400,11 +957,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 11.54,
           "b32_us": 20.18,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
-          "kernels_per_call": 1.0
+          "kernels_per_call": 1.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -413,11 +987,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 49.98,
           "b32_us": 815.7,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "equal_kernel",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -442,6 +1033,76 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/equal/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 11.54,
+            "b32_us": 20.18,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
+            "kernels_per_call": 1.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/equal/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 49.98,
+            "b32_us": 815.7,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "equal_kernel",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        }
+      },
       "_profiler_coverage": "ascendc,torch profiled"
     },
     "not": {
@@ -472,11 +1133,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 10.68,
           "b32_us": 26.42,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
-          "kernels_per_call": 2.0
+          "kernels_per_call": 2.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -485,11 +1163,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 8.16,
           "b32_us": 14.16,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "not_kernel",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS (42/42 cases)",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "pypto": {
           "method": "msprof",
@@ -498,11 +1193,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "pypto",
           "b1_us": 118.84,
           "b32_us": 159.78,
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_not_kernel",
-          "kernels_per_call": 3.01
+          "kernels_per_call": 3.01,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -536,6 +1248,106 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/not/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 10.68,
+            "b32_us": 26.42,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
+            "kernels_per_call": 2.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/not/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 8.16,
+            "b32_us": 14.16,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "not_kernel",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS (42/42 cases)",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "pypto": {
+            "method": "msprof",
+            "source": "operators/not/reports/parsed/pypto_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "pypto",
+            "b1_us": 118.84,
+            "b32_us": 159.78,
+            "kernel_type": "KERNEL_MIX_AIC",
+            "kernel_name": "PYPTO_not_kernel",
+            "kernels_per_call": 3.01,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        }
+      },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
     "or": {
@@ -566,11 +1378,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 13.52,
           "b32_us": 31.98,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
-          "kernels_per_call": 3.0
+          "kernels_per_call": 3.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -579,11 +1408,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 9.28,
           "b32_us": 15.16,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "or_kernel",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS (49/49 cases)",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "pypto": {
           "method": "msprof",
@@ -592,11 +1438,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "pypto",
           "b1_us": 204.52,
           "b32_us": 255.3,
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_or_kernel",
-          "kernels_per_call": 3.01
+          "kernels_per_call": 3.01,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS (bitwise_or for 0/1)",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -630,6 +1493,106 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/or/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 13.52,
+            "b32_us": 31.98,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
+            "kernels_per_call": 3.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/or/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 9.28,
+            "b32_us": 15.16,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "or_kernel",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS (49/49 cases)",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "pypto": {
+            "method": "msprof",
+            "source": "operators/or/reports/parsed/pypto_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "pypto",
+            "b1_us": 204.52,
+            "b32_us": 255.3,
+            "kernel_type": "KERNEL_MIX_AIC",
+            "kernel_name": "PYPTO_or_kernel",
+            "kernels_per_call": 3.01,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS (bitwise_or for 0/1)",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        }
+      },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
     "where": {
@@ -660,11 +1623,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 11.62,
           "b32_us": 33.78,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
-          "kernels_per_call": 2.0
+          "kernels_per_call": 2.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -673,11 +1653,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 248.38,
           "b32_us": 4755.3,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "where_kernel",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -702,6 +1699,76 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/where/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 11.62,
+            "b32_us": 33.78,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
+            "kernels_per_call": 2.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/where/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 248.38,
+            "b32_us": 4755.3,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "where_kernel",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        }
+      },
       "_profiler_coverage": "ascendc,torch profiled"
     },
     "expand": {
@@ -732,11 +1799,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 13.02,
           "b32_us": 14.42,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
-          "kernels_per_call": 5.0
+          "kernels_per_call": 5.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -745,11 +1829,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 15.04,
           "b32_us": 94.242,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "expand_kernel",
-          "kernels_per_call": 281.92
+          "kernels_per_call": 281.92,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "pypto": {
           "method": "msprof",
@@ -758,11 +1859,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "pypto",
           "b1_us": 110.3,
           "b32_us": 2918.7,
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_expand_row",
-          "kernels_per_call": 25313.29
+          "kernels_per_call": 25313.29,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -796,6 +1914,106 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/expand/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 13.02,
+            "b32_us": 14.42,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
+            "kernels_per_call": 5.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/expand/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 15.04,
+            "b32_us": 94.242,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "expand_kernel",
+            "kernels_per_call": 281.92,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "pypto": {
+            "method": "msprof",
+            "source": "operators/expand/reports/parsed/pypto_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "pypto",
+            "b1_us": 110.3,
+            "b32_us": 2918.7,
+            "kernel_type": "KERNEL_MIX_AIC",
+            "kernel_name": "PYPTO_expand_row",
+            "kernels_per_call": 25313.29,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        }
+      },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
     "transpose": {
@@ -826,11 +2044,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 14.1,
           "b32_us": 26.2,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -839,11 +2074,28 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 106.2,
           "b32_us": 3014.6,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "transpose_kernel",
-          "kernels_per_call": 7.0
+          "kernels_per_call": 7.0,
+          "validation": {
+            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "rank_eligible": false,
+            "reasons": [
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -868,6 +2120,76 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/transpose/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 14.1,
+            "b32_us": 26.2,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/transpose/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 106.2,
+            "b32_us": 3014.6,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "transpose_kernel",
+            "kernels_per_call": 7.0,
+            "validation": {
+              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "rank_eligible": false,
+              "reasons": [
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        }
+      },
       "_profiler_coverage": "ascendc,torch profiled"
     },
     "reduce_sum": {
@@ -898,11 +2220,29 @@
           "comparable": true,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_us": 15.96,
           "b32_us": 19.18,
           "kernel_type": "KERNEL_MIX_AIV",
           "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
-          "kernels_per_call": 1.0
+          "kernels_per_call": 1.0,
+          "validation": {
+            "status": "CORRECTNESS_NOT_PASS",
+            "rank_eligible": false,
+            "reasons": [
+              "CORRECTNESS_NOT_PASS",
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "62/70",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof",
@@ -911,13 +2251,33 @@
           "comparable": false,
           "integrity": "unverified (built from parsed msprof at release time)",
           "sha256": "N/A (not in sparse checkout)",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 19.28,
           "b32_us": 154.86,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "reduce_sum_kernel",
           "kernels_per_call": 281.92,
           "route_variant": "ascendc_fp16_legacy",
-          "comparison_note": "旧 FP16 profiler, 不代表新版 FP32 内核"
+          "comparison_note": "旧 FP16 profiler, 不代表新版 FP32 内核",
+          "validation": {
+            "status": "CORRECTNESS_NOT_PASS",
+            "rank_eligible": false,
+            "reasons": [
+              "CORRECTNESS_NOT_PASS",
+              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "MISSING_SOURCE",
+              "UNMANIFESTED",
+              "NOT_COMPARABLE",
+              "WRONG_VARIANT"
+            ],
+            "validated_at": null,
+            "source_sha256": "N/A (not in sparse checkout)",
+            "manifest_sha256": null,
+            "correctness_status": "FP32 70/70 (NEW)",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": false
+          }
         }
       },
       "batch_scaling": {
@@ -946,6 +2306,82 @@
         "ascendc_fp16": "21/70 PASS (FP16 accum, legacy)",
         "ascendc_fp32": "70/70 PASS (FP32 accum, recommended)",
         "profiler_note": "Parsed profiler data from old FP16 kernel. FP32 kernel profiler not yet collected."
+      },
+      "ranking": {
+        "status": "INSUFFICIENT_VERIFIED_ROUTES",
+        "winner": null,
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {},
+        "display_only": {
+          "torch": {
+            "method": "msprof",
+            "source": "operators/reduce_sum/reports/parsed/torch_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": true,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_us": 15.96,
+            "b32_us": 19.18,
+            "kernel_type": "KERNEL_MIX_AIV",
+            "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
+            "kernels_per_call": 1.0,
+            "validation": {
+              "status": "CORRECTNESS_NOT_PASS",
+              "rank_eligible": false,
+              "reasons": [
+                "CORRECTNESS_NOT_PASS",
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "62/70",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof",
+            "source": "operators/reduce_sum/reports/parsed/ascendc_b1.json",
+            "source_kind": "parsed_msprof_git_tracked",
+            "comparable": false,
+            "integrity": "unverified (built from parsed msprof at release time)",
+            "sha256": "N/A (not in sparse checkout)",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 19.28,
+            "b32_us": 154.86,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "reduce_sum_kernel",
+            "kernels_per_call": 281.92,
+            "route_variant": "ascendc_fp16_legacy",
+            "comparison_note": "旧 FP16 profiler, 不代表新版 FP32 内核",
+            "validation": {
+              "status": "CORRECTNESS_NOT_PASS",
+              "rank_eligible": false,
+              "reasons": [
+                "CORRECTNESS_NOT_PASS",
+                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+                "MISSING_SOURCE",
+                "UNMANIFESTED",
+                "NOT_COMPARABLE",
+                "WRONG_VARIANT"
+              ],
+              "validated_at": null,
+              "source_sha256": "N/A (not in sparse checkout)",
+              "manifest_sha256": null,
+              "correctness_status": "FP32 70/70 (NEW)",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": false
+            }
+          }
+        }
       },
       "_profiler_coverage": "ascendc,torch profiled"
     },
@@ -976,11 +2412,24 @@
           "comparable": true,
           "integrity": "sha256:b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
           "sha256": "N/A",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "torch",
           "b1_primary_us": 12.2,
           "b32_primary_us": 63.3,
           "kernels_per_call": 7,
           "b1_us": 12.2,
-          "b32_us": 63.3
+          "b32_us": 63.3,
+          "validation": {
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
+            "validated_at": null,
+            "source_sha256": "N/A",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         },
         "ascendc": {
           "method": "msprof --ascendcl=on --ai-core=on --task-time=l0",
@@ -989,6 +2438,8 @@
           "comparable": true,
           "integrity": "sha256:b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
           "sha256": "N/A",
+          "metric": "primary_compute_kernel_us",
+          "_route_key": "ascendc",
           "b1_us": 6.4,
           "b2_us": 8.1,
           "b4_us": 9.3,
@@ -999,7 +2450,18 @@
           "b32_TFLOPS": 43.53,
           "kernels_per_call": 1,
           "blockDim_b1": 12,
-          "blockDim_b32": 20
+          "blockDim_b32": 20,
+          "validation": {
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
+            "validated_at": null,
+            "source_sha256": "N/A",
+            "manifest_sha256": null,
+            "correctness_status": "PASS",
+            "metric_contract": "primary_compute_kernel_us",
+            "variant_match": true
+          }
         }
       },
       "batch_scaling": {
@@ -1014,8 +2476,89 @@
       },
       "report_path": "",
       "archive": "none",
+      "ranking": {
+        "status": "RANKED",
+        "winner": "ascendc",
+        "speedup": null
+      },
+      "profiling_display": {
+        "rankable": {
+          "torch": {
+            "method": "msprof",
+            "source": "current_release.json",
+            "source_kind": "published",
+            "comparable": true,
+            "integrity": "sha256:b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
+            "sha256": "N/A",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "torch",
+            "b1_primary_us": 12.2,
+            "b32_primary_us": 63.3,
+            "kernels_per_call": 7,
+            "b1_us": 12.2,
+            "b32_us": 63.3,
+            "validation": {
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
+              "validated_at": null,
+              "source_sha256": "N/A",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          },
+          "ascendc": {
+            "method": "msprof --ascendcl=on --ai-core=on --task-time=l0",
+            "source": "current_release.json",
+            "source_kind": "published",
+            "comparable": true,
+            "integrity": "sha256:b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
+            "sha256": "N/A",
+            "metric": "primary_compute_kernel_us",
+            "_route_key": "ascendc",
+            "b1_us": 6.4,
+            "b2_us": 8.1,
+            "b4_us": 9.3,
+            "b8_us": 12.7,
+            "b16_us": 20.7,
+            "b32_us": 37.0,
+            "b1_TFLOPS": 7.86,
+            "b32_TFLOPS": 43.53,
+            "kernels_per_call": 1,
+            "blockDim_b1": 12,
+            "blockDim_b32": 20,
+            "validation": {
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
+              "validated_at": null,
+              "source_sha256": "N/A",
+              "manifest_sha256": null,
+              "correctness_status": "PASS",
+              "metric_contract": "primary_compute_kernel_us",
+              "variant_match": true
+            }
+          }
+        },
+        "display_only": {}
+      },
       "_profiler_coverage": "ascendc,torch profiled"
     }
+  },
+  "validation_summary": {
+    "verified_rankable": 2,
+    "verified_not_comparable": 1,
+    "unmanifested": 28,
+    "hash_mismatch": 0,
+    "correctness_not_pass": 2,
+    "variant_mismatch": 1,
+    "missing_profiler": 6,
+    "insufficient_routes": 0,
+    "UNMANIFESTED source_kind=parsed_msprof_git_tracked": 28,
+    "MISSING_SOURCE": 28,
+    "total_operators": 12
   },
   "known_limitations": [
     {
