@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyPTO Operator Dashboard v1.3-rc3</title>
+<title>PyPTO Operator Dashboard v1.5-zh</title>
 <style>/* PyPTO Dashboard — Dark Theme */
 :root {
   --bg-primary: #0d1117;
@@ -143,12 +143,6 @@ tr:hover { background: var(--bg-hover); }
   .info-grid { grid-template-columns: repeat(2, 1fr); }
   .toolbar input { width: 160px; }
 }
-
-.chart-bar { display: flex; align-items: center; gap: 6px; margin: 2px 0; font-size: 12px; }
-.chart-bar .bar { height: 14px; border-radius: 3px; min-width: 4px; transition: width 0.3s; }
-.chart-bar .label-mini { color: var(--text-muted); width: 50px; text-align: right; }
-.chart-bar .value-mini { color: var(--text-secondary); width: 60px; }
-.hash-text { font-family: monospace; font-size: 10px; color: var(--text-muted); word-break: break-all; }
 </style>
 </head>
 <body>
@@ -160,10 +154,10 @@ tr:hover { background: var(--bg-hover); }
   <div class="header">
     <div>
       <h1>PyPTO Operator Dashboard</h1>
-      <div class="subtitle" id="header-subtitle">Loading...</div>
+      <div class="subtitle">Release Mode — Source: reports/release/current_release.json</div>
     </div>
     <div class="header-right">
-      <span class="badge" id="header-badge">0/12 completed</span>
+      <span class="badge">0/12 completed</span>
       <span class="update-time" id="update-time"></span>
     </div>
   </div>
@@ -174,7 +168,7 @@ tr:hover { background: var(--bg-hover); }
   </div>
 
   <div class="container">
-    <div id="release-info"></div>
+    <p>Release v1.5-zh — 2026-07-20T12:00:00Z</p>
 
     <div class="summary-cards" id="summary-cards"></div>
 
@@ -199,7 +193,6 @@ tr:hover { background: var(--bg-hover); }
           <th>Correctness</th>
           <th>B1 Perf</th>
           <th>Profiler</th>
-          <th>Skill Trace</th>
         </tr>
       </thead>
       <tbody id="op-table-body"></tbody>
@@ -226,9 +219,6 @@ tr:hover { background: var(--bg-hover); }
         <div class="tab active" data-tab="correctness" onclick="switchTab('correctness')">Correctness</div>
         <div class="tab" data-tab="performance" onclick="switchTab('performance')">Performance</div>
         <div class="tab" data-tab="limitations" onclick="switchTab('limitations')">Limitations</div>
-        <div class="tab" data-tab="profiler-timeline" onclick="switchTab('profiler-timeline')">Profiler Timeline</div>
-        <div class="tab" data-tab="batch-scaling" onclick="switchTab('batch-scaling')">Batch Scaling</div>
-        <div class="tab" data-tab="kernel-timeline" onclick="switchTab('kernel-timeline')">Kernel Timeline</div>
       </div>
 
       <div class="tab-content active" id="tab-correctness">
@@ -249,7 +239,7 @@ tr:hover { background: var(--bg-hover); }
         <div class="section">
           <h3>Profiler Metrics</h3>
           <table>
-            <thead><tr><th>Route</th><th>Method</th><th>B1 Latency</th><th>Kernels/Call</th></tr></thead>
+            <thead><tr><th>Route</th><th>Method</th><th>B1 Latency</th></tr></thead>
             <tbody id="perf-table-body"></tbody>
           </table>
         </div>
@@ -260,43 +250,13 @@ tr:hover { background: var(--bg-hover); }
           <h3>Known Limitations</h3>
           <div id="limitations-content"></div>
         </div>
-        <div class="section">
-          <h3>Source & Binary Hashes</h3>
-          <div id="hash-content"></div>
-        </div>
       </div>
-
-      <div class="tab-content" id="tab-profiler-timeline">
-        <div class="section">
-          <h3>Kernel Timeline</h3>
-          <div id="profiler-timeline-content"></div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="tab-batch-scaling">
-        <div class="section">
-          <h3>Latency vs Batch Size</h3>
-          <div id="batch-scaling-content"></div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="tab-kernel-timeline">
-        <div class="section">
-          <h3>Kernel Breakdown by Type</h3>
-          <div id="kernel-timeline-content"></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="bottom-sections" style="margin-top: 32px">
-      <div id="release-history-section"></div>
-      <div id="skill-trace-section"></div>
-      <div id="backend-limitations-section"></div>
     </div>
   </div>
 </div>
 
-<script>
+<script type="application/json" id="dashboard-data">{"version": "1.5-zh", "mode": "release", "release_version": "1.5-zh", "generated_at": "2026-07-20T12:00:00Z", "environment": {"platform": "Ascend 910B (dav-2201)", "aicore_count": 20, "cann_version": "9.0.0", "python": "3.11", "profiler": "msprof with --ascendcl=on --ai-core=on --task-time=l0", "warmup": 200, "profiled_loops": 100, "repeat": 5, "primary_metric": "primary_compute_kernel_us"}, "operator_count": 12, "status_summary": {"COMPLETE": 4, "COMPLETE_WITH_LIMITATION": 8}, "status_summary_zh": {"完全完成": 4, "有限完成": 8}, "operators": {"relu": {"status": "COMPLETE", "status_zh": "完全完成", "formula": "Y = max(X, 0)", "shape": "[B,12,256,32]", "dtype": "FP16", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "位精确", "cube_class": false, "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 10.08, "kernel_type": "KERNEL_AIVEC", "kernel_name": "aclnnRelu_Relu_Relu", "kernels_per_call": 7.0, "b32_us": 13.24}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 9.5, "kernel_type": "KERNEL_AIVEC", "kernel_name": "relu_kernel", "kernels_per_call": 7.0, "b32_us": 14.28}, "pypto": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 106.622, "kernel_type": "KERNEL_MIX_AIC", "kernel_name": "PYPTO_relu_kernel_2d", "kernels_per_call": 3.01, "b32_us": 162.523}}, "batch_scaling": {"torch": {"b1_us": 10.08, "b2_us": 9.54, "b4_us": 12.62, "b8_us": 11.86, "b16_us": 11.1, "b32_us": 13.24, "b64_us": 19.92}, "ascendc": {"b1_us": 9.5, "b2_us": 11.68, "b4_us": 14.18, "b8_us": 10.54, "b16_us": 10.82, "b32_us": 14.28, "b64_us": 20.96}, "pypto": {"b1_us": 106.622, "b2_us": 91.642, "b4_us": 118.422, "b8_us": 121.942, "b16_us": 140.503, "b32_us": 162.523, "b64_us": 229.585}}, "limitations": []}, "mul": {"status": "COMPLETE", "status_zh": "完全完成", "formula": "Y = X1 * X2", "shape": "[B,3,4,256,32]", "dtype": "FP16", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "位精确", "cube_class": false, "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 9.0, "kernel_type": "KERNEL_AIVEC", "kernel_name": "aclnnMul_MulAiCore_Mul", "kernels_per_call": 7.0, "b32_us": 18.52}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 11.16, "kernel_type": "KERNEL_AIVEC", "kernel_name": "mul_kernel", "kernels_per_call": 7.0, "b32_us": 20.84}, "pypto": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 221.724, "kernel_type": "KERNEL_MIX_AIC", "kernel_name": "PYPTO_mul_kernel_2d", "kernels_per_call": 3.01, "b32_us": 281.146}}, "batch_scaling": {"torch": {"b1_us": 9.0, "b2_us": 11.22, "b4_us": 10.46, "b8_us": 13.76, "b16_us": 12.86, "b32_us": 18.52, "b64_us": 27.961}, "ascendc": {"b1_us": 11.16, "b2_us": 13.36, "b4_us": 15.52, "b8_us": 10.88, "b16_us": 14.1, "b32_us": 20.84, "b64_us": 32.941}, "pypto": {"b1_us": 221.724, "b2_us": 214.444, "b4_us": 218.584, "b8_us": 246.745, "b16_us": 258.585, "b32_us": 281.146, "b64_us": 358.387}}, "limitations": []}, "add": {"status": "COMPLETE_WITH_LIMITATION", "status_zh": "有限完成", "formula": "Y = (((X1+X2)+X3)+X4)", "shape": "[B,256,384]", "dtype": "FP16", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "位精确", "cube_class": false, "correctness": {"torch": "PASS (77/77)", "ascendc": "PASS (77/77)", "pypto": "PASS (77/77)"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 10.04, "kernel_type": "KERNEL_AIVEC", "kernel_name": "aclnnAdd_AddAiCore_Add", "kernels_per_call": 21.0, "b32_us": 20.56}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 13.78, "kernel_type": "KERNEL_AIVEC", "kernel_name": "add_kernel", "kernels_per_call": 7.0, "b32_us": 33.381}, "pypto": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 132.123, "kernel_type": "KERNEL_MIX_AIC", "kernel_name": "PYPTO_add_binary_kernel", "kernels_per_call": 9.01, "b32_us": 157.363}}, "batch_scaling": {"torch": {"b1_us": 10.04, "b2_us": 11.08, "b4_us": 10.86, "b8_us": 10.42, "b16_us": 12.68, "b32_us": 20.56, "b64_us": 27.541}, "ascendc": {"b1_us": 13.78, "b2_us": 19.26, "b4_us": 17.68, "b8_us": 14.94, "b16_us": 22.54, "b32_us": 33.381, "b64_us": 54.601}, "pypto": {"b1_us": 132.123, "b2_us": 124.802, "b4_us": 131.363, "b8_us": 115.762, "b16_us": 138.823, "b32_us": 157.363, "b64_us": 180.104}}, "limitations": [{"route": "pypto", "severity": "P2", "desc": "3次二元加法→9内核事件/调用, ~46x总延迟"}]}, "div": {"status": "COMPLETE_WITH_LIMITATION", "status_zh": "有限完成", "formula": "Y = X1 / X2 (广播)", "shape": "X1[B,12,256,256], X2[B,12,256,1]", "dtype": "FP16", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "位精确", "cube_class": false, "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 UNBLOCKED)"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 21.8, "kernel_type": "KERNEL_AIVEC", "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv", "kernels_per_call": 42.0, "b32_us": 126.203}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 18.64, "kernel_type": "KERNEL_AIVEC", "kernel_name": "div_kernel", "kernels_per_call": 7.0, "b32_us": 306.526}}, "batch_scaling": {"torch": {"b1_us": 21.8, "b2_us": 27.321, "b4_us": 33.041, "b8_us": 49.261, "b16_us": 75.341, "b32_us": 126.203, "b64_us": 256.465}, "ascendc": {"b1_us": 18.64, "b2_us": 28.941, "b4_us": 50.941, "b8_us": 101.062, "b16_us": 156.763, "b32_us": 306.526, "b64_us": 687.094}}, "limitations": [{"route": "pypto", "severity": "P2", "desc": "广播触发CompileFunction失败"}]}, "equal": {"status": "COMPLETE_WITH_LIMITATION", "status_zh": "有限完成", "formula": "Y = (X1 == X2)", "shape": "[B,12,256,256] (bool输出)", "dtype": "FP16→bool", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "位精确(bool)", "cube_class": false, "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 UNBLOCKED)"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 11.54, "kernel_type": "KERNEL_AIVEC", "kernel_name": "aclnnEqTensor_EqualAiCore_Equal", "kernels_per_call": 1.0, "b32_us": 20.18}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 49.98, "kernel_type": "KERNEL_AIVEC", "kernel_name": "equal_kernel", "kernels_per_call": 7.0, "b32_us": 815.7}}, "batch_scaling": {"torch": {"b1_us": 11.54, "b2_us": 14.28, "b4_us": 12.84, "b8_us": 17.26, "b16_us": 14.52, "b32_us": 20.18, "b64_us": 30.46}, "ascendc": {"b1_us": 49.98, "b2_us": 93.0, "b4_us": 135.52, "b8_us": 210.38, "b16_us": 411.74, "b32_us": 815.7, "b64_us": 1582.8}}, "limitations": [{"route": "pypto", "severity": "P2", "desc": "RC2解封但无msprof数据"}]}, "not": {"status": "COMPLETE", "status_zh": "完全完成", "formula": "Y = NOT X", "shape": "[B,12,256,256] (bool)", "dtype": "Bool", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "位精确(bool)", "cube_class": false, "correctness": {"torch": "PASS", "ascendc": "PASS (42/42)", "pypto": "PASS"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 10.68, "kernel_type": "KERNEL_AIVEC", "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot", "kernels_per_call": 2.0, "b32_us": 26.42}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 8.16, "kernel_type": "KERNEL_AIVEC", "kernel_name": "not_kernel", "kernels_per_call": 7.0, "b32_us": 14.16}, "pypto": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 118.84, "kernel_type": "KERNEL_MIX_AIC", "kernel_name": "PYPTO_not_kernel", "kernels_per_call": 3.01, "b32_us": 159.78}}, "batch_scaling": {"torch": {"b1_us": 10.68, "b2_us": 11.26, "b4_us": 12.92, "b8_us": 19.94, "b16_us": 20.06, "b32_us": 26.42, "b64_us": 34.12}, "ascendc": {"b1_us": 8.16, "b2_us": 9.76, "b4_us": 12.12, "b8_us": 13.94, "b16_us": 11.36, "b32_us": 14.16, "b64_us": 21.22}, "pypto": {"b1_us": 118.84, "b2_us": 96.24, "b4_us": 97.14, "b8_us": 106.36, "b16_us": 129.26, "b32_us": 159.78, "b64_us": 199.74}}, "limitations": []}, "or": {"status": "COMPLETE_WITH_LIMITATION", "status_zh": "有限完成", "formula": "Y = X1 OR X2", "shape": "[B,12,256,256] (bool)", "dtype": "Bool", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "位精确(bool)", "cube_class": false, "correctness": {"torch": "PASS", "ascendc": "PASS (49/49)", "pypto": "PASS (bitwise_or)"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 13.52, "kernel_type": "KERNEL_AIVEC", "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr", "kernels_per_call": 3.0, "b32_us": 31.98}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 9.28, "kernel_type": "KERNEL_AIVEC", "kernel_name": "or_kernel", "kernels_per_call": 7.0, "b32_us": 15.16}, "pypto": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 204.52, "kernel_type": "KERNEL_MIX_AIC", "kernel_name": "PYPTO_or_kernel", "kernels_per_call": 3.01, "b32_us": 255.3}}, "batch_scaling": {"torch": {"b1_us": 13.52, "b2_us": 11.28, "b4_us": 13.12, "b8_us": 23.06, "b16_us": 28.0, "b32_us": 31.98, "b64_us": 39.02}, "ascendc": {"b1_us": 9.28, "b2_us": 11.1, "b4_us": 13.92, "b8_us": 15.44, "b16_us": 14.26, "b32_us": 15.16, "b64_us": 23.78}, "pypto": {"b1_us": 204.52, "b2_us": 196.9, "b4_us": 227.28, "b8_us": 219.88, "b16_us": 235.58, "b32_us": 255.3, "b64_us": 265.66}}, "limitations": [{"route": "pypto", "severity": "P1", "desc": "无logical_or API, 用bitwise_or替代"}]}, "where": {"status": "COMPLETE_WITH_LIMITATION", "status_zh": "有限完成", "formula": "Y = condition ? X1 : X2", "shape": "[B,12,256,256]", "dtype": "FP16+uint8", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "位精确", "cube_class": false, "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 UNBLOCKED)"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 11.62, "kernel_type": "KERNEL_AIVEC", "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2", "kernels_per_call": 2.0, "b32_us": 33.78}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 248.38, "kernel_type": "KERNEL_AIVEC", "kernel_name": "where_kernel", "kernels_per_call": 7.0, "b32_us": 4755.3}}, "batch_scaling": {"torch": {"b1_us": 11.62, "b2_us": 12.22, "b4_us": 16.0, "b8_us": 16.44, "b16_us": 21.64, "b32_us": 33.78, "b64_us": 41.74}, "ascendc": {"b1_us": 248.38, "b2_us": 488.06, "b4_us": 727.76, "b8_us": 1195.78, "b16_us": 2381.68, "b32_us": 4755.3, "b64_us": 9265.2}}, "limitations": [{"route": "pypto", "severity": "P2", "desc": "RC2解封但无msprof数据"}]}, "expand": {"status": "COMPLETE_WITH_LIMITATION", "status_zh": "有限完成", "formula": "Y[b,i,j] = X[b,i,0]", "shape": "X[B,256,1]→Y[B,256,384]", "dtype": "FP16", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "位精确", "cube_class": false, "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 13.02, "kernel_type": "KERNEL_AIVEC", "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo", "kernels_per_call": 5.0, "b32_us": 14.42}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 15.04, "kernel_type": "KERNEL_AIVEC", "kernel_name": "expand_kernel", "kernels_per_call": 281.92, "b32_us": 94.242}, "pypto": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 110.3, "kernel_type": "KERNEL_MIX_AIC", "kernel_name": "PYPTO_expand_row", "kernels_per_call": 25313.29, "b32_us": 2918.7}}, "batch_scaling": {"torch": {"b1_us": 13.02, "b2_us": 14.48, "b4_us": 13.36, "b8_us": 14.38, "b16_us": 11.94, "b32_us": 14.42, "b64_us": 17.5}, "ascendc": {"b1_us": 15.04, "b2_us": 16.32, "b4_us": 19.84, "b8_us": 27.72, "b16_us": 49.66, "b32_us": 94.242, "b64_us": 177.86}, "pypto": {"b1_us": 110.3, "b2_us": 156.24, "b4_us": 142.82, "b8_us": 165.86, "b16_us": 229.72, "b32_us": 2918.7, "b64_us": 2796.34}}, "limitations": [{"route": "pypto", "severity": "P2", "desc": "RC3用torch.expand().clone() workaround, 33600x提升"}]}, "transpose": {"status": "COMPLETE_WITH_LIMITATION", "status_zh": "有限完成", "formula": "Y[b,j,i] = X[b,i,j]", "shape": "X[B,256,384]→Y[B,384,256]", "dtype": "FP16", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "位精确", "cube_class": false, "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 UNBLOCKED)"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 14.1, "kernel_type": "KERNEL_AIVEC", "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose", "kernels_per_call": 7.0, "b32_us": 26.2}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 106.2, "kernel_type": "KERNEL_AIVEC", "kernel_name": "transpose_kernel", "kernels_per_call": 7.0, "b32_us": 3014.6}}, "batch_scaling": {"torch": {"b1_us": 14.1, "b2_us": 16.68, "b4_us": 22.48, "b8_us": 19.26, "b16_us": 20.18, "b32_us": 26.2, "b64_us": 37.64}, "ascendc": {"b1_us": 106.2, "b2_us": 199.84, "b4_us": 385.62, "b8_us": 762.3, "b16_us": 1510.6, "b32_us": 3014.6, "b64_us": 6016.54}}, "limitations": [{"route": "pypto", "severity": "P2", "desc": "CompileFunction tile_shape失效"}]}, "reduce_sum": {"status": "COMPLETE_WITH_LIMITATION", "status_zh": "有限完成", "formula": "Y[b,i] = sum_j X[b,i,j]", "shape": "X[B,256,384]→Y[B,256]", "dtype": "FP16", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "atol=0.01, rtol=0.01", "cube_class": false, "correctness": {"torch": "62/70", "ascendc": "PASS (FP32 70/70)", "pypto": "PASS (70/70)"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 15.96, "kernel_type": "KERNEL_MIX_AIV", "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum", "kernels_per_call": 1.0, "b32_us": 19.18}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 19.28, "kernel_type": "KERNEL_AIVEC", "kernel_name": "reduce_sum_kernel", "kernels_per_call": 281.92, "b32_us": 154.86}}, "batch_scaling": {"torch": {"b1_us": 15.96, "b2_us": 17.98, "b4_us": 16.94, "b8_us": 18.44, "b16_us": 18.5, "b32_us": 19.18, "b64_us": 23.7}, "ascendc": {"b1_us": 19.28, "b2_us": 21.08, "b4_us": 27.94, "b8_us": 44.52, "b16_us": 81.24, "b32_us": 154.86, "b64_us": 301.32}}, "limitations": [{"route": "ascendc_fp16", "severity": "P1", "desc": "FP16累积384元素归约精度不足(21/70)"}, {"route": "pypto", "severity": "P2", "desc": "无独立msprof数据"}]}, "matmul": {"status": "COMPLETE", "status_zh": "完全完成", "formula": "Y = A @ B", "shape": "A[B,12,256,256],B[B,12,256,32]", "dtype": "FP16", "batches": [1, 2, 4, 8, 16, 32, 64], "precision": "atol=0.01, rtol=0.01", "cube_class": true, "correctness": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"}, "profiler": {"torch": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 12.22, "kernel_type": "KERNEL_AICORE", "kernel_name": "aclnnMatmul_BatchMatMulNd_BatchMatMulV2", "kernels_per_call": 7.0, "b32_us": 63.3}, "ascendc": {"method": "msprof", "metric": "primary_compute_kernel_us", "b1_us": 10.36, "kernel_type": "KERNEL_AICORE", "kernel_name": "matmul_kernel", "kernels_per_call": 2688.0, "b32_us": 10.48}}, "batch_scaling": {"torch": {"b1_us": 12.22, "b2_us": 16.38, "b4_us": 17.62, "b8_us": 23.58, "b16_us": 35.56, "b32_us": 63.3, "b64_us": 111.662}, "ascendc": {"b1_us": 10.36, "b2_us": 10.56, "b4_us": 10.52, "b8_us": 10.16, "b16_us": 9.96, "b32_us": 10.48, "b64_us": 135.423}}, "limitations": [{"route": "ascendc", "severity": "P3", "desc": "N=32限制Cube利用率~48%; B≥16时Torch更快"}, {"route": "pypto", "severity": "P2", "desc": "自动tiling完全损坏(FC4000)"}]}}, "known_limitations": [{"operator": "add", "route": "pypto", "severity": "P2", "description": "3次二元加法→9内核事件/调用, ~46x总延迟"}, {"operator": "div", "route": "pypto", "severity": "P2", "description": "广播触发CompileFunction失败"}, {"operator": "equal", "route": "pypto", "severity": "P2", "description": "RC2解封但无msprof数据"}, {"operator": "or", "route": "pypto", "severity": "P1", "description": "无logical_or API, 用bitwise_or替代"}, {"operator": "where", "route": "pypto", "severity": "P2", "description": "RC2解封但无msprof数据"}, {"operator": "expand", "route": "pypto", "severity": "P2", "description": "RC3用torch.expand().clone() workaround, 33600x提升"}, {"operator": "transpose", "route": "pypto", "severity": "P2", "description": "CompileFunction tile_shape失效"}, {"operator": "reduce_sum", "route": "ascendc_fp16", "severity": "P1", "description": "FP16累积384元素归约精度不足(21/70)"}, {"operator": "reduce_sum", "route": "pypto", "severity": "P2", "description": "无独立msprof数据"}, {"operator": "matmul", "route": "ascendc", "severity": "P3", "description": "N=32限制Cube利用率~48%; B≥16时Torch更快"}, {"operator": "matmul", "route": "pypto", "severity": "P2", "description": "自动tiling完全损坏(FC4000)"}], "pypto_limits": ["自动tiling系统不可靠(matmul完全损坏,div/transpose需手动覆盖)", "dtype推断不一致(equal误判输出类型)", "广播支持有限(div触发参数错误)", "AICPU调度开销~50-140µs/调用", "MIX_AIC内核比纯AIVEC重", "算子链分解导致多内核事件(add 4→9内核)"], "ascendc_summary": {"TRUE_CUBE": ["matmul"], "TRUE_DEVICE": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum"], "post_rc3_changes": ["matmul: 多核批调度(1 kernel/call, 257x加速)", "reduce_sum: 新增FP32累积内核(精度3.5x提升)"]}}</script>
+<script>// PyPTO Dashboard — Interactive
 let dashboardData = null;
 let currentOp = null;
 let currentTab = 'correctness';
@@ -304,14 +264,27 @@ let sortField = 'name';
 let sortAsc = true;
 
 function init() {
+  var embedded = document.getElementById('dashboard-data');
+  if (embedded && embedded.textContent) {
+    try {
+      dashboardData = JSON.parse(embedded.textContent);
+      renderSummary(dashboardData);
+      renderTable(dashboardData);
+      setupSearch();
+      setupSort();
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      return;
+    } catch (e) {
+      console.warn('Embedded data parse failed, falling back to fetch:', e);
+    }
+  }
   fetch('./dashboard.json')
     .then(r => r.json())
     .then(data => {
       dashboardData = data;
-      document.getElementById('header-subtitle').textContent = 'Release ' + (data.version || data.release_version || '?') + ' — ' + data.generated_at;
       renderSummary(data);
       renderTable(data);
-      renderBottomSections(data);
       setupSearch();
       setupSort();
       document.getElementById('loading').style.display = 'none';
@@ -323,15 +296,43 @@ function init() {
 }
 
 function renderSummary(data) {
-  const s = data.status_summary || {};
-  const total = data.operator_count || 0;
-  const cards = [
-    { label: 'Total Operators', value: total, cls: 'color-blue' },
-  ];
-  for (const [status, count] of Object.entries(s)) {
-    const cls = status.startsWith('COMPLETE') ? 'color-green' : status === 'PARTIAL' ? 'color-yellow' : 'color-red';
-    cards.push({ label: status, value: count, cls: cls });
+  if (data.mode === 'release') {
+    const s = data.status_summary || {};
+    const total = data.operator_count || 0;
+    const cards = [
+      { label: 'Total Operators', value: total, cls: 'color-blue' },
+    ];
+    for (const [status, count] of Object.entries(s)) {
+      const cls = status.startsWith('COMPLETE') ? 'color-green' : status === 'PARTIAL' ? 'color-yellow' : 'color-red';
+      cards.push({ label: status, value: count, cls: cls });
+    }
+    const container = document.getElementById('summary-cards');
+    container.innerHTML = cards.map(c => `
+      <div class="summary-card ${c.cls}">
+        <div class="value">${c.value}</div>
+        <div class="label">${c.label}</div>
+      </div>
+    `).join('');
+
+    const compl = (s['COMPLETE'] || 0) + (s['COMPLETE_WITH_LIMITATION'] || 0);
+    const pct = total > 0 ? Math.round(compl / total * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = pct + '% (' + compl + '/' + total + ')';
+    document.getElementById('update-time').textContent = 'Release: ' + data.generated_at;
+    return;
   }
+
+  const s = data.summary;
+  const cards = [
+    { label: 'Total Operators', value: s.total, cls: 'color-blue' },
+    { label: 'Completed', value: s.completed, cls: 'color-green' },
+    { label: 'Torch Ready', value: s.torch_done, cls: 'color-cyan' },
+    { label: 'Ascend C Ready', value: s.ascendc_done, cls: 'color-purple' },
+    { label: 'PyPTO Ready', value: s.pypto_done, cls: 'color-orange' },
+    { label: 'Correctness PASS', value: s.pass_count, cls: 'color-green' },
+    { label: 'Correctness FAIL', value: s.fail_count, cls: 'color-red' },
+    { label: 'Blocked', value: s.blocked, cls: 'color-yellow' },
+  ];
   const container = document.getElementById('summary-cards');
   container.innerHTML = cards.map(c => `
     <div class="summary-card ${c.cls}">
@@ -340,18 +341,21 @@ function renderSummary(data) {
     </div>
   `).join('');
 
-  const compl = (s['COMPLETE'] || 0) + (s['COMPLETE_WITH_LIMITATION'] || 0);
-  const pct = total > 0 ? Math.round(compl / total * 100) : 0;
+  const pct = s.total > 0 ? Math.round(s.completed / s.total * 100) : 0;
   document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-text').textContent = pct + '% (' + compl + '/' + total + ')';
-  document.getElementById('update-time').textContent = 'Release: ' + data.generated_at;
-  const badge = document.getElementById('header-badge');
-  badge.textContent = compl + '/' + total + ' completed';
-
-  document.getElementById('release-info').innerHTML = '<p style="color:var(--text-secondary);font-size:13px;margin-bottom:12px">Release v' + (data.version || data.release_version || '?') + ' — ' + data.generated_at + (data.current_release && data.current_release.git_commit ? ' — commit: <code style="font-size:11px">' + data.current_release.git_commit.slice(0,12) + '</code>' : '') + '</p>';
+  document.getElementById('progress-text').textContent = pct + '% (' + s.completed + '/' + s.total + ')';
+  document.getElementById('update-time').textContent = 'Generated: ' + data.generated_at;
 }
 
 function renderTable(data) {
+  if (data.mode === 'release') {
+    renderReleaseTable(data);
+    return;
+  }
+  renderDevTable(data);
+}
+
+function renderReleaseTable(data) {
   const ops = Object.entries(data.operators).map(([name, op]) => ({ name: name, ...op }));
   ops.sort((a, b) => {
     const order = { 'COMPLETE': 0, 'COMPLETE_WITH_LIMITATION': 1, 'PARTIAL': 2, 'INCOMPLETE': 3 };
@@ -363,15 +367,18 @@ function renderTable(data) {
   const tbody = document.getElementById('op-table-body');
   tbody.innerHTML = ops.map(op => {
     const statusCls = op.status.startsWith('COMPLETE') ? 'completed' : op.status === 'PARTIAL' ? 'in_progress' : 'unknown';
-    const torchC = op.correctness?.torch || 'N/A';
-    const ascendcC = op.correctness?.ascendc || 'N/A';
-    const pyptoC = op.correctness?.pypto || 'N/A';
+    const corr = op.correctness || {};
+    const torchC = corr.torch || 'N/A';
+    const ascendcC = corr.ascendc || 'N/A';
+    const pyptoC = corr.pypto || 'N/A';
 
-    const corrStr = [torchC, ascendcC, pyptoC].every(c => c.startsWith('PASS'))
-      ? '<span class="status-badge pass">PASS</span>'
-      : [torchC, ascendcC, pyptoC].some(c => c.startsWith('FAIL'))
-        ? '<span class="status-badge fail">FAIL</span>'
-        : '<span class="status-badge unknown">MIXED</span>';
+    const allPass = [torchC, ascendcC, pyptoC].every(c => String(c).startsWith('PASS'));
+    const anyFail = [torchC, ascendcC, pyptoC].some(c => String(c).startsWith('FAIL'));
+    const allNa = [torchC, ascendcC, pyptoC].every(c => c === 'N/A');
+    const corrStr = allPass ? '<span class="status-badge pass">PASS</span>'
+      : anyFail ? '<span class="status-badge fail">FAIL</span>'
+      : allNa ? '<span class="status-badge unknown">N/A</span>'
+      : '<span class="status-badge unknown">MIXED</span>';
 
     const torchP = op.profiler?.torch || {};
     const ascendcP = op.profiler?.ascendc || {};
@@ -381,26 +388,63 @@ function renderTable(data) {
     const b1p = pyptoP.b1_us != null ? ' P:' + Number(pyptoP.b1_us).toFixed(1) + 'us' : '';
     const b1Str = (b1 + b1a + b1p) || 'N/A';
 
-    const profilerTool = op.profiler_tool || 'N/A';
-
-    const st = op.skill_trace || {};
-    const stHtml = '<span style="font-size:10px;color:var(--text-muted)">A:' + (st.ascendc || '?') + '<br>P:' + (st.pypto || '?') + '</span>';
-
-    const sourceHash = op.source_hash || '';
-    const hashTitle = sourceHash ? ' title="SHA256: ' + sourceHash + '"' : '';
-
-    return '<tr onclick="showDetail(\'' + op.name + '\')"' + hashTitle + '>' +
-      '<td><strong>' + op.name + '</strong></td>' +
-      '<td><span class="status-badge ' + statusCls + '">' + op.status + '</span></td>' +
-      '<td style="font-size:12px">' + torchC + '</td>' +
-      '<td style="font-size:12px">' + ascendcC + '</td>' +
-      '<td style="font-size:12px">' + pyptoC + '</td>' +
-      '<td>' + corrStr + '</td>' +
-      '<td style="font-size:12px">' + b1Str + '</td>' +
-      '<td style="font-size:12px">' + profilerTool + '</td>' +
-      '<td style="font-size:10px">' + stHtml + '</td>' +
-      '</tr>';
+    return `<tr onclick="showDetail('${op.name}')">
+      <td><strong>${op.name}</strong></td>
+      <td><span class="status-badge ${statusCls}">${op.status}</span></td>
+      <td style="font-size:12px">${torchC}</td>
+      <td style="font-size:12px">${ascendcC}</td>
+      <td style="font-size:12px">${pyptoC}</td>
+      <td>${corrStr}</td>
+      <td style="font-size:12px">${b1Str}</td>
+      <td style="font-size:12px">msprof</td>
+    </tr>`;
   }).join('');
+}
+
+function renderDevTable(data) {
+  const ops = [...(data.operators || [])];
+  ops.sort((a, b) => {
+    let va = String(a[sortField] || '').toLowerCase();
+    let vb = String(b[sortField] || '').toLowerCase();
+    if (sortField === 'status') {
+      const order = { completed: 0, in_progress: 1, planned: 2, blocked: 3 };
+      const da = order[a.status] || 99;
+      const db = order[b.status] || 99;
+      return sortAsc ? da - db : db - da;
+    }
+    if (sortField === 'name') {
+      return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    }
+    return 0;
+  });
+
+  const tbody = document.getElementById('op-table-body');
+  tbody.innerHTML = ops.map(op => {
+    const corr = op.correctness_all_pass === true ? '<span class="status-badge pass">PASS</span>' :
+                 op.correctness_all_pass === false ? '<span class="status-badge fail">FAIL</span>' :
+                 '<span class="status-badge unknown">N/A</span>';
+    const torchKt = op.kernel_types?.torch?.join(', ') || 'N/A';
+    const ascendcKt = op.kernel_types?.ascendc?.join(', ') || 'N/A';
+    const pyptoKt = op.kernel_types?.pypto?.join(', ') || 'N/A';
+    return `<tr onclick="showDevDetail('${op.name}')">
+      <td><strong>${op.name}</strong></td>
+      <td><span class="status-badge ${op.status}">${op.status}</span></td>
+      <td>${torchKt}</td>
+      <td>${ascendcKt}</td>
+      <td>${pyptoKt}</td>
+      <td>${corr}</td>
+      <td style="font-size:12px">${op.last_update}</td>
+    </tr>`;
+  }).join('');
+
+  document.querySelectorAll('#op-table th').forEach(th => {
+    const field = th.dataset.sort;
+    th.classList.toggle('sorted', field === sortField);
+    const arrow = th.querySelector('.sort-arrow');
+    if (arrow && field === sortField) {
+      arrow.textContent = sortAsc ? ' ▲' : ' ▼';
+    }
+  });
 }
 
 function setupSearch() {
@@ -431,6 +475,14 @@ function setupSort() {
 }
 
 function showDetail(opName) {
+  if (dashboardData.mode === 'release') {
+    showReleaseDetail(opName);
+  } else {
+    showDevDetail(opName);
+  }
+}
+
+function showReleaseDetail(opName) {
   const op = dashboardData.operators[opName];
   if (!op) return;
   currentOp = op;
@@ -454,22 +506,15 @@ function showDetail(opName) {
   if (dashboardData.known_limitations) {
     const opLimits = dashboardData.known_limitations.filter(l => l.operator === opName);
     const container = document.getElementById('limitations-content');
-    if (opLimits.length === 0 && (!op.limitations || op.limitations.length === 0)) {
+    if (opLimits.length === 0) {
       container.innerHTML = '<p style="color:var(--text-muted)">No known limitations for this operator.</p>';
     } else {
-      const allLimits = [...(op.limitations || []), ...opLimits];
-      container.innerHTML = allLimits.map(l => {
-        const sev = l.severity || 'P3';
-        const sevClass = 'sev-' + sev.toLowerCase();
-        return '<div class="limitation-item"><span class="' + sevClass + '">[' + sev + ']</span> ' + (l.route || '') + ': ' + l.description + '</div>';
+      container.innerHTML = opLimits.map(l => {
+        const sevClass = 'sev-' + l.severity.toLowerCase();
+        return '<div class="limitation-item"><span class="' + sevClass + '">[' + l.severity + ']</span> ' + l.route + ': ' + l.description + '</div>';
       }).join('');
     }
   }
-
-  renderHashContent(op);
-  renderProfilerTimeline(op);
-  renderBatchScaling(op);
-  renderKernelTimeline(op);
 
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -480,18 +525,24 @@ function showDetail(opName) {
 
 function renderReleaseCorrectness(op) {
   const corr = op.correctness || {};
-  const allPass = Object.values(corr).every(c => String(c).startsWith('PASS'));
-  const allFail = Object.values(corr).every(c => String(c).startsWith('FAIL'));
+  const vals = Object.values(corr);
+  const allPass = vals.length > 0 && vals.every(c => String(c).startsWith('PASS'));
+  const allFail = vals.some(c => String(c).startsWith('FAIL'));
+  const allNa = vals.length === 0 || vals.every(c => c === 'N/A');
   const statusHtml = allPass ? '<span class="status-badge pass" style="font-size:16px;padding:4px 16px">ALL PASS</span>' :
-                     allFail ? '<span class="status-badge fail" style="font-size:16px;padding:4px 16px">ALL FAIL</span>' :
-                     '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">MIXED</span>';
+                     allFail ? '<span class="status-badge fail" style="font-size:16px;padding:4px 16px">SOME FAIL</span>' :
+                     allNa ? '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">N/A</span>' :
+                     '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">MIXED / PARTIAL</span>';
   document.getElementById('corr-status').innerHTML = statusHtml;
 
   const impls = ['torch', 'ascendc', 'pypto'];
   let html = '';
   for (const impl of impls) {
     const c = corr[impl] || 'N/A';
-    html += '<tr><td>' + impl + '</td><td>' + c + '</td><td style="font-size:12px">' + (op.profiler?.[impl]?.method || 'N/A') + '</td></tr>';
+    const prof = op.profiler?.[impl] || {};
+    const method = prof.method || 'N/A';
+    const b1 = prof.b1_us != null ? ' | B1=' + Number(prof.b1_us).toFixed(1) + 'us' : '';
+    html += '<tr><td>' + impl + '</td><td>' + c + '</td><td style="font-size:12px">' + method + b1 + '</td></tr>';
   }
   document.getElementById('corr-table-body').innerHTML = html;
 }
@@ -503,111 +554,12 @@ function renderReleasePerformance(op) {
   for (const impl of impls) {
     const p = profiler[impl] || {};
     const method = p.method || 'N/A';
-    const lat = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
-    const kpc = p.kernels_per_call != null ? p.kernels_per_call : 'N/A';
-    html += '<tr><td>' + impl + '</td><td>' + method + '</td><td>' + lat + '</td><td>' + kpc + '</td></tr>';
+    const b1 = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
+    const b32 = p.b32_us != null ? Number(p.b32_us).toFixed(1) + ' us' : '';
+    const lat = b32 ? b1 + ' / ' + b32 : b1;
+    html += '<tr><td>' + impl + '</td><td>' + method + '</td><td>' + lat + '</td></tr>';
   }
   document.getElementById('perf-table-body').innerHTML = html;
-}
-
-function renderHashContent(op) {
-  const container = document.getElementById('hash-content');
-  const sourceHash = op.source_hash || 'N/A';
-  const binaryHash = op.binary_hash || 'N/A';
-  container.innerHTML =
-    '<div class="limitation-item"><span style="color:var(--accent-cyan);font-weight:600">Source Hash:</span> <span class="hash-text">' + sourceHash + '</span></div>' +
-    '<div class="limitation-item"><span style="color:var(--accent-purple);font-weight:600">Binary Hash:</span> <span class="hash-text">' + binaryHash + '</span></div>';
-}
-
-function renderProfilerTimeline(op) {
-  const timeline = op.profiler_timeline || {};
-  const container = document.getElementById('profiler-timeline-content');
-  const routes = ['torch', 'ascendc', 'pypto'];
-  let html = '<table><thead><tr><th>Route</th><th>Kernel Name</th><th>Kernel Type</th><th>B1 Duration</th></tr></thead><tbody>';
-  for (const route of routes) {
-    const t = timeline[route] || {};
-    html += '<tr><td>' + route + '</td><td style="font-size:12px">' + (t.kernel_name || 'N/A') + '</td><td style="font-size:12px">' + (t.kernel_type || 'N/A') + '</td><td>' + (t.duration_us != null ? Number(t.duration_us).toFixed(1) + ' us' : 'N/A') + '</td></tr>';
-  }
-  html += '</tbody></table>';
-  container.innerHTML = html;
-}
-
-function renderBatchScaling(op) {
-  const scaling = op.batch_scaling || {};
-  const container = document.getElementById('batch-scaling-content');
-  const routes = ['torch', 'ascendc', 'pypto'];
-  let maxUs = 0;
-  const colors = ['var(--accent-blue)', 'var(--accent-green)', 'var(--accent-orange)'];
-  for (const route of routes) {
-    const s = scaling[route] || {};
-    for (const [k, v] of Object.entries(s)) {
-      if (v != null && v > maxUs) maxUs = v;
-    }
-  }
-  if (maxUs === 0) maxUs = 100;
-
-  let html = '<table><thead><tr><th>Route</th>';
-  const allBatches = {};
-  for (const route of routes) {
-    const s = scaling[route] || {};
-    for (const k of Object.keys(s)) allBatches[k] = true;
-  }
-  const batchKeys = Object.keys(allBatches).sort();
-  for (const bk of batchKeys) html += '<th>' + bk + '</th>';
-  html += '</tr></thead><tbody>';
-
-  for (let ri = 0; ri < routes.length; ri++) {
-    const route = routes[ri];
-    const s = scaling[route] || {};
-    html += '<tr><td>' + route + '</td>';
-    for (const bk of batchKeys) {
-      const v = s[bk];
-      html += '<td style="font-size:12px">' + (v != null ? Number(v).toFixed(1) + ' us' : '-') + '</td>';
-    }
-    html += '</tr>';
-  }
-  html += '</tbody></table>';
-
-  html += '<div style="margin-top:12px"><h4 style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">Visual (B1 to Bmax)</h4>';
-  for (let ri = 0; ri < routes.length; ri++) {
-    const route = routes[ri];
-    const s = scaling[route] || {};
-    const vals = Object.values(s).filter(v => v != null);
-    if (vals.length < 2) continue;
-    const minV = Math.min(...vals);
-    const maxV = Math.max(...vals);
-    let barHtml = '<div style="margin-bottom:8px"><span style="font-size:12px;font-weight:600;color:' + colors[ri] + '">' + route + '</span>';
-    for (const [bk, bv] of Object.entries(s)) {
-      if (bv == null) continue;
-      const pct = maxV > 0 ? (bv / maxV * 100) : 0;
-      barHtml += '<div class="chart-bar"><span class="label-mini">' + bk + '</span><div class="bar" style="width:' + pct + '%;background:' + colors[ri] + '"></div><span class="value-mini">' + Number(bv).toFixed(1) + 'us</span></div>';
-    }
-    barHtml += '</div>';
-    html += barHtml;
-  }
-
-  container.innerHTML = html;
-}
-
-function renderKernelTimeline(op) {
-  const kb = op.kernel_breakdown || {};
-  const container = document.getElementById('kernel-timeline-content');
-  const routes = Object.keys(kb);
-  if (routes.length === 0) {
-    container.innerHTML = '<p style="color:var(--text-muted)">No kernel breakdown data available.</p>';
-    return;
-  }
-  let html = '';
-  for (const route of routes) {
-    const types = kb[route] || {};
-    html += '<div style="margin-bottom:16px"><h4 style="font-size:14px;font-weight:600;margin-bottom:6px">' + route + '</h4>';
-    html += '<table><thead><tr><th>Kernel Type</th><th>Count</th><th>Total (us)</th><th>Mean (us)</th><th>Per Call (us)</th></tr></thead><tbody>';
-    for (const [ktype, kdata] of Object.entries(types)) {
-      html += '<tr><td style="font-size:12px">' + ktype + '</td><td>' + (kdata.count || 0) + '</td><td>' + Number(kdata.total_us || 0).toFixed(1) + '</td><td>' + Number(kdata.mean_us || 0).toFixed(3) + '</td><td>' + Number(kdata.per_call_us || 0).toFixed(3) + '</td></tr>';
-    }
-    html += '</tbody></table></div>';
-  }
-  container.innerHTML = html;
 }
 
 function closeDetail() {
@@ -621,71 +573,6 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
-}
-
-function renderBottomSections(data) {
-  renderReleaseHistory(data);
-  renderSkillTraceSummary(data);
-  renderBackendLimitations(data);
-}
-
-function renderReleaseHistory(data) {
-  const history = data.release_history || [];
-  const container = document.getElementById('release-history-section');
-  if (history.length === 0) {
-    container.innerHTML = '';
-    return;
-  }
-  let html = '<div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">';
-  html += '<h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Release History</h3>';
-  html += '<table><thead><tr><th>Version</th><th>Date</th><th>Changes</th></tr></thead><tbody>';
-  for (const h of history) {
-    html += '<tr><td style="font-weight:600;white-space:nowrap">' + h.version + '</td><td style="white-space:nowrap">' + h.date + '</td><td style="font-size:12px">' + (h.changes || '') + '</td></tr>';
-  }
-  html += '</tbody></table></div>';
-  container.innerHTML = html;
-}
-
-function renderSkillTraceSummary(data) {
-  const st = data.skill_trace_summary || {};
-  const container = document.getElementById('skill-trace-section');
-  let html = '<div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">';
-  html += '<h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Skill Trace Summary</h3>';
-  html += '<table><thead><tr><th>Route</th><th>Status</th><th>Count</th></tr></thead><tbody>';
-  const rows = [
-    { route: 'Ascend C', status: 'LEGACY_UNVERIFIED_SKILL_USAGE', count: st.ascendc_LEGACY_UNVERIFIED_SKILL_USAGE || 0 },
-    { route: 'Ascend C', status: 'TRACE_VERIFIED', count: st.ascendc_TRACE_VERIFIED || 0 },
-    { route: 'PyPTO', status: 'LEGACY_UNVERIFIED_SKILL_USAGE', count: st.pypto_LEGACY_UNVERIFIED_SKILL_USAGE || 0 },
-    { route: 'PyPTO', status: 'NON_COMPLIANT', count: st.pypto_NON_COMPLIANT || 0 },
-    { route: 'PyPTO', status: 'TRACE_VERIFIED', count: st.pypto_TRACE_VERIFIED || 0 },
-  ];
-  for (const r of rows) {
-    if (r.count === 0) continue;
-    const cls = r.status === 'TRACE_VERIFIED' ? 'pass' : r.status === 'NON_COMPLIANT' ? 'fail' : 'unknown';
-    html += '<tr><td>' + r.route + '</td><td><span class="status-badge ' + cls + '">' + r.status + '</span></td><td>' + r.count + '</td></tr>';
-  }
-  html += '</tbody></table>';
-  html += '<p style="color:var(--text-muted);font-size:12px;margin-top:8px">Per-operator skill trace status shown in the main table (A: AscendC, P: PyPTO).</p>';
-  html += '</div>';
-  container.innerHTML = html;
-}
-
-function renderBackendLimitations(data) {
-  const limitations = data.known_limitations || [];
-  const container = document.getElementById('backend-limitations-section');
-  if (limitations.length === 0) {
-    container.innerHTML = '';
-    return;
-  }
-  let html = '<div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">';
-  html += '<h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Backend Limitations</h3>';
-  html += '<table><thead><tr><th>Operator</th><th>Route</th><th>Severity</th><th>Description</th></tr></thead><tbody>';
-  for (const l of limitations) {
-    const sevClass = 'sev-' + l.severity.toLowerCase();
-    html += '<tr><td style="font-weight:600">' + l.operator + '</td><td>' + l.route + '</td><td><span class="' + sevClass + '">' + l.severity + '</span></td><td style="font-size:12px">' + l.description + '</td></tr>';
-  }
-  html += '</tbody></table></div>';
-  container.innerHTML = html;
 }
 
 document.addEventListener('DOMContentLoaded', init);

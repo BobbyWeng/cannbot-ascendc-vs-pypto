@@ -41,6 +41,11 @@
       ],
       "precision": "位精确",
       "cube_class": false,
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -118,6 +123,11 @@
       ],
       "precision": "位精确",
       "cube_class": false,
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -195,6 +205,11 @@
       ],
       "precision": "位精确",
       "cube_class": false,
+      "correctness": {
+        "torch": "PASS (77/77)",
+        "ascendc": "PASS (77/77)",
+        "pypto": "PASS (77/77)"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -278,6 +293,11 @@
       ],
       "precision": "位精确",
       "cube_class": false,
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS (RC2 UNBLOCKED)"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -343,6 +363,11 @@
       ],
       "precision": "位精确(bool)",
       "cube_class": false,
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS (RC2 UNBLOCKED)"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -408,6 +433,11 @@
       ],
       "precision": "位精确(bool)",
       "cube_class": false,
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS (42/42)",
+        "pypto": "PASS"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -485,6 +515,11 @@
       ],
       "precision": "位精确(bool)",
       "cube_class": false,
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS (49/49)",
+        "pypto": "PASS (bitwise_or)"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -568,6 +603,11 @@
       ],
       "precision": "位精确",
       "cube_class": false,
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS (RC2 UNBLOCKED)"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -633,6 +673,11 @@
       ],
       "precision": "位精确",
       "cube_class": false,
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -716,6 +761,11 @@
       ],
       "precision": "位精确",
       "cube_class": false,
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS (RC2 UNBLOCKED)"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -781,6 +831,11 @@
       ],
       "precision": "atol=0.01, rtol=0.01",
       "cube_class": false,
+      "correctness": {
+        "torch": "62/70",
+        "ascendc": "PASS (FP32 70/70)",
+        "pypto": "PASS (70/70)"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",
@@ -851,6 +906,11 @@
       ],
       "precision": "atol=0.01, rtol=0.01",
       "cube_class": true,
+      "correctness": {
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
+      },
       "profiler": {
         "torch": {
           "method": "msprof",

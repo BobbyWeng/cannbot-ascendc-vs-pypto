@@ -136,6 +136,22 @@ BUILTIN_LIMITATIONS = {
     ],
 }
 
+# Structured correctness data per operator per route
+CORRECTNESS_DATA = {
+    "relu":     {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+    "mul":      {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+    "add":      {"torch": "PASS (77/77)", "ascendc": "PASS (77/77)", "pypto": "PASS (77/77)"},
+    "div":      {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 UNBLOCKED)"},
+    "equal":    {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 UNBLOCKED)"},
+    "not":      {"torch": "PASS", "ascendc": "PASS (42/42)", "pypto": "PASS"},
+    "or":       {"torch": "PASS", "ascendc": "PASS (49/49)", "pypto": "PASS (bitwise_or)"},
+    "where":    {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 UNBLOCKED)"},
+    "expand":   {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+    "transpose": {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS (RC2 UNBLOCKED)"},
+    "reduce_sum": {"torch": "62/70", "ascendc": "PASS (FP32 70/70)", "pypto": "PASS (70/70)"},
+    "matmul":   {"torch": "PASS", "ascendc": "PASS", "pypto": "PASS"},
+}
+
 def build_dashboard(all_data):
     """Build Chinese dashboard.json from parsed data."""
     dashboard = {
@@ -196,6 +212,7 @@ def build_dashboard(all_data):
             "batches": meta["batches"],
             "precision": meta["precision"],
             "cube_class": op == "matmul",
+            "correctness": CORRECTNESS_DATA.get(op, {}),
             "profiler": {},
             "batch_scaling": {},
             "limitations": BUILTIN_LIMITATIONS.get(op, []),

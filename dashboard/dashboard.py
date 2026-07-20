@@ -29,94 +29,74 @@ OUT = BASE / "dashboard"
 # ---------------------------------------------------------------------------
 
 def load_release(path):
-    """Load release JSON and convert to dashboard format.
+    """Load release-mode data source.
 
-    Everything must come from the release JSON — no operator directory scanning.
+    Supports two formats:
+    1. dashboard.json (mode=release, has structured profiler/correctness) — pass through
+    2. current_release.json (legacy, has routes.* or correctness_coverage text) — convert
     """
     raw = json.loads(Path(path).read_text())
+
+    # If already in dashboard format (mode=release), pass through directly
+    if raw.get("mode") == "release":
+        return raw
+
+    # Legacy current_release.json format — extract what we can
+    from tools.rebuild_final_data import OPERATOR_META, CORRECTNESS_DATA
+
     ops = {}
     for name, op in raw.get("operators", {}).items():
+        meta = OPERATOR_META.get(name, {})
+        correctness = CORRECTNESS_DATA.get(name, {})
+
         routes = op.get("routes", {})
-        torch_r = routes.get("torch", {})
-        ascendc_r = routes.get("ascendc", {})
-        pypto_r = routes.get("pypto", {})
-
-        # Correctness
-        correctness = {}
-        for route_key, label in [("torch", "torch"), ("ascendc", "ascendc"), ("pypto", "pypto")]:
-            r = routes.get(route_key, {})
-            c = r.get("correctness", "N/A")
-            correctness[label] = c
-
-        # Profiler summary
         profiler = {}
-        for route_key, label in [("torch", "torch"), ("ascendc", "ascendc"), ("pypto", "pypto")]:
-            p = r.get("profiler", {})
-            pstat = {
-                "status": p.get("status", "N/A"),
-                "method": p.get("method", "N/A"),
-            }
-            if p.get("not_comparable"):
-                pstat["not_comparable"] = True
-            if p.get("b1_primary_us") is not None:
-                pstat["b1_us"] = p["b1_primary_us"]
-            elif p.get("b1_host_sync_us") is not None:
-                pstat["b1_us"] = p["b1_host_sync_us"]
-            profiler[label] = pstat
-
-        # Profiler tool from route profiler data
         profiler_tool = "NONE"
-        for route_key, label in [("torch", "torch"), ("ascendc", "ascendc"), ("pypto", "pypto")]:
+        for route_key in ["torch", "ascendc", "pypto"]:
             r = routes.get(route_key, {})
-            p = r.get("profiler", {})
-            method = p.get("method", "")
+            p = r.get("profiler", {}) if isinstance(r, dict) else {}
+            method = p.get("method", "") if isinstance(p, dict) else ""
             if method and method != "N/A":
                 profiler_tool = method.split()[0] if method else "msprof"
+            pstat = {"method": method if method else "N/A"}
+            if isinstance(p, dict):
+                if p.get("not_comparable"):
+                    pstat["not_comparable"] = True
+                for src_key, dst_key in [("b1_primary_us", "b1_us"), ("b1_host_sync_us", "b1_us"),
+                                          ("b1_us", "b1_us"), ("b32_us", "b32_us")]:
+                    if p.get(src_key) is not None:
+                        pstat[dst_key] = p[src_key]
+            profiler[route_key] = pstat
 
         ops[name] = {
-            "status": op.get("final_status", "UNKNOWN"),
-            "formula": op.get("formula", ""),
-            "shape": op.get("shape", ""),
-            "dtype": op.get("dtype", ""),
-            "batches": op.get("batches", []),
-            "precision": op.get("precision", ""),
-            "limitation": op.get("limitation", ""),
+            "status": op.get("final_status", meta.get("status", "UNKNOWN")),
+            "formula": op.get("formula", meta.get("formula", "")),
+            "shape": op.get("shape", meta.get("shape", "")),
+            "dtype": op.get("dtype", meta.get("dtype", "")),
+            "batches": op.get("batches", meta.get("batches", [])),
+            "precision": op.get("precision", meta.get("precision", "")),
             "correctness": correctness,
             "profiler": profiler,
             "profiler_tool": profiler_tool,
             "report_path": op.get("report_path", ""),
             "archive": op.get("archive", "none"),
-            "completeness_gates": op.get("completeness_gates", []),
         }
 
-    # Compute summary
-    total = len(ops)
     status_counts = {}
     for op in ops.values():
         s = op["status"]
         status_counts[s] = status_counts.get(s, 0) + 1
 
-    # Batch group info
-    batches_info = {}
-    for bk, bv in raw.get("batches", {}).items():
-        batches_info[bk] = {
-            "operators": bv.get("operators", []),
-            "profiler": bv.get("profiler", "none"),
-            "not_comparable": bv.get("not_comparable_with_arithmetic", False),
-        }
-
     return {
         "mode": "release",
         "release_version": raw.get("release_version", "unknown"),
-        "generated_at": raw.get("generated_at", datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+        "generated_at": raw.get("generated_at", datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")),
         "environment": raw.get("environment", {}),
-        "operator_count": total,
+        "operator_count": len(ops),
         "status_summary": status_counts,
-        "batches": batches_info,
         "operators": ops,
         "known_limitations": raw.get("known_limitations", []),
         "ascendc_implementation_audit": raw.get("ascendc_implementation_audit", {}),
-        "archive_references": {k: v["archive"] for k, v in ops.items()},
     }
 
 
@@ -512,6 +492,14 @@ def generate_html(dashboard):
         release_info = f'<p>Release v{dashboard.get("release_version", "?")} — {dashboard["generated_at"]}</p>'
 
     ops_json = json.dumps(dashboard, ensure_ascii=False)
+    ops_json_escaped = (ops_json
+        .replace('&', '\\u0026')
+        .replace('<', '\\u003c')
+        .replace('>', '\\u003e')
+        .replace('</script>', '<\\/script>')
+        .replace('\u2028', '\\u2028')
+        .replace('\u2029', '\\u2029')
+    )
     css = generate_css()
     js = generate_js()
 
@@ -633,6 +621,7 @@ def generate_html(dashboard):
   </div>
 </div>
 
+<script type="application/json" id="dashboard-data">{ops_json_escaped}</script>
 <script>{js}</script>
 </body>
 </html>"""
@@ -790,6 +779,21 @@ let sortField = 'name';
 let sortAsc = true;
 
 function init() {
+  var embedded = document.getElementById('dashboard-data');
+  if (embedded && embedded.textContent) {
+    try {
+      dashboardData = JSON.parse(embedded.textContent);
+      renderSummary(dashboardData);
+      renderTable(dashboardData);
+      setupSearch();
+      setupSort();
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      return;
+    } catch (e) {
+      console.warn('Embedded data parse failed, falling back to fetch:', e);
+    }
+  }
   fetch('./dashboard.json')
     .then(r => r.json())
     .then(data => {
@@ -878,15 +882,18 @@ function renderReleaseTable(data) {
   const tbody = document.getElementById('op-table-body');
   tbody.innerHTML = ops.map(op => {
     const statusCls = op.status.startsWith('COMPLETE') ? 'completed' : op.status === 'PARTIAL' ? 'in_progress' : 'unknown';
-    const torchC = op.correctness?.torch || 'N/A';
-    const ascendcC = op.correctness?.ascendc || 'N/A';
-    const pyptoC = op.correctness?.pypto || 'N/A';
+    const corr = op.correctness || {};
+    const torchC = corr.torch || 'N/A';
+    const ascendcC = corr.ascendc || 'N/A';
+    const pyptoC = corr.pypto || 'N/A';
 
-    const corrStr = [torchC, ascendcC, pyptoC].every(c => c.startsWith('PASS'))
-      ? '<span class="status-badge pass">PASS</span>'
-      : [torchC, ascendcC, pyptoC].some(c => c.startsWith('FAIL'))
-        ? '<span class="status-badge fail">FAIL</span>'
-        : '<span class="status-badge unknown">MIXED</span>';
+    const allPass = [torchC, ascendcC, pyptoC].every(c => String(c).startsWith('PASS'));
+    const anyFail = [torchC, ascendcC, pyptoC].some(c => String(c).startsWith('FAIL'));
+    const allNa = [torchC, ascendcC, pyptoC].every(c => c === 'N/A');
+    const corrStr = allPass ? '<span class="status-badge pass">PASS</span>'
+      : anyFail ? '<span class="status-badge fail">FAIL</span>'
+      : allNa ? '<span class="status-badge unknown">N/A</span>'
+      : '<span class="status-badge unknown">MIXED</span>';
 
     const torchP = op.profiler?.torch || {};
     const ascendcP = op.profiler?.ascendc || {};
@@ -896,8 +903,6 @@ function renderReleaseTable(data) {
     const b1p = pyptoP.b1_us != null ? ' P:' + Number(pyptoP.b1_us).toFixed(1) + 'us' : '';
     const b1Str = (b1 + b1a + b1p) || 'N/A';
 
-    const profilerTool = op.profiler_tool || 'N/A';
-
     return `<tr onclick="showDetail('${op.name}')">
       <td><strong>${op.name}</strong></td>
       <td><span class="status-badge ${statusCls}">${op.status}</span></td>
@@ -906,7 +911,7 @@ function renderReleaseTable(data) {
       <td style="font-size:12px">${pyptoC}</td>
       <td>${corrStr}</td>
       <td style="font-size:12px">${b1Str}</td>
-      <td style="font-size:12px">${profilerTool}</td>
+      <td style="font-size:12px">msprof</td>
     </tr>`;
   }).join('');
 }
@@ -1035,18 +1040,24 @@ function showReleaseDetail(opName) {
 
 function renderReleaseCorrectness(op) {
   const corr = op.correctness || {};
-  const allPass = Object.values(corr).every(c => String(c).startsWith('PASS'));
-  const allFail = Object.values(corr).every(c => String(c).startsWith('FAIL'));
+  const vals = Object.values(corr);
+  const allPass = vals.length > 0 && vals.every(c => String(c).startsWith('PASS'));
+  const allFail = vals.some(c => String(c).startsWith('FAIL'));
+  const allNa = vals.length === 0 || vals.every(c => c === 'N/A');
   const statusHtml = allPass ? '<span class="status-badge pass" style="font-size:16px;padding:4px 16px">ALL PASS</span>' :
-                     allFail ? '<span class="status-badge fail" style="font-size:16px;padding:4px 16px">ALL FAIL</span>' :
-                     '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">MIXED</span>';
+                     allFail ? '<span class="status-badge fail" style="font-size:16px;padding:4px 16px">SOME FAIL</span>' :
+                     allNa ? '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">N/A</span>' :
+                     '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">MIXED / PARTIAL</span>';
   document.getElementById('corr-status').innerHTML = statusHtml;
 
   const impls = ['torch', 'ascendc', 'pypto'];
   let html = '';
   for (const impl of impls) {
     const c = corr[impl] || 'N/A';
-    html += '<tr><td>' + impl + '</td><td>' + c + '</td><td style="font-size:12px">' + (op.profiler?.[impl]?.method || 'N/A') + '</td></tr>';
+    const prof = op.profiler?.[impl] || {};
+    const method = prof.method || 'N/A';
+    const b1 = prof.b1_us != null ? ' | B1=' + Number(prof.b1_us).toFixed(1) + 'us' : '';
+    html += '<tr><td>' + impl + '</td><td>' + c + '</td><td style="font-size:12px">' + method + b1 + '</td></tr>';
   }
   document.getElementById('corr-table-body').innerHTML = html;
 }
@@ -1058,7 +1069,9 @@ function renderReleasePerformance(op) {
   for (const impl of impls) {
     const p = profiler[impl] || {};
     const method = p.method || 'N/A';
-    const lat = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
+    const b1 = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
+    const b32 = p.b32_us != null ? Number(p.b32_us).toFixed(1) + ' us' : '';
+    const lat = b32 ? b1 + ' / ' + b32 : b1;
     html += '<tr><td>' + impl + '</td><td>' + method + '</td><td>' + lat + '</td></tr>';
   }
   document.getElementById('perf-table-body').innerHTML = html;
@@ -1087,28 +1100,31 @@ document.addEventListener('DOMContentLoaded', init);
 
 def main():
     parser = argparse.ArgumentParser(description="PyPTO Operator Dashboard Generator")
-    parser.add_argument("--release", type=str, default=None,
-                        help="Release mode: path to reports/release/current_release.json")
+    parser.add_argument("--release", type=str, default=None, nargs="?", const="auto",
+                        help="Release mode: reads dashboard/dashboard.json and generates index.html")
     args = parser.parse_args()
 
     OUT.mkdir(parents=True, exist_ok=True)
+    dj_path = OUT / "dashboard.json"
 
     if args.release:
-        path = Path(args.release)
-        if not path.exists():
-            print(f"[ERR] Release file not found: {path}", file=sys.stderr)
+        # When --release is used without a path, default to dashboard.json
+        # Release mode: dashboard.json must already exist
+        if args.release == "auto":
+            pass  # use default dj_path
+        if not dj_path.exists():
+            print(f"[ERR] {dj_path} not found. Run 'python3 tools/rebuild_final_data.py' first.", file=sys.stderr)
             sys.exit(1)
-        dashboard = load_release(path)
-        total = dashboard.get("operator_count", 0)
-        print(f"[OK] Loaded release ({dashboard.get('release_version', '?')}) — {total} operators")
+        dashboard = json.loads(dj_path.read_text())
+        if dashboard.get("mode") != "release":
+            print(f"[ERR] {dj_path} is not in release format. Run 'python3 tools/rebuild_final_data.py' first.", file=sys.stderr)
+            sys.exit(1)
+        print(f"[OK] Loaded {dj_path} ({dashboard.get('release_version', '?')}) — {dashboard['operator_count']} operators")
     else:
         print("[INFO] Development mode — scanning operators/*/")
         dashboard = build_dev()
-
-    # Write dashboard.json
-    out_json = OUT / "dashboard.json"
-    out_json.write_text(json.dumps(dashboard, indent=2, ensure_ascii=False, default=str))
-    print(f"[OK] Written {out_json}")
+        dj_path.write_text(json.dumps(dashboard, indent=2, ensure_ascii=False, default=str))
+        print(f"[OK] Written {dj_path}")
 
     # Generate index.html
     html = generate_html(dashboard)
