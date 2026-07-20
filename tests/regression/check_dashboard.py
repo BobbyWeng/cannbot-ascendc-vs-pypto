@@ -309,6 +309,23 @@ def check_index_html(index_html_path: str, dashboard_json_path: str):
         errors.append("init() does not read embedded data before fetch")
     if "fetch('./dashboard.json')" not in html:
         errors.append("init() missing fetch fallback")
+    # 用户可见界面必须完整中文化；机器状态值仍保留英文供逻辑判断。
+    required_zh = [
+        '<html lang="zh-CN">',
+        'Cannbot 算子对比看板',
+        '发布模式 · 数据源：',
+        '搜索算子…',
+        '总体完成度',
+        '正确性汇总',
+        '性能与排名',
+        '已验证且可排名',
+        '可信路线不足',
+        '排名状态：',
+        '仅展示，不排名',
+    ]
+    for text in required_zh:
+        if text not in html:
+            errors.append(f"Chinese UI text missing: {text}")
     status = "PASS" if not errors else "FAIL"
     return {"status": status, "errors": errors, "file": index_html_path}
 

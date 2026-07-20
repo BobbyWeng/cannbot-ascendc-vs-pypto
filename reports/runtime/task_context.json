@@ -1,28 +1,21 @@
 {
-  "operator": "matmul",
-  "backend_route": "ASCENDC_DIRECT",
-  "semantic_class": "MATMUL",
-  "hardware_path": "CUBE",
-  "task_mode": "PERFORMANCE_OPTIMIZATION",
-  "lifecycle_stage": "FINAL_PROFILE",
-  "active_plugin": "ops-direct-invoke",
-  "active_agent": "ascendc-kernel-architect",
+  "operator": "project",
+  "backend_route": "PROJECT_INFRA",
+  "semantic_class": "UNKNOWN_NEEDS_ANALYSIS",
+  "hardware_path": "N/A",
+  "task_mode": "FUNCTIONAL_REPAIR",
+  "lifecycle_stage": "REVIEW",
+  "active_plugin": "inline",
+  "active_agent": "primary-agent",
   "required_skills": [
-    "ascendc-tiling-design",
-    "ascendc-api-best-practices",
-    "ascendc-npu-arch",
-    "ops-profiling"
+    "browser:control-in-app-browser"
   ],
   "loaded_skills": [
-    "ascendc-tiling-design",
-    "ascendc-api-best-practices",
-    "ascendc-npu-arch",
-    "ops-profiling",
-    "ascendc-docs-search"
+    "browser:control-in-app-browser"
   ],
   "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
-  "correctness_gate": "PASS",
-  "profile_gate": "PARTIAL (B=1 complete)",
-  "next_action": "Complete full msprof for all batches across all three routes",
-  "last_successful_checkpoint": "Post-RC3 multi-core MatMul implementation"
+  "correctness_gate": "NOT_APPLICABLE_PROJECT_INFRA",
+  "profile_gate": "PASS_DASHBOARD_VALIDATION",
+  "next_action": "Commit and push the browser-validated Chinese Dashboard branch; no operator release is being performed",
+  "last_successful_checkpoint": "Dashboard JSON, embedded HTML, deterministic generation, JavaScript syntax, regression suite, Cannbot usage, and browser UI validation all passed"
 }

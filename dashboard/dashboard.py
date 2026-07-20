@@ -275,7 +275,7 @@ def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sh
             if op_name == "reduce_sum" and route_key == "ascendc":
                 result["route_variant"] = "ascendc_fp16_legacy"
                 result["comparable"] = False
-                result["comparison_note"] = "旧 FP16 profiler, 不代表新版 FP32 内核"
+            result["comparison_note"] = "旧 FP16 profiler，不代表新版 FP32 内核"
             return result
 
     return result
@@ -903,11 +903,16 @@ def generate_html(dashboard):
     mode = dashboard.get("mode", "development")
     total = s.get("total", dashboard.get("operator_count", 0))
     completed = s.get("completed", 0)
+    if mode == "release":
+        completed = sum(
+            count for status, count in (dashboard.get("status_summary") or {}).items()
+            if str(status).startswith("COMPLETE")
+        )
 
     # Release mode source info
     release_info = ""
     if mode == "release":
-        release_info = f'<p>Release v{dashboard.get("release_version", "?")} — {dashboard["generated_at"]}</p>'
+        release_info = f'<p>发布版本 v{dashboard.get("release_version", "?")} — {dashboard["generated_at"]}</p>'
 
     ops_json = json.dumps(dashboard, ensure_ascii=False)
     ops_json_escaped = (ops_json
@@ -922,33 +927,33 @@ def generate_html(dashboard):
     js = generate_js()
 
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PyPTO Operator Dashboard{f' v{dashboard.get("release_version", "")}' if mode == 'release' else ''}</title>
+<title>Cannbot 算子对比看板{f' v{dashboard.get("release_version", "")}' if mode == 'release' else ''}</title>
 <style>{css}</style>
 </head>
 <body>
 <div id="loading" style="display:flex;align-items:center;justify-content:center;min-height:100vh;color:var(--text-muted);font-size:18px">
-  Loading dashboard...
+  正在加载算子看板…
 </div>
 
 <div id="app" style="display:none">
   <div class="header">
     <div>
-      <h1>PyPTO Operator Dashboard</h1>
-      <div class="subtitle">{'Release Mode — Source: reports/release/current_release.json' if mode == 'release' else 'Development Mode — Scanning operators/*/'}</div>
+      <h1>Cannbot 算子对比看板</h1>
+      <div class="subtitle">{'发布模式 · 数据源：reports/release/current_release.json' if mode == 'release' else '开发模式 · 扫描 operators/*/'}</div>
     </div>
     <div class="header-right">
-      <span class="badge">{completed}/{total} completed</span>
+      <span class="badge">{completed}/{total} 已完成</span>
       <span class="update-time" id="update-time"></span>
     </div>
   </div>
 
   <div class="toolbar">
-    <input type="text" id="search" placeholder="Search operators...">
-    <label style="color:var(--text-muted);font-size:13px">Sort by: click table headers</label>
+    <input type="text" id="search" placeholder="搜索算子…">
+    <label style="color:var(--text-muted);font-size:13px">点击表头可排序</label>
   </div>
 
   <div class="container">
@@ -960,7 +965,7 @@ def generate_html(dashboard):
 
     <div style="background:var(--bg-secondary);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:24px">
       <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-        <span style="font-size:13px;color:var(--text-secondary)">Overall Completion</span>
+        <span style="font-size:13px;color:var(--text-secondary)">总体完成度</span>
         <span style="font-size:13px;font-weight:600" id="progress-text"></span>
       </div>
       <div class="progress-bar">
@@ -971,14 +976,14 @@ def generate_html(dashboard):
     <table id="op-table">
       <thead>
         <tr>
-          <th data-sort="name">Operator <span class="sort-arrow">▲</span></th>
-          <th data-sort="status">Status <span class="sort-arrow"></span></th>
+          <th data-sort="name">算子 <span class="sort-arrow">▲</span></th>
+          <th data-sort="status">状态 <span class="sort-arrow"></span></th>
           <th>Torch</th>
           <th>Ascend C</th>
           <th>PyPTO</th>
-          <th>Correctness</th>
-          {"<th>B1 Perf</th>" if mode == 'release' else '<th>Performance (B=1)</th>'}
-          {"<th>Profiler</th>" if mode == 'release' else '<th>Last Update</th>'}
+          <th>正确性汇总</th>
+          {"<th>B=1 主计算核</th>" if mode == 'release' else '<th>性能（B=1）</th>'}
+          {"<th>采样工具</th>" if mode == 'release' else '<th>最后更新</th>'}
         </tr>
       </thead>
       <tbody id="op-table-body"></tbody>
@@ -986,36 +991,36 @@ def generate_html(dashboard):
 
     <div class="detail-view" id="detail-view">
       <div class="detail-header">
-        <h2 id="detail-title">Operator Detail</h2>
-        <button class="detail-close" onclick="closeDetail()">Close</button>
+        <h2 id="detail-title">算子详情</h2>
+        <button class="detail-close" onclick="closeDetail()">关闭</button>
       </div>
 
       <div class="info-grid">
-        <div class="info-item"><div class="label">Formula</div><div class="value" id="info-formula">-</div></div>
-        <div class="info-item"><div class="label">Shape</div><div class="value" id="info-shape">-</div></div>
-        <div class="info-item"><div class="label">Dtype</div><div class="value" id="info-dtype">-</div></div>
-        <div class="info-item"><div class="label">Batches</div><div class="value" id="info-batches">-</div></div>
-        <div class="info-item"><div class="label">Precision</div><div class="value" id="info-precision">-</div></div>
-        <div class="info-item"><div class="label">Status</div><div class="value" id="info-status">-</div></div>
-        <div class="info-item"><div class="label">Limitation</div><div class="value" id="info-limitation">-</div></div>
-        <div class="info-item"><div class="label">Archive</div><div class="value" id="info-archive">-</div></div>
+        <div class="info-item"><div class="label">公式</div><div class="value" id="info-formula">-</div></div>
+        <div class="info-item"><div class="label">形状</div><div class="value" id="info-shape">-</div></div>
+        <div class="info-item"><div class="label">数据类型</div><div class="value" id="info-dtype">-</div></div>
+        <div class="info-item"><div class="label">批次</div><div class="value" id="info-batches">-</div></div>
+        <div class="info-item"><div class="label">精度标准</div><div class="value" id="info-precision">-</div></div>
+        <div class="info-item"><div class="label">状态</div><div class="value" id="info-status">-</div></div>
+        <div class="info-item"><div class="label">限制</div><div class="value" id="info-limitation">-</div></div>
+        <div class="info-item"><div class="label">归档</div><div class="value" id="info-archive">-</div></div>
       </div>
 
       <div class="tabs">
-        <div class="tab active" data-tab="correctness" onclick="switchTab('correctness')">Correctness</div>
-        <div class="tab" data-tab="performance" onclick="switchTab('performance')">Performance</div>
-        <div class="tab" data-tab="limitations" onclick="switchTab('limitations')">Limitations</div>
+        <div class="tab active" data-tab="correctness" onclick="switchTab('correctness')">正确性</div>
+        <div class="tab" data-tab="performance" onclick="switchTab('performance')">性能与排名</div>
+        <div class="tab" data-tab="limitations" onclick="switchTab('limitations')">限制</div>
       </div>
 
       <div class="tab-content active" id="tab-correctness">
         <div class="section">
-          <h3>Correctness Summary</h3>
+          <h3>正确性汇总</h3>
           <div id="corr-status" style="margin-bottom:12px"></div>
         </div>
         <div class="section">
-          <h3>Per-Route Results</h3>
+          <h3>各路线结果</h3>
           <table>
-            <thead><tr><th>Route</th><th>Result</th><th>Tool</th></tr></thead>
+            <thead><tr><th>路线</th><th>结果与证据</th><th>采样信息</th></tr></thead>
             <tbody id="corr-table-body"></tbody>
           </table>
         </div>
@@ -1023,9 +1028,9 @@ def generate_html(dashboard):
 
       <div class="tab-content" id="tab-performance">
         <div class="section">
-          <h3>Profiler Metrics</h3>
+          <h3>性能采样与验证状态</h3>
           <table>
-            <thead><tr><th>Route</th><th>Method</th><th>B1 Latency</th></tr></thead>
+            <thead><tr><th>路线</th><th>方法与来源</th><th>主计算核延迟</th></tr></thead>
             <tbody id="perf-table-body"></tbody>
           </table>
         </div>
@@ -1033,7 +1038,7 @@ def generate_html(dashboard):
 
       <div class="tab-content" id="tab-limitations">
         <div class="section">
-          <h3>Known Limitations</h3>
+          <h3>已知限制</h3>
           <div id="limitations-content"></div>
         </div>
       </div>
@@ -1198,6 +1203,70 @@ let currentTab = 'correctness';
 let sortField = 'name';
 let sortAsc = true;
 
+const STATUS_ZH = {
+  COMPLETE: '完全完成',
+  COMPLETE_WITH_LIMITATION: '有限制完成',
+  PARTIAL: '部分完成',
+  INCOMPLETE: '未完成',
+  BLOCKED: '阻塞',
+  completed: '已完成',
+  in_progress: '进行中',
+  planned: '计划中',
+  blocked: '阻塞',
+};
+const ROUTE_ZH = { torch: 'Torch', ascendc: 'Ascend C', pypto: 'PyPTO' };
+const VALIDATION_ZH = {
+  VERIFIED: '已验证，可排名',
+  UNMANIFESTED: '未入清单',
+  HASH_MISMATCH: '哈希不匹配',
+  INVALID_SHA256: 'SHA256 无效',
+  INTEGRITY_MISMATCH: '完整性不匹配',
+  RELEASE_HASH_MISMATCH: '发布源哈希不匹配',
+  CORRECTNESS_NOT_PASS: '正确性未通过',
+  WRONG_VARIANT: '实现版本不匹配',
+  NOT_COMPARABLE: '不可比较',
+  METHOD_MISMATCH: '测量方法不一致',
+  METRIC_MISMATCH: '性能指标不一致',
+  METRIC_INVALID: '性能数值无效',
+  MISSING_SOURCE: '缺少数据来源',
+};
+const RANKING_ZH = {
+  RANKED: '已排名',
+  INSUFFICIENT_VERIFIED_ROUTES: '可信路线不足，不排名',
+};
+const LIMITATION_ZH = {
+  'Uses bitwise_or (no logical_or API). Correct for 0/1 bool.': '缺少 logical_or API，当前使用 bitwise_or；对 0/1 布尔输入结果正确。',
+  'FP16 accum precision exceeds atol=0.01 for 384-element reduction (21/70). FP32 accum kernel available (70/70).': '384 元素归约时，FP16 累加精度超过 atol=0.01（21/70）；已有 FP32 累加内核（70/70）。',
+  'N=32 limits Cube utilization to ~48%. Torch faster at B≥16.': 'N=32 将 Cube 利用率限制在约 48%；B≥16 时 Torch 更快。',
+  'Auto-tiling FC4000 broken. 4D JIT compile timeout for large shapes.': 'FC4000 自动分块不可用，大形状 4D JIT 编译会超时。',
+  'Per-row AICPU dispatch originally ~3000 us. RC-3: torch.expand().clone() 33600x improvement.': '原逐行 AICPU 调度约 3000 µs；RC-3 使用 torch.expand().clone()，提升约 33600 倍。',
+  'B=64 performance 9245us vs Torch 2180us — needs optimization.': 'B=64 时为 9245 µs，Torch 为 2180 µs，仍需优化。',
+  'B=64 performance 5050us vs Torch 135us — GetValue/SetValue bottleneck.': 'B=64 时为 5050 µs，Torch 为 135 µs；瓶颈为 GetValue/SetValue。',
+  'B=32 performance 329us vs Torch 113us.': 'B=32 时为 329 µs，Torch 为 113 µs。',
+};
+
+function statusZh(value) { return STATUS_ZH[value] || value || '未知'; }
+function routeZh(value) { return ROUTE_ZH[value] || value; }
+function validationZh(value) { return VALIDATION_ZH[value] || value || '未验证'; }
+function rankingZh(value) { return RANKING_ZH[value] || value || '未排名'; }
+function limitationZh(value) { return LIMITATION_ZH[value] || value || '无'; }
+function correctnessZh(value) {
+  return String(value || 'N/A')
+    .replaceAll('COMPLETE_WITH_LIMITATION', '有限制完成')
+    .replaceAll('PARTIAL', '部分通过')
+    .replaceAll('PASS', '通过')
+    .replaceAll('FAIL', '失败')
+    .replaceAll('FULL', '全覆盖')
+    .replaceAll('NEW', '新版')
+    .replaceAll('all', '全部')
+    .replaceAll('batches', '批次')
+        .replaceAll('cases', '用例')
+        .replaceAll('accum', '累加')
+    .replaceAll('legacy', '旧版')
+    .replaceAll('recommended', '推荐')
+    .replaceAll(' for ', '，适用于 ');
+}
+
 function init() {
   var embedded = document.getElementById('dashboard-data');
   if (embedded && embedded.textContent) {
@@ -1211,7 +1280,7 @@ function init() {
       document.getElementById('app').style.display = 'block';
       return;
     } catch (e) {
-      console.warn('Embedded data parse failed, falling back to fetch:', e);
+      console.warn('嵌入数据解析失败，回退到网络加载：', e);
     }
   }
   fetch('./dashboard.json')
@@ -1226,7 +1295,7 @@ function init() {
       document.getElementById('app').style.display = 'block';
     })
     .catch(err => {
-      document.getElementById('loading').textContent = 'Failed to load dashboard.json: ' + err.message;
+      document.getElementById('loading').textContent = '无法加载 dashboard.json：' + err.message;
     });
 }
 
@@ -1235,11 +1304,11 @@ function renderSummary(data) {
     const s = data.status_summary || {};
     const total = data.operator_count || 0;
     const cards = [
-      { label: 'Total Operators', value: total, cls: 'color-blue' },
+      { label: '算子总数', value: total, cls: 'color-blue' },
     ];
     for (const [status, count] of Object.entries(s)) {
       const cls = status.startsWith('COMPLETE') ? 'color-green' : status === 'PARTIAL' ? 'color-yellow' : 'color-red';
-      cards.push({ label: status, value: count, cls: cls });
+      cards.push({ label: statusZh(status), value: count, cls: cls });
     }
     const container = document.getElementById('summary-cards');
     container.innerHTML = cards.map(c => `
@@ -1253,21 +1322,21 @@ function renderSummary(data) {
     const pct = total > 0 ? Math.round(compl / total * 100) : 0;
     document.getElementById('progress-fill').style.width = pct + '%';
     document.getElementById('progress-text').textContent = pct + '% (' + compl + '/' + total + ')';
-    document.getElementById('update-time').textContent = 'Release: ' + data.generated_at;
+    document.getElementById('update-time').textContent = '发布时间：' + data.generated_at;
 
     // Validation summary
     const vs = data.validation_summary || {};
     const vContainer = document.getElementById('validation-summary');
     if (vContainer && vs.total_operators) {
       const vCards = [
-        { label: 'Verified & Rankable', value: vs.verified_rankable || 0, cls: 'color-green' },
-        { label: 'Verified (not comparable)', value: vs.verified_not_comparable || 0, cls: 'color-yellow' },
-        { label: 'Unmanifested', value: vs.unmanifested || 0, cls: 'color-orange' },
-        { label: 'Hash Mismatch', value: vs.hash_mismatch || 0, cls: 'color-red' },
-        { label: 'Correctness Not PASS', value: vs.correctness_not_pass || 0, cls: 'color-red' },
-        { label: 'Variant Mismatch', value: vs.variant_mismatch || 0, cls: 'color-red' },
-        { label: 'Missing Profiler', value: vs.missing_profiler || 0, cls: 'color-yellow' },
-        { label: 'Insufficient Routes', value: vs.insufficient_routes || 0, cls: 'color-yellow' },
+        { label: '已验证且可排名', value: vs.verified_rankable || 0, cls: 'color-green' },
+        { label: '已验证但不可比较', value: vs.verified_not_comparable || 0, cls: 'color-yellow' },
+        { label: '未入清单', value: vs.unmanifested || 0, cls: 'color-orange' },
+        { label: '哈希不匹配', value: vs.hash_mismatch || 0, cls: 'color-red' },
+        { label: '正确性未通过', value: vs.correctness_not_pass || 0, cls: 'color-red' },
+        { label: '实现版本不匹配', value: vs.variant_mismatch || 0, cls: 'color-red' },
+        { label: '缺少性能数据', value: vs.missing_profiler || 0, cls: 'color-yellow' },
+        { label: '可信路线不足', value: vs.insufficient_routes || 0, cls: 'color-yellow' },
       ];
       vContainer.innerHTML = vCards.map(c =>
         '<div class="summary-card ' + c.cls + '"><div class="value">' + c.value + '</div><div class="label">' + c.label + '</div></div>'
@@ -1278,14 +1347,14 @@ function renderSummary(data) {
 
   const s = data.summary;
   const cards = [
-    { label: 'Total Operators', value: s.total, cls: 'color-blue' },
-    { label: 'Completed', value: s.completed, cls: 'color-green' },
-    { label: 'Torch Ready', value: s.torch_done, cls: 'color-cyan' },
-    { label: 'Ascend C Ready', value: s.ascendc_done, cls: 'color-purple' },
-    { label: 'PyPTO Ready', value: s.pypto_done, cls: 'color-orange' },
-    { label: 'Correctness PASS', value: s.pass_count, cls: 'color-green' },
-    { label: 'Correctness FAIL', value: s.fail_count, cls: 'color-red' },
-    { label: 'Blocked', value: s.blocked, cls: 'color-yellow' },
+    { label: '算子总数', value: s.total, cls: 'color-blue' },
+    { label: '已完成', value: s.completed, cls: 'color-green' },
+    { label: 'Torch 就绪', value: s.torch_done, cls: 'color-cyan' },
+    { label: 'Ascend C 就绪', value: s.ascendc_done, cls: 'color-purple' },
+    { label: 'PyPTO 就绪', value: s.pypto_done, cls: 'color-orange' },
+    { label: '正确性通过', value: s.pass_count, cls: 'color-green' },
+    { label: '正确性失败', value: s.fail_count, cls: 'color-red' },
+    { label: '阻塞', value: s.blocked, cls: 'color-yellow' },
   ];
   const container = document.getElementById('summary-cards');
   container.innerHTML = cards.map(c => `
@@ -1298,7 +1367,7 @@ function renderSummary(data) {
   const pct = s.total > 0 ? Math.round(s.completed / s.total * 100) : 0;
   document.getElementById('progress-fill').style.width = pct + '%';
   document.getElementById('progress-text').textContent = pct + '% (' + s.completed + '/' + s.total + ')';
-  document.getElementById('update-time').textContent = 'Generated: ' + data.generated_at;
+  document.getElementById('update-time').textContent = '生成时间：' + data.generated_at;
 }
 
 function renderTable(data) {
@@ -1329,10 +1398,10 @@ function renderReleaseTable(data) {
     const allPass = [torchC, ascendcC, pyptoC].every(c => String(c).startsWith('PASS'));
     const anyFail = [torchC, ascendcC, pyptoC].some(c => String(c).startsWith('FAIL'));
     const allNa = [torchC, ascendcC, pyptoC].every(c => c === 'N/A');
-    const corrStr = allPass ? '<span class="status-badge pass">PASS</span>'
-      : anyFail ? '<span class="status-badge fail">FAIL</span>'
+    const corrStr = allPass ? '<span class="status-badge pass">通过</span>'
+      : anyFail ? '<span class="status-badge fail">失败</span>'
       : allNa ? '<span class="status-badge unknown">N/A</span>'
-      : '<span class="status-badge unknown">MIXED</span>';
+      : '<span class="status-badge unknown">混合 / 部分通过</span>';
 
     // Build perf display: only rankable data shows in the main row
     const rankable = op.profiling_display?.rankable || {};
@@ -1345,24 +1414,24 @@ function renderReleaseTable(data) {
       const rp = rankable[rk];
       if (rp && rp.b1_us != null) {
         const tag = rk === winner ? '★' : '';
-        b1Parts.push(tag + rk.charAt(0).toUpperCase() + ':' + Number(rp.b1_us).toFixed(1));
+        b1Parts.push(tag + routeZh(rk) + ' ' + Number(rp.b1_us).toFixed(1) + ' µs');
       }
     }
     // Append display-only data with "(i)" marker
     for (const rk of ['torch', 'ascendc', 'pypto']) {
       const dp = displayOnly[rk];
       if (dp && dp.b1_us != null) {
-        b1Parts.push(rk.charAt(0).toUpperCase() + ':' + Number(dp.b1_us).toFixed(1) + '(i)');
+        b1Parts.push(routeZh(rk) + ' ' + Number(dp.b1_us).toFixed(1) + ' µs（仅展示）');
       }
     }
     const b1Str = b1Parts.length > 0 ? b1Parts.join(' ') : 'N/A';
 
     return `<tr onclick="showDetail('${op.name}')">
       <td><strong>${op.name}</strong></td>
-      <td><span class="status-badge ${statusCls}">${op.status}</span></td>
-      <td style="font-size:12px">${torchC}</td>
-      <td style="font-size:12px">${ascendcC}</td>
-      <td style="font-size:12px">${pyptoC}</td>
+      <td><span class="status-badge ${statusCls}">${statusZh(op.status)}</span></td>
+      <td style="font-size:12px">${correctnessZh(torchC)}</td>
+      <td style="font-size:12px">${correctnessZh(ascendcC)}</td>
+      <td style="font-size:12px">${correctnessZh(pyptoC)}</td>
       <td>${corrStr}</td>
       <td style="font-size:12px">${b1Str}</td>
       <td style="font-size:12px">msprof</td>
@@ -1389,15 +1458,15 @@ function renderDevTable(data) {
 
   const tbody = document.getElementById('op-table-body');
   tbody.innerHTML = ops.map(op => {
-    const corr = op.correctness_all_pass === true ? '<span class="status-badge pass">PASS</span>' :
-                 op.correctness_all_pass === false ? '<span class="status-badge fail">FAIL</span>' :
+    const corr = op.correctness_all_pass === true ? '<span class="status-badge pass">通过</span>' :
+                 op.correctness_all_pass === false ? '<span class="status-badge fail">失败</span>' :
                  '<span class="status-badge unknown">N/A</span>';
     const torchKt = op.kernel_types?.torch?.join(', ') || 'N/A';
     const ascendcKt = op.kernel_types?.ascendc?.join(', ') || 'N/A';
     const pyptoKt = op.kernel_types?.pypto?.join(', ') || 'N/A';
     return `<tr onclick="showDevDetail('${op.name}')">
       <td><strong>${op.name}</strong></td>
-      <td><span class="status-badge ${op.status}">${op.status}</span></td>
+      <td><span class="status-badge ${op.status}">${statusZh(op.status)}</span></td>
       <td>${torchKt}</td>
       <td>${ascendcKt}</td>
       <td>${pyptoKt}</td>
@@ -1457,7 +1526,7 @@ function showReleaseDetail(opName) {
   currentOp = op;
 
   document.getElementById('detail-view').classList.add('visible');
-  document.getElementById('detail-title').textContent = opName + ' — Operator Detail';
+  document.getElementById('detail-title').textContent = opName + ' — 算子详情';
 
   document.getElementById('info-formula').textContent = op.formula || 'N/A';
   document.getElementById('info-shape').textContent = op.shape || 'N/A';
@@ -1465,9 +1534,9 @@ function showReleaseDetail(opName) {
   document.getElementById('info-batches').textContent = (op.batches || []).join(', ') || 'N/A';
   document.getElementById('info-precision').textContent = op.precision || 'N/A';
   const statusCls = op.status.startsWith('COMPLETE') ? 'completed' : op.status === 'PARTIAL' ? 'in_progress' : 'unknown';
-  document.getElementById('info-status').innerHTML = '<span class="status-badge ' + statusCls + '">' + op.status + '</span>';
-  document.getElementById('info-limitation').textContent = op.limitation || 'None';
-  document.getElementById('info-archive').textContent = op.archive || 'none';
+  document.getElementById('info-status').innerHTML = '<span class="status-badge ' + statusCls + '">' + statusZh(op.status) + '</span>';
+  document.getElementById('info-limitation').textContent = limitationZh(op.limitation);
+  document.getElementById('info-archive').textContent = op.archive && op.archive !== 'none' ? op.archive : '未归档';
 
   renderReleaseCorrectness(op);
   renderReleasePerformance(op);
@@ -1476,11 +1545,11 @@ function showReleaseDetail(opName) {
     const opLimits = dashboardData.known_limitations.filter(l => l.operator === opName);
     const container = document.getElementById('limitations-content');
     if (opLimits.length === 0) {
-      container.innerHTML = '<p style="color:var(--text-muted)">No known limitations for this operator.</p>';
+      container.innerHTML = '<p style="color:var(--text-muted)">该算子暂无已知限制。</p>';
     } else {
       container.innerHTML = opLimits.map(l => {
         const sevClass = 'sev-' + l.severity.toLowerCase();
-        return '<div class="limitation-item"><span class="' + sevClass + '">[' + l.severity + ']</span> ' + l.route + ': ' + l.description + '</div>';
+        return '<div class="limitation-item"><span class="' + sevClass + '">[' + l.severity + ']</span> ' + routeZh(l.route) + '：' + limitationZh(l.description) + '</div>';
       }).join('');
     }
   }
@@ -1498,10 +1567,10 @@ function renderReleaseCorrectness(op) {
   const allPass = vals.length > 0 && vals.every(c => String(c).startsWith('PASS'));
   const allFail = vals.some(c => String(c).startsWith('FAIL'));
   const allNa = vals.length === 0 || vals.every(c => c === 'N/A');
-  const statusHtml = allPass ? '<span class="status-badge pass" style="font-size:16px;padding:4px 16px">ALL PASS</span>' :
-                     allFail ? '<span class="status-badge fail" style="font-size:16px;padding:4px 16px">SOME FAIL</span>' :
+  const statusHtml = allPass ? '<span class="status-badge pass" style="font-size:16px;padding:4px 16px">全部通过</span>' :
+                     allFail ? '<span class="status-badge fail" style="font-size:16px;padding:4px 16px">存在失败</span>' :
                      allNa ? '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">N/A</span>' :
-                     '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">MIXED / PARTIAL</span>';
+                     '<span class="status-badge unknown" style="font-size:16px;padding:4px 16px">混合 / 部分通过</span>';
   document.getElementById('corr-status').innerHTML = statusHtml;
 
   const impls = ['torch', 'ascendc', 'pypto'];
@@ -1510,19 +1579,19 @@ function renderReleaseCorrectness(op) {
     const c = corr[impl] || 'N/A';
     const prof = op.profiler?.[impl] || {};
     const method = prof.method || 'N/A';
-    const b1 = prof.b1_us != null ? ' | B1=' + Number(prof.b1_us).toFixed(1) + 'us' : '';
+    const b1 = prof.b1_us != null ? ' | B=1 ' + Number(prof.b1_us).toFixed(1) + ' µs' : '';
     const src = prof.source || '';
     const srcTag = src ? '<br><span style="font-size:10px;color:var(--text-muted)">' + src + '</span>' : '';
-    html += '<tr><td>' + impl + '</td><td>' + c + srcTag + '</td><td style="font-size:12px">' + method + b1 + '</td></tr>';
+    html += '<tr><td>' + routeZh(impl) + '</td><td>' + correctnessZh(c) + srcTag + '</td><td style="font-size:12px">' + method + b1 + '</td></tr>';
   }
 
   // correctness_notes (reduce_sum special)
   const notes = op.correctness_notes;
   if (notes) {
     html += '<tr><td colspan="3" style="font-size:11px;color:var(--text-secondary);padding-top:12px">';
-    if (notes.ascendc_fp16) html += '<div>⚠ AscendC FP16: ' + notes.ascendc_fp16 + '</div>';
-    if (notes.ascendc_fp32) html += '<div>✓ AscendC FP32: ' + notes.ascendc_fp32 + '</div>';
-    if (notes.profiler_note) html += '<div style="margin-top:4px">ℹ ' + notes.profiler_note + '</div>';
+    if (notes.ascendc_fp16) html += '<div>⚠ Ascend C FP16：' + correctnessZh(notes.ascendc_fp16) + '</div>';
+    if (notes.ascendc_fp32) html += '<div>✓ Ascend C FP32：' + correctnessZh(notes.ascendc_fp32) + '</div>';
+    if (notes.profiler_note) html += '<div style="margin-top:4px">ℹ 该性能数据来自旧 FP16 内核；新版 FP32 内核尚未采集 profiler。</div>';
     html += '</td></tr>';
   }
 
@@ -1545,23 +1614,23 @@ function renderReleasePerformance(op) {
     const isWinner = impl === winner;
     const displayOnlyData = displayOnly[impl];
 
-    let label = impl;
+    let label = routeZh(impl);
     if (isWinner) label = '★ ' + label;
     if (!rankEligible && p.b1_us != null) {
-      label += ' (仅展示, 不排名)';
+      label += '（仅展示，不排名）';
     }
 
     const method = p.method || 'N/A';
-    const b1 = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
-    const b32 = p.b32_us != null ? Number(p.b32_us).toFixed(1) + ' us' : '';
-    const lat = b32 ? b1 + ' / B32=' + b32 : b1;
+    const b1 = p.b1_us != null ? 'B=1 ' + Number(p.b1_us).toFixed(1) + ' µs' : 'N/A';
+    const b32 = p.b32_us != null ? Number(p.b32_us).toFixed(1) + ' µs' : '';
+    const lat = b32 ? b1 + ' / B=32 ' + b32 : b1;
     const src = p.source ? '<br><span style="font-size:10px;color:var(--text-muted)">' + p.source + '</span>' : '';
 
     // Validation badge
     let valBadge = '';
     if (val.status) {
       const valCls = val.rank_eligible ? 'pass' : 'unknown';
-      valBadge = ' <span class="status-badge ' + valCls + '" style="font-size:10px">' + val.status + '</span>';
+      valBadge = ' <span class="status-badge ' + valCls + '" style="font-size:10px">' + validationZh(val.status) + '</span>';
     }
 
     // Comparison note (ReduceSum FP16 legacy)
@@ -1576,8 +1645,8 @@ function renderReleasePerformance(op) {
   // Show ranking status
   if (ranking.status) {
     html += '<tr><td colspan="3" style="font-size:11px;color:var(--text-secondary);padding-top:8px">';
-    html += 'Ranking: <strong>' + ranking.status + '</strong>';
-    if (ranking.winner) html += ' | Fastest: <strong>' + ranking.winner + '</strong>';
+    html += '排名状态：<strong>' + rankingZh(ranking.status) + '</strong>';
+    if (ranking.winner) html += ' | 最快路线：<strong>' + routeZh(ranking.winner) + '</strong>';
     html += '</td></tr>';
   }
 

@@ -54,6 +54,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnRelu_Relu_Relu",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -81,6 +82,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "relu_kernel",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -108,6 +110,7 @@
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_relu_kernel_2d",
           "kernels_per_call": 3.01,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -174,6 +177,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "aclnnRelu_Relu_Relu",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -201,6 +205,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "relu_kernel",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -228,6 +233,7 @@
             "kernel_type": "KERNEL_MIX_AIC",
             "kernel_name": "PYPTO_relu_kernel_2d",
             "kernels_per_call": 3.01,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -281,6 +287,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnMul_MulAiCore_Mul",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -308,6 +315,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "mul_kernel",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -335,6 +343,7 @@
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_mul_kernel_2d",
           "kernels_per_call": 3.01,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -401,6 +410,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "aclnnMul_MulAiCore_Mul",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -428,6 +438,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "mul_kernel",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -455,6 +466,7 @@
             "kernel_type": "KERNEL_MIX_AIC",
             "kernel_name": "PYPTO_mul_kernel_2d",
             "kernels_per_call": 3.01,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -508,6 +520,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnAdd_AddAiCore_Add",
           "kernels_per_call": 21.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -535,6 +548,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "add_kernel",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -562,6 +576,7 @@
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_add_binary_kernel",
           "kernels_per_call": 9.01,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -628,6 +643,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "aclnnAdd_AddAiCore_Add",
             "kernels_per_call": 21.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -655,6 +671,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "add_kernel",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -682,6 +699,7 @@
             "kernel_type": "KERNEL_MIX_AIC",
             "kernel_name": "PYPTO_add_binary_kernel",
             "kernels_per_call": 9.01,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -734,6 +752,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
           "kernels_per_call": 42.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -761,6 +780,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "div_kernel",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -818,6 +838,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
             "kernels_per_call": 42.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -845,6 +866,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "div_kernel",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -898,6 +920,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
           "kernels_per_call": 1.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -925,6 +948,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "equal_kernel",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -982,6 +1006,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
             "kernels_per_call": 1.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -1009,6 +1034,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "equal_kernel",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -1062,6 +1088,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
           "kernels_per_call": 2.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "UNMANIFESTED",
             "rank_eligible": false,
@@ -1091,6 +1118,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "not_kernel",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "UNMANIFESTED",
             "rank_eligible": false,
@@ -1120,6 +1148,7 @@
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_not_kernel",
           "kernels_per_call": 3.01,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "UNMANIFESTED",
             "rank_eligible": false,
@@ -1189,6 +1218,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
             "kernels_per_call": 2.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "UNMANIFESTED",
               "rank_eligible": false,
@@ -1218,6 +1248,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "not_kernel",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "UNMANIFESTED",
               "rank_eligible": false,
@@ -1247,6 +1278,7 @@
             "kernel_type": "KERNEL_MIX_AIC",
             "kernel_name": "PYPTO_not_kernel",
             "kernels_per_call": 3.01,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "UNMANIFESTED",
               "rank_eligible": false,
@@ -1301,6 +1333,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
           "kernels_per_call": 3.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -1328,6 +1361,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "or_kernel",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -1355,6 +1389,7 @@
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_or_kernel",
           "kernels_per_call": 3.01,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -1421,6 +1456,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
             "kernels_per_call": 3.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -1448,6 +1484,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "or_kernel",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -1475,6 +1512,7 @@
             "kernel_type": "KERNEL_MIX_AIC",
             "kernel_name": "PYPTO_or_kernel",
             "kernels_per_call": 3.01,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -1528,6 +1566,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
           "kernels_per_call": 2.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -1555,6 +1594,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "where_kernel",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -1612,6 +1652,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
             "kernels_per_call": 2.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -1639,6 +1680,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "where_kernel",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -1692,6 +1734,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
           "kernels_per_call": 5.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -1719,6 +1762,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "expand_kernel",
           "kernels_per_call": 281.92,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -1746,6 +1790,7 @@
           "kernel_type": "KERNEL_MIX_AIC",
           "kernel_name": "PYPTO_expand_row",
           "kernels_per_call": 25313.29,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -1812,6 +1857,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
             "kernels_per_call": 5.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -1839,6 +1885,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "expand_kernel",
             "kernels_per_call": 281.92,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -1866,6 +1913,7 @@
             "kernel_type": "KERNEL_MIX_AIC",
             "kernel_name": "PYPTO_expand_row",
             "kernels_per_call": 25313.29,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -1919,6 +1967,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -1946,6 +1995,7 @@
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "transpose_kernel",
           "kernels_per_call": 7.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "VERIFIED",
             "rank_eligible": true,
@@ -2003,6 +2053,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -2030,6 +2081,7 @@
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "transpose_kernel",
             "kernels_per_call": 7.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "VERIFIED",
               "rank_eligible": true,
@@ -2083,6 +2135,7 @@
           "kernel_type": "KERNEL_MIX_AIV",
           "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
           "kernels_per_call": 1.0,
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "CORRECTNESS_NOT_PASS",
             "rank_eligible": false,
@@ -2113,7 +2166,7 @@
           "kernel_name": "reduce_sum_kernel",
           "kernels_per_call": 281.92,
           "route_variant": "ascendc_fp16_legacy",
-          "comparison_note": "旧 FP16 profiler, 不代表新版 FP32 内核",
+          "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
           "validation": {
             "status": "CORRECTNESS_NOT_PASS",
             "rank_eligible": false,
@@ -2181,6 +2234,7 @@
             "kernel_type": "KERNEL_MIX_AIV",
             "kernel_name": "aclnnReduceSum_ReduceSumOpAiCore_ReduceSum",
             "kernels_per_call": 1.0,
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "CORRECTNESS_NOT_PASS",
               "rank_eligible": false,
@@ -2211,7 +2265,7 @@
             "kernel_name": "reduce_sum_kernel",
             "kernels_per_call": 281.92,
             "route_variant": "ascendc_fp16_legacy",
-            "comparison_note": "旧 FP16 profiler, 不代表新版 FP32 内核",
+            "comparison_note": "旧 FP16 profiler，不代表新版 FP32 内核",
             "validation": {
               "status": "CORRECTNESS_NOT_PASS",
               "rank_eligible": false,
