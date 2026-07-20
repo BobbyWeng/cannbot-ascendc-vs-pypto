@@ -28,76 +28,222 @@ OUT = BASE / "dashboard"
 # Release-mode data loader
 # ---------------------------------------------------------------------------
 
-def load_release(path):
-    """Load release-mode data source.
+def _parse_correctness_from_coverage(text):
+    """Parse correctness_coverage text into per-route status dict.
 
-    Supports two formats:
-    1. dashboard.json (mode=release, has structured profiler/correctness) — pass through
-    2. current_release.json (legacy, has routes.* or correctness_coverage text) — convert
+    Returns dict like {"torch": "PASS", "ascendc": "PASS (FP32 70/70)", ...}
+    Empty routes (no data) are omitted.
+    """
+    if not text:
+        return {}
+    result = {}
+    # Common patterns:
+    # "Torch PASS; AscendC PASS (42/42); PyPTO PASS"
+    # "Torch/AscendC/PyPTO: FULL — all 7 batches PASS"
+    # "Torch 62/70; AscendC FP16 21/70; AscendC FP32 70/70 (NEW); PyPTO 70/70"
+    # Split by semicolons
+    parts = [p.strip() for p in text.replace(';', ';').split(';')]
+    route_map = {'torch': 'torch', 'ascendc': 'ascendc', 'pypto': 'pypto',
+                 'torch+ascendc+pypto': None}  # combined
+    for part in parts:
+        if not part:
+            continue
+        part_lower = part.lower()
+        matched = False
+        for key, label in [('torch', 'torch'), ('ascendc', 'ascendc'), ('pypto', 'pypto')]:
+            if part_lower.startswith(key):
+                # Extract the actual status after colon/space
+                rest = part[len(key):].strip().lstrip(':').strip()
+                if rest.startswith('PASS') or 'PASS' in rest:
+                    result[label] = rest
+                elif any(c.isdigit() for c in rest) and 'PASS' not in rest:
+                    # e.g. "62/70" (partial)
+                    result[label] = rest
+                else:
+                    result[label] = rest or 'PASS'
+                matched = True
+                break
+        if not matched and 'FULL' in part:
+            # "Torch/AscendC/PyPTO: FULL" — all three PASS
+            for label in ['torch', 'ascendc', 'pypto']:
+                if label not in result:
+                    result[label] = 'PASS'
+    return result
+
+
+def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name):
+    """Extract profiler for a route. Priority:
+    1. current_release routes.*.profiler (matmul has structured data)
+    2. dashboard.json structured data (pre-built from parsed msprof)
+    """
+    r = routes.get(route_key, {}) if isinstance(routes, dict) else {}
+    p = r.get("profiler", {}) if isinstance(r, dict) else {}
+
+    result = {"method": "N/A", "source": "N/A"}
+
+    if isinstance(p, dict) and (p.get("b1_us") is not None or p.get("b1_primary_us") is not None):
+        # current_release has structured profiler data (matmul post-RC3)
+        for key in ["method", "b1_us", "b2_us", "b4_us", "b8_us", "b16_us", "b32_us",
+                     "b1_primary_us", "b32_primary_us",
+                     "b1_TFLOPS", "b32_TFLOPS", "kernels_per_call",
+                     "blockDim_b1", "blockDim_b32"]:
+            if key in p:
+                result[key] = p[key]
+        # Normalize b1_primary_us -> b1_us for display
+        if "b1_us" not in result and "b1_primary_us" in result:
+            result["b1_us"] = result["b1_primary_us"]
+        if "b32_us" not in result and "b32_primary_us" in result:
+            result["b32_us"] = result["b32_primary_us"]
+        result["source"] = "routes.*.profiler (current_release)"
+        if not result.get("method"):
+            result["method"] = "msprof"
+        return result
+
+    # No structured data in current_release — try dashboard.json (pre-built from parsed)
+    if dj_ops and op_name in dj_ops:
+        dj_prof = dj_ops[op_name].get("profiler", {}).get(route_key, {})
+        if isinstance(dj_prof, dict) and dj_prof.get("b1_us") is not None:
+            for key in ["method", "b1_us", "b2_us", "b4_us", "b8_us", "b16_us",
+                         "b32_us", "kernel_type", "kernel_name", "kernels_per_call"]:
+                if key in dj_prof:
+                    result[key] = dj_prof[key]
+            result["source"] = "dashboard.json (parsed msprof)"
+            if not result.get("method"):
+                result["method"] = "msprof"
+            return result
+
+    return result
+
+
+def load_release(path):
+    """Load release-mode data source from current_release.json.
+
+    current_release.json is the single source of truth for:
+      - release_version, generated_at, environment
+      - operator final_status, formula, shape, dtype, batches, precision
+      - correctness_coverage text (parsed into per-route status)
+      - routes.*.profiler (structured profiler data — matmul only)
+      - known_limitations, ascendc_implementation_audit
+
+    Profiler data for non-matmul operators is supplemented from
+    dashboard/dashboard.json (pre-built from parsed msprof data, checked into git).
     """
     raw = json.loads(Path(path).read_text())
 
-    # If already in dashboard format (mode=release), pass through directly
-    if raw.get("mode") == "release":
-        return raw
+    # Load supplementary profiler data from dashboard.json (pre-built from parsed msprof)
+    dj_path = OUT / "dashboard.json"
+    dj_ops = None
+    if dj_path.exists():
+        try:
+            dj_raw = json.loads(dj_path.read_text())
+            dj_ops = dj_raw.get("operators", {}) if dj_raw.get("mode") == "release" else None
+        except (json.JSONDecodeError, OSError):
+            pass
 
-    # Legacy current_release.json format — extract what we can
-    from tools.rebuild_final_data import OPERATOR_META, CORRECTNESS_DATA
+    # Get release metadata raw — no modification
+    release_version = raw.get("release_version", "unknown")
+    generated_at = raw.get("generated_at", "")
+    environment = raw.get("environment", {})
 
     ops = {}
     for name, op in raw.get("operators", {}).items():
-        meta = OPERATOR_META.get(name, {})
-        correctness = CORRECTNESS_DATA.get(name, {})
-
         routes = op.get("routes", {})
-        profiler = {}
-        profiler_tool = "NONE"
-        for route_key in ["torch", "ascendc", "pypto"]:
-            r = routes.get(route_key, {})
-            p = r.get("profiler", {}) if isinstance(r, dict) else {}
-            method = p.get("method", "") if isinstance(p, dict) else ""
-            if method and method != "N/A":
-                profiler_tool = method.split()[0] if method else "msprof"
-            pstat = {"method": method if method else "N/A"}
-            if isinstance(p, dict):
-                if p.get("not_comparable"):
-                    pstat["not_comparable"] = True
-                for src_key, dst_key in [("b1_primary_us", "b1_us"), ("b1_host_sync_us", "b1_us"),
-                                          ("b1_us", "b1_us"), ("b32_us", "b32_us")]:
-                    if p.get(src_key) is not None:
-                        pstat[dst_key] = p[src_key]
-            profiler[route_key] = pstat
 
-        ops[name] = {
-            "status": op.get("final_status", meta.get("status", "UNKNOWN")),
-            "formula": op.get("formula", meta.get("formula", "")),
-            "shape": op.get("shape", meta.get("shape", "")),
-            "dtype": op.get("dtype", meta.get("dtype", "")),
-            "batches": op.get("batches", meta.get("batches", [])),
-            "precision": op.get("precision", meta.get("precision", "")),
+        # 1. Correctness: from coverage text (primary) + routes (fallback)
+        coverage_text = op.get("correctness_coverage", "")
+        correctness = _parse_correctness_from_coverage(coverage_text)
+        if not correctness and isinstance(routes, dict):
+            for rk in ["torch", "ascendc", "pypto"]:
+                rv = routes.get(rk, {})
+                if isinstance(rv, dict) and rv.get("correctness"):
+                    correctness[rk] = rv["correctness"]
+
+        # 2. Profiler: routes priority, then dashboard.json
+        profiler = {}
+        for rk in ["torch", "ascendc", "pypto"]:
+            p = _extract_profiler_from_routes(routes, rk, dj_ops, name)
+            if p.get("b1_us") is not None or p.get("source") != "N/A":
+                profiler[rk] = p
+
+        # 3. Batch scaling: from routes.*.profiler (per-batch keys)
+        batch_scaling = {}
+        for rk in ["torch", "ascendc", "pypto"]:
+            r = routes.get(rk, {}) if isinstance(routes, dict) else {}
+            p = r.get("profiler", {}) if isinstance(r, dict) else {}
+            if isinstance(p, dict):
+                bs = {}
+                for bk in ["b1_us", "b2_us", "b4_us", "b8_us", "b16_us", "b32_us", "b64_us"]:
+                    if bk in p and p[bk] is not None:
+                        bs[bk] = p[bk]
+                if bs:
+                    batch_scaling[rk] = bs
+
+        # Also try dashboard.json for batch scaling
+        if not batch_scaling and dj_ops and name in dj_ops:
+            dj_bs = dj_ops[name].get("batch_scaling", {})
+            for rk in ["torch", "ascendc", "pypto"]:
+                if rk in dj_bs and dj_bs[rk]:
+                    if rk not in batch_scaling:
+                        batch_scaling[rk] = dj_bs[rk]
+
+        # 4. Build operator entry
+        entry = {
+            "status": op.get("final_status", "UNKNOWN"),
+            "formula": op.get("formula", ""),
+            "shape": op.get("shape", ""),
+            "dtype": op.get("dtype", ""),
+            "batches": op.get("batches", []),
+            "precision": op.get("precision", ""),
             "correctness": correctness,
             "profiler": profiler,
-            "profiler_tool": profiler_tool,
+            "batch_scaling": batch_scaling,
             "report_path": op.get("report_path", ""),
             "archive": op.get("archive", "none"),
         }
 
+        # Add special reduce_sum annotations
+        if name == "reduce_sum":
+            entry["correctness_notes"] = {
+                "ascendc_fp16": "21/70 PASS (FP16 accum, legacy)",
+                "ascendc_fp32": "70/70 PASS (FP32 accum, recommended)",
+                "profiler_note": "Parsed profiler data from old FP16 kernel. FP32 kernel profiler not yet collected."
+            }
+
+        ops[name] = entry
+
+    # Compute status summary
     status_counts = {}
     for op in ops.values():
         s = op["status"]
         status_counts[s] = status_counts.get(s, 0) + 1
 
-    return {
+    # Infer profiler_coverage from profiler availability
+    profiler_coverage_summary = ""
+    for name, entry in ops.items():
+        prof = entry.get("profiler", {})
+        routes = set(prof.keys())
+        if routes:
+            c = f"{','.join(sorted(routes))} profiled"
+            entry["_profiler_coverage"] = c
+
+    result = {
         "mode": "release",
-        "release_version": raw.get("release_version", "unknown"),
-        "generated_at": raw.get("generated_at", datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")),
-        "environment": raw.get("environment", {}),
+        "release_version": release_version,
+        "generated_at": generated_at,
+        "environment": environment,
         "operator_count": len(ops),
         "status_summary": status_counts,
         "operators": ops,
         "known_limitations": raw.get("known_limitations", []),
         "ascendc_implementation_audit": raw.get("ascendc_implementation_audit", {}),
+        "source": {
+            "release_file": str(Path(path).resolve()),
+            "release_version": release_version,
+            "generated_at": generated_at,
+            "performance_matrix_used": False,
+        },
     }
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -1057,8 +1203,21 @@ function renderReleaseCorrectness(op) {
     const prof = op.profiler?.[impl] || {};
     const method = prof.method || 'N/A';
     const b1 = prof.b1_us != null ? ' | B1=' + Number(prof.b1_us).toFixed(1) + 'us' : '';
-    html += '<tr><td>' + impl + '</td><td>' + c + '</td><td style="font-size:12px">' + method + b1 + '</td></tr>';
+    const src = prof.source || '';
+    const srcTag = src ? '<br><span style="font-size:10px;color:var(--text-muted)">' + src + '</span>' : '';
+    html += '<tr><td>' + impl + '</td><td>' + c + srcTag + '</td><td style="font-size:12px">' + method + b1 + '</td></tr>';
   }
+
+  // correctness_notes (reduce_sum special)
+  const notes = op.correctness_notes;
+  if (notes) {
+    html += '<tr><td colspan="3" style="font-size:11px;color:var(--text-secondary);padding-top:12px">';
+    if (notes.ascendc_fp16) html += '<div>⚠ AscendC FP16: ' + notes.ascendc_fp16 + '</div>';
+    if (notes.ascendc_fp32) html += '<div>✓ AscendC FP32: ' + notes.ascendc_fp32 + '</div>';
+    if (notes.profiler_note) html += '<div style="margin-top:4px">ℹ ' + notes.profiler_note + '</div>';
+    html += '</td></tr>';
+  }
+
   document.getElementById('corr-table-body').innerHTML = html;
 }
 
@@ -1071,8 +1230,9 @@ function renderReleasePerformance(op) {
     const method = p.method || 'N/A';
     const b1 = p.b1_us != null ? Number(p.b1_us).toFixed(1) + ' us' : 'N/A';
     const b32 = p.b32_us != null ? Number(p.b32_us).toFixed(1) + ' us' : '';
-    const lat = b32 ? b1 + ' / ' + b32 : b1;
-    html += '<tr><td>' + impl + '</td><td>' + method + '</td><td>' + lat + '</td></tr>';
+    const lat = b32 ? b1 + ' / B32=' + b32 : b1;
+    const src = p.source ? '<br><span style="font-size:10px;color:var(--text-muted)">' + p.source + '</span>' : '';
+    html += '<tr><td>' + impl + '</td><td>' + method + src + '</td><td>' + lat + '</td></tr>';
   }
   document.getElementById('perf-table-body').innerHTML = html;
 }
@@ -1100,33 +1260,29 @@ document.addEventListener('DOMContentLoaded', init);
 
 def main():
     parser = argparse.ArgumentParser(description="PyPTO Operator Dashboard Generator")
-    parser.add_argument("--release", type=str, default=None, nargs="?", const="auto",
-                        help="Release mode: reads dashboard/dashboard.json and generates index.html")
+    parser.add_argument("--release", type=str, default=None,
+                        help="Release mode: path to reports/release/current_release.json")
     args = parser.parse_args()
 
     OUT.mkdir(parents=True, exist_ok=True)
-    dj_path = OUT / "dashboard.json"
 
     if args.release:
-        # When --release is used without a path, default to dashboard.json
-        # Release mode: dashboard.json must already exist
-        if args.release == "auto":
-            pass  # use default dj_path
-        if not dj_path.exists():
-            print(f"[ERR] {dj_path} not found. Run 'python3 tools/rebuild_final_data.py' first.", file=sys.stderr)
+        release_path = Path(args.release)
+        if not release_path.exists():
+            print(f"[ERR] Release file not found: {release_path}", file=sys.stderr)
             sys.exit(1)
-        dashboard = json.loads(dj_path.read_text())
-        if dashboard.get("mode") != "release":
-            print(f"[ERR] {dj_path} is not in release format. Run 'python3 tools/rebuild_final_data.py' first.", file=sys.stderr)
-            sys.exit(1)
-        print(f"[OK] Loaded {dj_path} ({dashboard.get('release_version', '?')}) — {dashboard['operator_count']} operators")
+        dashboard = load_release(release_path)
+        print(f"[OK] Loaded {release_path} ({dashboard.get('release_version', '?')}) — {dashboard['operator_count']} operators")
     else:
         print("[INFO] Development mode — scanning operators/*/")
         dashboard = build_dev()
-        dj_path.write_text(json.dumps(dashboard, indent=2, ensure_ascii=False, default=str))
-        print(f"[OK] Written {dj_path}")
 
-    # Generate index.html
+    # Write dashboard.json (machine-readable output)
+    out_json = OUT / "dashboard.json"
+    out_json.write_text(json.dumps(dashboard, indent=2, ensure_ascii=False, default=str))
+    print(f"[OK] Written {out_json}")
+
+    # Generate index.html with embedded data
     html = generate_html(dashboard)
     out_html = OUT / "index.html"
     out_html.write_text(html, encoding="utf-8")
