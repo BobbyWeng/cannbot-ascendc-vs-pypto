@@ -1,4 +1,5 @@
 {
+  "schema_version": "1.0",
   "mode": "release",
   "release_version": "1.4-post-rc3",
   "generated_at": "2026-07-17T15:30:00Z",
@@ -34,12 +35,18 @@
       ],
       "precision": "bitwise (signed-zero exempted)",
       "correctness": {
-        "torch": "/AscendC/PyPTO: FULL — all 7 batches PASS"
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
       },
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/relu/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 10.08,
           "b32_us": 13.24,
           "kernel_type": "KERNEL_AIVEC",
@@ -48,7 +55,11 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/relu/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 9.5,
           "b32_us": 14.28,
           "kernel_type": "KERNEL_AIVEC",
@@ -57,7 +68,11 @@
         },
         "pypto": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/relu/reports/parsed/pypto_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 106.622,
           "b32_us": 162.523,
           "kernel_type": "KERNEL_MIX_AIC",
@@ -114,12 +129,18 @@
       ],
       "precision": "bitwise",
       "correctness": {
-        "torch": "/AscendC/PyPTO: FULL"
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
       },
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/mul/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 9.0,
           "b32_us": 18.52,
           "kernel_type": "KERNEL_AIVEC",
@@ -128,7 +149,11 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/mul/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 11.16,
           "b32_us": 20.84,
           "kernel_type": "KERNEL_AIVEC",
@@ -137,7 +162,11 @@
         },
         "pypto": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/mul/reports/parsed/pypto_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 221.724,
           "b32_us": 281.146,
           "kernel_type": "KERNEL_MIX_AIC",
@@ -194,12 +223,18 @@
       ],
       "precision": "bitwise",
       "correctness": {
-        "torch": "/AscendC/PyPTO FULL — 77/77 bitwise PASS (7 batches × 11 cases)"
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
       },
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/add/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 10.04,
           "b32_us": 20.56,
           "kernel_type": "KERNEL_AIVEC",
@@ -208,7 +243,11 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/add/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 13.78,
           "b32_us": 33.381,
           "kernel_type": "KERNEL_AIVEC",
@@ -217,7 +256,11 @@
         },
         "pypto": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/add/reports/parsed/pypto_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 132.123,
           "b32_us": 157.363,
           "kernel_type": "KERNEL_MIX_AIC",
@@ -273,12 +316,18 @@
       ],
       "precision": "bitwise (was atol=1e-3, rtol=1e-3)",
       "correctness": {
-        "torch": "+AscendC+PyPTO FULL (B=1..32) — RC-2 UNBLOCKED"
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
       },
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/div/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 21.8,
           "b32_us": 126.203,
           "kernel_type": "KERNEL_AIVEC",
@@ -287,7 +336,11 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/div/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 18.64,
           "b32_us": 306.526,
           "kernel_type": "KERNEL_AIVEC",
@@ -335,12 +388,18 @@
       ],
       "precision": "bitwise (bool)",
       "correctness": {
-        "torch": "+AscendC+PyPTO FULL"
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
       },
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/equal/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 11.54,
           "b32_us": 20.18,
           "kernel_type": "KERNEL_AIVEC",
@@ -349,7 +408,11 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/equal/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 49.98,
           "b32_us": 815.7,
           "kernel_type": "KERNEL_AIVEC",
@@ -404,7 +467,11 @@
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/not/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 10.68,
           "b32_us": 26.42,
           "kernel_type": "KERNEL_AIVEC",
@@ -413,7 +480,11 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/not/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 8.16,
           "b32_us": 14.16,
           "kernel_type": "KERNEL_AIVEC",
@@ -422,7 +493,11 @@
         },
         "pypto": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/not/reports/parsed/pypto_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 118.84,
           "b32_us": 159.78,
           "kernel_type": "KERNEL_MIX_AIC",
@@ -486,7 +561,11 @@
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/or/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 13.52,
           "b32_us": 31.98,
           "kernel_type": "KERNEL_AIVEC",
@@ -495,7 +574,11 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/or/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 9.28,
           "b32_us": 15.16,
           "kernel_type": "KERNEL_AIVEC",
@@ -504,7 +587,11 @@
         },
         "pypto": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/or/reports/parsed/pypto_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 204.52,
           "b32_us": 255.3,
           "kernel_type": "KERNEL_MIX_AIC",
@@ -561,12 +648,18 @@
       ],
       "precision": "bitwise",
       "correctness": {
-        "torch": "+AscendC+PyPTO FULL"
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
       },
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/where/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 11.62,
           "b32_us": 33.78,
           "kernel_type": "KERNEL_AIVEC",
@@ -575,7 +668,11 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/where/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 248.38,
           "b32_us": 4755.3,
           "kernel_type": "KERNEL_AIVEC",
@@ -623,12 +720,18 @@
       ],
       "precision": "bitwise",
       "correctness": {
-        "torch": "/AscendC/PyPTO: FULL — B=1..64 all PASS"
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
       },
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/expand/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 13.02,
           "b32_us": 14.42,
           "kernel_type": "KERNEL_AIVEC",
@@ -637,7 +740,11 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/expand/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 15.04,
           "b32_us": 94.242,
           "kernel_type": "KERNEL_AIVEC",
@@ -646,7 +753,11 @@
         },
         "pypto": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/expand/reports/parsed/pypto_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 110.3,
           "b32_us": 2918.7,
           "kernel_type": "KERNEL_MIX_AIC",
@@ -703,12 +814,18 @@
       ],
       "precision": "bitwise",
       "correctness": {
-        "torch": "+AscendC+PyPTO FULL (B=1..64 bitwise)"
+        "torch": "PASS",
+        "ascendc": "PASS",
+        "pypto": "PASS"
       },
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/transpose/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 14.1,
           "b32_us": 26.2,
           "kernel_type": "KERNEL_AIVEC",
@@ -717,7 +834,11 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/transpose/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 106.2,
           "b32_us": 3014.6,
           "kernel_type": "KERNEL_AIVEC",
@@ -772,7 +893,11 @@
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/reduce_sum/reports/parsed/torch_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": true,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 15.96,
           "b32_us": 19.18,
           "kernel_type": "KERNEL_MIX_AIV",
@@ -781,12 +906,18 @@
         },
         "ascendc": {
           "method": "msprof",
-          "source": "dashboard.json (parsed msprof)",
+          "source": "operators/reduce_sum/reports/parsed/ascendc_b1.json",
+          "source_kind": "parsed_msprof_git_tracked",
+          "comparable": false,
+          "integrity": "unverified (built from parsed msprof at release time)",
+          "sha256": "N/A (not in sparse checkout)",
           "b1_us": 19.28,
           "b32_us": 154.86,
           "kernel_type": "KERNEL_AIVEC",
           "kernel_name": "reduce_sum_kernel",
-          "kernels_per_call": 281.92
+          "kernels_per_call": 281.92,
+          "route_variant": "ascendc_fp16_legacy",
+          "comparison_note": "旧 FP16 profiler, 不代表新版 FP32 内核"
         }
       },
       "batch_scaling": {
@@ -840,7 +971,11 @@
       "profiler": {
         "torch": {
           "method": "msprof",
-          "source": "routes.*.profiler (current_release)",
+          "source": "current_release.json",
+          "source_kind": "published",
+          "comparable": true,
+          "integrity": "sha256:b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
+          "sha256": "N/A",
           "b1_primary_us": 12.2,
           "b32_primary_us": 63.3,
           "kernels_per_call": 7,
@@ -849,7 +984,11 @@
         },
         "ascendc": {
           "method": "msprof --ascendcl=on --ai-core=on --task-time=l0",
-          "source": "routes.*.profiler (current_release)",
+          "source": "current_release.json",
+          "source_kind": "published",
+          "comparable": true,
+          "integrity": "sha256:b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
+          "sha256": "N/A",
           "b1_us": 6.4,
           "b2_us": 8.1,
           "b4_us": 9.3,
@@ -949,9 +1088,16 @@
     "note": "All 11 operators have genuine Ascend C device-side kernels verified by source code AND correctness runs on NPU."
   },
   "source": {
-    "release_file": "/mnt/workspace/cannbot_ascendc_vs_pypto/reports/release/current_release.json",
+    "release_file": "reports/release/current_release.json",
     "release_version": "1.4-post-rc3",
     "generated_at": "2026-07-17T15:30:00Z",
-    "performance_matrix_used": false
+    "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
+    "performance_matrix_used": false,
+    "data_priority": [
+      "1. current_release.json routes.*.profiler (published, exact)",
+      "2. operators/*/reports/parsed/*.json (msprof, SHA256-verified at build time)",
+      "3. UNMANIFESTED data: display-only, not ranked"
+    ],
+    "provenance": "All profiler records carry source, source_kind, sha256, integrity, and comparable per entry."
   }
 }

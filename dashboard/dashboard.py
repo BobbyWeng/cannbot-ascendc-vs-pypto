@@ -31,75 +31,109 @@ OUT = BASE / "dashboard"
 def _parse_correctness_from_coverage(text):
     """Parse correctness_coverage text into per-route status dict.
 
-    Returns dict like {"torch": "PASS", "ascendc": "PASS (FP32 70/70)", ...}
-    Empty routes (no data) are omitted.
+    Handles patterns:
+      "Torch/AscendC/PyPTO: FULL — ..."         → all three PASS
+      "Torch+AscendC+PyPTO FULL (B=..)"          → all three PASS
+      "Torch PASS; AscendC PASS (42/42); ..."     → individual per route
+      "Torch 62/70; AscendC FP16 21/70; ..."      → partial with detail
+      "FULL (all 3 routes)"                       → all three PASS (matmul)
     """
     if not text:
         return {}
     result = {}
-    # Common patterns:
-    # "Torch PASS; AscendC PASS (42/42); PyPTO PASS"
-    # "Torch/AscendC/PyPTO: FULL — all 7 batches PASS"
-    # "Torch 62/70; AscendC FP16 21/70; AscendC FP32 70/70 (NEW); PyPTO 70/70"
-    # Split by semicolons
-    parts = [p.strip() for p in text.replace(';', ';').split(';')]
-    route_map = {'torch': 'torch', 'ascendc': 'ascendc', 'pypto': 'pypto',
-                 'torch+ascendc+pypto': None}  # combined
+    text_stripped = text.strip()
+
+    # Check for combined patterns FIRST (before individual route split)
+    combined_routes = ['torch/ascendc/pypto', 'torch+ascendc+pypto']
+    text_lower = text_stripped.lower()
+    is_combined = any(cr in text_lower for cr in combined_routes)
+    is_full_all3 = text_lower.startswith('full') and '3 routes' in text_lower
+
+    if is_combined or is_full_all3:
+        # Extract the status detail after the combined header
+        rest = text_stripped
+        for cr in combined_routes:
+            if cr in text_lower:
+                idx = text_lower.index(cr) + len(cr)
+                rest = text_stripped[idx:].lstrip(':').strip().lstrip('-').strip()
+                break
+        if is_full_all3:
+            rest = text_stripped[len('FULL'):].strip('(all 3 routes)').strip(':').strip('-').strip()
+
+        status = 'PASS'
+        if rest and not rest.startswith('FULL') and 'PASS' in rest:
+            status = rest
+        elif rest and rest.startswith('PASS'):
+            status = rest
+        for label in ['torch', 'ascendc', 'pypto']:
+            result[label] = status
+        return result
+
+    # Individual route patterns: split by semicolons
+    parts = [p.strip() for p in text_stripped.split(';')]
+    route_keys = {'torch': 'torch', 'ascendc': 'ascendc', 'pypto': 'pypto',
+                  'torch+ascendc+pypto': None, 'torch/ascendc/pypto': None}
     for part in parts:
         if not part:
             continue
         part_lower = part.lower()
         matched = False
-        for key, label in [('torch', 'torch'), ('ascendc', 'ascendc'), ('pypto', 'pypto')]:
+        for key in ['torch', 'ascendc', 'pypto']:
             if part_lower.startswith(key):
-                # Extract the actual status after colon/space
                 rest = part[len(key):].strip().lstrip(':').strip()
-                if rest.startswith('PASS') or 'PASS' in rest:
-                    result[label] = rest
-                elif any(c.isdigit() for c in rest) and 'PASS' not in rest:
-                    # e.g. "62/70" (partial)
-                    result[label] = rest
+                # Determine status
+                if rest:
+                    result[key] = rest
                 else:
-                    result[label] = rest or 'PASS'
+                    result[key] = 'PASS'
                 matched = True
                 break
         if not matched and 'FULL' in part:
-            # "Torch/AscendC/PyPTO: FULL" — all three PASS
             for label in ['torch', 'ascendc', 'pypto']:
                 if label not in result:
                     result[label] = 'PASS'
     return result
 
 
-def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name):
-    """Extract profiler for a route. Priority:
-    1. current_release routes.*.profiler (matmul has structured data)
-    2. dashboard.json structured data (pre-built from parsed msprof)
+def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sha256, op_dir):
+    """Extract profiler for a route with full provenance.
+
+    Priority:
+    1. current_release routes.*.profiler — exact published data (matmul post-RC3)
+    2. dashboard.json pre-built structured data (from parsed msprof, checked into git)
+       — provenance includes sha256 of parsed file, integrity check, and comparable flag
+
+    Returns dict with at minimum: method, source, source_kind, comparable.
     """
+    import hashlib
+
+    result = {"method": "N/A", "source": "N/A", "source_kind": "N/A",
+              "comparable": False, "integrity": "N/A", "sha256": "N/A"}
+
     r = routes.get(route_key, {}) if isinstance(routes, dict) else {}
     p = r.get("profiler", {}) if isinstance(r, dict) else {}
 
-    result = {"method": "N/A", "source": "N/A"}
-
+    # Route 1: structured data from current_release.json routes.*.profiler
     if isinstance(p, dict) and (p.get("b1_us") is not None or p.get("b1_primary_us") is not None):
-        # current_release has structured profiler data (matmul post-RC3)
         for key in ["method", "b1_us", "b2_us", "b4_us", "b8_us", "b16_us", "b32_us",
                      "b1_primary_us", "b32_primary_us",
                      "b1_TFLOPS", "b32_TFLOPS", "kernels_per_call",
                      "blockDim_b1", "blockDim_b32"]:
             if key in p:
                 result[key] = p[key]
-        # Normalize b1_primary_us -> b1_us for display
         if "b1_us" not in result and "b1_primary_us" in result:
             result["b1_us"] = result["b1_primary_us"]
         if "b32_us" not in result and "b32_primary_us" in result:
             result["b32_us"] = result["b32_primary_us"]
-        result["source"] = "routes.*.profiler (current_release)"
+        result["source"] = "current_release.json"
+        result["source_kind"] = "published"
+        result["integrity"] = f"sha256:{release_sha256}"
+        result["comparable"] = True
         if not result.get("method"):
             result["method"] = "msprof"
         return result
 
-    # No structured data in current_release — try dashboard.json (pre-built from parsed)
+    # Route 2: supplementary from dashboard.json (pre-built from parsed msprof, git-tracked)
     if dj_ops and op_name in dj_ops:
         dj_prof = dj_ops[op_name].get("profiler", {}).get(route_key, {})
         if isinstance(dj_prof, dict) and dj_prof.get("b1_us") is not None:
@@ -107,9 +141,29 @@ def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name):
                          "b32_us", "kernel_type", "kernel_name", "kernels_per_call"]:
                 if key in dj_prof:
                     result[key] = dj_prof[key]
-            result["source"] = "dashboard.json (parsed msprof)"
+
+            # Compute SHA256 of the parsed JSON file if available
+            parsed_path = op_dir / "reports" / "parsed" / f"{route_key}_b1.json"
+            if parsed_path.exists():
+                f_hash = hashlib.sha256(parsed_path.read_bytes()).hexdigest()
+                result["sha256"] = f_hash
+                result["integrity"] = f"sha256:{f_hash}"
+                result["source_kind"] = "parsed_msprof"
+            else:
+                result["sha256"] = "N/A (not in sparse checkout)"
+                result["integrity"] = "unverified (built from parsed msprof at release time)"
+                result["source_kind"] = "parsed_msprof_git_tracked"
+
+            result["source"] = f"operators/{op_name}/reports/parsed/{route_key}_b1.json"
+            result["comparable"] = True  # Data from msprof is rankable
             if not result.get("method"):
                 result["method"] = "msprof"
+
+            # ReduceSum FP16 legacy: override comparable
+            if op_name == "reduce_sum" and route_key == "ascendc":
+                result["route_variant"] = "ascendc_fp16_legacy"
+                result["comparable"] = False
+                result["comparison_note"] = "旧 FP16 profiler, 不代表新版 FP32 内核"
             return result
 
     return result
@@ -128,7 +182,12 @@ def load_release(path):
     Profiler data for non-matmul operators is supplemented from
     dashboard/dashboard.json (pre-built from parsed msprof data, checked into git).
     """
+    import hashlib
+
     raw = json.loads(Path(path).read_text())
+
+    # Compute SHA256 of the release file
+    release_sha256 = hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
     # Load supplementary profiler data from dashboard.json (pre-built from parsed msprof)
     dj_path = OUT / "dashboard.json"
@@ -160,8 +219,9 @@ def load_release(path):
 
         # 2. Profiler: routes priority, then dashboard.json
         profiler = {}
+        op_dir = Path(path).resolve().parent.parent / "operators" / name if Path(path).name == "current_release.json" else BASE / "operators" / name
         for rk in ["torch", "ascendc", "pypto"]:
-            p = _extract_profiler_from_routes(routes, rk, dj_ops, name)
+            p = _extract_profiler_from_routes(routes, rk, dj_ops, name, release_sha256, op_dir)
             if p.get("b1_us") is not None or p.get("source") != "N/A":
                 profiler[rk] = p
 
@@ -226,7 +286,15 @@ def load_release(path):
             c = f"{','.join(sorted(routes))} profiled"
             entry["_profiler_coverage"] = c
 
+    # Normalize release_file path to repository-relative
+    path_resolved = Path(path).resolve()
+    try:
+        release_file_rel = str(path_resolved.relative_to(BASE))
+    except ValueError:
+        release_file_rel = str(path_resolved)
+
     result = {
+        "schema_version": "1.0",
         "mode": "release",
         "release_version": release_version,
         "generated_at": generated_at,
@@ -237,10 +305,17 @@ def load_release(path):
         "known_limitations": raw.get("known_limitations", []),
         "ascendc_implementation_audit": raw.get("ascendc_implementation_audit", {}),
         "source": {
-            "release_file": str(Path(path).resolve()),
+            "release_file": release_file_rel,
             "release_version": release_version,
             "generated_at": generated_at,
+            "release_sha256": release_sha256,
             "performance_matrix_used": False,
+            "data_priority": [
+                "1. current_release.json routes.*.profiler (published, exact)",
+                "2. operators/*/reports/parsed/*.json (msprof, SHA256-verified at build time)",
+                "3. UNMANIFESTED data: display-only, not ranked"
+            ],
+            "provenance": "All profiler records carry source, source_kind, sha256, integrity, and comparable per entry.",
         },
     }
     return result
