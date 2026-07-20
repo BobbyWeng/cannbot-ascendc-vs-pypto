@@ -185,18 +185,37 @@ def _check_schema(data):
 
 
 def _check_ranking_edge_cases(operators):
-    """Regression test 10-12: single route, insufficient, etc."""
+    """Regression tests for ranking behavior."""
     errors = []
-    # Test 9: only one rankable route = no winner
-    for op_name in ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose"]:
-        ranking = operators.get(op_name, {}).get("ranking", {})
-        if ranking.get("winner") is not None:
-            errors.append(f"{op_name}: no rankable routes should exist, had winner={ranking['winner']}")
 
-    # Test 10: MatMul with 2+ rankable routes = RANKED
+    # All operators with SHA256-verified profilers should produce ranking
+    # (manifests exist for their parsed files)
+    for op_name in EXPECTED_OPERATORS:
+        ranking = operators.get(op_name, {}).get("ranking", {})
+        prof = operators.get(op_name, {}).get("profiler", {})
+        rankable_count = sum(1 for p in prof.values()
+                             if isinstance(p, dict) and p.get("validation", {}).get("rank_eligible"))
+        if rankable_count >= 2:
+            if ranking.get("status") != "RANKED":
+                errors.append(f"{op_name}: {rankable_count} rankable routes but ranking={ranking.get('status')}")
+            if ranking.get("winner") is None:
+                errors.append(f"{op_name}: {rankable_count} rankable routes but no winner")
+        elif rankable_count == 1:
+            if ranking.get("status") != "INSUFFICIENT_VERIFIED_ROUTES":
+                errors.append(f"{op_name}: 1 rankable route, expected INSUFFICIENT but got {ranking.get('status')}")
+
+    # MatMul must be RANKED
     mm_ranking = operators.get("matmul", {}).get("ranking", {})
     if mm_ranking.get("status") != "RANKED":
         errors.append(f"matmul: ranking should be RANKED but got {mm_ranking.get('status')}")
+
+    # reduce_sum: all non-rankable (torch=62/70, ascendc=FP16 legacy)
+    rs_prof = operators.get("reduce_sum", {}).get("profiler", {})
+    for rk in ["torch", "ascendc"]:
+        p = rs_prof.get(rk, {})
+        if isinstance(p, dict) and p.get("validation", {}).get("rank_eligible"):
+            errors.append(f"reduce_sum/{rk}: should NOT be rankable")
+
     return errors
 
 

@@ -13,6 +13,7 @@ Release mode:
 """
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -106,75 +107,90 @@ def _finite_positive(val):
         return False
 
 
-def validate_record(record, op_name, route_key, correctness, manifest_lookup):
+_SHA256_RE = re.compile(r'^[0-9a-f]{64}$')
+
+
+def validate_record(record, op_name, route_key, correctness, manifest_lookup, release_sha256):
     """Validate a profiler record against all ranking criteria.
 
+    fail-closed: any failure → rank_eligible=false.
     Returns {"status": str, "rank_eligible": bool, "reasons": [...], ...}
     """
     reasons = []
 
-    # 1. Correctness must be PASS
+    sk = record.get("source_kind", "")
+    sha = str(record.get("sha256", "")).strip()
+    integrity = str(record.get("integrity", "")).strip()
+    release_sha = str(release_sha256).strip()
     corr_val = str(correctness.get(route_key, "")).strip()
+    route_variant = record.get("route_variant", "")
+
+    # 1. Correctness
     if not corr_val.startswith("PASS"):
         reasons.append("CORRECTNESS_NOT_PASS")
 
-    # 2. source_kind must be CURRENT_RELEASE or PARSED_PROFILER
-    sk = record.get("source_kind", "")
-    if sk not in ("published", "parsed_msprof"):
-        reasons.append(f"UNMANIFESTED source_kind={sk}")
+    # 2-4. Source + SHA256 + integrity
+    if sk == "published":
+        # published: must come from current_release — sha256 must equal release_sha256
+        if not _SHA256_RE.match(release_sha):
+            reasons.append("INVALID_RELEASE_SHA256")
+        elif sha not in (release_sha, "N/A", ""):
+            reasons.append("RELEASE_HASH_MISMATCH")
+        elif integrity != f"sha256:{release_sha}":
+            reasons.append("INTEGRITY_MISMATCH")
 
-    # 3. integrity must be RELEASE_SOURCE or VERIFIED
-    integrity = record.get("integrity", "")
-    if not integrity.startswith("sha256:"):
-        reasons.append("MISSING_SOURCE")
-    elif integrity == "sha256:":
-        reasons.append("MISSING_SOURCE")
-
-    # 4. SHA256 must match manifest
-    sha = record.get("sha256", "")
-    if sk == "parsed_msprof":
+    elif sk == "parsed_msprof":
         expected_sha = manifest_lookup.get(op_name, {}).get(route_key)
-        if expected_sha and sha != expected_sha:
+        if not expected_sha:
+            reasons.append("UNMANIFESTED")
+        elif not _SHA256_RE.match(sha):
+            reasons.append("INVALID_SHA256")
+        elif sha != expected_sha:
             reasons.append("HASH_MISMATCH")
+        elif integrity != f"sha256:{sha}":
+            reasons.append("INTEGRITY_MISMATCH")
+
     elif sk == "parsed_msprof_git_tracked":
         reasons.append("UNMANIFESTED")
-    elif sk == "N/A" or not sk:
+
+    else:
         reasons.append("MISSING_SOURCE")
 
-    # 5. comparable must be True
+    # 5. comparable
     if not record.get("comparable"):
         reasons.append("NOT_COMPARABLE")
 
-    # 6. method must be msprof (allow args like "msprof --ascendcl=on ...")
+    # 6. method
     method_raw = record.get("method", "")
     method = method_raw.split()[0] if method_raw else ""
     if method != "msprof":
         reasons.append("METHOD_MISMATCH")
 
-    # 7. metric (not stored in record directly; implied by profiler source)
-    # For parsed_msprof, the metric is always primary_compute_kernel_us
+    # 7. metric
+    metric = str(record.get("metric", "")).strip()
+    if metric != "primary_compute_kernel_us":
+        reasons.append("METRIC_MISMATCH")
 
-    # 8. primary_us must be finite positive
+    # 8. primary_us finite positive
     b1 = record.get("b1_us")
     if not _finite_positive(b1):
         reasons.append("METRIC_INVALID")
 
-    # 9. route_variant must match correctness variant
-    # Not all operators have route_variant stored; default to match
-    route_variant = record.get("route_variant", "")
+    # 9. route_variant
     if route_variant and "legacy" in route_variant:
         reasons.append("WRONG_VARIANT")
 
-    # 10. (operator/route/batch/shape/dtype check: handled by upstream data pipeline)
-
+    # Build result
+    manifest_sha = manifest_lookup.get(op_name, {}).get(route_key)
     status = "VERIFIED" if not reasons else reasons[0]
     return {
         "status": status,
         "rank_eligible": len(reasons) == 0,
         "reasons": reasons,
         "validated_at": None,
-        "source_sha256": sha,
-        "manifest_sha256": None,
+        "source_sha256": sha if _SHA256_RE.match(sha) else None,
+        "manifest_sha256": manifest_sha if _SHA256_RE.match(manifest_sha or "") else None,
+        "release_sha256": release_sha if _SHA256_RE.match(release_sha) else None,
         "correctness_status": corr_val if corr_val else "N/A",
         "metric_contract": "primary_compute_kernel_us",
         "variant_match": "legacy" not in route_variant,
@@ -199,8 +215,6 @@ def rank_routes(profiler_records):
 
 def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sha256, op_dir, manifest_lookup):
     """Extract profiler for a route with full provenance and validation."""
-    import hashlib
-    from datetime import datetime
 
     result = {"method": "N/A", "source": "N/A", "source_kind": "N/A",
               "comparable": False, "integrity": "N/A", "sha256": "N/A",
@@ -223,6 +237,7 @@ def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sh
             result["b32_us"] = result["b32_primary_us"]
         result["source"] = "current_release.json"
         result["source_kind"] = "published"
+        result["sha256"] = release_sha256
         result["integrity"] = f"sha256:{release_sha256}"
         result["comparable"] = True
         result["metric"] = "primary_compute_kernel_us"
@@ -279,8 +294,6 @@ def load_release(path):
     Profiler data for non-matmul operators is supplemented from
     dashboard/dashboard.json (pre-built from parsed msprof data, checked into git).
     """
-    import hashlib
-
     raw = json.loads(Path(path).read_text())
 
     # Compute SHA256 of the release file
@@ -297,6 +310,8 @@ def load_release(path):
             pass
 
     # Build manifest lookup: op_name -> {route_key: expected_sha256}
+    # SHA256SUMS format: <hash>  <path> or <hash> *<path>
+    # Path must match relative to operator directory
     manifest_lookup = {}
     for op_name in raw.get("operators", {}):
         manifest_lookup[op_name] = {}
@@ -306,12 +321,15 @@ def load_release(path):
                 line = line.strip()
                 if not line:
                     continue
-                parts = line.split('  ', 1)
+                # Support both "hash  path" and "hash *path"
+                parts = line.split(None, 1)
                 if len(parts) == 2:
-                    f_hash, f_path = parts
-                    # Map parsed JSON paths to route keys
+                    f_hash = parts[0]
+                    f_path = parts[1].lstrip('*')
+                    # Use exact relative path match
                     for rk in ["torch", "ascendc", "pypto"]:
-                        if f"reports/parsed/{rk}_b1.json" in f_path:
+                        expected = f"reports/parsed/{rk}_b1.json"
+                        if f_path == expected:
                             manifest_lookup[op_name][rk] = f_hash
 
     # Get release metadata raw — no modification
@@ -334,7 +352,7 @@ def load_release(path):
 
         # 2. Profiler: routes priority, then dashboard.json
         profiler = {}
-        op_dir = Path(path).resolve().parent.parent / "operators" / name if Path(path).name == "current_release.json" else BASE / "operators" / name
+        op_dir = BASE / "operators" / name
         for rk in ["torch", "ascendc", "pypto"]:
             p = _extract_profiler_from_routes(routes, rk, dj_ops, name, release_sha256, op_dir, manifest_lookup)
             if p.get("b1_us") is not None or p.get("source") != "N/A":
@@ -406,7 +424,7 @@ def load_release(path):
 
         # Run validate_record on each profiler entry
         for rk, rec in list(prof.items()):
-            val = validate_record(rec, op_name, rk, correctness, manifest_lookup)
+            val = validate_record(rec, op_name, rk, correctness, manifest_lookup, release_sha256)
             rec["validation"] = val
             # Categorize
             if val["rank_eligible"]:

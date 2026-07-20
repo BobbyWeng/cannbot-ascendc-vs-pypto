@@ -43,10 +43,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/relu/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:e8e72925370684f0c15ff875530ddb94cdcaa9ce25d44d3f98ea1f0211d04fcd",
+          "sha256": "e8e72925370684f0c15ff875530ddb94cdcaa9ce25d44d3f98ea1f0211d04fcd",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 10.08,
@@ -55,16 +55,13 @@
           "kernel_name": "aclnnRelu_Relu_Relu",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "e8e72925370684f0c15ff875530ddb94cdcaa9ce25d44d3f98ea1f0211d04fcd",
+            "manifest_sha256": "e8e72925370684f0c15ff875530ddb94cdcaa9ce25d44d3f98ea1f0211d04fcd",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -73,10 +70,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/relu/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:015d6396ac4a35723b7241fa758458546b2e97c9231d7e95a4356d3fa70e220f",
+          "sha256": "015d6396ac4a35723b7241fa758458546b2e97c9231d7e95a4356d3fa70e220f",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 9.5,
@@ -85,16 +82,13 @@
           "kernel_name": "relu_kernel",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "015d6396ac4a35723b7241fa758458546b2e97c9231d7e95a4356d3fa70e220f",
+            "manifest_sha256": "015d6396ac4a35723b7241fa758458546b2e97c9231d7e95a4356d3fa70e220f",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -103,10 +97,10 @@
         "pypto": {
           "method": "msprof",
           "source": "operators/relu/reports/parsed/pypto_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:95bdee16d95a702c5b334ee75c62c3a6b2688b118584cb4e4f4e5888f49437d5",
+          "sha256": "95bdee16d95a702c5b334ee75c62c3a6b2688b118584cb4e4f4e5888f49437d5",
           "metric": "primary_compute_kernel_us",
           "_route_key": "pypto",
           "b1_us": 106.622,
@@ -115,16 +109,13 @@
           "kernel_name": "PYPTO_relu_kernel_2d",
           "kernels_per_call": 3.01,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "95bdee16d95a702c5b334ee75c62c3a6b2688b118584cb4e4f4e5888f49437d5",
+            "manifest_sha256": "95bdee16d95a702c5b334ee75c62c3a6b2688b118584cb4e4f4e5888f49437d5",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -163,20 +154,19 @@
       "report_path": "",
       "archive": "none",
       "ranking": {
-        "status": "INSUFFICIENT_VERIFIED_ROUTES",
-        "winner": null,
+        "status": "RANKED",
+        "winner": "ascendc",
         "speedup": null
       },
       "profiling_display": {
-        "rankable": {},
-        "display_only": {
+        "rankable": {
           "torch": {
             "method": "msprof",
             "source": "operators/relu/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:e8e72925370684f0c15ff875530ddb94cdcaa9ce25d44d3f98ea1f0211d04fcd",
+            "sha256": "e8e72925370684f0c15ff875530ddb94cdcaa9ce25d44d3f98ea1f0211d04fcd",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 10.08,
@@ -185,16 +175,13 @@
             "kernel_name": "aclnnRelu_Relu_Relu",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "e8e72925370684f0c15ff875530ddb94cdcaa9ce25d44d3f98ea1f0211d04fcd",
+              "manifest_sha256": "e8e72925370684f0c15ff875530ddb94cdcaa9ce25d44d3f98ea1f0211d04fcd",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -203,10 +190,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/relu/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:015d6396ac4a35723b7241fa758458546b2e97c9231d7e95a4356d3fa70e220f",
+            "sha256": "015d6396ac4a35723b7241fa758458546b2e97c9231d7e95a4356d3fa70e220f",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 9.5,
@@ -215,16 +202,13 @@
             "kernel_name": "relu_kernel",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "015d6396ac4a35723b7241fa758458546b2e97c9231d7e95a4356d3fa70e220f",
+              "manifest_sha256": "015d6396ac4a35723b7241fa758458546b2e97c9231d7e95a4356d3fa70e220f",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -233,10 +217,10 @@
           "pypto": {
             "method": "msprof",
             "source": "operators/relu/reports/parsed/pypto_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:95bdee16d95a702c5b334ee75c62c3a6b2688b118584cb4e4f4e5888f49437d5",
+            "sha256": "95bdee16d95a702c5b334ee75c62c3a6b2688b118584cb4e4f4e5888f49437d5",
             "metric": "primary_compute_kernel_us",
             "_route_key": "pypto",
             "b1_us": 106.622,
@@ -245,22 +229,20 @@
             "kernel_name": "PYPTO_relu_kernel_2d",
             "kernels_per_call": 3.01,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "95bdee16d95a702c5b334ee75c62c3a6b2688b118584cb4e4f4e5888f49437d5",
+              "manifest_sha256": "95bdee16d95a702c5b334ee75c62c3a6b2688b118584cb4e4f4e5888f49437d5",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
             }
           }
-        }
+        },
+        "display_only": {}
       },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
@@ -288,10 +270,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/mul/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:52cab3146b4e3db7c8d61d48383f8140fa56a8f6785fe3e8bf6a7374e1dfebde",
+          "sha256": "52cab3146b4e3db7c8d61d48383f8140fa56a8f6785fe3e8bf6a7374e1dfebde",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 9.0,
@@ -300,16 +282,13 @@
           "kernel_name": "aclnnMul_MulAiCore_Mul",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "52cab3146b4e3db7c8d61d48383f8140fa56a8f6785fe3e8bf6a7374e1dfebde",
+            "manifest_sha256": "52cab3146b4e3db7c8d61d48383f8140fa56a8f6785fe3e8bf6a7374e1dfebde",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -318,10 +297,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/mul/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:aeb0523a699f787f2e2be906f334ff05036109fa554e6ef8b1551e879e764e26",
+          "sha256": "aeb0523a699f787f2e2be906f334ff05036109fa554e6ef8b1551e879e764e26",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 11.16,
@@ -330,16 +309,13 @@
           "kernel_name": "mul_kernel",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "aeb0523a699f787f2e2be906f334ff05036109fa554e6ef8b1551e879e764e26",
+            "manifest_sha256": "aeb0523a699f787f2e2be906f334ff05036109fa554e6ef8b1551e879e764e26",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -348,10 +324,10 @@
         "pypto": {
           "method": "msprof",
           "source": "operators/mul/reports/parsed/pypto_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:54b5b7584520af25d22f99210460e41436876d394b8a2df5c725a5ba527d73ba",
+          "sha256": "54b5b7584520af25d22f99210460e41436876d394b8a2df5c725a5ba527d73ba",
           "metric": "primary_compute_kernel_us",
           "_route_key": "pypto",
           "b1_us": 221.724,
@@ -360,16 +336,13 @@
           "kernel_name": "PYPTO_mul_kernel_2d",
           "kernels_per_call": 3.01,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "54b5b7584520af25d22f99210460e41436876d394b8a2df5c725a5ba527d73ba",
+            "manifest_sha256": "54b5b7584520af25d22f99210460e41436876d394b8a2df5c725a5ba527d73ba",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -408,20 +381,19 @@
       "report_path": "",
       "archive": "none",
       "ranking": {
-        "status": "INSUFFICIENT_VERIFIED_ROUTES",
-        "winner": null,
+        "status": "RANKED",
+        "winner": "torch",
         "speedup": null
       },
       "profiling_display": {
-        "rankable": {},
-        "display_only": {
+        "rankable": {
           "torch": {
             "method": "msprof",
             "source": "operators/mul/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:52cab3146b4e3db7c8d61d48383f8140fa56a8f6785fe3e8bf6a7374e1dfebde",
+            "sha256": "52cab3146b4e3db7c8d61d48383f8140fa56a8f6785fe3e8bf6a7374e1dfebde",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 9.0,
@@ -430,16 +402,13 @@
             "kernel_name": "aclnnMul_MulAiCore_Mul",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "52cab3146b4e3db7c8d61d48383f8140fa56a8f6785fe3e8bf6a7374e1dfebde",
+              "manifest_sha256": "52cab3146b4e3db7c8d61d48383f8140fa56a8f6785fe3e8bf6a7374e1dfebde",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -448,10 +417,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/mul/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:aeb0523a699f787f2e2be906f334ff05036109fa554e6ef8b1551e879e764e26",
+            "sha256": "aeb0523a699f787f2e2be906f334ff05036109fa554e6ef8b1551e879e764e26",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 11.16,
@@ -460,16 +429,13 @@
             "kernel_name": "mul_kernel",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "aeb0523a699f787f2e2be906f334ff05036109fa554e6ef8b1551e879e764e26",
+              "manifest_sha256": "aeb0523a699f787f2e2be906f334ff05036109fa554e6ef8b1551e879e764e26",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -478,10 +444,10 @@
           "pypto": {
             "method": "msprof",
             "source": "operators/mul/reports/parsed/pypto_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:54b5b7584520af25d22f99210460e41436876d394b8a2df5c725a5ba527d73ba",
+            "sha256": "54b5b7584520af25d22f99210460e41436876d394b8a2df5c725a5ba527d73ba",
             "metric": "primary_compute_kernel_us",
             "_route_key": "pypto",
             "b1_us": 221.724,
@@ -490,22 +456,20 @@
             "kernel_name": "PYPTO_mul_kernel_2d",
             "kernels_per_call": 3.01,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "54b5b7584520af25d22f99210460e41436876d394b8a2df5c725a5ba527d73ba",
+              "manifest_sha256": "54b5b7584520af25d22f99210460e41436876d394b8a2df5c725a5ba527d73ba",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
             }
           }
-        }
+        },
+        "display_only": {}
       },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
@@ -533,10 +497,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/add/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:ac09994af206285eb2b89d826d0dad564ee48ae097e59b399cfe8f0089da4a20",
+          "sha256": "ac09994af206285eb2b89d826d0dad564ee48ae097e59b399cfe8f0089da4a20",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 10.04,
@@ -545,16 +509,13 @@
           "kernel_name": "aclnnAdd_AddAiCore_Add",
           "kernels_per_call": 21.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "ac09994af206285eb2b89d826d0dad564ee48ae097e59b399cfe8f0089da4a20",
+            "manifest_sha256": "ac09994af206285eb2b89d826d0dad564ee48ae097e59b399cfe8f0089da4a20",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -563,10 +524,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/add/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:c0e88f8bac70b6f6fc9cf58ad3a501342438dff86bbab5d1637eb276cd2ddfaa",
+          "sha256": "c0e88f8bac70b6f6fc9cf58ad3a501342438dff86bbab5d1637eb276cd2ddfaa",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 13.78,
@@ -575,16 +536,13 @@
           "kernel_name": "add_kernel",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "c0e88f8bac70b6f6fc9cf58ad3a501342438dff86bbab5d1637eb276cd2ddfaa",
+            "manifest_sha256": "c0e88f8bac70b6f6fc9cf58ad3a501342438dff86bbab5d1637eb276cd2ddfaa",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -593,10 +551,10 @@
         "pypto": {
           "method": "msprof",
           "source": "operators/add/reports/parsed/pypto_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:3061afa7d975a449b3d1d971f4c237016ad459e185920fc1148d9f4f52513218",
+          "sha256": "3061afa7d975a449b3d1d971f4c237016ad459e185920fc1148d9f4f52513218",
           "metric": "primary_compute_kernel_us",
           "_route_key": "pypto",
           "b1_us": 132.123,
@@ -605,16 +563,13 @@
           "kernel_name": "PYPTO_add_binary_kernel",
           "kernels_per_call": 9.01,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "3061afa7d975a449b3d1d971f4c237016ad459e185920fc1148d9f4f52513218",
+            "manifest_sha256": "3061afa7d975a449b3d1d971f4c237016ad459e185920fc1148d9f4f52513218",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -653,20 +608,19 @@
       "report_path": "",
       "archive": "none",
       "ranking": {
-        "status": "INSUFFICIENT_VERIFIED_ROUTES",
-        "winner": null,
+        "status": "RANKED",
+        "winner": "torch",
         "speedup": null
       },
       "profiling_display": {
-        "rankable": {},
-        "display_only": {
+        "rankable": {
           "torch": {
             "method": "msprof",
             "source": "operators/add/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:ac09994af206285eb2b89d826d0dad564ee48ae097e59b399cfe8f0089da4a20",
+            "sha256": "ac09994af206285eb2b89d826d0dad564ee48ae097e59b399cfe8f0089da4a20",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 10.04,
@@ -675,16 +629,13 @@
             "kernel_name": "aclnnAdd_AddAiCore_Add",
             "kernels_per_call": 21.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "ac09994af206285eb2b89d826d0dad564ee48ae097e59b399cfe8f0089da4a20",
+              "manifest_sha256": "ac09994af206285eb2b89d826d0dad564ee48ae097e59b399cfe8f0089da4a20",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -693,10 +644,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/add/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:c0e88f8bac70b6f6fc9cf58ad3a501342438dff86bbab5d1637eb276cd2ddfaa",
+            "sha256": "c0e88f8bac70b6f6fc9cf58ad3a501342438dff86bbab5d1637eb276cd2ddfaa",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 13.78,
@@ -705,16 +656,13 @@
             "kernel_name": "add_kernel",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "c0e88f8bac70b6f6fc9cf58ad3a501342438dff86bbab5d1637eb276cd2ddfaa",
+              "manifest_sha256": "c0e88f8bac70b6f6fc9cf58ad3a501342438dff86bbab5d1637eb276cd2ddfaa",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -723,10 +671,10 @@
           "pypto": {
             "method": "msprof",
             "source": "operators/add/reports/parsed/pypto_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:3061afa7d975a449b3d1d971f4c237016ad459e185920fc1148d9f4f52513218",
+            "sha256": "3061afa7d975a449b3d1d971f4c237016ad459e185920fc1148d9f4f52513218",
             "metric": "primary_compute_kernel_us",
             "_route_key": "pypto",
             "b1_us": 132.123,
@@ -735,22 +683,20 @@
             "kernel_name": "PYPTO_add_binary_kernel",
             "kernels_per_call": 9.01,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "3061afa7d975a449b3d1d971f4c237016ad459e185920fc1148d9f4f52513218",
+              "manifest_sha256": "3061afa7d975a449b3d1d971f4c237016ad459e185920fc1148d9f4f52513218",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
             }
           }
-        }
+        },
+        "display_only": {}
       },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
@@ -777,10 +723,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/div/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:9b9427a2ab860889ba99c0e19fd2a6845e89adbca99f27bceaafb39cb260fe3e",
+          "sha256": "9b9427a2ab860889ba99c0e19fd2a6845e89adbca99f27bceaafb39cb260fe3e",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 21.8,
@@ -789,16 +735,13 @@
           "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
           "kernels_per_call": 42.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "9b9427a2ab860889ba99c0e19fd2a6845e89adbca99f27bceaafb39cb260fe3e",
+            "manifest_sha256": "9b9427a2ab860889ba99c0e19fd2a6845e89adbca99f27bceaafb39cb260fe3e",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -807,10 +750,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/div/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:ff7a703eb3a6e354fdf7c0dcdf34eac85c5a0629960adb2c49a6f174884dc9b5",
+          "sha256": "ff7a703eb3a6e354fdf7c0dcdf34eac85c5a0629960adb2c49a6f174884dc9b5",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 18.64,
@@ -819,16 +762,13 @@
           "kernel_name": "div_kernel",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "ff7a703eb3a6e354fdf7c0dcdf34eac85c5a0629960adb2c49a6f174884dc9b5",
+            "manifest_sha256": "ff7a703eb3a6e354fdf7c0dcdf34eac85c5a0629960adb2c49a6f174884dc9b5",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -858,20 +798,19 @@
       "report_path": "",
       "archive": "none",
       "ranking": {
-        "status": "INSUFFICIENT_VERIFIED_ROUTES",
-        "winner": null,
+        "status": "RANKED",
+        "winner": "ascendc",
         "speedup": null
       },
       "profiling_display": {
-        "rankable": {},
-        "display_only": {
+        "rankable": {
           "torch": {
             "method": "msprof",
             "source": "operators/div/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:9b9427a2ab860889ba99c0e19fd2a6845e89adbca99f27bceaafb39cb260fe3e",
+            "sha256": "9b9427a2ab860889ba99c0e19fd2a6845e89adbca99f27bceaafb39cb260fe3e",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 21.8,
@@ -880,16 +819,13 @@
             "kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
             "kernels_per_call": 42.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "9b9427a2ab860889ba99c0e19fd2a6845e89adbca99f27bceaafb39cb260fe3e",
+              "manifest_sha256": "9b9427a2ab860889ba99c0e19fd2a6845e89adbca99f27bceaafb39cb260fe3e",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -898,10 +834,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/div/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:ff7a703eb3a6e354fdf7c0dcdf34eac85c5a0629960adb2c49a6f174884dc9b5",
+            "sha256": "ff7a703eb3a6e354fdf7c0dcdf34eac85c5a0629960adb2c49a6f174884dc9b5",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 18.64,
@@ -910,22 +846,20 @@
             "kernel_name": "div_kernel",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "ff7a703eb3a6e354fdf7c0dcdf34eac85c5a0629960adb2c49a6f174884dc9b5",
+              "manifest_sha256": "ff7a703eb3a6e354fdf7c0dcdf34eac85c5a0629960adb2c49a6f174884dc9b5",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
             }
           }
-        }
+        },
+        "display_only": {}
       },
       "_profiler_coverage": "ascendc,torch profiled"
     },
@@ -953,10 +887,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/equal/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:4cce8197b77f4a0c5564eeead004a4a5dc0c84f951d302ab1e8df4234075a7b5",
+          "sha256": "4cce8197b77f4a0c5564eeead004a4a5dc0c84f951d302ab1e8df4234075a7b5",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 11.54,
@@ -965,16 +899,13 @@
           "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
           "kernels_per_call": 1.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "4cce8197b77f4a0c5564eeead004a4a5dc0c84f951d302ab1e8df4234075a7b5",
+            "manifest_sha256": "4cce8197b77f4a0c5564eeead004a4a5dc0c84f951d302ab1e8df4234075a7b5",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -983,10 +914,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/equal/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:ea0a13b017f4ba9ceca416743d726d9af950f5f14bbdee142f62bcf62018da4a",
+          "sha256": "ea0a13b017f4ba9ceca416743d726d9af950f5f14bbdee142f62bcf62018da4a",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 49.98,
@@ -995,16 +926,13 @@
           "kernel_name": "equal_kernel",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "ea0a13b017f4ba9ceca416743d726d9af950f5f14bbdee142f62bcf62018da4a",
+            "manifest_sha256": "ea0a13b017f4ba9ceca416743d726d9af950f5f14bbdee142f62bcf62018da4a",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1034,20 +962,19 @@
       "report_path": "",
       "archive": "none",
       "ranking": {
-        "status": "INSUFFICIENT_VERIFIED_ROUTES",
-        "winner": null,
+        "status": "RANKED",
+        "winner": "torch",
         "speedup": null
       },
       "profiling_display": {
-        "rankable": {},
-        "display_only": {
+        "rankable": {
           "torch": {
             "method": "msprof",
             "source": "operators/equal/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:4cce8197b77f4a0c5564eeead004a4a5dc0c84f951d302ab1e8df4234075a7b5",
+            "sha256": "4cce8197b77f4a0c5564eeead004a4a5dc0c84f951d302ab1e8df4234075a7b5",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 11.54,
@@ -1056,16 +983,13 @@
             "kernel_name": "aclnnEqTensor_EqualAiCore_Equal",
             "kernels_per_call": 1.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "4cce8197b77f4a0c5564eeead004a4a5dc0c84f951d302ab1e8df4234075a7b5",
+              "manifest_sha256": "4cce8197b77f4a0c5564eeead004a4a5dc0c84f951d302ab1e8df4234075a7b5",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -1074,10 +998,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/equal/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:ea0a13b017f4ba9ceca416743d726d9af950f5f14bbdee142f62bcf62018da4a",
+            "sha256": "ea0a13b017f4ba9ceca416743d726d9af950f5f14bbdee142f62bcf62018da4a",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 49.98,
@@ -1086,22 +1010,20 @@
             "kernel_name": "equal_kernel",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "ea0a13b017f4ba9ceca416743d726d9af950f5f14bbdee142f62bcf62018da4a",
+              "manifest_sha256": "ea0a13b017f4ba9ceca416743d726d9af950f5f14bbdee142f62bcf62018da4a",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
             }
           }
-        }
+        },
+        "display_only": {}
       },
       "_profiler_coverage": "ascendc,torch profiled"
     },
@@ -1129,10 +1051,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/not/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:2dc8ab169e969501ed99af155536df04cc4568cbd2e6f51da1fa48d4549125b5",
+          "sha256": "2dc8ab169e969501ed99af155536df04cc4568cbd2e6f51da1fa48d4549125b5",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 10.68,
@@ -1141,16 +1063,15 @@
           "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
           "kernels_per_call": 2.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "status": "UNMANIFESTED",
             "rank_eligible": false,
             "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
               "UNMANIFESTED"
             ],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
+            "source_sha256": "2dc8ab169e969501ed99af155536df04cc4568cbd2e6f51da1fa48d4549125b5",
             "manifest_sha256": null,
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1159,10 +1080,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/not/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:0450496dfdbd77a8430572a9951aa0d0fa35bca042d30bffd666c904a9ea5075",
+          "sha256": "0450496dfdbd77a8430572a9951aa0d0fa35bca042d30bffd666c904a9ea5075",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 8.16,
@@ -1171,16 +1092,15 @@
           "kernel_name": "not_kernel",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "status": "UNMANIFESTED",
             "rank_eligible": false,
             "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
               "UNMANIFESTED"
             ],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
+            "source_sha256": "0450496dfdbd77a8430572a9951aa0d0fa35bca042d30bffd666c904a9ea5075",
             "manifest_sha256": null,
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS (42/42 cases)",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1189,10 +1109,10 @@
         "pypto": {
           "method": "msprof",
           "source": "operators/not/reports/parsed/pypto_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:cd782ba901831a1b650645d9750a1aa27979165438fb2621369f5f23ddb76040",
+          "sha256": "cd782ba901831a1b650645d9750a1aa27979165438fb2621369f5f23ddb76040",
           "metric": "primary_compute_kernel_us",
           "_route_key": "pypto",
           "b1_us": 118.84,
@@ -1201,16 +1121,15 @@
           "kernel_name": "PYPTO_not_kernel",
           "kernels_per_call": 3.01,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+            "status": "UNMANIFESTED",
             "rank_eligible": false,
             "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
               "UNMANIFESTED"
             ],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
+            "source_sha256": "cd782ba901831a1b650645d9750a1aa27979165438fb2621369f5f23ddb76040",
             "manifest_sha256": null,
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1259,10 +1178,10 @@
           "torch": {
             "method": "msprof",
             "source": "operators/not/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:2dc8ab169e969501ed99af155536df04cc4568cbd2e6f51da1fa48d4549125b5",
+            "sha256": "2dc8ab169e969501ed99af155536df04cc4568cbd2e6f51da1fa48d4549125b5",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 10.68,
@@ -1271,16 +1190,15 @@
             "kernel_name": "aclnnLogicalNot_LogicalNotAiCore_LogicalNot",
             "kernels_per_call": 2.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "status": "UNMANIFESTED",
               "rank_eligible": false,
               "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
                 "UNMANIFESTED"
               ],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
+              "source_sha256": "2dc8ab169e969501ed99af155536df04cc4568cbd2e6f51da1fa48d4549125b5",
               "manifest_sha256": null,
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -1289,10 +1207,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/not/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:0450496dfdbd77a8430572a9951aa0d0fa35bca042d30bffd666c904a9ea5075",
+            "sha256": "0450496dfdbd77a8430572a9951aa0d0fa35bca042d30bffd666c904a9ea5075",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 8.16,
@@ -1301,16 +1219,15 @@
             "kernel_name": "not_kernel",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "status": "UNMANIFESTED",
               "rank_eligible": false,
               "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
                 "UNMANIFESTED"
               ],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
+              "source_sha256": "0450496dfdbd77a8430572a9951aa0d0fa35bca042d30bffd666c904a9ea5075",
               "manifest_sha256": null,
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS (42/42 cases)",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -1319,10 +1236,10 @@
           "pypto": {
             "method": "msprof",
             "source": "operators/not/reports/parsed/pypto_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:cd782ba901831a1b650645d9750a1aa27979165438fb2621369f5f23ddb76040",
+            "sha256": "cd782ba901831a1b650645d9750a1aa27979165438fb2621369f5f23ddb76040",
             "metric": "primary_compute_kernel_us",
             "_route_key": "pypto",
             "b1_us": 118.84,
@@ -1331,16 +1248,15 @@
             "kernel_name": "PYPTO_not_kernel",
             "kernels_per_call": 3.01,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
+              "status": "UNMANIFESTED",
               "rank_eligible": false,
               "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
                 "UNMANIFESTED"
               ],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
+              "source_sha256": "cd782ba901831a1b650645d9750a1aa27979165438fb2621369f5f23ddb76040",
               "manifest_sha256": null,
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -1374,10 +1290,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/or/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:0fcf71871c96aba2c64be46e75b354118ef3a8ae72a1e3c863255e0f3305fdee",
+          "sha256": "0fcf71871c96aba2c64be46e75b354118ef3a8ae72a1e3c863255e0f3305fdee",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 13.52,
@@ -1386,16 +1302,13 @@
           "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
           "kernels_per_call": 3.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "0fcf71871c96aba2c64be46e75b354118ef3a8ae72a1e3c863255e0f3305fdee",
+            "manifest_sha256": "0fcf71871c96aba2c64be46e75b354118ef3a8ae72a1e3c863255e0f3305fdee",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1404,10 +1317,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/or/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:ee1cbbf1198d74b20eadda11b6a7cbe59bbac1f87bd287b0ce130db7382f87a1",
+          "sha256": "ee1cbbf1198d74b20eadda11b6a7cbe59bbac1f87bd287b0ce130db7382f87a1",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 9.28,
@@ -1416,16 +1329,13 @@
           "kernel_name": "or_kernel",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "ee1cbbf1198d74b20eadda11b6a7cbe59bbac1f87bd287b0ce130db7382f87a1",
+            "manifest_sha256": "ee1cbbf1198d74b20eadda11b6a7cbe59bbac1f87bd287b0ce130db7382f87a1",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS (49/49 cases)",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1434,10 +1344,10 @@
         "pypto": {
           "method": "msprof",
           "source": "operators/or/reports/parsed/pypto_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:8107fd4952042073507fcf4c4b23330ff215c17e44dac44bb1a830487778a215",
+          "sha256": "8107fd4952042073507fcf4c4b23330ff215c17e44dac44bb1a830487778a215",
           "metric": "primary_compute_kernel_us",
           "_route_key": "pypto",
           "b1_us": 204.52,
@@ -1446,16 +1356,13 @@
           "kernel_name": "PYPTO_or_kernel",
           "kernels_per_call": 3.01,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "8107fd4952042073507fcf4c4b23330ff215c17e44dac44bb1a830487778a215",
+            "manifest_sha256": "8107fd4952042073507fcf4c4b23330ff215c17e44dac44bb1a830487778a215",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS (bitwise_or for 0/1)",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1494,20 +1401,19 @@
       "report_path": "",
       "archive": "none",
       "ranking": {
-        "status": "INSUFFICIENT_VERIFIED_ROUTES",
-        "winner": null,
+        "status": "RANKED",
+        "winner": "ascendc",
         "speedup": null
       },
       "profiling_display": {
-        "rankable": {},
-        "display_only": {
+        "rankable": {
           "torch": {
             "method": "msprof",
             "source": "operators/or/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:0fcf71871c96aba2c64be46e75b354118ef3a8ae72a1e3c863255e0f3305fdee",
+            "sha256": "0fcf71871c96aba2c64be46e75b354118ef3a8ae72a1e3c863255e0f3305fdee",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 13.52,
@@ -1516,16 +1422,13 @@
             "kernel_name": "aclnnLogicalOr_LogicalOrAiCore_LogicalOr",
             "kernels_per_call": 3.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "0fcf71871c96aba2c64be46e75b354118ef3a8ae72a1e3c863255e0f3305fdee",
+              "manifest_sha256": "0fcf71871c96aba2c64be46e75b354118ef3a8ae72a1e3c863255e0f3305fdee",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -1534,10 +1437,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/or/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:ee1cbbf1198d74b20eadda11b6a7cbe59bbac1f87bd287b0ce130db7382f87a1",
+            "sha256": "ee1cbbf1198d74b20eadda11b6a7cbe59bbac1f87bd287b0ce130db7382f87a1",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 9.28,
@@ -1546,16 +1449,13 @@
             "kernel_name": "or_kernel",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "ee1cbbf1198d74b20eadda11b6a7cbe59bbac1f87bd287b0ce130db7382f87a1",
+              "manifest_sha256": "ee1cbbf1198d74b20eadda11b6a7cbe59bbac1f87bd287b0ce130db7382f87a1",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS (49/49 cases)",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -1564,10 +1464,10 @@
           "pypto": {
             "method": "msprof",
             "source": "operators/or/reports/parsed/pypto_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:8107fd4952042073507fcf4c4b23330ff215c17e44dac44bb1a830487778a215",
+            "sha256": "8107fd4952042073507fcf4c4b23330ff215c17e44dac44bb1a830487778a215",
             "metric": "primary_compute_kernel_us",
             "_route_key": "pypto",
             "b1_us": 204.52,
@@ -1576,22 +1476,20 @@
             "kernel_name": "PYPTO_or_kernel",
             "kernels_per_call": 3.01,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "8107fd4952042073507fcf4c4b23330ff215c17e44dac44bb1a830487778a215",
+              "manifest_sha256": "8107fd4952042073507fcf4c4b23330ff215c17e44dac44bb1a830487778a215",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS (bitwise_or for 0/1)",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
             }
           }
-        }
+        },
+        "display_only": {}
       },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
@@ -1619,10 +1517,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/where/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:e38c3f1396c66acb4b8a29c87fa838d8392abb433173220d7904250cbea13357",
+          "sha256": "e38c3f1396c66acb4b8a29c87fa838d8392abb433173220d7904250cbea13357",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 11.62,
@@ -1631,16 +1529,13 @@
           "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
           "kernels_per_call": 2.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "e38c3f1396c66acb4b8a29c87fa838d8392abb433173220d7904250cbea13357",
+            "manifest_sha256": "e38c3f1396c66acb4b8a29c87fa838d8392abb433173220d7904250cbea13357",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1649,10 +1544,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/where/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:761fa47c3264e3a625b89850e170f38eec6e3f07fe2363f30ec873b6061fe5f4",
+          "sha256": "761fa47c3264e3a625b89850e170f38eec6e3f07fe2363f30ec873b6061fe5f4",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 248.38,
@@ -1661,16 +1556,13 @@
           "kernel_name": "where_kernel",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "761fa47c3264e3a625b89850e170f38eec6e3f07fe2363f30ec873b6061fe5f4",
+            "manifest_sha256": "761fa47c3264e3a625b89850e170f38eec6e3f07fe2363f30ec873b6061fe5f4",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1700,20 +1592,19 @@
       "report_path": "",
       "archive": "none",
       "ranking": {
-        "status": "INSUFFICIENT_VERIFIED_ROUTES",
-        "winner": null,
+        "status": "RANKED",
+        "winner": "torch",
         "speedup": null
       },
       "profiling_display": {
-        "rankable": {},
-        "display_only": {
+        "rankable": {
           "torch": {
             "method": "msprof",
             "source": "operators/where/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:e38c3f1396c66acb4b8a29c87fa838d8392abb433173220d7904250cbea13357",
+            "sha256": "e38c3f1396c66acb4b8a29c87fa838d8392abb433173220d7904250cbea13357",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 11.62,
@@ -1722,16 +1613,13 @@
             "kernel_name": "aclnnSWhere_SelectV2AiCore_SelectV2",
             "kernels_per_call": 2.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "e38c3f1396c66acb4b8a29c87fa838d8392abb433173220d7904250cbea13357",
+              "manifest_sha256": "e38c3f1396c66acb4b8a29c87fa838d8392abb433173220d7904250cbea13357",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -1740,10 +1628,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/where/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:761fa47c3264e3a625b89850e170f38eec6e3f07fe2363f30ec873b6061fe5f4",
+            "sha256": "761fa47c3264e3a625b89850e170f38eec6e3f07fe2363f30ec873b6061fe5f4",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 248.38,
@@ -1752,22 +1640,20 @@
             "kernel_name": "where_kernel",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "761fa47c3264e3a625b89850e170f38eec6e3f07fe2363f30ec873b6061fe5f4",
+              "manifest_sha256": "761fa47c3264e3a625b89850e170f38eec6e3f07fe2363f30ec873b6061fe5f4",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
             }
           }
-        }
+        },
+        "display_only": {}
       },
       "_profiler_coverage": "ascendc,torch profiled"
     },
@@ -1795,10 +1681,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/expand/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:0e4ecafdc3d32c50e6b6a2a56b8e064ebeb0837e45a067e78ed8e98acc74f5dd",
+          "sha256": "0e4ecafdc3d32c50e6b6a2a56b8e064ebeb0837e45a067e78ed8e98acc74f5dd",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 13.02,
@@ -1807,16 +1693,13 @@
           "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
           "kernels_per_call": 5.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "0e4ecafdc3d32c50e6b6a2a56b8e064ebeb0837e45a067e78ed8e98acc74f5dd",
+            "manifest_sha256": "0e4ecafdc3d32c50e6b6a2a56b8e064ebeb0837e45a067e78ed8e98acc74f5dd",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1825,10 +1708,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/expand/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:44310ae8e50dd4a21fdebbfa78a9aa050b24e9af58906e2c63029b95bc6ae3d1",
+          "sha256": "44310ae8e50dd4a21fdebbfa78a9aa050b24e9af58906e2c63029b95bc6ae3d1",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 15.04,
@@ -1837,16 +1720,13 @@
           "kernel_name": "expand_kernel",
           "kernels_per_call": 281.92,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "44310ae8e50dd4a21fdebbfa78a9aa050b24e9af58906e2c63029b95bc6ae3d1",
+            "manifest_sha256": "44310ae8e50dd4a21fdebbfa78a9aa050b24e9af58906e2c63029b95bc6ae3d1",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1855,10 +1735,10 @@
         "pypto": {
           "method": "msprof",
           "source": "operators/expand/reports/parsed/pypto_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:d066d5c3ec25e68e480bfbd5d42c15ee495c8e86d0cb6dcbc5603c5dfdec8b5f",
+          "sha256": "d066d5c3ec25e68e480bfbd5d42c15ee495c8e86d0cb6dcbc5603c5dfdec8b5f",
           "metric": "primary_compute_kernel_us",
           "_route_key": "pypto",
           "b1_us": 110.3,
@@ -1867,16 +1747,13 @@
           "kernel_name": "PYPTO_expand_row",
           "kernels_per_call": 25313.29,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "d066d5c3ec25e68e480bfbd5d42c15ee495c8e86d0cb6dcbc5603c5dfdec8b5f",
+            "manifest_sha256": "d066d5c3ec25e68e480bfbd5d42c15ee495c8e86d0cb6dcbc5603c5dfdec8b5f",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -1915,20 +1792,19 @@
       "report_path": "",
       "archive": "none",
       "ranking": {
-        "status": "INSUFFICIENT_VERIFIED_ROUTES",
-        "winner": null,
+        "status": "RANKED",
+        "winner": "torch",
         "speedup": null
       },
       "profiling_display": {
-        "rankable": {},
-        "display_only": {
+        "rankable": {
           "torch": {
             "method": "msprof",
             "source": "operators/expand/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:0e4ecafdc3d32c50e6b6a2a56b8e064ebeb0837e45a067e78ed8e98acc74f5dd",
+            "sha256": "0e4ecafdc3d32c50e6b6a2a56b8e064ebeb0837e45a067e78ed8e98acc74f5dd",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 13.02,
@@ -1937,16 +1813,13 @@
             "kernel_name": "aclnnInplaceCopy_BroadcastToAiCore_BroadcastTo",
             "kernels_per_call": 5.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "0e4ecafdc3d32c50e6b6a2a56b8e064ebeb0837e45a067e78ed8e98acc74f5dd",
+              "manifest_sha256": "0e4ecafdc3d32c50e6b6a2a56b8e064ebeb0837e45a067e78ed8e98acc74f5dd",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -1955,10 +1828,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/expand/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:44310ae8e50dd4a21fdebbfa78a9aa050b24e9af58906e2c63029b95bc6ae3d1",
+            "sha256": "44310ae8e50dd4a21fdebbfa78a9aa050b24e9af58906e2c63029b95bc6ae3d1",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 15.04,
@@ -1967,16 +1840,13 @@
             "kernel_name": "expand_kernel",
             "kernels_per_call": 281.92,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "44310ae8e50dd4a21fdebbfa78a9aa050b24e9af58906e2c63029b95bc6ae3d1",
+              "manifest_sha256": "44310ae8e50dd4a21fdebbfa78a9aa050b24e9af58906e2c63029b95bc6ae3d1",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -1985,10 +1855,10 @@
           "pypto": {
             "method": "msprof",
             "source": "operators/expand/reports/parsed/pypto_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:d066d5c3ec25e68e480bfbd5d42c15ee495c8e86d0cb6dcbc5603c5dfdec8b5f",
+            "sha256": "d066d5c3ec25e68e480bfbd5d42c15ee495c8e86d0cb6dcbc5603c5dfdec8b5f",
             "metric": "primary_compute_kernel_us",
             "_route_key": "pypto",
             "b1_us": 110.3,
@@ -1997,22 +1867,20 @@
             "kernel_name": "PYPTO_expand_row",
             "kernels_per_call": 25313.29,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "d066d5c3ec25e68e480bfbd5d42c15ee495c8e86d0cb6dcbc5603c5dfdec8b5f",
+              "manifest_sha256": "d066d5c3ec25e68e480bfbd5d42c15ee495c8e86d0cb6dcbc5603c5dfdec8b5f",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
             }
           }
-        }
+        },
+        "display_only": {}
       },
       "_profiler_coverage": "ascendc,pypto,torch profiled"
     },
@@ -2040,10 +1908,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/transpose/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:715df2c4de54c484358e820be060bb2141c4cd5d9f11b50c59e652e7237f8d3b",
+          "sha256": "715df2c4de54c484358e820be060bb2141c4cd5d9f11b50c59e652e7237f8d3b",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 14.1,
@@ -2052,16 +1920,13 @@
           "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "715df2c4de54c484358e820be060bb2141c4cd5d9f11b50c59e652e7237f8d3b",
+            "manifest_sha256": "715df2c4de54c484358e820be060bb2141c4cd5d9f11b50c59e652e7237f8d3b",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -2070,10 +1935,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/transpose/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:94a5c2245eedee6f27999f251470093e9ca2239e573bc52ccf4098bbb41de08d",
+          "sha256": "94a5c2245eedee6f27999f251470093e9ca2239e573bc52ccf4098bbb41de08d",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 106.2,
@@ -2082,16 +1947,13 @@
           "kernel_name": "transpose_kernel",
           "kernels_per_call": 7.0,
           "validation": {
-            "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-            "rank_eligible": false,
-            "reasons": [
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
-            ],
+            "status": "VERIFIED",
+            "rank_eligible": true,
+            "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "94a5c2245eedee6f27999f251470093e9ca2239e573bc52ccf4098bbb41de08d",
+            "manifest_sha256": "94a5c2245eedee6f27999f251470093e9ca2239e573bc52ccf4098bbb41de08d",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -2121,20 +1983,19 @@
       "report_path": "",
       "archive": "none",
       "ranking": {
-        "status": "INSUFFICIENT_VERIFIED_ROUTES",
-        "winner": null,
+        "status": "RANKED",
+        "winner": "torch",
         "speedup": null
       },
       "profiling_display": {
-        "rankable": {},
-        "display_only": {
+        "rankable": {
           "torch": {
             "method": "msprof",
             "source": "operators/transpose/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:715df2c4de54c484358e820be060bb2141c4cd5d9f11b50c59e652e7237f8d3b",
+            "sha256": "715df2c4de54c484358e820be060bb2141c4cd5d9f11b50c59e652e7237f8d3b",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 14.1,
@@ -2143,16 +2004,13 @@
             "kernel_name": "aclnnInplaceCopy_TransposeAiCore_Transpose",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "715df2c4de54c484358e820be060bb2141c4cd5d9f11b50c59e652e7237f8d3b",
+              "manifest_sha256": "715df2c4de54c484358e820be060bb2141c4cd5d9f11b50c59e652e7237f8d3b",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -2161,10 +2019,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/transpose/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:94a5c2245eedee6f27999f251470093e9ca2239e573bc52ccf4098bbb41de08d",
+            "sha256": "94a5c2245eedee6f27999f251470093e9ca2239e573bc52ccf4098bbb41de08d",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 106.2,
@@ -2173,22 +2031,20 @@
             "kernel_name": "transpose_kernel",
             "kernels_per_call": 7.0,
             "validation": {
-              "status": "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "rank_eligible": false,
-              "reasons": [
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
-              ],
+              "status": "VERIFIED",
+              "rank_eligible": true,
+              "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "94a5c2245eedee6f27999f251470093e9ca2239e573bc52ccf4098bbb41de08d",
+              "manifest_sha256": "94a5c2245eedee6f27999f251470093e9ca2239e573bc52ccf4098bbb41de08d",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
             }
           }
-        }
+        },
+        "display_only": {}
       },
       "_profiler_coverage": "ascendc,torch profiled"
     },
@@ -2216,10 +2072,10 @@
         "torch": {
           "method": "msprof",
           "source": "operators/reduce_sum/reports/parsed/torch_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": true,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:b95349a160640938fa88c5c3c9abf24871d2b2e78e731c66fcc4fdade57aa8d6",
+          "sha256": "b95349a160640938fa88c5c3c9abf24871d2b2e78e731c66fcc4fdade57aa8d6",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_us": 15.96,
@@ -2231,14 +2087,12 @@
             "status": "CORRECTNESS_NOT_PASS",
             "rank_eligible": false,
             "reasons": [
-              "CORRECTNESS_NOT_PASS",
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED"
+              "CORRECTNESS_NOT_PASS"
             ],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "b95349a160640938fa88c5c3c9abf24871d2b2e78e731c66fcc4fdade57aa8d6",
+            "manifest_sha256": "b95349a160640938fa88c5c3c9abf24871d2b2e78e731c66fcc4fdade57aa8d6",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "62/70",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -2247,10 +2101,10 @@
         "ascendc": {
           "method": "msprof",
           "source": "operators/reduce_sum/reports/parsed/ascendc_b1.json",
-          "source_kind": "parsed_msprof_git_tracked",
+          "source_kind": "parsed_msprof",
           "comparable": false,
-          "integrity": "unverified (built from parsed msprof at release time)",
-          "sha256": "N/A (not in sparse checkout)",
+          "integrity": "sha256:273ba36baac6d970542d0865dc40fcf3b864705b683ff66652661deb55a3c5e3",
+          "sha256": "273ba36baac6d970542d0865dc40fcf3b864705b683ff66652661deb55a3c5e3",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 19.28,
@@ -2265,15 +2119,13 @@
             "rank_eligible": false,
             "reasons": [
               "CORRECTNESS_NOT_PASS",
-              "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-              "MISSING_SOURCE",
-              "UNMANIFESTED",
               "NOT_COMPARABLE",
               "WRONG_VARIANT"
             ],
             "validated_at": null,
-            "source_sha256": "N/A (not in sparse checkout)",
-            "manifest_sha256": null,
+            "source_sha256": "273ba36baac6d970542d0865dc40fcf3b864705b683ff66652661deb55a3c5e3",
+            "manifest_sha256": "273ba36baac6d970542d0865dc40fcf3b864705b683ff66652661deb55a3c5e3",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "FP32 70/70 (NEW)",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": false
@@ -2318,10 +2170,10 @@
           "torch": {
             "method": "msprof",
             "source": "operators/reduce_sum/reports/parsed/torch_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": true,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:b95349a160640938fa88c5c3c9abf24871d2b2e78e731c66fcc4fdade57aa8d6",
+            "sha256": "b95349a160640938fa88c5c3c9abf24871d2b2e78e731c66fcc4fdade57aa8d6",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_us": 15.96,
@@ -2333,14 +2185,12 @@
               "status": "CORRECTNESS_NOT_PASS",
               "rank_eligible": false,
               "reasons": [
-                "CORRECTNESS_NOT_PASS",
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED"
+                "CORRECTNESS_NOT_PASS"
               ],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "b95349a160640938fa88c5c3c9abf24871d2b2e78e731c66fcc4fdade57aa8d6",
+              "manifest_sha256": "b95349a160640938fa88c5c3c9abf24871d2b2e78e731c66fcc4fdade57aa8d6",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "62/70",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -2349,10 +2199,10 @@
           "ascendc": {
             "method": "msprof",
             "source": "operators/reduce_sum/reports/parsed/ascendc_b1.json",
-            "source_kind": "parsed_msprof_git_tracked",
+            "source_kind": "parsed_msprof",
             "comparable": false,
-            "integrity": "unverified (built from parsed msprof at release time)",
-            "sha256": "N/A (not in sparse checkout)",
+            "integrity": "sha256:273ba36baac6d970542d0865dc40fcf3b864705b683ff66652661deb55a3c5e3",
+            "sha256": "273ba36baac6d970542d0865dc40fcf3b864705b683ff66652661deb55a3c5e3",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 19.28,
@@ -2367,15 +2217,13 @@
               "rank_eligible": false,
               "reasons": [
                 "CORRECTNESS_NOT_PASS",
-                "UNMANIFESTED source_kind=parsed_msprof_git_tracked",
-                "MISSING_SOURCE",
-                "UNMANIFESTED",
                 "NOT_COMPARABLE",
                 "WRONG_VARIANT"
               ],
               "validated_at": null,
-              "source_sha256": "N/A (not in sparse checkout)",
-              "manifest_sha256": null,
+              "source_sha256": "273ba36baac6d970542d0865dc40fcf3b864705b683ff66652661deb55a3c5e3",
+              "manifest_sha256": "273ba36baac6d970542d0865dc40fcf3b864705b683ff66652661deb55a3c5e3",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "FP32 70/70 (NEW)",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": false
@@ -2411,7 +2259,7 @@
           "source_kind": "published",
           "comparable": true,
           "integrity": "sha256:b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
-          "sha256": "N/A",
+          "sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
           "metric": "primary_compute_kernel_us",
           "_route_key": "torch",
           "b1_primary_us": 12.2,
@@ -2424,8 +2272,9 @@
             "rank_eligible": true,
             "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A",
-            "manifest_sha256": null,
+            "source_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
+            "manifest_sha256": "14bb8ef43fa88b5b1d8c91bbde87513d2dbf39f9e57350466c347fd5a5b7d1fc",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -2437,7 +2286,7 @@
           "source_kind": "published",
           "comparable": true,
           "integrity": "sha256:b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
-          "sha256": "N/A",
+          "sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
           "metric": "primary_compute_kernel_us",
           "_route_key": "ascendc",
           "b1_us": 6.4,
@@ -2456,8 +2305,9 @@
             "rank_eligible": true,
             "reasons": [],
             "validated_at": null,
-            "source_sha256": "N/A",
-            "manifest_sha256": null,
+            "source_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
+            "manifest_sha256": "a66a88aff9b7a343acf3c56f09f588fa054d8b6126e546b00ecfe3c3da969976",
+            "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "correctness_status": "PASS",
             "metric_contract": "primary_compute_kernel_us",
             "variant_match": true
@@ -2489,7 +2339,7 @@
             "source_kind": "published",
             "comparable": true,
             "integrity": "sha256:b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
-            "sha256": "N/A",
+            "sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "metric": "primary_compute_kernel_us",
             "_route_key": "torch",
             "b1_primary_us": 12.2,
@@ -2502,8 +2352,9 @@
               "rank_eligible": true,
               "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A",
-              "manifest_sha256": null,
+              "source_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
+              "manifest_sha256": "14bb8ef43fa88b5b1d8c91bbde87513d2dbf39f9e57350466c347fd5a5b7d1fc",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -2515,7 +2366,7 @@
             "source_kind": "published",
             "comparable": true,
             "integrity": "sha256:b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
-            "sha256": "N/A",
+            "sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
             "metric": "primary_compute_kernel_us",
             "_route_key": "ascendc",
             "b1_us": 6.4,
@@ -2534,8 +2385,9 @@
               "rank_eligible": true,
               "reasons": [],
               "validated_at": null,
-              "source_sha256": "N/A",
-              "manifest_sha256": null,
+              "source_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
+              "manifest_sha256": "a66a88aff9b7a343acf3c56f09f588fa054d8b6126e546b00ecfe3c3da969976",
+              "release_sha256": "b235be9f2fb9261fefca1bb903a8db8f1ea6591f5b892e71ce87421232eb464a",
               "correctness_status": "PASS",
               "metric_contract": "primary_compute_kernel_us",
               "variant_match": true
@@ -2548,16 +2400,14 @@
     }
   },
   "validation_summary": {
-    "verified_rankable": 2,
+    "verified_rankable": 25,
     "verified_not_comparable": 1,
-    "unmanifested": 28,
+    "unmanifested": 3,
     "hash_mismatch": 0,
     "correctness_not_pass": 2,
     "variant_mismatch": 1,
     "missing_profiler": 6,
     "insufficient_routes": 0,
-    "UNMANIFESTED source_kind=parsed_msprof_git_tracked": 28,
-    "MISSING_SOURCE": 28,
     "total_operators": 12
   },
   "known_limitations": [
