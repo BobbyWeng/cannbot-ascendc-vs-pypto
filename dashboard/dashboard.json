@@ -2155,7 +2155,7 @@
       "report_path": "",
       "archive": "none",
       "correctness_notes": {
-        "ascendc_fp16": "21/70 PASS (FP16 accum, legacy)",
+        "ascendc_fp16": "21/70 PARTIAL (FP16 accum, legacy)",
         "ascendc_fp32": "70/70 PASS (FP32 accum, recommended)",
         "profiler_note": "Parsed profiler data from old FP16 kernel. FP32 kernel profiler not yet collected."
       },
@@ -2407,7 +2407,7 @@
     "correctness_not_pass": 2,
     "variant_mismatch": 1,
     "missing_profiler": 6,
-    "insufficient_routes": 0,
+    "insufficient_routes": 2,
     "total_operators": 12
   },
   "known_limitations": [

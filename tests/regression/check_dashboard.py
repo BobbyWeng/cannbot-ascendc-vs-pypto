@@ -113,6 +113,12 @@ def _check_reduce_sum(operators):
     notes = rs.get("correctness_notes", {})
     if "FP16" not in notes.get("profiler_note", ""):
         errors.append("reduce_sum: profiler_note missing FP16 annotation")
+    # ascendc_fp16 must say PARTIAL not PASS
+    fp16_note = notes.get("ascendc_fp16", "")
+    if "PARTIAL" not in fp16_note:
+        errors.append(f"reduce_sum/ascendc_fp16: should say PARTIAL, got '{fp16_note}'")
+    if "PASS" in fp16_note:
+        errors.append(f"reduce_sum/ascendc_fp16: must not say PASS, got '{fp16_note}'")
     return errors
 
 
@@ -157,7 +163,7 @@ def _check_profiler_validation(operators):
     return errors
 
 
-def _check_validation_summary(data):
+def _check_validation_summary(data, operators):
     errors = []
     vs = data.get("validation_summary", {})
     if not vs:
@@ -170,6 +176,16 @@ def _check_validation_summary(data):
             errors.append(f"validation_summary missing '{k}'")
     if vs.get("total_operators") != 12:
         errors.append(f"validation_summary.total_operators={vs.get('total_operators')}")
+
+    # insufficient_routes must match actual count of INSUFFICIENT rankings
+    ir_summary = vs.get("insufficient_routes", 0)
+    ir_actual = sum(
+        1 for op in operators.values()
+        if op.get("ranking", {}).get("status") == "INSUFFICIENT_VERIFIED_ROUTES"
+    )
+    if ir_summary != ir_actual:
+        errors.append(f"validation_summary.insufficient_routes={ir_summary} but actual count={ir_actual}")
+
     return errors
 
 
@@ -243,7 +259,7 @@ def check_dashboard(filepath: str, expected_count: int = 12):
     errors.extend(_check_matmul(operators))
     errors.extend(_check_reduce_sum(operators))
     errors.extend(_check_profiler_validation(operators))
-    errors.extend(_check_validation_summary(data))
+    errors.extend(_check_validation_summary(data, operators))
     errors.extend(_check_ranking_edge_cases(operators))
 
     for op_name in EXPECTED_OPERATORS:

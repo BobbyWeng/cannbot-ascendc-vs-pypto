@@ -400,7 +400,7 @@ def load_release(path):
         # Add special reduce_sum annotations
         if name == "reduce_sum":
             entry["correctness_notes"] = {
-                "ascendc_fp16": "21/70 PASS (FP16 accum, legacy)",
+                "ascendc_fp16": "21/70 PARTIAL (FP16 accum, legacy)",
                 "ascendc_fp32": "70/70 PASS (FP32 accum, recommended)",
                 "profiler_note": "Parsed profiler data from old FP16 kernel. FP32 kernel profiler not yet collected."
             }
@@ -448,6 +448,8 @@ def load_release(path):
         # Compute ranking
         ranking = rank_routes(prof)
         entry["ranking"] = ranking
+        if ranking["status"] == "INSUFFICIENT_VERIFIED_ROUTES":
+            validation_summary["insufficient_routes"] += 1
 
         # For profiling_data: split into rankable and display-only
         entry["profiling_display"] = {
