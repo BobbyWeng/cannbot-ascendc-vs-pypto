@@ -1,6 +1,6 @@
 {
   "mode": "development",
-  "generated_at": "2026-07-22 16:18:18",
+  "generated_at": "2026-07-22 16:25:07",
   "summary": {
     "total": 14,
     "completed": 13,
@@ -3398,12 +3398,28 @@
       "dev_status": {},
       "profiler": {},
       "history": [],
-      "last_update": "2026-07-22 16:18",
+      "last_update": "2026-07-22 16:24",
       "fastest": "N/A",
       "kernel_types": {},
       "kernel_count": {},
       "parsed": {
         "ascendc_b1": {
+          "kernel_count": 0,
+          "total_kernel_dur_us": 0,
+          "by_type": {},
+          "by_name": {},
+          "kernels_per_call": 0,
+          "all_kernel_dur_per_call_us": 0
+        },
+        "ascendc_b32": {
+          "kernel_count": 0,
+          "total_kernel_dur_us": 0,
+          "by_type": {},
+          "by_name": {},
+          "kernels_per_call": 0,
+          "all_kernel_dur_per_call_us": 0
+        },
+        "ascendc_b64": {
           "kernel_count": 0,
           "total_kernel_dur_us": 0,
           "by_type": {},

@@ -1,0 +1,18 @@
+{
+  "kernel_count": 700,
+  "kernels_per_call": 7.0,
+  "all_device_kernels_us": 1354.19,
+  "primary_compute_kernel_us": 209.52,
+  "primary_compute_type": "KERNEL_AIVEC",
+  "kernel_names": [
+    "softmax_kernel"
+  ],
+  "by_type": {
+    "KERNEL_AIVEC": {
+      "count": 700,
+      "total_us": 135419.0,
+      "mean_us": 193.456
+    }
+  },
+  "host_events_count": 2133
+}

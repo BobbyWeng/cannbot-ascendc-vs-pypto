@@ -17,7 +17,7 @@ Generated from `reports/release/current_release.json` — single source of truth
 | **mul** | COMPLETE | 9.0 us | 11.2 us | 51.5 us | 208.2 us |
 | **add** | COMPLETE_WITH_LIMITATION | 10.0 us | 13.8 us | 136.0 us | 462.9 us |
 | **div** | COMPLETE_WITH_LIMITATION | 21.8 us | 18.6 us | N/A (backend blocked) | N/A |
-| **softmax** | **COMPLETE** | 17.5 us | **6.8 us** | TBD | TBD |
+| **softmax** | **COMPLETE** | 16.0 us | **6.8 us** | TBD | TBD |
 
 All times B=1 msprof primary compute kernel (KERNEL_AIVEC for torch/ascendc, KERNEL_MIX_AIC for pypto).
 
@@ -43,6 +43,7 @@ All times B=1 msprof primary compute kernel (KERNEL_AIVEC for torch/ascendc, KER
 | Operator | Status | Torch (B=1) | Ascend C (B=1) | Ascend C (B=32) | Ascend C (B=64) | PyPTO (B=1) | Correctness |
 |----------|--------|:-----------:|:--------------:|:---------------:|:---------------:|:-----------:|:-----------:|
 | **layernorm** | **COMPLETE** | 23.2 us | **8.6 us** | **108.0 us** | **216.6 us** | 193.5 us | Torch+AscendC PASS; PyPTO precision limited |
+| **softmax** | **COMPLETE** | 16.0 us | **6.8 us** | **96.0 us** | **193.5 us** | TBD | All three routes 7/7 PASS |
 
 **Note**: Ascend C optimized via AR-FullLoad + multi-block tiling (rowsPerBlock≤255). Normalize-only kernel (host weight/bias). B=1 7.4x faster than torch, B=64 20x faster than pre-optimization (4374→217 us).
 
