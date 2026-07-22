@@ -1,12 +1,12 @@
 {
   "mode": "development",
-  "generated_at": "2026-07-22 15:46:54",
+  "generated_at": "2026-07-22 16:18:18",
   "summary": {
-    "total": 13,
-    "completed": 12,
+    "total": 14,
+    "completed": 13,
     "torch_done": 2,
     "ascendc_done": 2,
-    "pypto_done": 12,
+    "pypto_done": 13,
     "pass_count": 3,
     "fail_count": 0,
     "blocked": 0
@@ -838,7 +838,7 @@
     },
     {
       "name": "layernorm",
-      "status": "in_progress",
+      "status": "completed",
       "formula": "y = (x - mean(x, last_dim)) / sqrt(var(x, last_dim) + eps) * weight + bias",
       "shape": "[B, 256, 32]",
       "dtype": "N/A",
@@ -966,16 +966,6 @@
           "kernels_per_call": 0,
           "all_kernel_dur_per_call_us": 0
         }
-      },
-      "dev_status_detail": {
-        "Intent": "completed",
-        "API": "completed",
-        "Golden": "completed",
-        "Design": "completed",
-        "Implementation": "pending",
-        "Correctness": "pending",
-        "Benchmark": "pending",
-        "Archive": "completed"
       }
     },
     {
@@ -3372,6 +3362,65 @@
           "kernels_per_call": 0,
           "all_kernel_dur_per_call_us": 0
         }
+      }
+    },
+    {
+      "name": "softmax",
+      "status": "planned",
+      "formula": "softmax(x, axis=-1) = exp(x - max(x, axis=-1)) / sum(exp(x - max(x, axis=-1)), axis=-1)",
+      "shape": "[B, 256, 32]",
+      "dtype": "N/A",
+      "batches": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ],
+      "precision": "rtol=0.001, atol=0.01, (Softmax uses FP32 internal accumulation. Output FP16 atol=0.01 rtol=0.001.)",
+      "broadcast": false,
+      "kernel_shape": "[B, 256, 32]",
+      "logical_shape": "[B, 256, 32]",
+      "torch": {
+        "type": "torch_npu.softmax"
+      },
+      "ascendc": {
+        "type": "Ascend C direct <<<>>> invoke"
+      },
+      "pypto": {
+        "type": "@pypto.frontend.jit"
+      },
+      "correctness": {},
+      "correctness_all_pass": null,
+      "orchestrator": {},
+      "dev_status": {},
+      "profiler": {},
+      "history": [],
+      "last_update": "2026-07-22 16:18",
+      "fastest": "N/A",
+      "kernel_types": {},
+      "kernel_count": {},
+      "parsed": {
+        "ascendc_b1": {
+          "kernel_count": 0,
+          "total_kernel_dur_us": 0,
+          "by_type": {},
+          "by_name": {},
+          "kernels_per_call": 0,
+          "all_kernel_dur_per_call_us": 0
+        }
+      },
+      "dev_status_detail": {
+        "Intent": "pending",
+        "API": "pending",
+        "Golden": "pending",
+        "Design": "pending",
+        "Implementation": "pending",
+        "Correctness": "pending",
+        "Benchmark": "pending",
+        "Archive": "completed"
       }
     },
     {

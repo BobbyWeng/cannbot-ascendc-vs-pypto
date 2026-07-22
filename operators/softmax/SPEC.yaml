@@ -1,0 +1,20 @@
+operator_name: softmax
+formula: "softmax(x, axis=-1) = exp(x - max(x, axis=-1)) / sum(exp(x - max(x, axis=-1)), axis=-1)"
+category: reduction activation
+inputs:
+  - name: x
+    shape: "[B, 256, 32]"
+    dtype: float16
+    layout: ND contiguous
+outputs:
+  - name: y
+    shape: "[B, 256, 32]"
+    dtype: float16
+    layout: ND contiguous
+batches: [1, 2, 4, 8, 16, 32, 64]
+precision:
+  rtol: 0.001
+  atol: 0.01
+  require_bitwise: false
+  note: "Softmax uses FP32 internal accumulation. Output FP16 atol=0.01 rtol=0.001."
+seed: 20260715

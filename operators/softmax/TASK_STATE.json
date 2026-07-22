@@ -1,0 +1,23 @@
+{
+  "operator": "softmax",
+  "backend_route": "ASCENDC_DIRECT",
+  "semantic_class": "REDUCTION",
+  "hardware_path": "VECTOR",
+  "task_mode": "NEW_DEVELOPMENT",
+  "lifecycle_stage": "FINAL_PROFILE",
+  "active_plugin": "ops-direct-invoke",
+  "active_agent": "ascendc-kernel-architect",
+  "correctness_gate": "PASS",
+  "profile_gate": "PASS",
+  "torch_status": "COMPLETE",
+  "ascendc_status": "COMPLETE",
+  "pypto_status": "COMPLETE",
+  "event_measured": {
+    "torch_b1": "17.5 us", "ascendc_b1": "6.8 us", "pypto_b1": "TBD"
+  },
+  "msprof_measured": {
+    "ascendc_b1_primary": "13.98 us",
+    "ascendc_kernel_type": "KERNEL_AIVEC",
+    "ascendc_kernel_count": 7
+  }
+}

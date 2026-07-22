@@ -1,29 +1,17 @@
 {
-  "operator": "layernorm",
+  "operator": "softmax",
   "backend_route": "ASCENDC_DIRECT",
   "semantic_class": "REDUCTION",
   "hardware_path": "VECTOR",
   "task_mode": "NEW_DEVELOPMENT",
-  "lifecycle_stage": "CORRECTNESS",
+  "lifecycle_stage": "PREFLIGHT",
   "active_plugin": "ops-direct-invoke",
   "active_agent": "ascendc-kernel-architect",
-  "required_skills": [
-    "ascendc-env-check",
-    "ascendc-kernel-develop-workflow",
-    "ascendc-direct-invoke-template",
-    "ascendc-docs-search",
-    "ascendc-tiling-design",
-    "ascendc-api-best-practices",
-    "ops-precision-standard",
-    "ops-profiling"
-  ],
-  "loaded_skills": [
-    "ascendc-api-best-practices",
-    "ascendc-docs-search"
-  ],
+  "required_skills": ["ascendc-env-check","ascendc-kernel-develop-workflow","ascendc-direct-invoke-template","ascendc-docs-search","ascendc-tiling-design","ascendc-api-best-practices","ops-precision-standard","ops-profiling"],
+  "loaded_skills": ["ascendc-api-best-practices","ascendc-docs-search"],
   "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
-  "correctness_gate": "PARTIAL_PASS",
+  "correctness_gate": "PENDING",
   "profile_gate": "PENDING",
-  "next_action": "Fix Ascend C vector-only layernorm, tune PyPTO tile shapes, run full benchmarks",
-  "last_successful_checkpoint": "Torch baseline PASS all 7 batches"
+  "next_action": "Create SPEC.yaml and data",
+  "last_successful_checkpoint": ""
 }

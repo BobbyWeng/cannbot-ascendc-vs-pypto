@@ -6,7 +6,7 @@ Generated from `reports/release/current_release.json` — single source of truth
 
 | Category | Count | Operators |
 |----------|:-----:|-----------|
-| COMPLETE | 5 | relu, mul, not, matmul, layernorm |
+| COMPLETE | 6 | relu, mul, not, matmul, layernorm, softmax |
 | COMPLETE_WITH_LIMITATION | 8 | add, div, equal, or, where, expand, transpose, reduce_sum |
 
 ## Core Arithmetic (msprof, all batches)
@@ -17,6 +17,7 @@ Generated from `reports/release/current_release.json` — single source of truth
 | **mul** | COMPLETE | 9.0 us | 11.2 us | 51.5 us | 208.2 us |
 | **add** | COMPLETE_WITH_LIMITATION | 10.0 us | 13.8 us | 136.0 us | 462.9 us |
 | **div** | COMPLETE_WITH_LIMITATION | 21.8 us | 18.6 us | N/A (backend blocked) | N/A |
+| **softmax** | **COMPLETE** | 17.5 us | **6.8 us** | TBD | TBD |
 
 All times B=1 msprof primary compute kernel (KERNEL_AIVEC for torch/ascendc, KERNEL_MIX_AIC for pypto).
 
