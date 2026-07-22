@@ -1,10 +1,10 @@
-# 12 个算子现状报告（中文版快捷图标版）
+# 14 个算子现状报告（中文版快捷图标版）
 
-> 基于 v1.4-post-rc3 | Ascend 910B (dav-2201, 20核), CANN 9.0.0, PyPTO 0.2.0 | 2026-07-17
+> 基于 v1.5 | Ascend 910B (dav-2201, 20核), CANN 9.0.0, PyPTO 0.2.0 | 2026-07-22
 
 ---
 
-## 总览：4 ✅ / 8 ⚠️ / 0 ❌
+## 总览：6 ✅ / 8 ⚠️ / 0 ❌
 
 | # | 算子 | 路线 | 正确性 | 性能(B=1) | 主要问题 |
 |---|------|------|--------|-----------|---------|
@@ -18,8 +18,10 @@
 | 8 | **where** ⚠️ | Torch/AscendC/PyPTO | 全 PASS(7/7) | 131.9/238.6/— µs | 曾 ExpandPass 阻塞，RC-2 已解封 |
 | 9 | **expand** ⚠️ | Torch/AscendC/PyPTO | 全 PASS(7/7) | 13.0/15.0/~50 µs | 原逐行 AICPU 16384 内核，RC-3 33600× 修复 |
 | 10 | **transpose** ⚠️ | Torch/AscendC/PyPTO | 全 PASS(7/7) | 14.1/106/— µs | 曾 tile 阻塞，RC-2 已解封 |
-| 11 | **reduce_sum** ⚠️ | Torch/AscendC/PyPTO | 62/21/**70**/70 PASS | 16.4/14.2/— µs | **新增 FP32 内核 70/70 (Post-RC3)** |
-| 12 | **matmul** ✅ | Torch/AscendC/PyPTO | 全 PASS(6/6) | **22.2/6.4/— µs** | **多核批调度: 1 kernel/call, 257×加速 (Post-RC3)** |
+| 11 | **reduce_sum** ⚠️ | Torch/AscendC/PyPTO | **62/21/70/70 PASS** | 16.4/14.2/— µs | **新增 FP32 内核 70/70 (Post-RC3)** |
+| 12 | **matmul** ✅ | Torch/AscendC/PyPTO | 全 PASS(6/6) | **22.2/6.4/— µs** | **多核批调度: 1 kernel/call, 257× 加速 (Post-RC3)** |
+| 13 | **layernorm** ✅ | Torch/AscendC/PyPTO | Torch+AscendC PASS(7/7) | **23.2/8.6/194 µs** | AR-FullLoad + 多块行切分 7x-20x 加速; PyPTO 精度局限 |
+| 14 | **softmax** ✅ | Torch/AscendC/PyPTO | 全 PASS(7/7) | **16.0/6.8/TBD µs** | AR-FullLoad + 多块行切分; PyPTO max_abs 0.000488 |
 
 ---
 
@@ -63,13 +65,16 @@
 | add PyPTO | **77/77** | 参考数据修复 FP16 链式 | ✅ Post-RC3 已修复 |
 | matmul AscendC 多核 | **全 PASS** | 新多核调度正确性验证 | ✅ Post-RC3 已验证 |
 | matmul PyPTO | **6/6 非位精确** | FP16 累积 max_abs=0.031 | ⚠️ 已知限制 |
+| layernorm PyPTO | **有精度损失** | max_abs 1.4-3.3, tile shape 需调优 | ⚠️ 已知限制 |
+| softmax PyPTO | **全 PASS** | max_abs 0.000488 | ✅ 新算子 |
 
 ---
 
-## 建议行动 (Post-RC3)
+## 建议行动
 
 1. **P0**: ~~add 正确性结果补全~~ ✅ **已完成 (77/77)**
 2. **P0**: ~~matmul 多核调度~~ ✅ **已完成 (257× 加速)**
 3. **P0**: ~~reduce_sum FP32 内核~~ ✅ **已完成 (70/70)**
 4. **P2**: 跟进 PyPTO 新版本解决自动 tiling 和 AICPU 开销
-5. **P3**: where/transpose/div Ascend C 性能优化
+5. **P2**: layernorm PyPTO tile shape 调优
+6. **P3**: where/transpose/div Ascend C 性能优化
