@@ -1,0 +1,18 @@
+{
+  "kernel_count": 700,
+  "kernels_per_call": 7.0,
+  "all_device_kernels_us": 448.197,
+  "primary_compute_kernel_us": 71.4,
+  "primary_compute_type": "KERNEL_AIVEC",
+  "kernel_names": [
+    "layernorm_kernel"
+  ],
+  "by_type": {
+    "KERNEL_AIVEC": {
+      "count": 700,
+      "total_us": 44819.7,
+      "mean_us": 64.028
+    }
+  },
+  "host_events_count": 2140
+}

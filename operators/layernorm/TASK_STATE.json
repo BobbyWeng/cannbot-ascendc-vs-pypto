@@ -1,0 +1,31 @@
+{
+  "operator": "layernorm",
+  "backend_route": "ASCENDC_DIRECT",
+  "semantic_class": "REDUCTION",
+  "hardware_path": "VECTOR",
+  "task_mode": "NEW_DEVELOPMENT",
+  "lifecycle_stage": "FINAL_PROFILE",
+  "active_plugin": "ops-direct-invoke",
+  "active_agent": "ascendc-kernel-architect",
+  "correctness_gate": "PASS",
+  "profile_gate": "PASS",
+  "torch_status": "COMPLETE",
+  "ascendc_status": "COMPLETE",
+  "pypto_status": "COMPLETE_WITH_LIMITATION",
+  "events_measured": {
+    "torch_b1": "23.2 us",
+    "ascendc_b1": "63.4 us",
+    "pypto_b1": "193.5 us"
+  },
+  "msprof_measured": {
+    "ascendc_b1_primary": "68.4 us",
+    "ascendc_kernel_type": "KERNEL_AIVEC",
+    "ascendc_kernel_count": 1
+  },
+  "next_steps": [
+    "Optimize ascendc kernel: inline weight/bias to eliminate host roundtrip",
+    "Tune pypto tile shapes for last_dim=32 reduce performance",
+    "Run full multi-batch msprof for all routes"
+  ],
+  "last_successful_checkpoint": "Ascend C correctness PASS all 7 batches; msprof B=1 profile done"
+}

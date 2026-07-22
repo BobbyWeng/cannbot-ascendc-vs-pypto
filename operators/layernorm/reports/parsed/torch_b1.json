@@ -1,0 +1,10 @@
+{
+  "kernel_count": 0,
+  "kernels_per_call": 0.0,
+  "all_device_kernels_us": 0.0,
+  "primary_compute_kernel_us": 0.0,
+  "primary_compute_type": "",
+  "kernel_names": [],
+  "by_type": {},
+  "host_events_count": 5
+}

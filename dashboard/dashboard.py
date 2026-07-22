@@ -1012,9 +1012,11 @@ def get(op_name):
     data["dev_status_detail"] = sd
 
     # Convert sets to lists for JSON
-    for impl in ("torch", "ascendc", "pypto"):
-        if impl in data["kernel_types"]:
-            data["kernel_types"][impl] = sorted(data["kernel_types"][impl])
+    if "kernel_types" in data:
+        for impl in ("torch", "ascendc", "pypto"):
+            if impl in data["kernel_types"]:
+                kt = data["kernel_types"][impl]
+                data["kernel_types"][impl] = sorted(kt) if isinstance(kt, set) else kt
 
     return data
 
@@ -1053,6 +1055,16 @@ def build_dev():
         },
         "operators": operators,
     }
+    # Deep clean all sets from the dashboard data
+    def _clean_sets(obj):
+        if isinstance(obj, dict):
+            return {k: _clean_sets(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [_clean_sets(v) for v in obj]
+        elif isinstance(obj, set):
+            return sorted(obj)
+        return obj
+    dashboard = _clean_sets(dashboard)
     return dashboard
 
 

@@ -1,0 +1,31 @@
+{
+  "kernel_count": 1501,
+  "kernels_per_call": 15.01,
+  "all_device_kernels_us": 570.098,
+  "primary_compute_kernel_us": 2881.38,
+  "primary_compute_type": "KERNEL_AICPU",
+  "kernel_names": [
+    "KERNEL_AICPU",
+    "PYPTO_layernorm_kernel_2d",
+    "aclnnAdd_AddAiCore_Add",
+    "aclnnMul_MulAiCore_Mul"
+  ],
+  "by_type": {
+    "KERNEL_AICPU": {
+      "count": 601,
+      "total_us": 36361.58,
+      "mean_us": 60.502
+    },
+    "KERNEL_MIX_AIC": {
+      "count": 300,
+      "total_us": 18328.2,
+      "mean_us": 61.094
+    },
+    "KERNEL_AIVEC": {
+      "count": 600,
+      "total_us": 2319.98,
+      "mean_us": 3.867
+    }
+  },
+  "host_events_count": 6187
+}

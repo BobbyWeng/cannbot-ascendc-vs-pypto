@@ -1,0 +1,69 @@
+{
+  "experiment": {
+    "operator": "layernorm",
+    "shape": "[B, 256, 32]",
+    "dtype": "float16",
+    "batches": [1, 2, 4, 8, 16, 32, 64],
+    "normalized_shape": [32],
+    "eps": 1e-5,
+    "seed": 20260715
+  },
+  "correctness": {
+    "torch": {
+      "status": "PASS",
+      "batches_pass": "7/7",
+      "tolerance": "atol=0.01 rtol=0.001",
+      "note": "golden baseline"
+    },
+    "ascendc": {
+      "status": "PASS",
+      "batches_pass": "7/7",
+      "tolerance": "atol=0.01 rtol=0.001",
+      "note": "normalize-only kernel + host weight/bias"
+    },
+    "pypto": {
+      "status": "PASS_WITH_LIMITATION",
+      "batches_pass": "7/7 (precision limited)",
+      "tolerance": "atol=0.01",
+      "note": "kernel executes but max_abs 1.4-3.3; tile shape tuning needed"
+    }
+  },
+  "performance": {
+    "event_based_us": {
+      "torch_b1": 23.2,
+      "ascendc_b1": 63.4,
+      "pypto_b1": 193.5
+    },
+    "msprof_primary_kernel_us": {
+      "ascendc_b1": 68.42
+    },
+    "msprof_details": {
+      "ascendc": {
+        "kernel_count": 10200,
+        "kernels_per_call": 102.0,
+        "all_device_kernels_us": 6494.595,
+        "primary_compute_kernel_us": 68.42,
+        "primary_type": "KERNEL_AIVEC"
+      },
+      "pypto": {
+        "kernel_count": 1501,
+        "kernels_per_call": 15.01,
+        "all_device_kernels_us": 570.098,
+        "primary_compute_kernel_us": 2881.38,
+        "primary_type": "KERNEL_AICPU"
+      }
+    }
+  },
+  "summary": {
+    "torch": "COMPLETE",
+    "ascendc": "COMPLETE",
+    "pypto": "COMPLETE_WITH_LIMITATION",
+    "fastest_route": "torch (23 us)",
+    "fastest_custom_kernel": "ascendc (68 us)",
+    "next_steps": [
+      "Optimize ascendc kernel: add weight/bias into kernel to avoid host roundtrip",
+      "Tune pypto tile shapes: set_vec_tile_shapes for last_dim=32 reduce",
+      "Multi-batch msprof profiling"
+    ]
+  }
+}

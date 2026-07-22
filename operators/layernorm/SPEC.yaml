@@ -1,0 +1,30 @@
+operator_name: layernorm
+formula: "y = (x - mean(x, last_dim)) / sqrt(var(x, last_dim) + eps) * weight + bias"
+category: reduction normalization
+inputs:
+  - name: x
+    shape: "[B, 256, 32]"
+    dtype: float16
+    layout: ND contiguous
+  - name: weight
+    shape: "[256, 32]"
+    dtype: float16
+    layout: ND contiguous
+  - name: bias
+    shape: "[256, 32]"
+    dtype: float16
+    layout: ND contiguous
+outputs:
+  - name: y
+    shape: "[B, 256, 32]"
+    dtype: float16
+    layout: ND contiguous
+batches: [1, 2, 4, 8, 16, 32, 64]
+precision:
+  rtol: 0.001
+  atol: 0.01
+  require_bitwise: false
+  note: "LayerNorm uses FP32 internal accumulation for mean/var. Output FP16 atol=0.01 rtol=0.001."
+seed: 20260715
+normalized_shape: [32]
+eps: 1e-5

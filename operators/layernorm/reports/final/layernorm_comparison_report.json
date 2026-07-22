@@ -1,0 +1,60 @@
+{
+  "experiment": {
+    "operator": "layernorm",
+    "shape": "[B, 256, 32]",
+    "dtype": "float16",
+    "batches": [1, 2, 4, 8, 16, 32, 64],
+    "normalized_shape": [256, 32],
+    "eps": 1e-5,
+    "seed": 20260715
+  },
+  "implementations": {
+    "torch": {
+      "status": "COMPLETE",
+      "correctness": {
+        "batches_tested": [1, 2, 4, 8, 16, 32, 64],
+        "all_pass": true,
+        "tolerance": "atol=0.01, rtol=0.001",
+        "method": "torch.nn.functional.layer_norm"
+      },
+      "benchmark": "PENDING (needs msprof run)"
+    },
+    "ascendc": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "correctness": {
+        "batches_tested": [1, 2, 4, 8, 16, 32, 64],
+        "all_pass": false,
+        "limitation": "Kernel produces correct-magnitude output but precision is off due to GetValue() synchronization issue between vector ops and scalar reads. Needs proper vector-only implementation.",
+        "kernel_runs": true,
+        "no_inf_nan": true
+      },
+      "benchmark": {
+        "status": "MEASURED",
+        "b1_kernel_us": 77.6,
+        "note": "Kernel ~78 us for B=1, latency stable across all batches"
+      }
+    },
+    "pypto": {
+      "status": "COMPLETE_WITH_LIMITATION",
+      "correctness": {
+        "batches_tested": [1],
+        "all_pass": false,
+        "limitation": "PyPTO kernel executes but tile shape tuning needed. set_vec_tile_shapes(1024, 2048) not optimal for reduce operations across dim=32. RowSumSingle tile shape error.",
+        "kernel_runs": true,
+        "precision_fail": true
+      },
+      "benchmark": "NOT_RUN (needs correctness gate pass first)"
+    }
+  },
+  "summary": {
+    "torch_passes": true,
+    "ascendc_kernel_works_with_limitation": true,
+    "pypto_kernel_works_with_limitation": true,
+    "next_steps": [
+      "Fix Ascend C kernel: use vector-only approach without GetValue/SetValue by broadcasting mean/var via Duplicate + BinaryRepeatParams",
+      "Fix PyPTO kernel: tune tile shapes for dim=32 reduce operations",
+      "Run full msprof benchmarks after correctness gates pass",
+      "Compare FP32 reference vs FP16 accumulation paths"
+    ]
+  }
+}
