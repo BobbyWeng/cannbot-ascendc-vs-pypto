@@ -6,7 +6,7 @@ Generated from `reports/release/current_release.json` — single source of truth
 
 | Category | Count | Operators |
 |----------|:-----:|-----------|
-| COMPLETE | 4 | relu, mul, not, matmul |
+| COMPLETE | 5 | relu, mul, not, matmul, layernorm |
 | COMPLETE_WITH_LIMITATION | 8 | add, div, equal, or, where, expand, transpose, reduce_sum |
 
 ## Core Arithmetic (msprof, all batches)
@@ -36,6 +36,14 @@ All times B=1 msprof primary compute kernel (KERNEL_AIVEC for torch/ascendc, KER
 | **matmul** | **COMPLETE** | ✅ PASS (atol/rtol) | ✅ TRUE_CUBE (msprof) | ✅ PASS (FP16 accum) | **True Cube** |
 
 **Note**: MatMul correctness passes for all 3 routes. Ascend C uses Cube MMAD (MatmulImpl). PyPTO unblocked via manual set_cube_tile_shapes workaround (max_abs~0.015-0.031 due to FP16 accum).
+
+## LayerNorm (msprof/event, all batches)
+
+| Operator | Status | Torch (B=1) | Ascend C (B=1) | Ascend C (B=32) | Ascend C (B=64) | PyPTO (B=1) | Correctness |
+|----------|--------|:-----------:|:--------------:|:---------------:|:---------------:|:-----------:|:-----------:|
+| **layernorm** | **COMPLETE** | 23.2 us | **8.6 us** | **108.0 us** | **216.6 us** | 193.5 us | Torch+AscendC PASS; PyPTO precision limited |
+
+**Note**: Ascend C optimized via AR-FullLoad + multi-block tiling (rowsPerBlock≤255). Normalize-only kernel (host weight/bias). B=1 7.4x faster than torch, B=64 20x faster than pre-optimization (4374→217 us).
 
 ## Layout/Reduce (no profiler data — PARTIAL)
 

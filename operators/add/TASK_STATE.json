@@ -1,0 +1,34 @@
+{
+  "operator": "add",
+  "backend_route": "ASCENDC_DIRECT",
+  "semantic_class": "ELEMENTWISE",
+  "hardware_path": "VECTOR",
+  "task_mode": "CONTINUE_DEVELOPMENT",
+  "lifecycle_stage": "RELEASE",
+  "active_plugin": "ops-direct-invoke",
+  "active_agent": "ascendc-kernel-architect",
+  "required_skills": [
+    "ascendc-env-check",
+    "ascendc-kernel-develop-workflow",
+    "ascendc-direct-invoke-template",
+    "ascendc-docs-search",
+    "ascendc-tiling-design",
+    "ops-precision-standard",
+    "ops-profiling"
+  ],
+  "loaded_skills": [
+    "ascendc-env-check",
+    "ascendc-kernel-develop-workflow",
+    "ascendc-direct-invoke-template",
+    "ascendc-docs-search",
+    "ascendc-tiling-design",
+    "ops-precision-standard",
+    "ops-profiling"
+  ],
+  "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
+  "correctness_gate": "PASS",
+  "profile_gate": "PASS",
+  "release_eligibility": true,
+  "next_action": "G13 code review before next release",
+  "last_successful_checkpoint": "Post-RC3 add implementation"
+}

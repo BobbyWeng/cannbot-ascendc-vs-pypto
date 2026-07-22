@@ -1,0 +1,140 @@
+{
+  "operator": "expand",
+  "variant": "torch",
+  "results": [
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 3072,
+      "inf_count": 6144,
+      "label": "B=1",
+      "batch": 1,
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 3072,
+      "inf_count": 6144,
+      "label": "B=2",
+      "batch": 2,
+      "shape": [
+        2,
+        256,
+        384
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 3072,
+      "inf_count": 6144,
+      "label": "B=4",
+      "batch": 4,
+      "shape": [
+        4,
+        256,
+        384
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 3072,
+      "inf_count": 6144,
+      "label": "B=8",
+      "batch": 8,
+      "shape": [
+        8,
+        256,
+        384
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 3072,
+      "inf_count": 6144,
+      "label": "B=16",
+      "batch": 16,
+      "shape": [
+        16,
+        256,
+        384
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 3072,
+      "inf_count": 6144,
+      "label": "B=32",
+      "batch": 32,
+      "shape": [
+        32,
+        256,
+        384
+      ],
+      "dtype": "float16"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 3072,
+      "inf_count": 6144,
+      "label": "B=64",
+      "batch": 64,
+      "shape": [
+        64,
+        256,
+        384
+      ],
+      "dtype": "float16"
+    }
+  ],
+  "all_pass": true
+}

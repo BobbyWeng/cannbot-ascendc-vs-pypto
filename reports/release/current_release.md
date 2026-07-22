@@ -20,8 +20,9 @@
 | expand | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | Full batch (new!) | msprof(r3) |
 | transpose | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | Partial | Torch+AscendC (new!) | msprof |
 | reduce_sum | **COMPLETE_WITH_LIMITATION** | 62/70 | 21/70 (FP16) | 21/70 (FP16) | FP16 accum known | msprof |
+| **layernorm** | **COMPLETE** | **PASS** | **TRUE_DEVICE (optimized)** | **Precision limited** | **Torch+AscendC 7/7 PASS** | **Event + msprof** |
 
-**Status counts**: 4 COMPLETE, 8 COMPLETE_WITH_LIMITATION
+**Status counts**: 5 COMPLETE, 8 COMPLETE_WITH_LIMITATION
 
 ## RC-1 Fixes Applied
 

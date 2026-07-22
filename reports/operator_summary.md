@@ -18,8 +18,9 @@ Generated from `reports/release/current_release.json` — single source of truth
 | expand | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | Full batch | msprof |
 | transpose | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | All 3 routes (7 batches bitwise) | msprof |
 | reduce_sum | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | 70/70 (FP32 accum, RC-3) | msprof |
+| **layernorm** | **COMPLETE** | **PASS** | **TRUE_DEVICE (optimized)** | **Precision limited** | **Torch+AscendC 7/7 PASS** | **Event + msprof** |
 
-**Status counts**: 4 COMPLETE, 8 COMPLETE_WITH_LIMITATION, 0 PARTIAL, 0 INCOMPLETE
+**Status counts**: 5 COMPLETE, 8 COMPLETE_WITH_LIMITATION, 0 PARTIAL, 0 INCOMPLETE
 
 ## Performance Summary (B=1 primary compute kernel, μs)
 
@@ -37,6 +38,7 @@ Generated from `reports/release/current_release.json` — single source of truth
 | transpose | 14.1 | 85.0 (RC-3) | N/A | Torch |
 | reduce_sum | 15.96 | 19.28 | N/A | Torch |
 | matmul | 12.2 | 10.4 | N/A | Ascend C |
+| **layernorm** | **23.2** | **8.6** | **193.5** | **Ascend C** |
 
 ## Key Changes in v1.3-rc3
 
@@ -51,6 +53,9 @@ equal/not/or/where migrated from Event-based to msprof profiling. All operators 
 
 ### Transpose Ascend C — Continued Performance
 64×64 tile tested: +2.9% for B≥4 beyond RC-2's 13-18% improvement. Optimal: 32×32 tile with double buffering.
+
+### Layernorm — New Operator (COMPLETE)
+LayerNorm `[B, 256, 32]` normalized on last dim `[32]`. Torch baseline + Ascend C (AR-FullLoad, 7.4x faster than torch at B=1) + PyPTO (primitive ops, precision limited). Ascend C optimized from 63us→8.6us (B=1) using multi-core row tiling (rowsPerBlock≤255, 20 cores).
 
 ### Framework Infrastructure
 - **Regression tests**: tests/regression/ with 5 check types, 36/36 PASS

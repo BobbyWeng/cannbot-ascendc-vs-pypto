@@ -1,0 +1,714 @@
+{
+  "operator": "add",
+  "implementation": "pypto",
+  "batch_results": {
+    "1": [
+      {
+        "batch": 1,
+        "case": "fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 1,
+        "case": "all_zero",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 1,
+        "case": "all_positive",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 1,
+        "case": "all_negative",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 1,
+        "case": "pos_neg_mixed",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 1,
+        "case": "small_values",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 1,
+        "case": "underflow",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 1,
+        "case": "overflow",
+        "bitwise": true,
+        "max_abs": NaN,
+        "mean_abs": NaN,
+        "nan_in_out": 0,
+        "inf_in_out": 98304
+      },
+      {
+        "batch": 1,
+        "case": "large_fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 1,
+        "case": "x1_ones_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 1,
+        "case": "x1_zero_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      }
+    ],
+    "2": [
+      {
+        "batch": 2,
+        "case": "fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 2,
+        "case": "all_zero",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 2,
+        "case": "all_positive",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 2,
+        "case": "all_negative",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 2,
+        "case": "pos_neg_mixed",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 2,
+        "case": "small_values",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 2,
+        "case": "underflow",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 2,
+        "case": "overflow",
+        "bitwise": true,
+        "max_abs": NaN,
+        "mean_abs": NaN,
+        "nan_in_out": 0,
+        "inf_in_out": 196608
+      },
+      {
+        "batch": 2,
+        "case": "large_fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 2,
+        "case": "x1_ones_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 2,
+        "case": "x1_zero_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      }
+    ],
+    "4": [
+      {
+        "batch": 4,
+        "case": "fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 4,
+        "case": "all_zero",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 4,
+        "case": "all_positive",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 4,
+        "case": "all_negative",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 4,
+        "case": "pos_neg_mixed",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 4,
+        "case": "small_values",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 4,
+        "case": "underflow",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 4,
+        "case": "overflow",
+        "bitwise": true,
+        "max_abs": NaN,
+        "mean_abs": NaN,
+        "nan_in_out": 0,
+        "inf_in_out": 393216
+      },
+      {
+        "batch": 4,
+        "case": "large_fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 4,
+        "case": "x1_ones_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 4,
+        "case": "x1_zero_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      }
+    ],
+    "8": [
+      {
+        "batch": 8,
+        "case": "fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 8,
+        "case": "all_zero",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 8,
+        "case": "all_positive",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 8,
+        "case": "all_negative",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 8,
+        "case": "pos_neg_mixed",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 8,
+        "case": "small_values",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 8,
+        "case": "underflow",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 8,
+        "case": "overflow",
+        "bitwise": true,
+        "max_abs": NaN,
+        "mean_abs": NaN,
+        "nan_in_out": 0,
+        "inf_in_out": 786432
+      },
+      {
+        "batch": 8,
+        "case": "large_fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 8,
+        "case": "x1_ones_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 8,
+        "case": "x1_zero_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      }
+    ],
+    "16": [
+      {
+        "batch": 16,
+        "case": "fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 16,
+        "case": "all_zero",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 16,
+        "case": "all_positive",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 16,
+        "case": "all_negative",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 16,
+        "case": "pos_neg_mixed",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 16,
+        "case": "small_values",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 16,
+        "case": "underflow",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 16,
+        "case": "overflow",
+        "bitwise": true,
+        "max_abs": NaN,
+        "mean_abs": NaN,
+        "nan_in_out": 0,
+        "inf_in_out": 1572864
+      },
+      {
+        "batch": 16,
+        "case": "large_fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 16,
+        "case": "x1_ones_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 16,
+        "case": "x1_zero_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      }
+    ],
+    "32": [
+      {
+        "batch": 32,
+        "case": "fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 32,
+        "case": "all_zero",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 32,
+        "case": "all_positive",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 32,
+        "case": "all_negative",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 32,
+        "case": "pos_neg_mixed",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 32,
+        "case": "small_values",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 32,
+        "case": "underflow",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 32,
+        "case": "overflow",
+        "bitwise": true,
+        "max_abs": NaN,
+        "mean_abs": NaN,
+        "nan_in_out": 0,
+        "inf_in_out": 3145728
+      },
+      {
+        "batch": 32,
+        "case": "large_fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 32,
+        "case": "x1_ones_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 32,
+        "case": "x1_zero_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      }
+    ],
+    "64": [
+      {
+        "batch": 64,
+        "case": "fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 64,
+        "case": "all_zero",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 64,
+        "case": "all_positive",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 64,
+        "case": "all_negative",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 64,
+        "case": "pos_neg_mixed",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 64,
+        "case": "small_values",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 64,
+        "case": "underflow",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 64,
+        "case": "overflow",
+        "bitwise": true,
+        "max_abs": NaN,
+        "mean_abs": NaN,
+        "nan_in_out": 0,
+        "inf_in_out": 6291456
+      },
+      {
+        "batch": 64,
+        "case": "large_fp16",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 64,
+        "case": "x1_ones_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      },
+      {
+        "batch": 64,
+        "case": "x1_zero_all",
+        "bitwise": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "nan_in_out": 0,
+        "inf_in_out": 0
+      }
+    ]
+  },
+  "source_hash": "83e99c169f79c0c9"
+}

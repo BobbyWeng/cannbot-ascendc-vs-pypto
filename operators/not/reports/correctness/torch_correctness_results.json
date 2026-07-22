@@ -1,0 +1,847 @@
+{
+  "operator": "not",
+  "variant": "torch",
+  "results": [
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=1 all_true",
+      "batch": 1,
+      "case": "all_true",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=1 all_false",
+      "batch": 1,
+      "case": "all_false",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=1 alternating",
+      "batch": 1,
+      "case": "alternating",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=1 random_mask",
+      "batch": 1,
+      "case": "random_mask",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=1 sparse_true",
+      "batch": 1,
+      "case": "sparse_true",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=1 dense_true",
+      "batch": 1,
+      "case": "dense_true",
+      "shape": [
+        1,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=2 all_true",
+      "batch": 2,
+      "case": "all_true",
+      "shape": [
+        2,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=2 all_false",
+      "batch": 2,
+      "case": "all_false",
+      "shape": [
+        2,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=2 alternating",
+      "batch": 2,
+      "case": "alternating",
+      "shape": [
+        2,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=2 random_mask",
+      "batch": 2,
+      "case": "random_mask",
+      "shape": [
+        2,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=2 sparse_true",
+      "batch": 2,
+      "case": "sparse_true",
+      "shape": [
+        2,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=2 dense_true",
+      "batch": 2,
+      "case": "dense_true",
+      "shape": [
+        2,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=4 all_true",
+      "batch": 4,
+      "case": "all_true",
+      "shape": [
+        4,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=4 all_false",
+      "batch": 4,
+      "case": "all_false",
+      "shape": [
+        4,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=4 alternating",
+      "batch": 4,
+      "case": "alternating",
+      "shape": [
+        4,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=4 random_mask",
+      "batch": 4,
+      "case": "random_mask",
+      "shape": [
+        4,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=4 sparse_true",
+      "batch": 4,
+      "case": "sparse_true",
+      "shape": [
+        4,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=4 dense_true",
+      "batch": 4,
+      "case": "dense_true",
+      "shape": [
+        4,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=8 all_true",
+      "batch": 8,
+      "case": "all_true",
+      "shape": [
+        8,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=8 all_false",
+      "batch": 8,
+      "case": "all_false",
+      "shape": [
+        8,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=8 alternating",
+      "batch": 8,
+      "case": "alternating",
+      "shape": [
+        8,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=8 random_mask",
+      "batch": 8,
+      "case": "random_mask",
+      "shape": [
+        8,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=8 sparse_true",
+      "batch": 8,
+      "case": "sparse_true",
+      "shape": [
+        8,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=8 dense_true",
+      "batch": 8,
+      "case": "dense_true",
+      "shape": [
+        8,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=16 all_true",
+      "batch": 16,
+      "case": "all_true",
+      "shape": [
+        16,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=16 all_false",
+      "batch": 16,
+      "case": "all_false",
+      "shape": [
+        16,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=16 alternating",
+      "batch": 16,
+      "case": "alternating",
+      "shape": [
+        16,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=16 random_mask",
+      "batch": 16,
+      "case": "random_mask",
+      "shape": [
+        16,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=16 sparse_true",
+      "batch": 16,
+      "case": "sparse_true",
+      "shape": [
+        16,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=16 dense_true",
+      "batch": 16,
+      "case": "dense_true",
+      "shape": [
+        16,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=32 all_true",
+      "batch": 32,
+      "case": "all_true",
+      "shape": [
+        32,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=32 all_false",
+      "batch": 32,
+      "case": "all_false",
+      "shape": [
+        32,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=32 alternating",
+      "batch": 32,
+      "case": "alternating",
+      "shape": [
+        32,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=32 random_mask",
+      "batch": 32,
+      "case": "random_mask",
+      "shape": [
+        32,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=32 sparse_true",
+      "batch": 32,
+      "case": "sparse_true",
+      "shape": [
+        32,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=32 dense_true",
+      "batch": 32,
+      "case": "dense_true",
+      "shape": [
+        32,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=64 all_true",
+      "batch": 64,
+      "case": "all_true",
+      "shape": [
+        64,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=64 all_false",
+      "batch": 64,
+      "case": "all_false",
+      "shape": [
+        64,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=64 alternating",
+      "batch": 64,
+      "case": "alternating",
+      "shape": [
+        64,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=64 random_mask",
+      "batch": 64,
+      "case": "random_mask",
+      "shape": [
+        64,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=64 sparse_true",
+      "batch": 64,
+      "case": "sparse_true",
+      "shape": [
+        64,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    },
+    {
+      "status": "PASS",
+      "bitwise_equal": true,
+      "bitwise_mismatch_count": 0,
+      "signed_zero_mismatch_count": 0,
+      "numeric_mismatch_count": 0,
+      "max_abs_diff": 0.0,
+      "max_rel_diff": 0.0,
+      "nan_count": 0,
+      "inf_count": 0,
+      "label": "B=64 dense_true",
+      "batch": 64,
+      "case": "dense_true",
+      "shape": [
+        64,
+        256,
+        384
+      ],
+      "dtype": "bool (uint8)"
+    }
+  ],
+  "all_pass": true
+}

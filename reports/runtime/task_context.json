@@ -1,21 +1,29 @@
 {
-  "operator": "project",
-  "backend_route": "PROJECT_INFRA",
-  "semantic_class": "UNKNOWN_NEEDS_ANALYSIS",
-  "hardware_path": "N/A",
-  "task_mode": "FUNCTIONAL_REPAIR",
-  "lifecycle_stage": "ARCHIVE",
-  "active_plugin": "inline",
-  "active_agent": "primary-agent",
+  "operator": "layernorm",
+  "backend_route": "ASCENDC_DIRECT",
+  "semantic_class": "REDUCTION",
+  "hardware_path": "VECTOR",
+  "task_mode": "NEW_DEVELOPMENT",
+  "lifecycle_stage": "CORRECTNESS",
+  "active_plugin": "ops-direct-invoke",
+  "active_agent": "ascendc-kernel-architect",
   "required_skills": [
-    "browser:control-in-app-browser"
+    "ascendc-env-check",
+    "ascendc-kernel-develop-workflow",
+    "ascendc-direct-invoke-template",
+    "ascendc-docs-search",
+    "ascendc-tiling-design",
+    "ascendc-api-best-practices",
+    "ops-precision-standard",
+    "ops-profiling"
   ],
   "loaded_skills": [
-    "browser:control-in-app-browser"
+    "ascendc-api-best-practices",
+    "ascendc-docs-search"
   ],
   "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
-  "correctness_gate": "NOT_APPLICABLE_PROJECT_INFRA",
-  "profile_gate": "PASS_MULTI_BATCH_DASHBOARD_VALIDATION",
-  "next_action": "None — multi-batch Dashboard implementation and validation are complete",
-  "last_successful_checkpoint": "B=1..64 exact parsed-msprof SHA256 validation, validation-first ranking, clickable status drilldowns, regression, determinism, JavaScript syntax, Cannbot usage, and browser interaction checks passed"
+  "correctness_gate": "PARTIAL_PASS",
+  "profile_gate": "PENDING",
+  "next_action": "Fix Ascend C vector-only layernorm, tune PyPTO tile shapes, run full benchmarks",
+  "last_successful_checkpoint": "Torch baseline PASS all 7 batches"
 }

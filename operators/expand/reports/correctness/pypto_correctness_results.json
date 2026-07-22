@@ -1,0 +1,112 @@
+{
+  "operator": "expand",
+  "variant": "pypto",
+  "results": [
+    {
+      "batch": 1,
+      "shape": [
+        1,
+        256,
+        1
+      ],
+      "output_shape": [
+        1,
+        256,
+        384
+      ],
+      "bitwise": true,
+      "max_diff": 0.0
+    },
+    {
+      "batch": 2,
+      "shape": [
+        2,
+        256,
+        1
+      ],
+      "output_shape": [
+        2,
+        256,
+        384
+      ],
+      "bitwise": true,
+      "max_diff": 0.0
+    },
+    {
+      "batch": 4,
+      "shape": [
+        4,
+        256,
+        1
+      ],
+      "output_shape": [
+        4,
+        256,
+        384
+      ],
+      "bitwise": true,
+      "max_diff": 0.0
+    },
+    {
+      "batch": 8,
+      "shape": [
+        8,
+        256,
+        1
+      ],
+      "output_shape": [
+        8,
+        256,
+        384
+      ],
+      "bitwise": true,
+      "max_diff": 0.0
+    },
+    {
+      "batch": 16,
+      "shape": [
+        16,
+        256,
+        1
+      ],
+      "output_shape": [
+        16,
+        256,
+        384
+      ],
+      "bitwise": true,
+      "max_diff": 0.0
+    },
+    {
+      "batch": 32,
+      "shape": [
+        32,
+        256,
+        1
+      ],
+      "output_shape": [
+        32,
+        256,
+        384
+      ],
+      "bitwise": true,
+      "max_diff": 0.0
+    },
+    {
+      "batch": 64,
+      "shape": [
+        64,
+        256,
+        1
+      ],
+      "output_shape": [
+        64,
+        256,
+        384
+      ],
+      "bitwise": true,
+      "max_diff": 0.0
+    }
+  ],
+  "all_pass": true
+}

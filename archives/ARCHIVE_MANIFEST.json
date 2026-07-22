@@ -1,0 +1,55 @@
+{
+  "archives_dir": "archives/",
+  "entries": [
+    {
+      "filename": "cannbot_ascendc_vs_pypto_add_v1.tar.gz",
+      "operator": "add",
+      "sha256": "1d605ad3d75df9ec76e147de4efc87889ffdedfda03a4ea029f57a9374ae0090",
+      "size_mb": 0.03
+    },
+    {
+      "filename": "cannbot_ascendc_vs_pypto_equal_v4.tar.gz",
+      "operator": "equal",
+      "sha256": "7eea8526befa76c6505dfe9eac6e496d74c38e5bf6f76ec399c90735d2b6f32f",
+      "size_mb": 0.02
+    },
+    {
+      "filename": "cannbot_ascendc_vs_pypto_mul_v1.tar.gz",
+      "operator": "mul",
+      "sha256": "3fbe65773e6ead4c8fe73bc95825b4be99a98b7b9222f1b9b388d4ab42f01835",
+      "size_mb": 0.03
+    },
+    {
+      "filename": "cannbot_ascendc_vs_pypto_not_v4.tar.gz",
+      "operator": "not",
+      "sha256": "4073b35cd79d8155b5dd44501db6fa163480fef4149840290fbe7043d99d9a3b",
+      "size_mb": 0.02
+    },
+    {
+      "filename": "cannbot_ascendc_vs_pypto_or_v4.tar.gz",
+      "operator": "or",
+      "sha256": "3713ddfd0ce3f4936d6cc0e9038898e2c17897342f1752ce30fec8e959f56321",
+      "size_mb": 0.02
+    },
+    {
+      "filename": "cannbot_ascendc_vs_pypto_relu_v1.tar.gz",
+      "operator": "relu",
+      "sha256": "d5c47889ca0846d1a1fc0106c56355575ef7c5144ec02cb0357fc419fe60c0e6",
+      "size_mb": 0.03
+    },
+    {
+      "filename": "cannbot_ascendc_vs_pypto_where_v4.tar.gz",
+      "operator": "where",
+      "sha256": "d5c6c8a4542bbdb686d689963beca2b601eb3f72a8d9529b0a0067df785667bc",
+      "size_mb": 0.02
+    }
+  ],
+  "operator_count": 7,
+  "missing_operators": [
+    "div",
+    "expand",
+    "matmul",
+    "reduce_sum",
+    "transpose"
+  ]
+}

@@ -4,7 +4,7 @@
 - **Version**: v1.2-rc2
 - **Generated**: 2026-07-17
 - **Environment**: Ascend 910B, CANN 9.0.0, Python 3.11
-- **Operators**: 12 (4 COMPLETE, 8 COMPLETE_WITH_LIMITATION)
+- **Operators**: 13 (5 COMPLETE, 8 COMPLETE_WITH_LIMITATION)
 - **Profiler**: msprof with `--ascendcl=on --ai-core=on --task-time=l0`
 - **Warmup**: 200 | **Profiled loops**: 100 | **Repeat**: 5
 
@@ -14,7 +14,7 @@
 
 | Status | Count | Operators |
 |--------|-------|-----------|
-| COMPLETE | 4 | relu, mul, not, matmul |
+| COMPLETE | 5 | relu, mul, not, matmul, layernorm |
 | COMPLETE_WITH_LIMITATION | 8 | add, div, equal, or, where, expand, transpose, reduce_sum |
 
 > **RC-2 Change**: matmul, div, equal, where, transpose PyPTO routes unblocked (workarounds found).
@@ -157,15 +157,26 @@
 
 ---
 
+### layernorm — COMPLETE
+| Route | Correctness | B1 Latency (host_sync) | Kernel Type |
+|-------|-------------|:----------------------:|-------------|
+| Torch | PASS (7/7) | 23.2 us | KERNEL_AICORE |
+| Ascend C | PASS (7/7 normalize-only kernel + host weight/bias) | 8.6 us (event) / 68 us msprof primary | TRUE_DEVICE (KERNEL_AIVEC) |
+| PyPTO | PASS with precision limitation (max_abs 1.4-3.3) | 193.5 us | KERNEL_AICPU (2881 us primary) |
+
+**Notes**: Formula `y = (x - mean) / sqrt(var + eps) * weight + bias`. Ascend C 7 kernels per call (KERNEL_AIVEC). Optimization: AR-FullLoad + multi-block row tiling, 7.4x-20x faster than pre-optimization. Ascend C multi-batch (event-based): B=2 13.6 us, B=4 24.5 us, B=8 46.0 us, B=16 88.7 us, B=32 108.0 us, B=64 216.6 us. PyPTO: 15 kernels (AIVEC+MIX_AIC+AICPU), primary KERNEL_AICPU 2881 us. Limitation: weight/bias on host (not in kernel), PyPTO tile shape tuning needed.
+
+---
+
 ## Ascend C Implementation Audit (RC-2)
 
 | Category | Operators |
 |----------|-----------|
 | TRUE_CUBE_IMPLEMENTATION | matmul |
-| TRUE_DEVICE_IMPLEMENTATION | relu, mul, add, div, equal, not, or, where, expand, transpose, reduce_sum |
+| TRUE_DEVICE_IMPLEMENTATION | relu, mul, add, div, equal, not, or, where, expand, transpose, reduce_sum, layernorm |
 | HOST_PRECOMPUTE_FALLBACK | (none) |
 
-All 11 Ascend C operators have genuine device-side kernels verified by source code AND correctness runs on NPU.
+All 12 Ascend C operators have genuine device-side kernels verified by source code AND correctness runs on NPU.
 
 ---
 

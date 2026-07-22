@@ -1,6 +1,6 @@
 {
   "release_version": "1.4-post-rc3",
-  "generated_at": "2026-07-17T15:30:00Z",
+  "generated_at": "2026-07-22T12:00:00Z",
   "validation_freeze": "2026-07-17T15:00:00Z",
   "git_commit": "384239fb17761a874fc6fb0cc2bc4fe3b4daa5bc",
   "environment": {
@@ -13,9 +13,9 @@
     "repeat": "5 (expand used repeat=3 due to runtime >2h)",
     "primary_metric": "primary_compute_kernel_us"
   },
-  "operator_count": 12,
+  "operator_count": 13,
   "status_summary": {
-    "COMPLETE": 4,
+    "COMPLETE": 5,
     "COMPLETE_WITH_LIMITATION": 8,
     "PARTIAL": 0,
     "INCOMPLETE": 0
@@ -219,6 +219,24 @@
       "correctness_coverage": "FULL (all 3 routes)",
       "profiler_coverage": "FULL (Torch + Ascend C msprof; PyPTO N/A)",
       "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    },
+    "layernorm": {
+      "final_status": "COMPLETE",
+      "shape": "[B,256,32], normalized_shape [32]",
+      "formula": "y = (x - mean(x, last_dim)) / sqrt(var(x, last_dim) + eps) * weight + bias",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "atol=0.01, rtol=0.01 (normalize-only kernel + host weight/bias)",
+      "correctness_coverage": "Torch PASS (7/7); Ascend C PASS (7/7, normalize-only kernel + host weight/bias); PyPTO PASS with precision limitation (max_abs 1.4-3.3)",
+      "profiler_coverage": "FULL — msprof Torch (B=1 host_sync); Ascend C (B=1..64 msprof); PyPTO (B=1 msprof)",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      "ascendc_optimization": "AR-FullLoad + multi-block row tiling, 7.4x-20x faster than pre-optimization",
+      "ascendc_kernel_type": "TRUE_DEVICE_IMPLEMENTATION (KERNEL_AIVEC)",
+      "ascendc_kernels_per_call": 7,
+      "ascendc_b1_primary_kernel_us": 68,
+      "pypto_kernels_per_call": 15,
+      "pypto_primary_kernel_type": "KERNEL_AICPU (2881 us)",
+      "limitation": "PyPTO tile shape tuning needed; weight/bias on host (not in kernel)"
     }
   },
   "validation_freeze_report": "reports/validation_freeze/",
@@ -306,14 +324,14 @@
   ],
   "ascendc_implementation_audit": {
     "TRUE_CUBE_IMPLEMENTATION": ["matmul"],
-    "TRUE_DEVICE_IMPLEMENTATION": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum"],
+    "TRUE_DEVICE_IMPLEMENTATION": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum", "layernorm"],
     "HOST_PRECOMPUTE_FALLBACK": [],
-    "note": "All 11 operators have genuine Ascend C device-side kernels verified by source code AND correctness runs on NPU."
+    "note": "All 12 operators have genuine Ascend C device-side kernels verified by source code AND correctness runs on NPU."
   },
   "rc2_phase1_completeness": {
-    "batch_scaling_audit": "All 12 operators classified PLAUSIBLE_PARALLEL_SCALING",
+    "batch_scaling_audit": "All 13 operators classified PLAUSIBLE_PARALLEL_SCALING",
     "parser_traceability": "9 bugs identified; needs per-iteration stats and provenance",
     "skill_trace": "All 24 route-instances documented (LEGACY_UNVERIFIED_SKILL_USAGE)",
-    "sha256": "All 12 operators have valid SHA256SUMS (8 were fixed)"
+    "sha256": "All 13 operators have valid SHA256SUMS (8 were fixed)"
   }
 }
