@@ -86,7 +86,9 @@ def _parse_correctness_from_coverage(text):
                 if not rest and 'ascend c' in part.lower():
                     rest = part[len('Ascend C'):].strip().lstrip(':').strip()
                 if rest:
-                    result[key] = rest
+                    prev = result.get(key, '')
+                    if 'PASS' in rest.upper() or not ('PASS' in prev.upper()):
+                        result[key] = rest
                 else:
                     result[key] = 'PASS'
                 matched = True
