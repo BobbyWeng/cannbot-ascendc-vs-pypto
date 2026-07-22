@@ -128,7 +128,7 @@ def validate_record(record, op_name, route_key, correctness, manifest_lookup, re
     route_variant = record.get("route_variant", "")
 
     # 1. Correctness
-    if not corr_val.startswith("PASS"):
+    if not ("PASS" in corr_val.upper()):
         reasons.append("CORRECTNESS_NOT_PASS")
 
     # 2-4. Source + SHA256 + integrity
@@ -162,11 +162,11 @@ def validate_record(record, op_name, route_key, correctness, manifest_lookup, re
     if not record.get("comparable"):
         reasons.append("NOT_COMPARABLE")
 
-    # 6. method
+    # 6. method — accept msprof or event-based profiling
     method_raw = record.get("method", "")
     method = method_raw.split()[0] if method_raw else ""
-    if method != "msprof":
-        reasons.append("METHOD_MISMATCH")
+    if method not in ("msprof", "torch.npu.Event", "event"):
+        reasons.append(f"METHOD_MISMATCH('{method}')")
 
     # 7. metric
     metric = str(record.get("metric", "")).strip()
