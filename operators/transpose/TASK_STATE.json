@@ -30,5 +30,18 @@
   "profile_gate": "PASS",
   "release_eligibility": true,
   "next_action": "G13 code review before next release",
-  "last_successful_checkpoint": "Post-RC3 transpose implementation"
+  "last_successful_checkpoint": "Post-RC3 transpose implementation",
+  "pypto_msprof_b1": {
+    "primary_compute_kernel_us": 323.36,
+    "primary_kernel_name": "PYPTO_transpose_2d",
+    "primary_kernel_type": "KERNEL_AICPU",
+    "all_device_kernels_us_per_call": 159.212,
+    "compute_kernel_mean_us": null,
+    "aicpu_init_us": 3074.1,
+    "kernel_types": [
+      "KERNEL_AICPU",
+      "KERNEL_MIX_AIC"
+    ],
+    "kernel_count": 300
+  }
 }

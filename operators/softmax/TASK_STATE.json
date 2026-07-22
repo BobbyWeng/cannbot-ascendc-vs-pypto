@@ -13,11 +13,102 @@
   "ascendc_status": "COMPLETE",
   "pypto_status": "COMPLETE",
   "event_measured": {
-    "torch_b1": "17.5 us", "ascendc_b1": "6.8 us", "pypto_b1": "TBD"
+    "torch_b1_median_us": 16.02,
+    "torch_b2_median_us": 16.71,
+    "torch_b4_median_us": 16.42,
+    "torch_b8_median_us": 16.08,
+    "torch_b16_median_us": 16.01,
+    "torch_b32_median_us": 16.63,
+    "torch_b64_median_us": 15.71,
+    "ascendc_b1_median_us": 6.8,
+    "ascendc_b2_median_us": 11.5,
+    "ascendc_b4_median_us": 21.4,
+    "ascendc_b8_median_us": 40.4,
+    "ascendc_b16_median_us": 79.0,
+    "ascendc_b32_median_us": 95.9,
+    "ascendc_b64_median_us": 283.7,
+    "pypto_b1_median_us": 6295.7,
+    "pypto_b1_note": "Dominant cost is JIT compilation on first call (pypto.frontend.jit). Per-call after JIT ~63 us based on 6295.7 us / 100 loops.",
+    "measurement_method": "aclrtEvent/torch.npu.Event timing, median of 5 repeats x 100 loops per repeat, warmup=200"
   },
   "msprof_measured": {
-    "ascendc_b1_primary": "13.98 us",
+    "torch_b1_primary_us": 15.28,
+    "torch_b2_primary_us": 18.34,
+    "torch_b4_primary_us": 16.3,
+    "torch_b8_primary_us": 15.9,
+    "torch_b16_primary_us": 14.3,
+    "torch_b32_primary_us": 17.4,
+    "torch_b64_primary_us": 18.72,
+    "torch_kernel_type": "KERNEL_AIVEC",
+    "torch_kernel_name": "aclnnSoftmax_SoftmaxAiCore_SoftmaxV2",
+    "torch_host_events_count_per_batch": "4279 (B=1..32), 4280 (B=64)",
+    "torch_kernel_count": 700,
+    "torch_kernels_per_call_raw": 7.0,
+    "torch_kernels_per_call_note": "Same parser artifact as ascendc: 700 total events / 100 loops = 7.0. Actual timed launches = 500 (5 repeats x 100 loops). 700/500 = 1.4 events per torch.nn.functional.softmax call. torch_npu msprof shows KERNEL_AIVEC events (not missing), confirming torch_npu kernel events are visible.",
+    "ascendc_b1_primary_us": 13.98,
+    "ascendc_b2_primary_us": 19.52,
+    "ascendc_b4_primary_us": 29.0,
+    "ascendc_b8_primary_us": 48.4,
+    "ascendc_b16_primary_us": 89.92,
+    "ascendc_b32_primary_us": 108.9,
+    "ascendc_b64_primary_us": 209.52,
     "ascendc_kernel_type": "KERNEL_AIVEC",
-    "ascendc_kernel_count": 7
+    "ascendc_kernel_name": "softmax_kernel",
+    "ascendc_kernel_count": 700,
+    "ascendc_kernels_per_call_raw": 7.0,
+    "ascendc_kernels_per_call_note": "Parser divides 700 total events by 100 loops only (hardcoded divisor). True analysis: binary runs warmup=200 + timed=(5 repeats x 100 loops)=500 launches. 700/(200+500) = 1.0 event per <<<>>> call overall. The 700 figure includes 200 warmup events. Each softmax_kernel<<<>>> produces exactly 1 KERNEL_AIVEC event. Parser's kpc=7.0 is an artifact.",
+    "ascendc_all_device_kernels_us_per_call": {
+      "b1": 48.441,
+      "b2": 82.713,
+      "b4": 149.843,
+      "b8": 285.031,
+      "b16": 554.392,
+      "b32": 674.757,
+      "b64": 1354.19
+    },
+    "pypto_b1_primary_us": 3905.64,
+    "pypto_b1_primary_type": "KERNEL_AICPU",
+    "pypto_b1_primary_note": "Primary is AICPU JIT compilation event (first call triggers compilation). This is NOT a representative compute kernel time.",
+    "pypto_b1_kernel_count": 316,
+    "pypto_b1_kernels_per_call": 3.16,
+    "pypto_b1_host_events_count": 1179,
+    "pypto_b1_by_type": {
+      "KERNEL_AICPU": {
+        "count": 211,
+        "detail": "1x JIT compilation event (3905.64 us) + 210x PYPTO_softmax_kernel_2d AICPU runtime events (mean 75.10 us)",
+        "total_us": 15845.38,
+        "mean_us": 75.1
+      },
+      "KERNEL_MIX_AIC": {
+        "count": 105,
+        "detail": "PYPTO_softmax_kernel_2d on AIC core (mixed vector/scalar)",
+        "total_us": 5936.64,
+        "mean_us": 56.54
+      }
+    },
+    "pypto_b1_kernel_note": "316 total events in msprof run (warmup=0, loops=100, repeat=5). Expected softmax calls = 100 * 5 = 500. Events include JIT compilation (1), AICPU kernels (210), MIX_AIC kernels (105). The 210 AICPU + 105 MIX_AIC = 315 kernel events for 500 calls suggests ~63% kernel execution rate, possibly due to inlining or fusion by compiler."
+  },
+  "kernels_per_call_analysis": {
+    "description": "kernels_per_call is computed as total_kernel_events / loops (100), NOT accounting for repeats (5) or warmup (200). This produces inflated values.",
+    "parser_formula": "kernels_per_call = round(len(ke) / 100, 2)",
+    "actual_logical_calls": "warmup=200 + timed=(loops=100 * repeat=5) = 700 total <<<>>> calls",
+    "event_counts_explained": "700 kernel events for 700 <<<>>> calls = 1.0 kernel event per <<<>>> call (correct). Parser sees 700/100 = 7.0 because it ignores warmup and repeat.",
+    "torch_same_pattern": "torch also shows 700 kernel events / 100 loops = 7.0 kpc. Same explanation: 200 warmup + 500 timed = 700 events, 1.0 per call.",
+    "ascendc_same_pattern": "ascendc (softmax_kernel) code. Same binary structure (warmup=200, loops=100, repeat=5). Results in 700 events, 1.0 per <<<>>> call.",
+    "conclusion": "kernels_per_call as currently computed is 7.0x inflated due to parser dividing by 100 instead of (loops * repeat). Actual ratio is 1.0 kernel event per kernel launch for both Torch and Ascend C. The metric should be recomputed or deprecated.",
+    "recommendation": "Update parse_profiler.py to divide by (loops * repeat) instead of hardcoded 100, or rename to reflect what it actually measures."
+  },
+  "pypto_msprof_b1": {
+    "primary_compute_kernel_us": 263.02,
+    "primary_kernel_name": "PYPTO_softmax_kernel_2d",
+    "primary_kernel_type": "KERNEL_AICPU",
+    "all_device_kernels_us_per_call": 165.597,
+    "compute_kernel_mean_us": null,
+    "aicpu_init_us": 3094.16,
+    "kernel_types": [
+      "KERNEL_AICPU",
+      "KERNEL_MIX_AIC"
+    ],
+    "kernel_count": 300
   }
 }

@@ -1,17 +1,41 @@
 {
-  "operator": "softmax",
+  "operator": "where, transpose, equal",
   "backend_route": "ASCENDC_DIRECT",
-  "semantic_class": "REDUCTION",
+  "semantic_class": "ELEMENTWISE",
   "hardware_path": "VECTOR",
-  "task_mode": "NEW_DEVELOPMENT",
-  "lifecycle_stage": "PREFLIGHT",
+  "task_mode": "PERFORMANCE_OPTIMIZATION",
+  "lifecycle_stage": "FINAL_PROFILE",
   "active_plugin": "ops-direct-invoke",
   "active_agent": "ascendc-kernel-architect",
-  "required_skills": ["ascendc-env-check","ascendc-kernel-develop-workflow","ascendc-direct-invoke-template","ascendc-docs-search","ascendc-tiling-design","ascendc-api-best-practices","ops-precision-standard","ops-profiling"],
-  "loaded_skills": ["ascendc-api-best-practices","ascendc-docs-search"],
-  "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
-  "correctness_gate": "PENDING",
-  "profile_gate": "PENDING",
-  "next_action": "Create SPEC.yaml and data",
-  "last_successful_checkpoint": ""
+  "required_skills": ["ascendc-env-check", "ascendc-api-best-practices", "ascendc-kernel-develop-workflow"],
+  "loaded_skills": ["ascendc-api-best-practices", "ascendc-tiling-design", "ascendc-task-focus"],
+  "results": {
+    "where": {
+      "baseline_us": 248,
+      "optimized_us": 7.6,
+      "torch_us": 11.6,
+      "speedup_vs_baseline": 32.6,
+      "faster_than_torch": true,
+      "correctness": "PASS",
+      "approach": "Compare + Select API (fully vectorized)"
+    },
+    "transpose": {
+      "baseline_us": 85,
+      "optimized_us": 85,
+      "torch_us": 14.1,
+      "speedup_vs_baseline": 1.0,
+      "faster_than_torch": false,
+      "correctness": "N/A",
+      "approach": "No improvement found (DMA-bound)"
+    },
+    "equal": {
+      "baseline_us": 50,
+      "optimized_us": 41.3,
+      "torch_us": 11.5,
+      "speedup_vs_baseline": 1.2,
+      "faster_than_torch": false,
+      "correctness": "PASS",
+      "approach": "Compare + scalar bit expansion"
+    }
+  }
 }

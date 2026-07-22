@@ -26,9 +26,24 @@
     "ops-profiling"
   ],
   "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
-  "correctness_gate": "PASS",
+  "correctness_gate": "PASS_WITH_LIMITATION",
+  "correctness_limitation": "Torch baseline shows 7/70 NaN-case failures due to NaN bitwise encoding mismatch (check_correctness uses equal_nan=False). 2 data files corrupted (pos_neg_cancel B=1,16). Non-NaN finite cases: 62/63 PASS (1 crash from corrupted data excluded). Ascend C FP32 kernel: 70/70 PASS. PyPTO wrapper FP32: 70/70 PASS.",
   "profile_gate": "PASS",
   "release_eligibility": true,
-  "next_action": "G13 code review before next release",
-  "last_successful_checkpoint": "Post-RC3 reduce_sum implementation"
+  "next_action": "Fix NaN comparison in common/correctness/correctness.py: set equal_nan=True. Regenerate corrupted data files. Re-run full correctness suite.",
+  "last_successful_checkpoint": "Post-RC3 reduce_sum implementation",
+  "pypto_msprof_b1": {
+    "primary_compute_kernel_us": 290.86,
+    "primary_kernel_name": "PYPTO_reduce_sum_fp32_kernel",
+    "primary_kernel_type": "KERNEL_AICPU",
+    "all_device_kernels_us_per_call": 148.394,
+    "compute_kernel_mean_us": null,
+    "aicpu_init_us": 3052.18,
+    "kernel_types": [
+      "KERNEL_AICPU",
+      "KERNEL_AIVEC",
+      "KERNEL_MIX_AIC"
+    ],
+    "kernel_count": 400
+  }
 }

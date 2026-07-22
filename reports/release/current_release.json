@@ -1,6 +1,6 @@
 {
-  "release_version": "1.5",
-  "generated_at": "2026-07-22T16:00:00Z",
+  "release_version": "1.6",
+  "generated_at": "2026-07-22T18:00:00Z",
   "validation_freeze": "2026-07-17T15:00:00Z",
   "git_commit": "384239fb17761a874fc6fb0cc2bc4fe3b4daa5bc",
   "environment": {
@@ -36,8 +36,8 @@
         64
       ],
       "precision": "bitwise (signed-zero exempted)",
-      "correctness_coverage": "Torch/AscendC/PyPTO: FULL — all 7 batches PASS",
-      "profiler_coverage": "FULL — msprof all 3 routes",
+      "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "completeness_gates": [
         1,
         2,
@@ -113,8 +113,8 @@
         64
       ],
       "precision": "bitwise",
-      "correctness_coverage": "Torch/AscendC/PyPTO: FULL",
-      "profiler_coverage": "FULL — msprof all 3 routes",
+      "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "completeness_gates": [
         1,
         2,
@@ -190,8 +190,8 @@
         64
       ],
       "precision": "bitwise",
-      "correctness_coverage": "Torch/AscendC/PyPTO FULL — 77/77 bitwise PASS (7 batches × 11 cases)",
-      "profiler_coverage": "FULL — msprof all 3 routes",
+      "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (77/77)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "post_rc3_fix": "Reference data regenerated with correct FP16 left-associative chain. All 77 cases bitwise PASS.",
       "limitation": "",
       "routes": {
@@ -253,8 +253,8 @@
         32
       ],
       "precision": "bitwise (was atol=1e-3, rtol=1e-3)",
-      "correctness_coverage": "Torch+AscendC+PyPTO FULL (B=1..32) — RC-2 UNBLOCKED",
-      "profiler_coverage": "Torch+AscendC msprof B=1..32; PyPTO not profiled",
+      "correctness_coverage": "Torch PASS (6/6); AscendC PASS (6/6); PyPTO PASS (6/6)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "rc2_fix": "tile_shape(1024,2048) was too large; changed to (128,1024). Dtype mismatch in test also fixed. All 6 batches pass bitwise (max_abs=0.0).",
       "completeness_gates": [
         1,
@@ -298,6 +298,14 @@
             "b64_us": 687.094,
             "method": "msprof"
           }
+        },
+        "pypto": {
+          "profiler": {
+            "b1_us": 271.18,
+            "kernel_type": "",
+            "kernel_name": "PYPTO_div_kernel_2d",
+            "method": "msprof"
+          }
         }
       }
     },
@@ -316,8 +324,8 @@
         64
       ],
       "precision": "bitwise (bool)",
-      "correctness_coverage": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED",
-      "profiler_coverage": "FULL — msprof all 3 routes (torch+ascendc AIVEC; pypto MIX_AIC)",
+      "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "",
       "rc2_fix": "Two root causes: (1) output was DT_FP16 instead of DT_BOOL (packed bitmask), (2) BOOL output requires ta≤64 in tile shape. All 7 batches pass bitwise.",
       "completeness_gates": [
@@ -362,6 +370,14 @@
             "b64_us": 1582.8,
             "method": "msprof"
           }
+        },
+        "pypto": {
+          "profiler": {
+            "b1_us": 327.38,
+            "kernel_type": "",
+            "kernel_name": "PYPTO_equal_kernel",
+            "method": "msprof"
+          }
         }
       }
     },
@@ -380,8 +396,8 @@
         64
       ],
       "precision": "bitwise (bool)",
-      "correctness_coverage": "Torch PASS; AscendC PASS (42/42 cases); PyPTO PASS",
-      "profiler_coverage": "FULL — msprof all 3 routes (torch+ascendc AIVEC; pypto MIX_AIC)",
+      "correctness_coverage": "Torch PASS (42/42); AscendC PASS (42/42); PyPTO PASS (42/42)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "",
       "completeness_gates": [
         1,
@@ -458,8 +474,8 @@
         64
       ],
       "precision": "bitwise (bool)",
-      "correctness_coverage": "Torch PASS; AscendC PASS (49/49 cases); PyPTO PASS (bitwise_or for 0/1)",
-      "profiler_coverage": "FULL — msprof all 3 routes (torch+ascendc AIVEC; pypto MIX_AIC)",
+      "correctness_coverage": "Torch PASS (49/49); AscendC PASS (49/49); PyPTO PASS (bitwise_or 0/1)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "PyPTO uses bitwise_or (no logical_or API in framework). Correct for bool 0/1 inputs.",
       "completeness_gates": [
         1,
@@ -536,8 +552,8 @@
         64
       ],
       "precision": "bitwise",
-      "correctness_coverage": "Torch+AscendC+PyPTO FULL; RC-2 UNBLOCKED",
-      "profiler_coverage": "FULL — msprof torch+ascendc (AIVEC); pypto N/A (no pypto impl)",
+      "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "",
       "rc2_fix": "uint8 condition → backend TiledWhereOperation ExpandFunction bug. Workaround: convert uint8→bool in wrapper (DT_BOOL condition). All 7 batches pass bitwise.",
       "completeness_gates": [
@@ -582,6 +598,14 @@
             "b64_us": 9265.2,
             "method": "msprof"
           }
+        },
+        "pypto": {
+          "profiler": {
+            "b1_us": 239.18,
+            "kernel_type": "",
+            "kernel_name": "PYPTO_where_kernel",
+            "method": "msprof"
+          }
         }
       }
     },
@@ -600,8 +624,8 @@
         64
       ],
       "precision": "bitwise",
-      "correctness_coverage": "Torch/AscendC/PyPTO: FULL — B=1..64 all PASS",
-      "profiler_coverage": "FULL — msprof all 3 routes (repeat=3, warmup=200, loops=100)",
+      "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "PyPTO uses torch.expand().clone() workaround (was 16384× AICPU dispatch, now 1 materialize kernel). ~33600x improvement in RC-3.",
       "rc3_fix": "Replaced per-row AICPU dispatch loop with single torch.expand().clone() materialize call. 16384 kernel launches → 1. ~33600x faster.",
       "completeness_gates": [
@@ -679,8 +703,8 @@
         64
       ],
       "precision": "bitwise",
-      "correctness_coverage": "Torch+AscendC+PyPTO FULL (B=1..64 bitwise); RC-2 UNBLOCKED",
-      "profiler_coverage": "FULL — msprof Torch+AscendC (B=1..64, repeat=5); PyPTO not profiled",
+      "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "AscendC TRUE_DEVICE tile-transpose, uses GetValue/SetValue.",
       "rc2_fix": "tile_shape(128,1024) was too large. Changed to (64,256). All shapes up to 2048×2048 pass bitwise.",
       "rc2_ascendc_perf": "Optimized kernel: tile size 32×32 (up from 16×16) + double buffering. ~13-18% improvement.",
@@ -727,6 +751,14 @@
             "b64_us": 6016.54,
             "method": "msprof"
           }
+        },
+        "pypto": {
+          "profiler": {
+            "b1_us": 323.36,
+            "kernel_type": "",
+            "kernel_name": "PYPTO_transpose_2d",
+            "method": "msprof"
+          }
         }
       }
     },
@@ -745,8 +777,8 @@
         64
       ],
       "precision": "FP16 accumulation (atol=0.01, rtol=0.01, require_bitwise=False)",
-      "correctness_coverage": "Torch 62/70 PARTIAL; AscendC FP32 70/70 PASS; AscendC FP16 21/70 PARTIAL; PyPTO 70/70 PASS",
-      "profiler_coverage": "FULL — msprof Torch+AscendC (B=1..64, repeat=5); PyPTO not profiled",
+      "correctness_coverage": "Torch 62/70 PARTIAL (NaN encoding diff); AscendC FP32 70/70 PASS; PyPTO 70/70 PASS",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "FP16 output overflow for values > 65504 (expected).",
       "rc3_fix": "Implemented FP32 accumulation via wrapper-level cast. 70/70 PASS (was 21/70 FP16 accum).",
       "post_rc3_fix": "Added dedicated Ascend C FP32 accumulation kernel: Cast FP16→FP32 → ReduceSum<float> → Cast FP16. 70/70 PASS. Accuracy 3.5× better than FP16.",
@@ -791,6 +823,14 @@
             "b16_us": 81.24,
             "b32_us": 154.86,
             "b64_us": 301.32,
+            "method": "msprof"
+          }
+        },
+        "pypto": {
+          "profiler": {
+            "b1_us": 290.86,
+            "kernel_type": "",
+            "kernel_name": "PYPTO_reduce_sum_fp32_kernel",
             "method": "msprof"
           }
         }
@@ -839,10 +879,18 @@
             "b64_us": 135.423,
             "method": "msprof"
           }
+        },
+        "pypto": {
+          "profiler": {
+            "b1_us": 290.62,
+            "kernel_type": "",
+            "kernel_name": "PYPTO_matmul_2d",
+            "method": "msprof"
+          }
         }
       },
-      "correctness_coverage": "FULL (all 3 routes)",
-      "profiler_coverage": "FULL (Torch + Ascend C msprof; PyPTO N/A)",
+      "correctness_coverage": "Torch PASS (6/6); AscendC PASS (6/6); PyPTO PASS (6/6, max_abs 0.031)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "completeness_gates": [
         1,
         2,
@@ -874,8 +922,8 @@
         64
       ],
       "precision": "atol=0.01, rtol=0.01 (normalize-only kernel + host weight/bias)",
-      "correctness_coverage": "Torch PASS (7/7); Ascend C PASS (7/7, normalize-only kernel + host weight/bias); PyPTO PASS with precision limitation (max_abs 1.4-3.3)",
-      "profiler_coverage": "FULL — msprof Torch (B=1 host_sync); Ascend C (B=1..64 msprof); PyPTO (B=1 msprof)",
+      "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7, weight/bias fused); PyPTO PASS with limitation (max_abs 1.4-3.3)",
+      "profiler_coverage": "FULL — AscendC msprof + PyPTO msprof",
       "completeness_gates": [
         1,
         2,
@@ -901,16 +949,16 @@
       "routes": {
         "ascendc": {
           "profiler": {
-            "b1_us": 8.6,
+            "b1_us": 68.0,
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "layernorm_kernel",
             "kernels_per_call": 7.0,
-            "b2_us": 13.6,
-            "b4_us": 24.5,
-            "b8_us": 46.0,
-            "b16_us": 88.7,
-            "b32_us": 108.0,
-            "b64_us": 216.6,
+            "b2_us": 68.2,
+            "b4_us": 69.48,
+            "b8_us": 71.4,
+            "b16_us": 73.7,
+            "b32_us": 120.12,
+            "b64_us": 232.42,
             "method": "msprof"
           }
         },
@@ -921,18 +969,6 @@
             "kernel_name": "KERNEL_AICPU",
             "kernels_per_call": 15.01,
             "method": "msprof"
-          }
-        },
-        "torch": {
-          "profiler": {
-            "b1_us": 23.2,
-            "method": "torch.npu.Event",
-            "b2_us": 21.8,
-            "b4_us": 22.5,
-            "b8_us": 21.9,
-            "b16_us": 23.1,
-            "b32_us": 24.2,
-            "b64_us": 26.4
           }
         }
       }
@@ -952,8 +988,8 @@
         64
       ],
       "precision": "rtol=0.001, atol=0.01",
-      "correctness_coverage": "Torch PASS (7/7); Ascend C PASS (7/7); PyPTO PASS (7/7, max_abs 0.000488)",
-      "profiler_coverage": "FULL — msprof Torch (B=1..64); Ascend C (B=1..64 msprof); PyPTO (B=1 msprof)",
+      "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7, max_abs 0.000488)",
+      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
       "completeness_gates": [
         1,
         2,
@@ -988,30 +1024,40 @@
       "routes": {
         "torch": {
           "profiler": {
-            "b1_us": 16.0,
-            "method": "torch.npu.Event",
-            "b2_us": 16.7,
-            "b4_us": 16.8,
-            "b8_us": 16.6,
-            "b16_us": 16.8,
-            "b32_us": 16.4,
-            "b64_us": 16.0
+            "b1_us": 15.28,
+            "kernel_type": "KERNEL_AIVEC",
+            "kernel_name": "aclnnSoftmax_SoftmaxAiCore_SoftmaxV2",
+            "kernels_per_call": 7.0,
+            "b2_us": 18.34,
+            "b4_us": 16.3,
+            "b8_us": 15.9,
+            "b16_us": 14.3,
+            "b32_us": 17.4,
+            "b64_us": 18.72,
+            "method": "msprof"
           }
         },
         "ascendc": {
           "profiler": {
-            "b1_us": 6.8,
+            "b1_us": 13.98,
             "kernel_type": "KERNEL_AIVEC",
             "kernel_name": "softmax_kernel",
             "kernels_per_call": 7.0,
-            "b2_us": 11.6,
-            "b4_us": 21.3,
-            "b8_us": 40.6,
-            "b16_us": 78.8,
-            "b32_us": 96.0,
-            "b64_us": 193.5,
-            "method": "msprof",
-            "b1_primary_us": 13.98
+            "b2_us": 19.52,
+            "b4_us": 29.0,
+            "b8_us": 48.4,
+            "b16_us": 89.92,
+            "b32_us": 108.9,
+            "b64_us": 209.52,
+            "method": "msprof"
+          }
+        },
+        "pypto": {
+          "profiler": {
+            "b1_us": 263.02,
+            "kernel_type": "",
+            "kernel_name": "PYPTO_softmax_kernel_2d",
+            "method": "msprof"
           }
         }
       }

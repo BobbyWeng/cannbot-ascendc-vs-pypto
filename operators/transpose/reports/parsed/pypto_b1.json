@@ -1,0 +1,40 @@
+{
+  "kernel_count": 300,
+  "logical_calls": 100,
+  "kernels_per_logical_call": 3.0,
+  "all_device_kernels_us_per_call": 159.212,
+  "primary_compute_kernel_us": 323.36,
+  "primary_kernel_name": "PYPTO_transpose_2d",
+  "primary_kernel_type": "KERNEL_AICPU",
+  "kernel_names": [
+    "PYPTO_transpose_2d"
+  ],
+  "kernel_types": [
+    "KERNEL_AICPU",
+    "KERNEL_MIX_AIC"
+  ],
+  "kernel_type_breakdown": {
+    "KERNEL_AICPU": {
+      "count": 200,
+      "total_us": 10922.36,
+      "mean_us": 54.612,
+      "per_call_us": 109.224
+    },
+    "KERNEL_MIX_AIC": {
+      "count": 100,
+      "total_us": 4998.88,
+      "mean_us": 49.989,
+      "per_call_us": 49.989
+    }
+  },
+  "compute_kernel_types": [
+    "KERNEL_AICPU",
+    "KERNEL_MIX_AIC"
+  ],
+  "executor_kernel_types": [],
+  "total_kernel_duration_all_iters_us": 15921.24,
+  "aicpu_init_us": 3074.1,
+  "host_events_count": 1126,
+  "parser_version": "1.2-pypto",
+  "profiler_type": "msprof"
+}

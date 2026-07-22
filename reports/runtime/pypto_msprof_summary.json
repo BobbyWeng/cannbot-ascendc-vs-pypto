@@ -1,0 +1,116 @@
+{
+  "div": {
+    "status": "DONE",
+    "primary_compute_kernel_us": 271.18,
+    "primary_kernel_name": "PYPTO_div_kernel_2d",
+    "primary_kernel_type": "KERNEL_AICPU",
+    "all_device_kernels_us_per_call": 190.318,
+    "compute_kernel_mean_us": 60.152,
+    "compute_kernel_per_call_us": 60.152,
+    "compute_kernel_count": 100,
+    "aicpu_init_us": 2944.78,
+    "host_events_count": 1725,
+    "kernel_types": [
+      "KERNEL_AICPU",
+      "KERNEL_AIVEC",
+      "KERNEL_MIX_AIC"
+    ]
+  },
+  "equal": {
+    "status": "DONE",
+    "primary_compute_kernel_us": 327.38,
+    "primary_kernel_name": "PYPTO_equal_kernel",
+    "primary_kernel_type": "KERNEL_AICPU",
+    "all_device_kernels_us_per_call": 162.513,
+    "compute_kernel_mean_us": 51.147,
+    "compute_kernel_per_call_us": 51.147,
+    "compute_kernel_count": 100,
+    "aicpu_init_us": 2917.22,
+    "host_events_count": 1128,
+    "kernel_types": [
+      "KERNEL_AICPU",
+      "KERNEL_MIX_AIC"
+    ]
+  },
+  "where": {
+    "status": "DONE",
+    "primary_compute_kernel_us": 239.18,
+    "primary_kernel_name": "PYPTO_where_kernel",
+    "primary_kernel_type": "KERNEL_AICPU",
+    "all_device_kernels_us_per_call": 155.81,
+    "compute_kernel_mean_us": 49.501,
+    "compute_kernel_per_call_us": 49.501,
+    "compute_kernel_count": 100,
+    "aicpu_init_us": 3080.02,
+    "host_events_count": 1130,
+    "kernel_types": [
+      "KERNEL_AICPU",
+      "KERNEL_MIX_AIC"
+    ]
+  },
+  "transpose": {
+    "status": "DONE",
+    "primary_compute_kernel_us": 323.36,
+    "primary_kernel_name": "PYPTO_transpose_2d",
+    "primary_kernel_type": "KERNEL_AICPU",
+    "all_device_kernels_us_per_call": 159.212,
+    "compute_kernel_mean_us": 49.989,
+    "compute_kernel_per_call_us": 49.989,
+    "compute_kernel_count": 100,
+    "aicpu_init_us": 3074.1,
+    "host_events_count": 1126,
+    "kernel_types": [
+      "KERNEL_AICPU",
+      "KERNEL_MIX_AIC"
+    ]
+  },
+  "reduce_sum": {
+    "status": "DONE",
+    "primary_compute_kernel_us": 290.86,
+    "primary_kernel_name": "PYPTO_reduce_sum_fp32_kernel",
+    "primary_kernel_type": "KERNEL_AICPU",
+    "all_device_kernels_us_per_call": 148.394,
+    "compute_kernel_mean_us": 46.478,
+    "compute_kernel_per_call_us": 46.478,
+    "compute_kernel_count": 100,
+    "aicpu_init_us": 3052.18,
+    "host_events_count": 2025,
+    "kernel_types": [
+      "KERNEL_AICPU",
+      "KERNEL_AIVEC",
+      "KERNEL_MIX_AIC"
+    ]
+  },
+  "softmax": {
+    "status": "DONE",
+    "primary_compute_kernel_us": 263.02,
+    "primary_kernel_name": "PYPTO_softmax_kernel_2d",
+    "primary_kernel_type": "KERNEL_AICPU",
+    "all_device_kernels_us_per_call": 165.597,
+    "compute_kernel_mean_us": 54.897,
+    "compute_kernel_per_call_us": 54.897,
+    "compute_kernel_count": 100,
+    "aicpu_init_us": 3094.16,
+    "host_events_count": 1128,
+    "kernel_types": [
+      "KERNEL_AICPU",
+      "KERNEL_MIX_AIC"
+    ]
+  },
+  "matmul": {
+    "status": "DONE",
+    "primary_compute_kernel_us": 290.62,
+    "primary_kernel_name": "PYPTO_matmul_2d",
+    "primary_kernel_type": "KERNEL_AICPU",
+    "all_device_kernels_us_per_call": 213.452,
+    "compute_kernel_mean_us": 73.522,
+    "compute_kernel_per_call_us": 73.522,
+    "compute_kernel_count": 100,
+    "aicpu_init_us": 2920.42,
+    "host_events_count": 1128,
+    "kernel_types": [
+      "KERNEL_AICPU",
+      "KERNEL_MIX_AIC"
+    ]
+  }
+}
