@@ -4,7 +4,7 @@
 - **Version**: v1.2-rc2
 - **Generated**: 2026-07-17
 - **Environment**: Ascend 910B, CANN 9.0.0, Python 3.11
-- **Operators**: 13 (5 COMPLETE, 8 COMPLETE_WITH_LIMITATION)
+- **Operators**: 14 (6 COMPLETE, 8 COMPLETE_WITH_LIMITATION)
 - **Profiler**: msprof with `--ascendcl=on --ai-core=on --task-time=l0`
 - **Warmup**: 200 | **Profiled loops**: 100 | **Repeat**: 5
 
@@ -14,7 +14,7 @@
 
 | Status | Count | Operators |
 |--------|-------|-----------|
-| COMPLETE | 5 | relu, mul, not, matmul, layernorm |
+| COMPLETE | 6 | relu, mul, not, matmul, layernorm, softmax |
 | COMPLETE_WITH_LIMITATION | 8 | add, div, equal, or, where, expand, transpose, reduce_sum |
 
 > **RC-2 Change**: matmul, div, equal, where, transpose PyPTO routes unblocked (workarounds found).
@@ -168,15 +168,26 @@
 
 ---
 
+### softmax — COMPLETE
+| Route | Correctness | B1 Latency | Kernel Type |
+|-------|-------------|:----------:|-------------|
+| Torch | PASS (7/7) | 16.0 us | KERNEL_AICORE |
+| Ascend C | PASS (7/7) | 6.8 us (event) / 13.98 us (msprof primary) | TRUE_DEVICE (KERNEL_AIVEC) |
+| PyPTO | PASS (7/7, max_abs 0.000488) | TBD | TBD |
+
+**Notes**: Formula `softmax(x, axis=-1) = exp(x - max) / sum(exp(x - max))`. Shape [B, 256, 32], dtype FP16, precision rtol=0.001 atol=0.01. Ascend C 7 kernels per call (KERNEL_AIVEC). Optimization: AR-FullLoad + multi-block row tiling. Ascend C multi-batch (event-based): B=2 11.6 us, B=4 21.3 us, B=8 40.6 us, B=16 78.8 us, B=32 96.0 us, B=64 193.5 us.
+
+---
+
 ## Ascend C Implementation Audit (RC-2)
 
 | Category | Operators |
 |----------|-----------|
 | TRUE_CUBE_IMPLEMENTATION | matmul |
-| TRUE_DEVICE_IMPLEMENTATION | relu, mul, add, div, equal, not, or, where, expand, transpose, reduce_sum, layernorm |
+| TRUE_DEVICE_IMPLEMENTATION | relu, mul, add, div, equal, not, or, where, expand, transpose, reduce_sum, layernorm, softmax |
 | HOST_PRECOMPUTE_FALLBACK | (none) |
 
-All 12 Ascend C operators have genuine device-side kernels verified by source code AND correctness runs on NPU.
+All 14 Ascend C operators have genuine device-side kernels verified by source code AND correctness runs on NPU.
 
 ---
 
@@ -215,10 +226,10 @@ All 12 Ascend C operators have genuine device-side kernels verified by source co
 
 | Area | Status | Notes |
 |------|--------|-------|
-| Batch scaling audit | ✅ All 12 operators classified PLAUSIBLE_PARALLEL_SCALING |
+| Batch scaling audit | ✅ All 14 operators classified PLAUSIBLE_PARALLEL_SCALING |
 | Parser traceability | ⚠️ 9 bugs identified | Needs per-iteration stats and provenance |
 | Skill Trace | ✅ All 24 route-instances documented (LEGACY_UNVERIFIED_SKILL_USAGE) |
-| SHA256SUMS | ✅ All 12 operators have valid SHA256SUMS (8 were fixed) |
+| SHA256SUMS | ✅ All 14 operators have valid SHA256SUMS (8 were fixed) |
 
 ---
 

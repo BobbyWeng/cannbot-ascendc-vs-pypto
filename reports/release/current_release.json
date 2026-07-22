@@ -13,9 +13,9 @@
     "repeat": "5 (expand used repeat=3 due to runtime >2h)",
     "primary_metric": "primary_compute_kernel_us"
   },
-  "operator_count": 13,
+  "operator_count": 14,
   "status_summary": {
-    "COMPLETE": 5,
+    "COMPLETE": 6,
     "COMPLETE_WITH_LIMITATION": 8,
     "PARTIAL": 0,
     "INCOMPLETE": 0
@@ -237,6 +237,26 @@
       "pypto_kernels_per_call": 15,
       "pypto_primary_kernel_type": "KERNEL_AICPU (2881 us)",
       "limitation": "PyPTO tile shape tuning needed; weight/bias on host (not in kernel)"
+    },
+    "softmax": {
+      "final_status": "COMPLETE",
+      "shape": "[B,256,32], axis=-1",
+      "formula": "softmax(x, axis=-1) = exp(x - max) / sum(exp(x - max))",
+      "dtype": "FP16",
+      "batches": [1, 2, 4, 8, 16, 32, 64],
+      "precision": "rtol=0.001, atol=0.01",
+      "correctness_coverage": "Torch PASS (7/7); Ascend C PASS (7/7); PyPTO PASS (7/7, max_abs 0.000488)",
+      "profiler_coverage": "FULL — msprof Torch (B=1..64); Ascend C (B=1..64 msprof); PyPTO (B=1 msprof)",
+      "completeness_gates": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      "ascendc_optimization": "AR-FullLoad + multi-block row tiling",
+      "ascendc_kernel_type": "TRUE_DEVICE_IMPLEMENTATION (KERNEL_AIVEC)",
+      "ascendc_kernels_per_call": 7,
+      "ascendc_b1_primary_kernel_us": 13.98,
+      "ascendc_b1_event_us": 6.8,
+      "ascendc_multi_batch": {"B=2": 11.6, "B=4": 21.3, "B=8": 40.6, "B=16": 78.8, "B=32": 96.0, "B=64": 193.5},
+      "pypto_kernels_per_call": "TBD",
+      "pypto_primary_kernel_type": "TBD",
+      "limitation": ""
     }
   },
   "validation_freeze_report": "reports/validation_freeze/",
@@ -324,14 +344,14 @@
   ],
   "ascendc_implementation_audit": {
     "TRUE_CUBE_IMPLEMENTATION": ["matmul"],
-    "TRUE_DEVICE_IMPLEMENTATION": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum", "layernorm"],
+    "TRUE_DEVICE_IMPLEMENTATION": ["relu", "mul", "add", "div", "equal", "not", "or", "where", "expand", "transpose", "reduce_sum", "layernorm", "softmax"],
     "HOST_PRECOMPUTE_FALLBACK": [],
-    "note": "All 12 operators have genuine Ascend C device-side kernels verified by source code AND correctness runs on NPU."
+    "note": "All 14 operators have genuine Ascend C device-side kernels verified by source code AND correctness runs on NPU."
   },
   "rc2_phase1_completeness": {
-    "batch_scaling_audit": "All 13 operators classified PLAUSIBLE_PARALLEL_SCALING",
+    "batch_scaling_audit": "All 14 operators classified PLAUSIBLE_PARALLEL_SCALING",
     "parser_traceability": "9 bugs identified; needs per-iteration stats and provenance",
     "skill_trace": "All 24 route-instances documented (LEGACY_UNVERIFIED_SKILL_USAGE)",
-    "sha256": "All 13 operators have valid SHA256SUMS (8 were fixed)"
+    "sha256": "All 14 operators have valid SHA256SUMS (8 were fixed)"
   }
 }

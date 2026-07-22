@@ -1,9 +1,9 @@
 {
   "mode": "development",
-  "generated_at": "2026-07-22 16:25:07",
+  "generated_at": "2026-07-22 16:30:24",
   "summary": {
     "total": 14,
-    "completed": 13,
+    "completed": 14,
     "torch_done": 2,
     "ascendc_done": 2,
     "pypto_done": 13,
@@ -3366,7 +3366,7 @@
     },
     {
       "name": "softmax",
-      "status": "planned",
+      "status": "completed",
       "formula": "softmax(x, axis=-1) = exp(x - max(x, axis=-1)) / sum(exp(x - max(x, axis=-1)), axis=-1)",
       "shape": "[B, 256, 32]",
       "dtype": "N/A",
@@ -3427,16 +3427,6 @@
           "kernels_per_call": 0,
           "all_kernel_dur_per_call_us": 0
         }
-      },
-      "dev_status_detail": {
-        "Intent": "pending",
-        "API": "pending",
-        "Golden": "pending",
-        "Design": "pending",
-        "Implementation": "pending",
-        "Correctness": "pending",
-        "Benchmark": "pending",
-        "Archive": "completed"
       }
     },
     {

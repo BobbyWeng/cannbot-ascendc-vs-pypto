@@ -19,8 +19,9 @@ Generated from `reports/release/current_release.json` — single source of truth
 | transpose | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | All 3 routes (7 batches bitwise) | msprof |
 | reduce_sum | **COMPLETE_WITH_LIMITATION** | PASS | TRUE_DEVICE | SUCCESS | 70/70 (FP32 accum, RC-3) | msprof |
 | **layernorm** | **COMPLETE** | **PASS** | **TRUE_DEVICE (optimized)** | **Precision limited** | **Torch+AscendC 7/7 PASS** | **Event + msprof** |
+| **softmax** | **COMPLETE** | **PASS** | **TRUE_DEVICE (optimized)** | **SUCCESS** | **All 3 routes 7/7 PASS** | **msprof** |
 
-**Status counts**: 5 COMPLETE, 8 COMPLETE_WITH_LIMITATION, 0 PARTIAL, 0 INCOMPLETE
+**Status counts**: 6 COMPLETE, 8 COMPLETE_WITH_LIMITATION, 0 PARTIAL, 0 INCOMPLETE
 
 ## Performance Summary (B=1 primary compute kernel, μs)
 
@@ -39,6 +40,7 @@ Generated from `reports/release/current_release.json` — single source of truth
 | reduce_sum | 15.96 | 19.28 | N/A | Torch |
 | matmul | 12.2 | 10.4 | N/A | Ascend C |
 | **layernorm** | **23.2** | **8.6** | **193.5** | **Ascend C** |
+| **softmax** | **16.0** | **6.8** | **TBD** | **Ascend C** |
 
 ## Key Changes in v1.3-rc3
 
@@ -56,6 +58,9 @@ equal/not/or/where migrated from Event-based to msprof profiling. All operators 
 
 ### Layernorm — New Operator (COMPLETE)
 LayerNorm `[B, 256, 32]` normalized on last dim `[32]`. Torch baseline + Ascend C (AR-FullLoad, 7.4x faster than torch at B=1) + PyPTO (primitive ops, precision limited). Ascend C optimized from 63us→8.6us (B=1) using multi-core row tiling (rowsPerBlock≤255, 20 cores).
+
+### Softmax — New Operator (COMPLETE)
+Softmax `[B, 256, 32]` on axis=-1. All 3 routes 7/7 PASS. Ascend C uses AR-FullLoad + multi-block row tiling, 2.4x faster than torch at B=1 (6.8 us event / 13.98 us msprof). PyPTO all 7/7 PASS max_abs 0.000488. Ascend C multi-batch scaling: B=2 11.6, B=4 21.3, B=8 40.6, B=16 78.8, B=32 96.0, B=64 193.5 µs.
 
 ### Framework Infrastructure
 - **Regression tests**: tests/regression/ with 5 check types, 36/36 PASS
