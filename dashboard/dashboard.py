@@ -78,12 +78,13 @@ def _parse_correctness_from_coverage(text):
     for part in parts:
         if not part:
             continue
-        part_lower = part.lower()
+        part_lower = part.lower().replace('ascend c', 'ascendc')
         matched = False
         for key in ['torch', 'ascendc', 'pypto']:
             if part_lower.startswith(key):
                 rest = part[len(key):].strip().lstrip(':').strip()
-                # Determine status
+                if not rest and 'ascend c' in part.lower():
+                    rest = part[len('Ascend C'):].strip().lstrip(':').strip()
                 if rest:
                     result[key] = rest
                 else:
@@ -327,6 +328,8 @@ def _extract_profiler_from_routes(routes, route_key, dj_ops, op_name, release_sh
 
     r = routes.get(route_key, {}) if isinstance(routes, dict) else {}
     p = r.get("profiler", {}) if isinstance(r, dict) else {}
+    if not isinstance(p, dict) or p.get("b1_us") is None:
+        p = r if isinstance(r, dict) and r.get("b1_us") is not None else {}
 
     # Route 1: structured data from current_release.json routes.*.profiler
     if isinstance(p, dict) and (p.get("b1_us") is not None or p.get("b1_primary_us") is not None):
@@ -449,6 +452,28 @@ def load_release(path):
     ops = {}
     for name, op in raw.get("operators", {}).items():
         routes = op.get("routes", {})
+        if not routes:
+            for rk in ["torch", "ascendc", "pypto"]:
+                b1 = op.get(f"{rk}_b1_us") or op.get(f"{rk}_b1_primary_kernel_us") or op.get(f"{rk}_b1_event_us")
+                if b1 is not None:
+                    r_entry = {"profiler": {"b1_us": float(b1)}}
+                    for bk_num in [2, 4, 8, 16, 32, 64]:
+                        bk_val = op.get(f"{rk}_b{bk_num}_us") or op.get(f"{rk}_b{bk_num}_primary_kernel_us")
+                        if bk_val is not None:
+                            r_entry["profiler"][f"b{bk_num}_us"] = float(bk_val)
+                    mb = op.get(f"{rk}_multi_batch", {})
+                    if isinstance(mb, dict):
+                        for k, v in mb.items():
+                            bn = k.replace("B=", "b").replace("=", "_").lower()
+                            r_entry["profiler"][bn] = float(v)
+                    if op.get(f"{rk}_kernels_per_call"):
+                        r_entry["profiler"]["kernels_per_call"] = op[f"{rk}_kernels_per_call"]
+                    if op.get(f"{rk}_primary_kernel_type"):
+                        r_entry["profiler"]["kernel_type"] = op[f"{rk}_primary_kernel_type"]
+                    if op.get(f"{rk}_b1_primary_kernel_us"):
+                        r_entry["profiler"]["b1_primary_us"] = float(op[f"{rk}_b1_primary_kernel_us"])
+                    routes[rk] = r_entry
+            op["routes"] = routes
 
         # 1. Correctness: from coverage text (primary) + routes (fallback)
         coverage_text = op.get("correctness_coverage", "")
@@ -477,6 +502,8 @@ def load_release(path):
         for rk in ["torch", "ascendc", "pypto"]:
             r = routes.get(rk, {}) if isinstance(routes, dict) else {}
             p = r.get("profiler", {}) if isinstance(r, dict) else {}
+            if not isinstance(p, dict) or not p:
+                p = r if isinstance(r, dict) and r.get("b1_us") is not None else {}
             if isinstance(p, dict):
                 bs = {}
                 route_sources = {}
