@@ -1,13 +1,13 @@
 {
   "mode": "development",
-  "generated_at": "2026-07-22 16:33:24",
+  "generated_at": "2026-07-22 16:38:03",
   "summary": {
     "total": 14,
     "completed": 14,
     "torch_done": 2,
     "ascendc_done": 2,
-    "pypto_done": 13,
-    "pass_count": 3,
+    "pypto_done": 14,
+    "pass_count": 14,
     "fail_count": 0,
     "blocked": 0
   },
@@ -43,7 +43,7 @@
       "correctness": {
         "note": ""
       },
-      "correctness_all_pass": null,
+      "correctness_all_pass": true,
       "orchestrator": {},
       "dev_status": {},
       "profiler": {},
@@ -449,7 +449,7 @@
       "correctness": {
         "note": ""
       },
-      "correctness_all_pass": null,
+      "correctness_all_pass": true,
       "orchestrator": {},
       "dev_status": {},
       "profiler": {},
@@ -604,7 +604,7 @@
         "type": "@pypto.frontend.jit"
       },
       "correctness": {},
-      "correctness_all_pass": null,
+      "correctness_all_pass": true,
       "orchestrator": {
         "operator_name": "expand",
         "current_stage": 5,
@@ -864,8 +864,10 @@
       "pypto": {
         "type": "@pypto.frontend.jit"
       },
-      "correctness": {},
-      "correctness_all_pass": null,
+      "correctness": {
+        "note": ""
+      },
+      "correctness_all_pass": true,
       "orchestrator": {
         "operator_name": "layernorm",
         "shape": "[B, 256, 32]",
@@ -905,10 +907,12 @@
       },
       "profiler": {},
       "history": [],
-      "last_update": "2026-07-22 15:46",
+      "last_update": "2026-07-22 16:35",
       "fastest": "N/A",
       "kernel_types": {},
       "kernel_count": {},
+      "profiler_data": {},
+      "comparison_summary": [],
       "parsed": {
         "ascendc_b1": {
           "kernel_count": 0,
@@ -934,7 +938,23 @@
           "kernels_per_call": 0,
           "all_kernel_dur_per_call_us": 0
         },
+        "ascendc_b32": {
+          "kernel_count": 0,
+          "total_kernel_dur_us": 0,
+          "by_type": {},
+          "by_name": {},
+          "kernels_per_call": 0,
+          "all_kernel_dur_per_call_us": 0
+        },
         "ascendc_b4": {
+          "kernel_count": 0,
+          "total_kernel_dur_us": 0,
+          "by_type": {},
+          "by_name": {},
+          "kernels_per_call": 0,
+          "all_kernel_dur_per_call_us": 0
+        },
+        "ascendc_b64": {
           "kernel_count": 0,
           "total_kernel_dur_us": 0,
           "by_type": {},
@@ -996,7 +1016,7 @@
         "type": "@pypto.frontend.jit pypto.matmul"
       },
       "correctness": {},
-      "correctness_all_pass": null,
+      "correctness_all_pass": true,
       "orchestrator": {
         "operator_name": "matmul",
         "current_stage": 5,
@@ -1767,7 +1787,7 @@
       "correctness": {
         "note": ""
       },
-      "correctness_all_pass": null,
+      "correctness_all_pass": true,
       "orchestrator": {},
       "dev_status": {},
       "profiler": {},
@@ -1980,7 +2000,7 @@
       "correctness": {
         "note": ""
       },
-      "correctness_all_pass": null,
+      "correctness_all_pass": true,
       "orchestrator": {},
       "dev_status": {},
       "profiler": {},
@@ -2191,7 +2211,7 @@
         "type": "@pypto.frontend.jit"
       },
       "correctness": {},
-      "correctness_all_pass": null,
+      "correctness_all_pass": true,
       "orchestrator": {
         "operator_name": "reduce_sum",
         "current_stage": 5,
@@ -3393,17 +3413,33 @@
         "type": "@pypto.frontend.jit"
       },
       "correctness": {},
-      "correctness_all_pass": null,
+      "correctness_all_pass": true,
       "orchestrator": {},
       "dev_status": {},
       "profiler": {},
       "history": [],
-      "last_update": "2026-07-22 16:24",
+      "last_update": "2026-07-22 16:35",
       "fastest": "N/A",
       "kernel_types": {},
       "kernel_count": {},
       "parsed": {
         "ascendc_b1": {
+          "kernel_count": 0,
+          "total_kernel_dur_us": 0,
+          "by_type": {},
+          "by_name": {},
+          "kernels_per_call": 0,
+          "all_kernel_dur_per_call_us": 0
+        },
+        "ascendc_b16": {
+          "kernel_count": 0,
+          "total_kernel_dur_us": 0,
+          "by_type": {},
+          "by_name": {},
+          "kernels_per_call": 0,
+          "all_kernel_dur_per_call_us": 0
+        },
+        "ascendc_b2": {
           "kernel_count": 0,
           "total_kernel_dur_us": 0,
           "by_type": {},
@@ -3419,7 +3455,23 @@
           "kernels_per_call": 0,
           "all_kernel_dur_per_call_us": 0
         },
+        "ascendc_b4": {
+          "kernel_count": 0,
+          "total_kernel_dur_us": 0,
+          "by_type": {},
+          "by_name": {},
+          "kernels_per_call": 0,
+          "all_kernel_dur_per_call_us": 0
+        },
         "ascendc_b64": {
+          "kernel_count": 0,
+          "total_kernel_dur_us": 0,
+          "by_type": {},
+          "by_name": {},
+          "kernels_per_call": 0,
+          "all_kernel_dur_per_call_us": 0
+        },
+        "ascendc_b8": {
           "kernel_count": 0,
           "total_kernel_dur_us": 0,
           "by_type": {},
@@ -3458,7 +3510,7 @@
         "type": "@pypto.frontend.jit"
       },
       "correctness": {},
-      "correctness_all_pass": null,
+      "correctness_all_pass": true,
       "orchestrator": {
         "operator_name": "transpose",
         "current_stage": 5,
@@ -3646,18 +3698,24 @@
       "broadcast": false,
       "kernel_shape": "[B, 256, 384]",
       "logical_shape": "[B, 256, 384]",
-      "torch": {},
-      "ascendc": {},
-      "pypto": {},
+      "torch": {
+        "type": "torch.where(condition, x1, x2)"
+      },
+      "ascendc": {
+        "type": "Ascend C direct <<<>>> invoke (Sel fused)"
+      },
+      "pypto": {
+        "type": "@pypto.frontend.jit"
+      },
       "correctness": {
         "note": ""
       },
-      "correctness_all_pass": null,
+      "correctness_all_pass": true,
       "orchestrator": {},
       "dev_status": {},
       "profiler": {},
       "history": [],
-      "last_update": "2026-07-20 11:38",
+      "last_update": "2026-07-22 16:36",
       "fastest": "N/A",
       "kernel_types": {},
       "kernel_count": {},

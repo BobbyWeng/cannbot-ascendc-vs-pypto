@@ -1,7 +1,8 @@
 experiment_name: "Where device kernel comparison — torch / Ascend C / PyPTO"
 operator: where
 shape: "[B, 256, 384]"
-dtype: float16 (condition: uint8)
+dtype: float16
+dtype_condition: uint8
 batches: [1, 2, 4, 8, 16, 32, 64]
 implementations:
   torch:

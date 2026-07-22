@@ -775,10 +775,14 @@ def get(op_name):
             data["dev_status"] = orch.get("stage_status", {})
             break
 
-    # final comparison
+    # final comparison — try multiple naming conventions
     final = load_json(d / "reports" / "final" / "final_comparison.json")
     if not final:
         final = load_json(d / "reports" / "final" / "comparison_results.json")
+    if not final:
+        final = load_json(d / "reports" / "final" / f"{op_name}_comparison.json")
+    if not final:
+        final = load_json(d / "reports" / "final" / f"{op_name}_comparison_report.json")
 
     if final:
         data["formula"] = final.get("formula", final.get("description", data["formula"]))
@@ -819,7 +823,20 @@ def get(op_name):
                         data["correctness_all_pass"] = True
                     elif st == "FAIL":
                         data["correctness_all_pass"] = False
+                elif isinstance(c, str) and "PASS" in c.upper():
+                    data["correctness_all_pass"] = True
 
+    # Fallback: no final JSON — try TASK_STATE.json correctness_gate
+    if data["correctness_all_pass"] is None:
+        ts = load_json(d / "TASK_STATE.json")
+        if ts:
+            gate = ts.get("correctness_gate", "")
+            if gate == "PASS":
+                data["correctness_all_pass"] = True
+            elif gate and "FAIL" in gate.upper():
+                data["correctness_all_pass"] = False
+
+    if final:
         pdata = final.get("profiler_data", {})
         summary = final.get("comparison_summary", [])
         if not pdata and "results" in final:
