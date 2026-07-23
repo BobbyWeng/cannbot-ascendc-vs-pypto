@@ -1,4 +1,11 @@
-"""PyPTO kernel implementation for Mul — receives 4D [B,3,4,256,32], processes via 2D JIT."""
+"""PyPTO kernel implementation for Mul — per-batch JIT with 1-row tensors.
+
+Workaround for d1c290f36 CompileFunction regression:
+- JIT kernel only stable with single-row 2D tensors (shape [1, N])
+- Multi-row tensors trigger host_machine.cpp:179 CompileFunction crash
+- Strategy: per-batch-element loop, each call shape [1, inner_size]
+- Historical: flatten-to-2D approach worked under earlier PyPTO versions
+"""
 import os
 import torch
 import pypto
@@ -13,20 +20,14 @@ def mul_kernel_2d(x1: pypto.Tensor([], pypto.DT_FP16),
     y.move(pypto.op.mul(x1, x2))
 
 
-_mul_cache = {}
-
 def mul_wrapper(x1, x2):
     orig_shape = x1.shape
-    key = orig_shape
-    if key not in _mul_cache:
-        x1_2d = x1.reshape(-1, orig_shape[-1])
-        x2_2d = x2.reshape(-1, orig_shape[-1])
-        y_2d = torch.empty(x1_2d.shape, dtype=torch.float16, device=x1.device)
-        _mul_cache[key] = (x1_2d, x2_2d, y_2d)
-    else:
-        x1_view, x2_view, y_2d = _mul_cache[key]
-        x1_2d = x1.reshape(-1, orig_shape[-1])
-        x2_2d = x2.reshape(-1, orig_shape[-1])
-
-    mul_kernel_2d(x1_2d, x2_2d, y_2d)
-    return y_2d.reshape(orig_shape)
+    batch_size = orig_shape[0]
+    inner_size = orig_shape[1:].numel()
+    y = torch.empty(orig_shape, dtype=torch.float16, device=x1.device)
+    for b in range(batch_size):
+        x1b = x1[b].ravel().reshape(1, inner_size)
+        x2b = x2[b].ravel().reshape(1, inner_size)
+        yb = y[b].ravel().reshape(1, inner_size)
+        mul_kernel_2d(x1b, x2b, yb)
+    return y

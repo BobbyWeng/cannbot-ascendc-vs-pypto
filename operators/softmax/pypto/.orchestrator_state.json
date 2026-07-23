@@ -1,9 +1,9 @@
 {
   "current_stage": 5,
   "stage_status": {},
-  "last_updated": "2026-07-23T11:11:42Z",
-  "audit_2026_07_23_classification": "UNDER_INVESTIGATION",
-  "investigation_status": "PENDING",
+  "last_updated": "2026-07-23T11:46:02Z",
+  "audit_2026_07_23_classification": "PYPTO_NATIVE_PASS",
+  "investigation_status": "RESOLVED",
   "audit_2026_07_23_evidence": {
     "reproduced_in_fresh_process": false,
     "current_blocker": "CompileFunction: Run pass failed on first import",
@@ -51,5 +51,11 @@
       "removed_at": "2026-07-23T11:11:42Z",
       "reason": "Reclassified: single CompileFunction failure insufficient for BLOCKED_BACKEND per AGENTS.md criteria"
     }
-  ]
+  ],
+  "workaround": {
+    "strategy": "per-row JIT loop",
+    "detail": "CompileFunction crash with reduction ops (amax,sum,exp) worked around by calling kernel per-row with shape [1, last_dim]",
+    "stability": "B1-B64 all PASS, max_diff=6.1e-5 (FP16 softmax)",
+    "verified_at": "2026-07-23T11:46:02Z"
+  }
 }

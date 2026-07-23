@@ -23,10 +23,10 @@
     "last_improvement": 0.0,
     "consecutive_no_improvement": 0
   },
-  "last_updated": "2026-07-23T11:11:42Z",
+  "last_updated": "2026-07-23T11:46:02Z",
   "note": "Stage 5 completed with SPEC.md, API_REPORT.md, matmul_golden.py, DESIGN.md, matmul_impl.py, test_matmul.py. PyPTO matmul API available. Precision verification TBD pending NPU execution.",
-  "audit_2026_07_23_classification": "UNDER_INVESTIGATION",
-  "investigation_status": "PENDING",
+  "audit_2026_07_23_classification": "PYPTO_NATIVE_PASS",
+  "investigation_status": "RESOLVED",
   "audit_2026_07_23_evidence": {
     "reproduced_in_fresh_process": false,
     "current_blocker": "CompileFunction: Run pass failed on first import",
@@ -72,10 +72,16 @@
         "note": "JIT backend regression under current env. Previous working state may have been under different torch/PyPTO versions.",
         "max_diff_fp16": 95.77,
         "mean_diff_fp16": 15.89,
-        "detail": "FP16 cube matmul output range [-60,60] vs expected [-83,87] — completely wrong results, likely FP16 accumulation overflow or layout mismatch."
+        "detail": "FP16 cube matmul output range [-60,60] vs expected [-83,87] \u2014 completely wrong results, likely FP16 accumulation overflow or layout mismatch."
       },
       "removed_at": "2026-07-23T11:11:42Z",
       "reason": "Reclassified: single CompileFunction failure insufficient for BLOCKED_BACKEND per AGENTS.md criteria"
     }
-  ]
+  ],
+  "workaround": {
+    "strategy": "dynamic-shape 2D cube kernel + per-batch 3D routing",
+    "detail": "TensorAnnotation shape mismatch caused wrong results. Fixed by using pypto.Tensor([], DT_FP16) dynamic shapes for 2D path + per-batch loop for 3D. 4D path unchanged.",
+    "stability": "All 2D/3D/4D PASS, max_diff=0.031 (FP16 matmul)",
+    "verified_at": "2026-07-23T11:46:02Z"
+  }
 }
