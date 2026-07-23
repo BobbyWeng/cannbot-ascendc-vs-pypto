@@ -101,14 +101,23 @@ def check_cannbot_commit():
 
 
 def check_candidate_diff():
-    """Check that a diff exists if source was modified"""
+    """Check that a diff exists from Cannbot base commit to current state"""
+    base_commit = None
+    try:
+        with open(TASK_CONTEXT) as f:
+            tc = json.load(f)
+            if tc.get("cannbot_commit"):
+                base_commit = tc["cannbot_commit"]
+    except Exception:
+        pass
+    ref = base_commit or "7aa137e"
     result = subprocess.run(
-        ["git", "diff", "HEAD", "--stat"],
+        ["git", "diff", f"{ref}..HEAD", "--stat"],
         capture_output=True, text=True, cwd=PROJECT_ROOT
     )
     if result.returncode == 0 and result.stdout.strip():
-        return True, f"Uncommitted changes:\n{result.stdout.strip()}"
-    return False, "No uncommitted changes detected (or not a git repo)"
+        return True, f"Changes since Cannbot base ({ref}):\n{result.stdout.strip()}"
+    return False, f"No changes from Cannbot base ({ref}) to HEAD (not a working repo?)"
 
 
 def check_npu_queue():
