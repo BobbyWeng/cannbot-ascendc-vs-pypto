@@ -103,7 +103,7 @@ def check_cannbot_commit():
 def check_candidate_diff():
     """Check that a diff exists if source was modified"""
     result = subprocess.run(
-        ["git", "diff", "--stat"],
+        ["git", "diff", "HEAD", "--stat"],
         capture_output=True, text=True, cwd=PROJECT_ROOT
     )
     if result.returncode == 0 and result.stdout.strip():

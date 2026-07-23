@@ -1,9 +1,9 @@
 {
   "kernel_count": 700,
-  "logical_calls": 100,
-  "kernels_per_logical_call": 7.0,
-  "all_device_kernels_us_per_call": 77.735,
-  "primary_compute_kernel_us": 27.321,
+  "logical_calls": 700,
+  "kernels_per_logical_call": 1.0,
+  "all_device_kernels_us_per_call": 11.105,
+  "primary_compute_kernel_us": 11.105,
   "primary_kernel_name": "aclnnDiv_RealDivAiCore_RealDiv",
   "primary_kernel_type": "KERNEL_AIVEC",
   "kernel_names": [
@@ -17,7 +17,7 @@
       "count": 700,
       "total_us": 7773.52,
       "mean_us": 11.105,
-      "per_call_us": 77.735
+      "per_call_us": 11.105
     }
   },
   "compute_kernel_types": [
@@ -25,6 +25,36 @@
   ],
   "executor_kernel_types": [],
   "total_kernel_duration_all_iters_us": 7773.52,
-  "parser_version": "1.2-rc3",
-  "profiler_type": "msprof"
+  "aicpu_init_us": 0,
+  "host_events_count": 4310,
+  "parser_version": "2.0",
+  "profiler_type": "msprof",
+  "_validation": {
+    "all_pass": true,
+    "checks": [
+      {
+        "check": "primary_compute_kernel_us > 0",
+        "status": "PASS",
+        "values": 11.105
+      },
+      {
+        "check": "primary <= all_device_per_call",
+        "status": "PASS",
+        "values": {
+          "primary": 11.105,
+          "all_device": 11.105
+        }
+      },
+      {
+        "check": "logical_calls > 0",
+        "status": "PASS",
+        "values": 700
+      },
+      {
+        "check": "kernels_per_call > 0",
+        "status": "PASS",
+        "values": 1.0
+      }
+    ]
+  }
 }

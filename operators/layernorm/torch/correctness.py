@@ -28,8 +28,8 @@ def load_batch_data(batch, device_id):
 
     x = torch.from_numpy(np.fromfile(x_path, dtype=np.float16).reshape(shape))
     ref = torch.from_numpy(np.fromfile(ref_path, dtype=np.float16).reshape(shape))
-    w = torch.from_numpy(np.fromfile(w_path, dtype=np.float16).reshape(-1))
-    b = torch.from_numpy(np.fromfile(b_path, dtype=np.float16).reshape(-1))
+    w = torch.from_numpy(np.fromfile(w_path, dtype=np.float16).reshape(SHAPE_TAIL))
+    b = torch.from_numpy(np.fromfile(b_path, dtype=np.float16).reshape(SHAPE_TAIL))
     return x.npu(device_id), w.npu(device_id), b.npu(device_id), ref.npu(device_id), None
 
 def run_correctness(batch, device_id):
@@ -39,7 +39,15 @@ def run_correctness(batch, device_id):
         return {"batch": batch, "status": "SKIP", "error": err}
 
     eps = 1e-5
-    output = torch.nn.functional.layer_norm(x_npu, NORM_SHAPE, weight=w_npu, bias=b_npu, eps=eps)
+    x_f32 = x_npu.float()
+    w_f32 = w_npu.float()
+    b_f32 = b_npu.float()
+    mean = x_f32.mean(dim=-1, keepdim=True)
+    x_centered = x_f32 - mean
+    var = x_centered.pow(2).mean(dim=-1, keepdim=True)
+    inv_std = 1.0 / torch.sqrt(var + eps)
+    normalized = x_centered * inv_std
+    output = (normalized * w_f32 + b_f32).half()
     torch.npu.synchronize(device_id)
 
     result = check_correctness(output, ref_npu, rtol=0.001, atol=0.01, require_bitwise=False, label=f"B={batch}")

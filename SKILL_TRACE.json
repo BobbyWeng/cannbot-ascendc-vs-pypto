@@ -1,0 +1,217 @@
+{
+  "generated_at": "2026-07-23T11:00:00Z",
+  "scope": "project",
+  "commit": "7aa137e",
+  "routes": {
+    "infra": {
+      "status": "POST_COMMIT_REPAIR",
+      "tasks": [
+        {
+          "task": "env_check",
+          "timestamp": "2026-07-23T10:00:00Z",
+          "skill": "ascendc-env-check",
+          "usage": "confirmed_by_artifact",
+          "note": "Verified CANN 9.0.0, NPU 910B, torch 2.8.0, NPU available",
+          "evidence_paths": [
+            "environment/preflight.sh",
+            "environment/environment_manifest.json",
+            "reports/release/current_release.json"
+          ]
+        },
+        {
+          "task": "task_planning",
+          "timestamp": "2026-07-23T10:05:00Z",
+          "skill": "ascendc-task-focus",
+          "usage": "confirmed_by_artifact",
+          "note": "Planned post-commit repair tasks: correctness fixes (reduce_sum equal_nan + layernorm weight/bias + equal kernel), data regeneration (where/transpose/softmax), build all 14 operators, profiler parser v2, release update",
+          "evidence_paths": [
+            "todo.md"
+          ]
+        },
+        {
+          "task": "tiling_consult_layernorm",
+          "timestamp": "2026-07-23T10:10:00Z",
+          "skill": "ascendc-tiling-design",
+          "usage": "confirmed_by_code_pattern",
+          "note": "Consulted tiling design to fix layernorm weight/bias shape mismatch across batch sizes",
+          "evidence_paths": [
+            "operators/layernorm/ascendc/src/layernorm_tiling.h",
+            "operators/layernorm/ascendc/src/layernorm_kernel.asc"
+          ]
+        },
+        {
+          "task": "tiling_consult_reduce_sum",
+          "timestamp": "2026-07-23T10:15:00Z",
+          "skill": "ascendc-tiling-design",
+          "usage": "confirmed_by_code_pattern",
+          "note": "Consulted tiling design for reduce_sum equal_nan propagation across tiled reduction batches",
+          "evidence_paths": [
+            "operators/reduce_sum/ascendc/src/reduce_sum_tiling.h",
+            "operators/reduce_sum/ascendc/src/reduce_sum_kernel.asc"
+          ]
+        },
+        {
+          "task": "tiling_consult_equal",
+          "timestamp": "2026-07-23T10:20:00Z",
+          "skill": "ascendc-tiling-design",
+          "usage": "confirmed_by_code_pattern",
+          "note": "Consulted tiling design for equal operator kernel fix (NaN semantics per dtype)",
+          "evidence_paths": [
+            "operators/equal/ascendc/src/equal_tiling.h",
+            "operators/equal/ascendc/src/equal_kernel.asc"
+          ]
+        },
+        {
+          "task": "api_consult_reduce_sum",
+          "timestamp": "2026-07-23T10:15:00Z",
+          "skill": "ascendc-api-best-practices",
+          "usage": "confirmed_by_code_pattern",
+          "note": "Consulted API best practices for Ascend C reduction API (ReduceMax/ReduceSum vector path, equal_nan handling)",
+          "evidence_paths": [
+            "operators/reduce_sum/ascendc/src/reduce_sum_kernel.asc",
+            "operators/reduce_sum/ascendc/src/reduce_sum_fp32_kernel.asc"
+          ]
+        },
+        {
+          "task": "api_consult_equal",
+          "timestamp": "2026-07-23T10:20:00Z",
+          "skill": "ascendc-api-best-practices",
+          "usage": "confirmed_by_code_pattern",
+          "note": "Consulted API best practices for Ascend C elementwise comparison API (Compare/Select with NaN semantics)",
+          "evidence_paths": [
+            "operators/equal/ascendc/src/equal_kernel.asc"
+          ]
+        },
+        {
+          "task": "api_consult_layernorm",
+          "timestamp": "2026-07-23T10:10:00Z",
+          "skill": "ascendc-api-best-practices",
+          "usage": "confirmed_by_code_pattern",
+          "note": "Consulted API best practices for layernorm weight/bias broadcasting over tiled dimensions",
+          "evidence_paths": [
+            "operators/layernorm/ascendc/src/layernorm_kernel.asc"
+          ]
+        },
+        {
+          "task": "kernel_fix_reduce_sum",
+          "timestamp": "2026-07-23T10:15:00Z",
+          "skill": "ascendc-api-best-practices",
+          "usage": "confirmed_by_code_pattern",
+          "note": "Fixed reduce_sum kernel: equal_nan propagation + regenerated reference data for NaN/Inf boundary cases across all batch sizes",
+          "evidence_paths": [
+            "operators/reduce_sum/ascendc/src/reduce_sum_kernel.asc",
+            "operators/reduce_sum/data/generation_scripts/generate_reference.py",
+            "operators/reduce_sum/data/generation_scripts/generate_inputs.py",
+            "operators/reduce_sum/reports/correctness/ascendc_correctness.json"
+          ]
+        },
+        {
+          "task": "kernel_fix_layernorm",
+          "timestamp": "2026-07-23T10:10:00Z",
+          "skill": "ascendc-api-best-practices",
+          "usage": "confirmed_by_code_pattern",
+          "note": "Fixed layernorm kernel: weight/bias shape broadcasting across batch dimension, regenerated reference data",
+          "evidence_paths": [
+            "operators/layernorm/ascendc/src/layernorm_kernel.asc",
+            "operators/layernorm/data/generation_scripts/generate_reference.py",
+            "operators/layernorm/data/generation_scripts/generate_inputs.py"
+          ]
+        },
+        {
+          "task": "kernel_fix_equal",
+          "timestamp": "2026-07-23T10:20:00Z",
+          "skill": "ascendc-api-best-practices",
+          "usage": "confirmed_by_code_pattern",
+          "note": "Fixed equal kernel: NaN semantics (NaN != NaN mandated), regenerated reference data with NaN/Inf cases",
+          "evidence_paths": [
+            "operators/equal/ascendc/src/equal_kernel.asc",
+            "operators/equal/data/generation_scripts/generate_inputs.py",
+            "operators/equal/data/generation_scripts/correctness.py"
+          ]
+        },
+        {
+          "task": "data_regeneration_where",
+          "timestamp": "2026-07-23T10:25:00Z",
+          "skill": "ascendc-task-focus",
+          "usage": "confirmed_by_artifact",
+          "note": "Regenerated reference data for where operator to fix stale correctness baselines",
+          "evidence_paths": [
+            "operators/where/data/generation_scripts/generate_inputs.py",
+            "operators/where/reports/correctness/ascendc_correctness.json"
+          ]
+        },
+        {
+          "task": "data_regeneration_transpose",
+          "timestamp": "2026-07-23T10:25:00Z",
+          "skill": "ascendc-task-focus",
+          "usage": "confirmed_by_artifact",
+          "note": "Regenerated reference data for transpose operator to fix stale correctness baselines",
+          "evidence_paths": [
+            "operators/transpose/data/generation_scripts/",
+            "operators/transpose/reports/correctness/"
+          ]
+        },
+        {
+          "task": "data_regeneration_softmax",
+          "timestamp": "2026-07-23T10:25:00Z",
+          "skill": "ascendc-task-focus",
+          "usage": "confirmed_by_artifact",
+          "note": "Regenerated reference data for softmax operator to fix stale correctness baselines",
+          "evidence_paths": [
+            "operators/softmax/data/generation_scripts/",
+            "operators/softmax/reports/correctness/"
+          ]
+        },
+        {
+          "task": "ascendc_build_all",
+          "timestamp": "2026-07-23T10:30:00Z",
+          "skill": "ascendc-task-focus",
+          "usage": "confirmed_by_artifact",
+          "note": "Built all 14 Ascend C operator kernels successfully (relu, add, mul, sub, div, not, equal, where, reduce_sum, layernorm, softmax, transpose, expand, log)",
+          "evidence_paths": [
+            "operators/relu/ascendc/build/",
+            "operators/add/ascendc/build/",
+            "operators/mul/ascendc/build/",
+            "operators/sub/ascendc/build/",
+            "operators/div/ascendc/build/",
+            "operators/not/ascendc/build/",
+            "operators/equal/ascendc/build/",
+            "operators/where/ascendc/build/",
+            "operators/reduce_sum/ascendc/build/",
+            "operators/layernorm/ascendc/build/",
+            "operators/softmax/ascendc/build/",
+            "operators/transpose/ascendc/build/",
+            "operators/expand/ascendc/build/",
+            "operators/log/ascendc/build/"
+          ]
+        },
+        {
+          "task": "profiler_parser_v2",
+          "timestamp": "2026-07-23T10:35:00Z",
+          "skill": "ascendc-task-focus",
+          "usage": "confirmed_by_code_pattern",
+          "note": "Developed unified per-call mean profiler parser (parse_profiler_v2.py) replacing per-batch-size parsing strategy",
+          "evidence_paths": [
+            "common/profiler/parse_profiler_v2.py",
+            "common/profiler/parse_profiler.py",
+            "common/profiler/__init__.py"
+          ]
+        },
+        {
+          "task": "release_update",
+          "timestamp": "2026-07-23T10:45:00Z",
+          "skill": "ascendc-task-focus",
+          "usage": "confirmed_by_artifact",
+          "note": "Updated current_release.json to v1.6 for commit 7aa137e with full 14-operator correctness and profiler coverage",
+          "evidence_paths": [
+            "reports/release/current_release.json",
+            "reports/release/current_release.md",
+            "reports/release/correctness_matrix.csv",
+            "reports/release/performance_matrix.csv",
+            "scripts/release/release.py"
+          ]
+        }
+      ]
+    }
+  }
+}

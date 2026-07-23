@@ -1,0 +1,17 @@
+{
+  "operator": "where",
+  "backend_route": "ASCENDC_DIRECT",
+  "semantic_class": "LOGICAL",
+  "hardware_path": "VECTOR",
+  "task_mode": "PERFORMANCE_OPTIMIZATION",
+  "lifecycle_stage": "CORRECTNESS",
+  "active_plugin": "ops-direct-invoke",
+  "active_agent": "ascendc-kernel-architect",
+  "required_skills": ["ascendc-env-check", "ascendc-api-best-practices", "ascendc-kernel-develop-workflow"],
+  "loaded_skills": ["ascendc-api-best-practices", "ascendc-tiling-design", "ascendc-task-focus"],
+  "cannbot_commit": "7aa137e",
+  "correctness_gate": "PENDING",
+  "profile_gate": "PENDING",
+  "next_action": "",
+  "last_successful_checkpoint": ""
+}

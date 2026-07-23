@@ -2,8 +2,8 @@
   "kernel_count": 8400,
   "logical_calls": 100,
   "kernels_per_logical_call": 84.0,
-  "all_device_kernels_us_per_call": 298.418,
-  "primary_compute_kernel_us": 10.36,
+  "all_device_kernels_us_per_call": 298.744,
+  "primary_compute_kernel_us": 3.556,
   "primary_kernel_name": "matmul_kernel",
   "primary_kernel_type": "KERNEL_AICORE",
   "kernel_names": [
@@ -15,14 +15,46 @@
   "kernel_type_breakdown": {
     "KERNEL_AICORE": {
       "count": 8400,
-      "total_us": 29841.76,
-      "mean_us": 3.553,
-      "per_call_us": 298.418
+      "total_us": 29874.4,
+      "mean_us": 3.556,
+      "per_call_us": 298.744
     }
   },
   "compute_kernel_types": [
     "KERNEL_AICORE"
   ],
   "executor_kernel_types": [],
-  "total_kernel_duration_all_iters_us": 29841.76
+  "total_kernel_duration_all_iters_us": 29874.4,
+  "aicpu_init_us": 0,
+  "host_events_count": 25238,
+  "parser_version": "2.0",
+  "profiler_type": "msprof",
+  "_validation": {
+    "all_pass": true,
+    "checks": [
+      {
+        "check": "primary_compute_kernel_us > 0",
+        "status": "PASS",
+        "values": 3.556
+      },
+      {
+        "check": "primary <= all_device_per_call",
+        "status": "PASS",
+        "values": {
+          "primary": 3.556,
+          "all_device": 298.744
+        }
+      },
+      {
+        "check": "logical_calls > 0",
+        "status": "PASS",
+        "values": 100
+      },
+      {
+        "check": "kernels_per_call > 0",
+        "status": "PASS",
+        "values": 84.0
+      }
+    ]
+  }
 }

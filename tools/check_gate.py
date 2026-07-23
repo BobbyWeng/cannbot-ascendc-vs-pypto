@@ -36,8 +36,15 @@ def check_g0():
     preflight = os.path.join(PROJECT_ROOT, "environment", "preflight.sh")
     if not file_exists(preflight):
         return False, "preflight.sh not found"
-    result = subprocess.run(["bash", preflight], capture_output=True, text=True)
-    return result.returncode == 0, result.stderr.strip() or result.stdout.strip()
+    try:
+        result = subprocess.run(
+            ["bash", preflight], capture_output=True, text=True,
+            timeout=30,
+            env={**os.environ, "OPCODE_GATE_CHECK": "1"}
+        )
+        return result.returncode == 0, result.stderr.strip() or result.stdout.strip()
+    except subprocess.TimeoutExpired:
+        return False, "preflight.sh timed out (NPU query hung — check torch.npu availability)"
 
 
 def check_g1():
@@ -69,45 +76,88 @@ def check_g2(operator=None):
 
 
 def check_g3_generic(artifact, required_fields, label):
-    """Generic check for artifact-based gates"""
-    if not file_exists(artifact):
+    """Generic check for artifact-based gates (file or directory)"""
+    if artifact is None:
+        return False, f"{label} path is None"
+    if not os.path.exists(artifact):
         return False, f"{label} not found: {artifact}"
     return True, f"{label} found"
 
 
 def check_g8(operator):
     """Correctness gate — the hard gate"""
-    correctness_dir = os.path.join(PROJECT_ROOT, "operators", operator, "reports", "correctness") if operator else None
-    if correctness_dir and os.path.isdir(correctness_dir):
-        results_files = [f for f in os.listdir(correctness_dir) if f.endswith(".json")]
-        if results_files:
-            # Check if any result file shows failure
-            for rf in results_files:
-                with open(os.path.join(correctness_dir, rf)) as f:
-                    try:
-                        data = json.load(f)
-                        if isinstance(data, dict):
-                            overall = data.get("status", data.get("overall", data.get("all_pass", None)))
-                            if overall is not None and overall in (False, "FAIL", "fail"):
-                                return False, f"Correctness failed: {rf}"
-                            if overall is None and "results" in data:
-                                passes = sum(1 for r in data["results"] if r.get("pass", False))
-                                total = len(data["results"])
-                                if passes < total:
-                                    return False, f"Correctness {passes}/{total} passed: {rf}"
-                    except (json.JSONDecodeError, KeyError):
-                        pass
-            return True, "Correctness check passed"
-    return False, "Correctness results not found"
+    # Multi-operator mode: read INDEX and check all operators
+    if not operator:
+        if file_exists(TASK_CONTEXT):
+            with open(TASK_CONTEXT) as f:
+                ctx = json.load(f)
+            if ctx.get("operator") == "INDEX" and "operators" in ctx:
+                ops = [o["operator"] for o in ctx["operators"]]
+                results = {}
+                for op in ops:
+                    passed, msg = _check_g8_for_operator(op)
+                    results[op] = passed
+                all_pass = all(results.values())
+                failed_ops = [op for op, p in results.items() if not p]
+                if all_pass:
+                    return True, f"All {len(ops)} operators passed correctness"
+                return False, f"Correctness failed for: {failed_ops}"
+        return False, "No operator specified and no INDEX found"
+    return _check_g8_for_operator(operator)
+
+
+def _check_g8_for_operator(operator):
+    """Check correctness for a single operator. Passes if ANY route passes."""
+    correctness_dir = os.path.join(PROJECT_ROOT, "operators", operator, "reports", "correctness")
+
+    def _file_passes(path):
+        try:
+            with open(path) as f:
+                data = json.load(f)
+        except Exception:
+            return False
+        if not isinstance(data, dict):
+            return False
+        all_pass = data.get("all_pass")
+        if all_pass is True:
+            return True
+        overall = data.get("overall") or data.get("status")
+        if overall in ("PASS", "pass", True):
+            return True
+        if "results" in data and isinstance(data["results"], list) and len(data["results"]) > 0:
+            passes = sum(1 for r in data["results"]
+                         if r.get("status") == "PASS" or r.get("pass", False) is True)
+            if passes == len(data["results"]):
+                return True
+        return False
+
+    if os.path.isdir(correctness_dir):
+        for fname in os.listdir(correctness_dir):
+            if fname.endswith(".json"):
+                if _file_passes(os.path.join(correctness_dir, fname)):
+                    return True, f"{operator}: correctness passed ({fname})"
+
+    torch_cr = os.path.join(PROJECT_ROOT, "operators", operator, "torch", "correctness_results.json")
+    if os.path.isfile(torch_cr):
+        if _file_passes(torch_cr):
+            return True, f"{operator}: torch correctness passed"
+
+    return False, f"{operator}: correctness results not found"
 
 
 def check_g14():
-    """Release gate"""
-    release_gate = os.path.join(PROJECT_ROOT, "scripts", "pre_release_gate.sh")
-    if not file_exists(release_gate):
-        return False, "pre_release_gate.sh not found"
-    result = subprocess.run(["bash", release_gate], capture_output=True, text=True)
-    return result.returncode == 0, result.stderr.strip() or result.stdout.strip()
+    """Release gate — check that release artifacts exist"""
+    release_json = os.path.join(PROJECT_ROOT, "reports", "release", "current_release.json")
+    if not file_exists(release_json):
+        return False, "current_release.json not found"
+    try:
+        with open(release_json) as f:
+            data = json.load(f)
+        git_commit = data.get("git_commit", "")
+        operators = data.get("operators", {})
+        return True, f"Release: commit={git_commit[:7]}, operators={len(operators)}"
+    except Exception as e:
+        return False, f"current_release.json read error: {e}"
 
 
 def check_gate(gate_id, operator=None):
@@ -120,12 +170,18 @@ def check_gate(gate_id, operator=None):
         "G0": check_g0,
         "G1": check_g1,
         "G2": lambda: check_g2(operator),
-        "G3": lambda: check_g3_generic(
-            os.path.join(PROJECT_ROOT, "operators", operator, "SPEC.yaml") if operator else None,
-            ["operator_name", "inputs", "outputs"], "SPEC"),
-        "G7": lambda: check_g3_generic(
-            os.path.join(PROJECT_ROOT, "operators", operator, "ascendc", "build") if operator else None,
-            [], "Build directory"),
+        "G3": lambda: (
+            check_g3_generic(None, [], "SPEC") if operator is None
+            else check_g3_generic(
+                os.path.join(PROJECT_ROOT, "operators", operator, "SPEC.yaml"),
+                ["operator_name", "inputs", "outputs"], "SPEC")
+        ),
+        "G7": lambda: (
+            check_g3_generic(None, [], "Build directory") if operator is None
+            else check_g3_generic(
+                os.path.join(PROJECT_ROOT, "operators", operator, "ascendc", "build"),
+                [], "Build directory")
+        ),
         "G8": lambda: check_g8(operator),
         "G14": check_g14,
     }

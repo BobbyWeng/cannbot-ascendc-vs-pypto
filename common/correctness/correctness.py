@@ -125,8 +125,22 @@ def check_correctness(
             reference.to(torch.float64),
             rtol=rtol,
             atol=atol,
-            equal_nan=False,
+            equal_nan=True,
         )
+
+        if not numerically_close and nan_count > 0:
+            nan_match = (torch.isnan(output) == torch.isnan(reference)).all()
+            if nan_match:
+                nan_mask = torch.isnan(output)
+                if nan_mask.all():
+                    numerically_close = True
+                else:
+                    numerically_close = torch.allclose(
+                        output[~nan_mask].to(torch.float64),
+                        reference[~nan_mask].to(torch.float64),
+                        rtol=rtol, atol=atol,
+                    )
+
         passed = numeric_mismatch_count == 0 or numerically_close
 
     return {

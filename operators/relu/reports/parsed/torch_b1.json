@@ -1,30 +1,69 @@
 {
-  "kernel_count": 700,
-  "logical_calls": 100,
-  "kernels_per_logical_call": 7.0,
-  "all_device_kernels_us_per_call": 18.352,
-  "primary_compute_kernel_us": 10.08,
-  "primary_kernel_name": "aclnnRelu_Relu_Relu",
-  "primary_kernel_type": "KERNEL_AIVEC",
+  "kernel_count": 1201,
+  "logical_calls": 1200,
+  "kernels_per_logical_call": 1.0,
+  "all_device_kernels_us_per_call": 2.65,
+  "primary_compute_kernel_us": 2.648,
+  "primary_kernel_name": "preload_stack_16KB",
+  "primary_kernel_type": "KERNEL_MIX_AIC",
   "kernel_names": [
-    "aclnnRelu_Relu_Relu"
+    "aclnnRelu_Relu_Relu",
+    "preload_stack_16KB"
   ],
   "kernel_types": [
-    "KERNEL_AIVEC"
+    "KERNEL_AIVEC",
+    "KERNEL_MIX_AIC"
   ],
   "kernel_type_breakdown": {
+    "KERNEL_MIX_AIC": {
+      "count": 1,
+      "total_us": 39.52,
+      "mean_us": 39.52,
+      "per_call_us": 0.033
+    },
     "KERNEL_AIVEC": {
-      "count": 700,
-      "total_us": 1835.24,
-      "mean_us": 2.622,
-      "per_call_us": 18.352
+      "count": 1200,
+      "total_us": 3140.9,
+      "mean_us": 2.617,
+      "per_call_us": 2.617
     }
   },
   "compute_kernel_types": [
-    "KERNEL_AIVEC"
+    "KERNEL_AIVEC",
+    "KERNEL_MIX_AIC"
   ],
   "executor_kernel_types": [],
-  "total_kernel_duration_all_iters_us": 1835.24,
-  "parser_version": "1.2-rc3",
-  "profiler_type": "msprof"
+  "total_kernel_duration_all_iters_us": 3180.42,
+  "aicpu_init_us": 0,
+  "host_events_count": 7330,
+  "parser_version": "2.0",
+  "profiler_type": "msprof",
+  "_validation": {
+    "all_pass": true,
+    "checks": [
+      {
+        "check": "primary_compute_kernel_us > 0",
+        "status": "PASS",
+        "values": 2.648
+      },
+      {
+        "check": "primary <= all_device_per_call",
+        "status": "PASS",
+        "values": {
+          "primary": 2.648,
+          "all_device": 2.65
+        }
+      },
+      {
+        "check": "logical_calls > 0",
+        "status": "PASS",
+        "values": 1200
+      },
+      {
+        "check": "kernels_per_call > 0",
+        "status": "PASS",
+        "values": 1.0
+      }
+    ]
+  }
 }

@@ -1,13 +1,12 @@
 {
-  "kernel_count": 301,
+  "kernel_count": 300,
   "logical_calls": 100,
-  "kernels_per_logical_call": 3.01,
-  "all_device_kernels_us_per_call": 202.022,
-  "primary_compute_kernel_us": 118.422,
+  "kernels_per_logical_call": 3.0,
+  "all_device_kernels_us_per_call": 166.567,
+  "primary_compute_kernel_us": 55.522,
   "primary_kernel_name": "PYPTO_relu_kernel_2d",
-  "primary_kernel_type": "KERNEL_MIX_AIC",
+  "primary_kernel_type": "KERNEL_AICPU",
   "kernel_names": [
-    "KERNEL_AICPU",
     "PYPTO_relu_kernel_2d"
   ],
   "kernel_types": [
@@ -16,10 +15,10 @@
   ],
   "kernel_type_breakdown": {
     "KERNEL_AICPU": {
-      "count": 201,
-      "total_us": 14872.78,
-      "mean_us": 73.994,
-      "per_call_us": 148.728
+      "count": 200,
+      "total_us": 11327.27,
+      "mean_us": 56.636,
+      "per_call_us": 113.273
     },
     "KERNEL_MIX_AIC": {
       "count": 100,
@@ -29,13 +28,41 @@
     }
   },
   "compute_kernel_types": [
+    "KERNEL_AICPU",
     "KERNEL_MIX_AIC"
   ],
-  "executor_kernel_types": [
-    "KERNEL_AICPU"
-  ],
-  "total_kernel_duration_all_iters_us": 20202.22,
-  "aicpu_executor_us_per_call": 148.728,
-  "parser_version": "1.2-rc3",
-  "profiler_type": "msprof"
+  "executor_kernel_types": [],
+  "total_kernel_duration_all_iters_us": 16656.71,
+  "aicpu_init_us": 3545.51,
+  "host_events_count": 1122,
+  "parser_version": "2.0",
+  "profiler_type": "msprof",
+  "_validation": {
+    "all_pass": true,
+    "checks": [
+      {
+        "check": "primary_compute_kernel_us > 0",
+        "status": "PASS",
+        "values": 55.522
+      },
+      {
+        "check": "primary <= all_device_per_call",
+        "status": "PASS",
+        "values": {
+          "primary": 55.522,
+          "all_device": 166.567
+        }
+      },
+      {
+        "check": "logical_calls > 0",
+        "status": "PASS",
+        "values": 100
+      },
+      {
+        "check": "kernels_per_call > 0",
+        "status": "PASS",
+        "values": 3.0
+      }
+    ]
+  }
 }
