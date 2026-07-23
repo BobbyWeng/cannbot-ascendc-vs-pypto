@@ -4,7 +4,7 @@
   "semantic_class": "ELEMENTWISE",
   "hardware_path": "VECTOR",
   "task_mode": "CONTINUE_DEVELOPMENT",
-  "lifecycle_stage": "RELEASE",
+  "lifecycle_stage": "FINAL_PROFILE",
   "active_plugin": "ops-direct-invoke",
   "active_agent": "ascendc-kernel-architect",
   "required_skills": [
@@ -30,5 +30,30 @@
   "profile_gate": "PASS",
   "release_eligibility": true,
   "next_action": "G13 code review before next release",
-  "last_successful_checkpoint": "Post-RC3 relu implementation"
+  "last_successful_checkpoint": "PyPTO Stage 7 profiling completed (2026-07-23T09:15:04.186755+00:00)",
+  "pypto_profiling": {
+    "status": "completed",
+    "batches_profiled": [
+      1,
+      16,
+      2,
+      32,
+      4,
+      64,
+      8
+    ],
+    "per_batch_primary_us": {
+      "B1": 48.759,
+      "B16": 74.328,
+      "B2": 47.269,
+      "B32": 98.55799999999999,
+      "B4": 51.468,
+      "B64": 150.64600000000002,
+      "B8": 56.448
+    },
+    "parsed_output": "/tmp/opencode/parsed_results/relu_parsed.json",
+    "raw_msprof_base": "/tmp/opencode/prof_results/relu",
+    "g10_gate": "PASS",
+    "completed_at": "2026-07-23T09:15:04.186755+00:00"
+  }
 }

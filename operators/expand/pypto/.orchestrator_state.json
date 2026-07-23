@@ -6,7 +6,7 @@
     "2": "completed",
     "3": "completed",
     "4": "completed",
-    "5": "completed",
+    "5": "completed_with_limitation",
     "6": "not_started",
     "7": "not_started"
   },
@@ -23,7 +23,49 @@
     "last_improvement": 0.0,
     "consecutive_no_improvement": 0
   },
-  "last_updated": "2026-07-17",
+  "last_updated": "2026-07-23T11:11:19Z",
   "pypto_status": "PASS (one-shot expand via torch.expand().clone(), all 7 batches bitwise)",
-  "note": "One-shot fix: replaced per-row Python for-loop (16384 AICPU dispatches) with single torch.expand().clone() call. PyPTO expand_clone limited to 1D. Performance: 4.3s -> 0.05ms (33600x speedup for B=64)."
+  "note": "One-shot fix: replaced per-row Python for-loop (16384 AICPU dispatches) with single torch.expand().clone() call. PyPTO expand_clone limited to 1D. Performance: 4.3s -> 0.05ms (33600x speedup for B=64).",
+  "env_check_passed": true,
+  "env": {
+    "torch": "2.8.0+cpu",
+    "torch_npu": "2.8.0.post2",
+    "cann": "9.0.0",
+    "pypto": "0.2.0 (d1c290f36)"
+  },
+  "profiling": {
+    "status": "TORCH_FALLBACK",
+    "kernel_type": "KERNEL_AIVEC (torch_npu-native BroadcastTo)",
+    "note": "expand_wrapper uses x.expand().clone() — pure torch_npu, NOT PyPTO JIT. Zero MIX_AIC kernels observed. The expand_row JIT kernel exists as reference but is not the active code path. Marked COMPLETE_WITH_LIMITATION.",
+    "audit_evidence": "msprof audit confirms 0 KERNEL_MIX_AIC, 100% KERNEL_AIVEC BroadcastTo",
+    "audited_at": "2026-07-23T09:52:46.105537+00:00"
+  },
+  "correctness": {
+    "status": "PASS",
+    "re_verified_at": "2026-07-23T09:19:52.537430+00:00",
+    "g8_gate": "PASS"
+  },
+  "audit_2026_07_23_classification": "TORCH_FALLBACK",
+  "audit_2026_07_23_evidence": {
+    "active_code_path": "torch.expand().clone()",
+    "pypto_jit_kernel_used": false,
+    "msprof_kernel_type": "KERNEL_AIVEC (BroadcastTo)",
+    "kernel_mix_aic_observed": 0,
+    "reason": "expand_wrapper bypasses PyPTO JIT — uses pure torch_npu ops. expand_row JIT kernel exists but is not the active path.",
+    "rank_exclusion": "Cannot be included in PyPTO PASS count, G8 coverage, or performance ranking",
+    "env": {
+      "torch": "2.8.0+cpu",
+      "torch_npu": "2.8.0.post2",
+      "cann": "9.0.0",
+      "pypto_commit": "d1c290f36"
+    }
+  },
+  "historical_blockers": [
+    {
+      "blocker": "TORCH_FALLBACK",
+      "evidence": null,
+      "removed_at": "2026-07-23T11:11:19Z",
+      "reason": "Reclassified: single CompileFunction failure insufficient for BLOCKED_BACKEND per AGENTS.md criteria"
+    }
+  ]
 }

@@ -4,7 +4,7 @@
   "semantic_class": "LAYOUT",
   "hardware_path": "VECTOR_OR_SPECIALIZED_DATA_MOVE",
   "task_mode": "CONTINUE_DEVELOPMENT",
-  "lifecycle_stage": "RELEASE",
+  "lifecycle_stage": "COMPLETE_WITH_LIMITATION",
   "active_plugin": "ops-direct-invoke",
   "active_agent": "ascendc-kernel-architect",
   "required_skills": [
@@ -27,8 +27,8 @@
   ],
   "cannbot_commit": "1449e954022f4733a19b243af30056901b23dd1c",
   "correctness_gate": "PASS",
-  "profile_gate": "PASS",
+  "profile_gate": "TORCH_FALLBACK",
   "release_eligibility": true,
   "next_action": "G13 code review before next release",
-  "last_successful_checkpoint": "Post-RC3 expand implementation"
+  "last_successful_checkpoint": "Audit: torch fallback confirmed (2026-07-23T09:52:46.105537+00:00)"
 }

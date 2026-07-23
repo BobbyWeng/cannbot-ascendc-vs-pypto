@@ -4,7 +4,7 @@
   "semantic_class": "LOGICAL",
   "hardware_path": "VECTOR",
   "task_mode": "CONTINUE_DEVELOPMENT",
-  "lifecycle_stage": "RELEASE",
+  "lifecycle_stage": "FINAL_PROFILE",
   "active_plugin": "ops-direct-invoke",
   "active_agent": "ascendc-kernel-architect",
   "required_skills": [
@@ -30,5 +30,30 @@
   "profile_gate": "PASS",
   "release_eligibility": true,
   "next_action": "G13 code review before next release",
-  "last_successful_checkpoint": "Post-RC3 or implementation"
+  "last_successful_checkpoint": "PyPTO Stage 7 profiling completed (2026-07-23T09:15:04.186755+00:00)",
+  "pypto_profiling": {
+    "status": "completed",
+    "batches_profiled": [
+      1,
+      16,
+      2,
+      32,
+      4,
+      64,
+      8
+    ],
+    "per_batch_primary_us": {
+      "B1": 45.369,
+      "B16": 48.57899999999999,
+      "B2": 45.509,
+      "B32": 49.489000000000004,
+      "B4": 47.479,
+      "B64": 52.848,
+      "B8": 47.659
+    },
+    "parsed_output": "/tmp/opencode/parsed_results/or_parsed.json",
+    "raw_msprof_base": "/tmp/opencode/prof_results/or",
+    "g10_gate": "PASS",
+    "completed_at": "2026-07-23T09:15:04.186755+00:00"
+  }
 }

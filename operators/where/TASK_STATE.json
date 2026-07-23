@@ -4,7 +4,7 @@
   "semantic_class": "LOGICAL",
   "hardware_path": "VECTOR",
   "task_mode": "CONTINUE_DEVELOPMENT",
-  "lifecycle_stage": "RELEASE",
+  "lifecycle_stage": "FINAL_PROFILE",
   "active_plugin": "ops-direct-invoke",
   "active_agent": "ascendc-kernel-architect",
   "required_skills": [
@@ -30,7 +30,7 @@
   "profile_gate": "PASS",
   "release_eligibility": true,
   "next_action": "G13 code review before next release",
-  "last_successful_checkpoint": "Post-RC3 where implementation",
+  "last_successful_checkpoint": "PyPTO Stage 7 profiling completed (2026-07-23T09:15:04.186755+00:00)",
   "pypto_msprof_b1": {
     "primary_compute_kernel_us": 239.18,
     "primary_kernel_name": "PYPTO_where_kernel",
@@ -43,5 +43,30 @@
       "KERNEL_MIX_AIC"
     ],
     "kernel_count": 300
+  },
+  "pypto_profiling": {
+    "status": "completed",
+    "batches_profiled": [
+      1,
+      16,
+      2,
+      32,
+      4,
+      64,
+      8
+    ],
+    "per_batch_primary_us": {
+      "B1": 75.96799999999999,
+      "B16": 319.21299999999997,
+      "B2": 105.31700000000001,
+      "B32": 560.178,
+      "B4": 140.077,
+      "B64": 1039.489,
+      "B8": 215.385
+    },
+    "parsed_output": "/tmp/opencode/parsed_results/where_parsed.json",
+    "raw_msprof_base": "/tmp/opencode/prof_results/where",
+    "g10_gate": "PASS",
+    "completed_at": "2026-07-23T09:15:04.186755+00:00"
   }
 }

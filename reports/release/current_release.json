@@ -1,8 +1,8 @@
 {
-  "release_version": "1.6",
-  "generated_at": "2026-07-23T10:45:00Z",
+  "release_version": "1.7",
+  "generated_at": "2026-07-23T06:34:57Z",
   "validation_freeze": "2026-07-23T10:45:00Z",
-  "git_commit": "7aa137e",
+  "git_commit": "2da58fc7182b5e19e9caa5adf13f55d3a01670e6",
   "environment": {
     "platform": "Ascend 910B",
     "cann_version": "9.0.0",
@@ -37,7 +37,7 @@
       ],
       "precision": "bitwise (signed-zero exempted)",
       "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "completeness_gates": [
         1,
         2,
@@ -114,7 +114,7 @@
       ],
       "precision": "bitwise",
       "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "completeness_gates": [
         1,
         2,
@@ -191,7 +191,7 @@
       ],
       "precision": "bitwise",
       "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (77/77)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "post_rc3_fix": "Reference data regenerated with correct FP16 left-associative chain. All 77 cases bitwise PASS.",
       "limitation": "",
       "routes": {
@@ -254,7 +254,7 @@
       ],
       "precision": "bitwise (was atol=1e-3, rtol=1e-3)",
       "correctness_coverage": "Torch PASS (6/6); AscendC PASS (6/6); PyPTO PASS (6/6)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "rc2_fix": "tile_shape(1024,2048) was too large; changed to (128,1024). Dtype mismatch in test also fixed. All 6 batches pass bitwise (max_abs=0.0).",
       "completeness_gates": [
         1,
@@ -325,9 +325,9 @@
       ],
       "precision": "bitwise (bool)",
       "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "",
-      "rc2_fix": "Two root causes: (1) output was DT_FP16 instead of DT_BOOL (packed bitmask), (2) BOOL output requires ta≤64 in tile shape. All 7 batches pass bitwise.",
+      "rc2_fix": "Two root causes: (1) output was DT_FP16 instead of DT_BOOL (packed bitmask), (2) BOOL output requires ta\u226464 in tile shape. All 7 batches pass bitwise.",
       "completeness_gates": [
         1,
         2,
@@ -397,7 +397,7 @@
       ],
       "precision": "bitwise (bool)",
       "correctness_coverage": "Torch PASS (42/42); AscendC PASS (42/42); PyPTO PASS (42/42)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "",
       "completeness_gates": [
         1,
@@ -475,7 +475,7 @@
       ],
       "precision": "bitwise (bool)",
       "correctness_coverage": "Torch PASS (49/49); AscendC PASS (49/49); PyPTO PASS (bitwise_or 0/1)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "PyPTO uses bitwise_or (no logical_or API in framework). Correct for bool 0/1 inputs.",
       "completeness_gates": [
         1,
@@ -553,9 +553,9 @@
       ],
       "precision": "bitwise",
       "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "",
-      "rc2_fix": "uint8 condition → backend TiledWhereOperation ExpandFunction bug. Workaround: convert uint8→bool in wrapper (DT_BOOL condition). All 7 batches pass bitwise.",
+      "rc2_fix": "uint8 condition \u2192 backend TiledWhereOperation ExpandFunction bug. Workaround: convert uint8\u2192bool in wrapper (DT_BOOL condition). All 7 batches pass bitwise.",
       "completeness_gates": [
         1,
         2,
@@ -625,9 +625,9 @@
       ],
       "precision": "bitwise",
       "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
-      "limitation": "PyPTO uses torch.expand().clone() workaround (was 16384× AICPU dispatch, now 1 materialize kernel). ~33600x improvement in RC-3.",
-      "rc3_fix": "Replaced per-row AICPU dispatch loop with single torch.expand().clone() materialize call. 16384 kernel launches → 1. ~33600x faster.",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
+      "limitation": "PyPTO uses torch.expand().clone() workaround (was 16384\u00d7 AICPU dispatch, now 1 materialize kernel). ~33600x improvement in RC-3.",
+      "rc3_fix": "Replaced per-row AICPU dispatch loop with single torch.expand().clone() materialize call. 16384 kernel launches \u2192 1. ~33600x faster.",
       "completeness_gates": [
         1,
         2,
@@ -704,10 +704,10 @@
       ],
       "precision": "bitwise",
       "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "limitation": "AscendC TRUE_DEVICE tile-transpose, uses GetValue/SetValue.",
-      "rc2_fix": "tile_shape(128,1024) was too large. Changed to (64,256). All shapes up to 2048×2048 pass bitwise.",
-      "rc2_ascendc_perf": "Optimized kernel: tile size 32×32 (up from 16×16) + double buffering. ~13-18% improvement.",
+      "rc2_fix": "tile_shape(128,1024) was too large. Changed to (64,256). All shapes up to 2048\u00d72048 pass bitwise.",
+      "rc2_ascendc_perf": "Optimized kernel: tile size 32\u00d732 (up from 16\u00d716) + double buffering. ~13-18% improvement.",
       "completeness_gates": [
         1,
         2,
@@ -778,9 +778,9 @@
       ],
       "precision": "FP16 accumulation (atol=0.01, rtol=0.01, require_bitwise=False)",
       "correctness_coverage": "Torch 70/70 PASS; AscendC FP32 70/70 PASS; PyPTO 70/70 PASS",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "rc3_fix": "Implemented FP32 accumulation via wrapper-level cast. 70/70 PASS (was 21/70 FP16 accum).",
-      "post_rc3_fix": "Added dedicated Ascend C FP32 accumulation kernel: Cast FP16→FP32 → ReduceSum<float> → Cast FP16. 70/70 PASS. Accuracy 3.5× better than FP16.",
+      "post_rc3_fix": "Added dedicated Ascend C FP32 accumulation kernel: Cast FP16\u2192FP32 \u2192 ReduceSum<float> \u2192 Cast FP16. 70/70 PASS. Accuracy 3.5\u00d7 better than FP16.",
       "completeness_gates": [
         1,
         2,
@@ -889,7 +889,7 @@
         }
       },
       "correctness_coverage": "Torch PASS (6/6); AscendC PASS (6/6); PyPTO PASS (6/6, max_abs 0.031)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "completeness_gates": [
         1,
         2,
@@ -922,7 +922,7 @@
       ],
       "precision": "atol=0.01, rtol=0.01 (normalize-only kernel + host weight/bias)",
       "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7, weight/bias fused); PyPTO PASS with limitation (max_abs 1.4-3.3)",
-      "profiler_coverage": "FULL — AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 AscendC msprof + PyPTO msprof",
       "completeness_gates": [
         1,
         2,
@@ -988,7 +988,7 @@
       ],
       "precision": "rtol=0.001, atol=0.01",
       "correctness_coverage": "Torch PASS (7/7); AscendC PASS (7/7); PyPTO PASS (7/7, max_abs 0.000488)",
-      "profiler_coverage": "FULL — Torch msprof + AscendC msprof + PyPTO msprof",
+      "profiler_coverage": "FULL \u2014 Torch msprof + AscendC msprof + PyPTO msprof",
       "completeness_gates": [
         1,
         2,
@@ -1072,27 +1072,27 @@
   },
   "rc2_fixes": {
     "fix_matmul_pypto": "Manual set_cube_tile_shapes([16,32],[16,32],[16,32]) workaround unblocked PyPTO MatMul. All shapes compile and run. FP16 accum causes max_abs~0.015-0.031.",
-    "fix_div_pypto": "tile_shape(1024,2048) too large → changed to (128,1024). Dtype mismatch in test fixed. All 6 batches pass bitwise.",
-    "fix_where_pypto": "uint8 condition→backend ExpandFunction bug. Workaround: convert uint8→bool in wrapper. All 7 batches pass bitwise.",
-    "fix_transpose_pypto": "tile_shape(128,1024) too large → changed to (64,256). All shapes up to 2048×2048 pass bitwise.",
-    "fix_equal_pypto": "Output was DT_FP16 instead of DT_BOOL. BOOL output requires ta≤64. Both fixed. All 7 batches pass bitwise.",
-    "fix_transpose_ascendc_perf": "Optimized kernel: tile size 32×32 + double buffering. ~13-18% improvement across all batches."
+    "fix_div_pypto": "tile_shape(1024,2048) too large \u2192 changed to (128,1024). Dtype mismatch in test fixed. All 6 batches pass bitwise.",
+    "fix_where_pypto": "uint8 condition\u2192backend ExpandFunction bug. Workaround: convert uint8\u2192bool in wrapper. All 7 batches pass bitwise.",
+    "fix_transpose_pypto": "tile_shape(128,1024) too large \u2192 changed to (64,256). All shapes up to 2048\u00d72048 pass bitwise.",
+    "fix_equal_pypto": "Output was DT_FP16 instead of DT_BOOL. BOOL output requires ta\u226464. Both fixed. All 7 batches pass bitwise.",
+    "fix_transpose_ascendc_perf": "Optimized kernel: tile size 32\u00d732 + double buffering. ~13-18% improvement across all batches."
   },
   "post_rc3_fixes": {
-    "fix_matmul_multicore_batch": "MatMul: 从 12-384 串行 kernel → 1 多核并行。B=32: 9521→37µs (257×), TFLOPS 0.17→43.53",
-    "fix_reduce_sum_fp32_kernel": "ReduceSum: 新增 Ascend C FP32 累积内核, FP16→FP32→ReduceSum→FP16, 精度 3.5× 提升",
-    "fix_add_correctness_reference": "Add: 参考数据改用 FP16 链式累积, 77/77 位精确 PASS",
-    "fix_dashboard_chinese": "Dashboard 全面中文化, 含算子现状、性能数据、问题列表",
+    "fix_matmul_multicore_batch": "MatMul: \u4ece 12-384 \u4e32\u884c kernel \u2192 1 \u591a\u6838\u5e76\u884c\u3002B=32: 9521\u219237\u00b5s (257\u00d7), TFLOPS 0.17\u219243.53",
+    "fix_reduce_sum_fp32_kernel": "ReduceSum: \u65b0\u589e Ascend C FP32 \u7d2f\u79ef\u5185\u6838, FP16\u2192FP32\u2192ReduceSum\u2192FP16, \u7cbe\u5ea6 3.5\u00d7 \u63d0\u5347",
+    "fix_add_correctness_reference": "Add: \u53c2\u8003\u6570\u636e\u6539\u7528 FP16 \u94fe\u5f0f\u7d2f\u79ef, 77/77 \u4f4d\u7cbe\u786e PASS",
+    "fix_dashboard_chinese": "Dashboard \u5168\u9762\u4e2d\u6587\u5316, \u542b\u7b97\u5b50\u73b0\u72b6\u3001\u6027\u80fd\u6570\u636e\u3001\u95ee\u9898\u5217\u8868",
     "fix_reduce_sum_torch_correctness": "Regenerated corrupted test data (pos_neg_cancel, nan batches). Fixed equal_nan=True in common correctness checker. 70/70 PASS (was 62/70)."
   },
   "rc3_fixes": {
     "fix_expand_pypto_oneshot": "Replaced 16384 AICPU dispatches with single torch.expand().clone() materialize call. ~33600x improvement.",
     "fix_reduce_sum_pypto_fp32": "Implemented FP32 accumulation via wrapper-level cast. 70/70 PASS (was 21/70).",
     "fix_logical_ops_msprof": "equal/not/or/where migrated from Event to msprof profiling. 52 new parsed JSON files.",
-    "fix_transpose_perf_continued": "64×64 tile tested: +2.9% for B≥4. Full vectorization blocked by no general transpose API.",
+    "fix_transpose_perf_continued": "64\u00d764 tile tested: +2.9% for B\u22654. Full vectorization blocked by no general transpose API.",
     "fix_where_native_select": "DT_BOOL kernel accepts uint8 data without .bool() conversion in wrapper.",
     "fix_regression_framework": "tests/regression/ with 5 check types: SHA256, build, correctness, profiler, parsed.",
-    "fix_release_pipeline": "scripts/release/release.py — one-command release pipeline with 8 step modules.",
+    "fix_release_pipeline": "scripts/release/release.py \u2014 one-command release pipeline with 8 step modules.",
     "fix_dashboard_v2": "10 new features: timeline, batch scaling, skill trace, source hash, etc.",
     "fix_final_audit": "12 operators fully audited, 3 critical issues fixed, all 36 regression checks passing.",
     "fix_layernorm_torch_correctness": "Fixed weight/bias shape from [8192] to [256,32] for per-element affine post-layer_norm. 7/7 PASS."
@@ -1114,7 +1114,7 @@
       "operator": "matmul",
       "route": "ascendc",
       "severity": "P3",
-      "description": "N=32 limits Cube utilization to ~48%. Torch faster at B≥16."
+      "description": "N=32 limits Cube utilization to ~48%. Torch faster at B\u226516."
     },
     {
       "operator": "matmul",
@@ -1132,13 +1132,13 @@
       "operator": "where",
       "route": "ascendc",
       "severity": "P3",
-      "description": "B=64 performance 9245us vs Torch 2180us — needs optimization."
+      "description": "B=64 performance 9245us vs Torch 2180us \u2014 needs optimization."
     },
     {
       "operator": "transpose",
       "route": "ascendc",
       "severity": "P3",
-      "description": "B=64 performance 5050us vs Torch 135us — GetValue/SetValue bottleneck."
+      "description": "B=64 performance 5050us vs Torch 135us \u2014 GetValue/SetValue bottleneck."
     },
     {
       "operator": "div",

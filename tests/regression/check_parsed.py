@@ -22,6 +22,13 @@ FIELD_CONSTRAINTS = {
 }
 
 
+def _emit(is_new_format, errors, warnings, msg):
+    if is_new_format:
+        errors.append(msg)
+    else:
+        warnings.append(msg)
+
+
 def check_parsed(filepath: str):
     errors = []
     warnings = []
@@ -35,6 +42,7 @@ def check_parsed(filepath: str):
         except json.JSONDecodeError as e:
             return {"status": "FAIL", "errors": [f"Invalid JSON: {e}"]}
 
+    is_new_format = "parser_version" in data
     is_error_state = data.get("error") is not None
 
     for field in REQUIRED_FIELDS:
@@ -54,15 +62,36 @@ def check_parsed(filepath: str):
                     f"Field {field} has length {len(val)}, expected >= {constraint['min_length']}"
                 )
 
+    if "logical_calls" not in data:
+        _emit(is_new_format, errors, warnings, "Missing field: logical_calls")
+
+    logical_calls = data.get("logical_calls")
+    kernels_per_call = data.get("kernels_per_logical_call")
+    kernel_count = data.get("kernel_count")
+    all_device_kernels_us = data.get("all_device_kernels_us")
+    all_device_kernels_us_per_call = data.get("all_device_kernels_us_per_call")
+
+    if logical_calls and logical_calls > 0 and kernel_count and kernels_per_call:
+        expected_kpc = kernel_count / logical_calls
+        if abs(expected_kpc - kernels_per_call) >= 0.01:
+            _emit(is_new_format, errors, warnings,
+                  f"kernel_count/logical_calls ({expected_kpc:.3f}) != kernels_per_logical_call ({kernels_per_call})")
+
+    if (all_device_kernels_us is not None and all_device_kernels_us_per_call is not None
+            and logical_calls and logical_calls > 0):
+        expected_adk = all_device_kernels_us / logical_calls
+        if abs(expected_adk - all_device_kernels_us_per_call) >= 0.01:
+            _emit(is_new_format, errors, warnings,
+                  f"all_device_kernels_us/logical_calls ({expected_adk:.3f}) != all_device_kernels_us_per_call ({all_device_kernels_us_per_call})")
+
     if "kernel_type_breakdown" in data:
         breakdown = data["kernel_type_breakdown"]
         total_count = sum(
             v.get("count", 0) for v in breakdown.values()
         )
         if total_count != data.get("kernel_count", 0):
-            warnings.append(
-                f"kernel_count={data.get('kernel_count')} != breakdown sum={total_count}"
-            )
+            _emit(is_new_format, errors, warnings,
+                  f"kernel_count={data.get('kernel_count')} != breakdown sum={total_count}")
 
     status = "PASS" if not errors else "FAIL"
     return {

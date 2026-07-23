@@ -1,0 +1,55 @@
+{
+  "current_stage": 5,
+  "stage_status": {},
+  "last_updated": "2026-07-23T11:11:42Z",
+  "audit_2026_07_23_classification": "UNDER_INVESTIGATION",
+  "investigation_status": "PENDING",
+  "audit_2026_07_23_evidence": {
+    "reproduced_in_fresh_process": false,
+    "current_blocker": "CompileFunction: Run pass failed on first import",
+    "error_signature": "INTERNAL BUG host_machine.cpp:179",
+    "hypothesis": "May share JIT state regression with relu/mul. Will re-test after relu/mul diagnosis.",
+    "env": {
+      "torch": "2.8.0+cpu",
+      "torch_npu": "2.8.0.post2",
+      "cann": "9.0.0",
+      "pypto_commit": "d1c290f36"
+    }
+  },
+  "investigation_prerequisites": [
+    "Must resolve relu/mul JIT regression first (shared tile_fwk state)",
+    "Must test import-only in fresh process",
+    "Must test minimal official example",
+    "Must test minimal shape (B1)",
+    "Must check frontend IR and specific failing pass",
+    "Must test at least 3 API/tile/layout candidates",
+    "Must rule out cross-operator JIT state contamination"
+  ],
+  "agreements_criteria_for_blocked_backend": [
+    "Version matrix documented",
+    "Official examples tested",
+    "Minimal success/failure documented",
+    "Frontend IR captured",
+    "Failing pass identified",
+    "At least 3 candidates tested"
+  ],
+  "criteria_met": 0,
+  "historical_blockers": [
+    {
+      "blocker": "BLOCKED_BACKEND",
+      "evidence": {
+        "error": "CompileFunction: Run pass failed (host_machine.cpp line 179)",
+        "env": {
+          "torch": "2.8.0+cpu",
+          "torch_npu": "2.8.0.post2",
+          "cann": "9.0.0",
+          "pypto_commit": "d1c290f36"
+        },
+        "audited_at": "2026-07-23T09:54:45.959360+00:00",
+        "note": "JIT backend regression under current env. Previous working state may have been under different torch/PyPTO versions."
+      },
+      "removed_at": "2026-07-23T11:11:42Z",
+      "reason": "Reclassified: single CompileFunction failure insufficient for BLOCKED_BACKEND per AGENTS.md criteria"
+    }
+  ]
+}

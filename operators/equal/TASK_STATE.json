@@ -4,7 +4,7 @@
   "semantic_class": "LOGICAL",
   "hardware_path": "VECTOR",
   "task_mode": "CONTINUE_DEVELOPMENT",
-  "lifecycle_stage": "RELEASE",
+  "lifecycle_stage": "FINAL_PROFILE",
   "active_plugin": "ops-direct-invoke",
   "active_agent": "ascendc-kernel-architect",
   "required_skills": [
@@ -30,7 +30,7 @@
   "profile_gate": "PASS",
   "release_eligibility": true,
   "next_action": "G13 code review before next release",
-  "last_successful_checkpoint": "Post-RC3 equal implementation",
+  "last_successful_checkpoint": "PyPTO Stage 7 profiling completed (2026-07-23T09:15:04.186755+00:00)",
   "pypto_msprof_b1": {
     "primary_compute_kernel_us": 327.38,
     "primary_kernel_name": "PYPTO_equal_kernel",
@@ -43,5 +43,30 @@
       "KERNEL_MIX_AIC"
     ],
     "kernel_count": 300
+  },
+  "pypto_profiling": {
+    "status": "completed",
+    "batches_profiled": [
+      1,
+      16,
+      2,
+      32,
+      4,
+      64,
+      8
+    ],
+    "per_batch_primary_us": {
+      "B1": 53.428,
+      "B16": 133.937,
+      "B2": 59.408,
+      "B32": 214.115,
+      "B4": 77.588,
+      "B64": 436.69100000000003,
+      "B8": 95.298
+    },
+    "parsed_output": "/tmp/opencode/parsed_results/equal_parsed.json",
+    "raw_msprof_base": "/tmp/opencode/prof_results/equal",
+    "g10_gate": "PASS",
+    "completed_at": "2026-07-23T09:15:04.186755+00:00"
   }
 }

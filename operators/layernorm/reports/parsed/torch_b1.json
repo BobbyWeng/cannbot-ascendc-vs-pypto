@@ -1,10 +1,15 @@
 {
   "kernel_count": 0,
-  "kernels_per_call": 0.0,
   "all_device_kernels_us": 0.0,
   "primary_compute_kernel_us": 0.0,
-  "primary_compute_type": "",
   "kernel_names": [],
   "by_type": {},
-  "host_events_count": 5
+  "host_events_count": 5,
+  "parser_version": "1.0",
+  "all_device_kernels_us_per_call": 0.0,
+  "kernels_per_logical_call": 0.0,
+  "primary_kernel_type": "",
+  "error": "zero device kernel duration",
+  "logical_calls": 0,
+  "primary_kernel_name": "unknown"
 }

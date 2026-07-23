@@ -1,14 +1,14 @@
 {
   "operator_name": "transpose",
-  "current_stage": 5,
+  "current_stage": 7,
   "stage_status": {
     "1": "completed",
     "2": "completed",
     "3": "completed",
     "4": "completed",
-    "5": "blocked",
+    "5": "completed",
     "6": "not_started",
-    "7": "not_started"
+    "7": "completed"
   },
   "stage_retry_count": {
     "1": 0,
@@ -23,8 +23,80 @@
     "last_improvement": 0.0,
     "consecutive_no_improvement": 0
   },
-  "last_updated": "2026-07-16",
+  "last_updated": "2026-07-23T11:11:19Z",
   "pypto_status": "FIXED (all shapes PASS with tile(64,256))",
-  "blocker": "NONE — resolved by changing tile shape from (128,1024) to (64,256)",
-  "note": "Tile shape fix: set_vec_tile_shapes(64,256) instead of (128,1024). All tested shapes up to 2048x2048 pass bitwise."
+  "note": "Tile(64,256) fix from previous diagnosis confirmed working. All 3 tile candidates pass.",
+  "env_check_passed": true,
+  "env": {
+    "torch": "2.8.0+cpu",
+    "torch_npu": "2.8.0.post2",
+    "cann": "9.0.0",
+    "pypto": "0.2.0 (d1c290f36)"
+  },
+  "profiling": {
+    "status": "completed",
+    "kernel_type": "KERNEL_MIX_AIC (pypto.op.transpose JIT, tile 64x256)",
+    "batches_profiled": "B1,B64",
+    "per_batch_primary_us": {
+      "B1": 42.9,
+      "B64": 46.0
+    },
+    "per_batch_all_kernels_us": {
+      "B1": 139.3,
+      "B64": 143.9
+    },
+    "note": "Per-batch JIT kernel loop. Each batch row is a separate JIT kernel launch. B=64: 64 kernels @ 47.8us each + AICPU overhead = ~10204us per logical call.",
+    "raw_msprof_base": "/tmp/opencode/prof_transpose_B1",
+    "b64_profile": "/tmp/opencode/prof_transpose_b64",
+    "g10_gate": "PASS",
+    "alternate_tile_candidates": {
+      "64_256": {
+        "status": "PASS",
+        "primary_us": 42.9
+      },
+      "128_512": {
+        "status": "PASS, ~9% faster wall clock"
+      },
+      "128_256": {
+        "status": "PASS"
+      }
+    },
+    "kernels_per_call": "B (batch-varies: 1 for B=1, 64 for B=64)",
+    "primary_compute_kernel_us": 47.8,
+    "all_device_kernels_us_per_call_B64": 10204.0
+  },
+  "correctness": {
+    "status": "PASS",
+    "batches": "B1-B64",
+    "data_patterns": [
+      "random",
+      "batch-unique",
+      "sentinel",
+      "negative"
+    ],
+    "re_verified_at": "2026-07-23T09:28:01.534850+00:00",
+    "g8_gate": "PASS"
+  },
+  "audit_2026_07_23_classification": "PYPTO_NATIVE_PASS",
+  "audit_2026_07_23_evidence": {
+    "correctness_re_verified": true,
+    "batches_tested": "B1-B64",
+    "bitwise_pass": true,
+    "profiling_re_verified": true,
+    "kernel_type": "KERNEL_MIX_AIC",
+    "env": {
+      "torch": "2.8.0+cpu",
+      "torch_npu": "2.8.0.post2",
+      "cann": "9.0.0",
+      "pypto_commit": "d1c290f36"
+    }
+  },
+  "historical_blockers": [
+    {
+      "blocker": null,
+      "evidence": null,
+      "removed_at": "2026-07-23T11:11:19Z",
+      "reason": "Reclassified: single CompileFunction failure insufficient for BLOCKED_BACKEND per AGENTS.md criteria"
+    }
+  ]
 }

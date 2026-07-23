@@ -101,7 +101,7 @@ def check_cannbot_commit():
 
 
 def check_candidate_diff():
-    """Check that a diff exists from Cannbot base commit to current state"""
+    """Check that a diff exists from Cannbot base commit to current state (committed, staged, and unstaged)"""
     base_commit = None
     try:
         with open(TASK_CONTEXT) as f:
@@ -111,13 +111,32 @@ def check_candidate_diff():
     except Exception:
         pass
     ref = base_commit or "7aa137e"
-    result = subprocess.run(
-        ["git", "diff", f"{ref}..HEAD", "--stat"],
-        capture_output=True, text=True, cwd=PROJECT_ROOT
-    )
-    if result.returncode == 0 and result.stdout.strip():
-        return True, f"Changes since Cannbot base ({ref}):\n{result.stdout.strip()}"
-    return False, f"No changes from Cannbot base ({ref}) to HEAD (not a working repo?)"
+
+    changes = []
+
+    # 1. Committed changes vs base
+    r = subprocess.run(["git", "diff", f"{ref}..HEAD", "--stat"], capture_output=True, text=True, cwd=PROJECT_ROOT)
+    if r.returncode == 0 and r.stdout.strip():
+        changes.append(f"Committed changes (vs {ref}):\n{r.stdout.strip()}")
+
+    # 2. Staged (cached) changes
+    r = subprocess.run(["git", "diff", "--cached", "--stat"], capture_output=True, text=True, cwd=PROJECT_ROOT)
+    if r.returncode == 0 and r.stdout.strip():
+        changes.append(f"Staged changes:\n{r.stdout.strip()}")
+
+    # 3. Unstaged changes
+    r = subprocess.run(["git", "diff", "--stat"], capture_output=True, text=True, cwd=PROJECT_ROOT)
+    if r.returncode == 0 and r.stdout.strip():
+        changes.append(f"Unstaged changes:\n{r.stdout.strip()}")
+
+    # 4. Untracked files
+    r = subprocess.run(["git", "ls-files", "--others", "--exclude-standard"], capture_output=True, text=True, cwd=PROJECT_ROOT)
+    if r.returncode == 0 and r.stdout.strip():
+        changes.append(f"Untracked files:\n{r.stdout.strip()}")
+
+    if changes:
+        return True, "\n".join(changes)
+    return False, f"No changes from Cannbot base ({ref}) to current state (not a working repo?)"
 
 
 def check_npu_queue():

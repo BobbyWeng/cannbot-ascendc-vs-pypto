@@ -1,0 +1,76 @@
+{
+  "operator_name": "div",
+  "current_stage": 7,
+  "stage_status": {
+    "1": "completed",
+    "2": "completed",
+    "3": "completed",
+    "4": "completed",
+    "5": "completed",
+    "6": "completed",
+    "7": "completed"
+  },
+  "stage_retry_count": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 0
+  },
+  "env_check_passed": true,
+  "pypto_commit": "d1c290f36",
+  "env": {
+    "torch": "2.8.0+cpu",
+    "torch_npu": "2.8.0.post2",
+    "cann": "9.0.0",
+    "pypto": "0.2.0 (d1c290f36)"
+  },
+  "correctness": {
+    "status": "PASS",
+    "batches_tested": "B1,B2,B4,B8,B16,B32,B64",
+    "g8_gate": "PASS",
+    "verified_at": "2026-07-23T09:15:04.186755+00:00"
+  },
+  "profiling": {
+    "status": "completed",
+    "batches_profiled": [
+      1,
+      16,
+      2,
+      32,
+      4,
+      64,
+      8
+    ],
+    "per_batch_primary_us": {
+      "B1": 55.128,
+      "B16": 251.79399999999998,
+      "B2": 66.618,
+      "B32": 371.352,
+      "B4": 76.698,
+      "B64": 576.038,
+      "B8": 129.387
+    },
+    "parsed_output": "/tmp/opencode/parsed_results/div_parsed.json",
+    "raw_msprof_base": "/tmp/opencode/prof_results/div",
+    "g10_gate": "PASS",
+    "completed_at": "2026-07-23T09:15:04.186755+00:00"
+  },
+  "last_updated": "2026-07-23T11:11:19Z",
+  "audit_2026_07_23_classification": "PYPTO_NATIVE_PASS",
+  "audit_2026_07_23_evidence": {
+    "correctness_re_verified": true,
+    "batches_tested": "B1-B64",
+    "bitwise_pass": true,
+    "profiling_re_verified": true,
+    "kernel_type": "KERNEL_MIX_AIC",
+    "env": {
+      "torch": "2.8.0+cpu",
+      "torch_npu": "2.8.0.post2",
+      "cann": "9.0.0",
+      "pypto_commit": "d1c290f36"
+    }
+  }
+}

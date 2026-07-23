@@ -1,14 +1,14 @@
 {
   "operator_name": "reduce_sum",
-  "current_stage": 5,
+  "current_stage": 7,
   "stage_status": {
     "1": "completed",
     "2": "completed",
     "3": "completed",
     "4": "completed",
     "5": "completed",
-    "6": "not_started",
-    "7": "not_started"
+    "6": "completed",
+    "7": "completed"
   },
   "stage_retry_count": {
     "1": 0,
@@ -23,7 +23,41 @@
     "last_improvement": 0.0,
     "consecutive_no_improvement": 0
   },
-  "last_updated": "2026-07-16",
+  "last_updated": "2026-07-23T11:11:19Z",
   "pypto_status": "PASS B=1 (FP16 accumulation)",
-  "note": "JIT fix: DT_FP16 rename, pypto.op.sum API. B=1 correctness PASS for all shapes. FP16 accumulation precision (max_diff ~0.06 vs FP32 golden, within FP16 tolerance)."
+  "note": "JIT fix: DT_FP16 rename, pypto.op.sum API. B=1 correctness PASS for all shapes. FP16 accumulation precision (max_diff ~0.06 vs FP32 golden, within FP16 tolerance).",
+  "correctness": {
+    "status": "PASS",
+    "batches": "B1-B64",
+    "tolerance": "atol=0.02 FP16 for 384-element FP32-accumulated reduction",
+    "re_verified_at": "2026-07-23T09:52:46.105537+00:00",
+    "g8_gate": "PASS"
+  },
+  "profiling": {
+    "status": "completed",
+    "kernel_type": "KERNEL_MIX_AIC (FP32 reduction via pypto.op.sum)",
+    "batches_profiled": "B1,B64",
+    "per_batch_primary_us": {
+      "B1": 42.6,
+      "B64": 71.8
+    },
+    "kernels_per_call": 2,
+    "primary_compute_kernel_us": 42.6,
+    "g10_gate": "PASS",
+    "raw_msprof_base": "/tmp/opencode/audit_reduce_sum"
+  },
+  "audit_2026_07_23_classification": "PYPTO_NATIVE_PASS",
+  "audit_2026_07_23_evidence": {
+    "correctness_re_verified": true,
+    "batches_tested": "B1-B64",
+    "bitwise_pass": true,
+    "profiling_re_verified": true,
+    "kernel_type": "KERNEL_MIX_AIC",
+    "env": {
+      "torch": "2.8.0+cpu",
+      "torch_npu": "2.8.0.post2",
+      "cann": "9.0.0",
+      "pypto_commit": "d1c290f36"
+    }
+  }
 }

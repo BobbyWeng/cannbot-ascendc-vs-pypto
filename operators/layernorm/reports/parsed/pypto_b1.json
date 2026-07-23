@@ -1,9 +1,7 @@
 {
   "kernel_count": 1501,
-  "kernels_per_call": 15.01,
   "all_device_kernels_us": 570.098,
   "primary_compute_kernel_us": 2881.38,
-  "primary_compute_type": "KERNEL_AICPU",
   "kernel_names": [
     "KERNEL_AICPU",
     "PYPTO_layernorm_kernel_2d",
@@ -27,5 +25,11 @@
       "mean_us": 3.867
     }
   },
-  "host_events_count": 6187
+  "host_events_count": 6187,
+  "parser_version": "1.0",
+  "all_device_kernels_us_per_call": 5.701,
+  "logical_calls": 100,
+  "kernels_per_logical_call": 15.01,
+  "primary_kernel_type": "KERNEL_AICPU",
+  "primary_kernel_name": "KERNEL_AICPU"
 }

@@ -3,7 +3,7 @@ set -eo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-ALL_OPERATORS=(add div equal expand matmul mul not or reduce_sum relu transpose where)
+ALL_OPERATORS=(add div equal expand matmul mul not or reduce_sum relu transpose where softmax layernorm)
 
 SKIP_SHA256=false
 SKIP_BUILD=false

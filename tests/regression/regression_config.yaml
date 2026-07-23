@@ -11,11 +11,13 @@ operators:
   - relu
   - transpose
   - where
+  - softmax
+  - layernorm
 
 project_root: /mnt/workspace/cannbot_ascendc_vs_pypto
 operator_dir: operators
 dashboard_path: dashboard/dashboard.json
-dashboard_expected_operator_count: 12
+dashboard_expected_operator_count: 14
 
 parsed_json_checks:
   required_fields:
@@ -59,6 +61,8 @@ dashboard_checks:
     - transpose
     - reduce_sum
     - matmul
+    - softmax
+    - layernorm
   profiler_required: true
 
 known_limitations:

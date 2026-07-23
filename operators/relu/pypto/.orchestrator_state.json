@@ -1,6 +1,5 @@
 {
   "operator_name": "relu",
-  "shape": "[B, 12, 256, 32]",
   "current_stage": 7,
   "stage_status": {
     "1": "completed",
@@ -17,13 +16,89 @@
     "3": 0,
     "4": 0,
     "5": 0,
-    "6": 0
+    "6": 0,
+    "7": 0
   },
-  "perf_iteration": {
-    "count": 1,
-    "last_improvement": 0.0,
-    "consecutive_no_improvement": 0
+  "env_check_passed": true,
+  "pypto_commit": "d1c290f36",
+  "env": {
+    "torch": "2.8.0+cpu",
+    "torch_npu": "2.8.0.post2",
+    "cann": "9.0.0",
+    "pypto": "0.2.0 (d1c290f36)"
   },
-  "last_updated": "2026-07-15T17:35:00Z",
-  "note": "Unified 4D shape [B,12,256,32]. All 7 batch sizes bitwise PASS. Ascend C ~6-9 us kernel, PyPTO ~102-150 us (includes JIT dispatch). Reports in reports/final_ascendc_vs_pypto.{md,json,csv}"
+  "correctness": {
+    "status": "PASS",
+    "batches_tested": "B1,B2,B4,B8,B16,B32,B64",
+    "g8_gate": "PASS",
+    "verified_at": "2026-07-23T09:15:04.186755+00:00"
+  },
+  "profiling": {
+    "status": "completed",
+    "batches_profiled": [
+      1,
+      16,
+      2,
+      32,
+      4,
+      64,
+      8
+    ],
+    "per_batch_primary_us": {
+      "B1": 48.759,
+      "B16": 74.328,
+      "B2": 47.269,
+      "B32": 98.55799999999999,
+      "B4": 51.468,
+      "B64": 150.64600000000002,
+      "B8": 56.448
+    },
+    "parsed_output": "/tmp/opencode/parsed_results/relu_parsed.json",
+    "raw_msprof_base": "/tmp/opencode/prof_results/relu",
+    "g10_gate": "PASS",
+    "completed_at": "2026-07-23T09:15:04.186755+00:00"
+  },
+  "last_updated": "2026-07-23T11:11:19Z",
+  "audit": {
+    "re_verify_2026_07_23": {
+      "status": "UNDER_INVESTIGATION",
+      "detail": "B=1 PASS, B>1 FAIL with CompileFunction 'Run pass failed'. Second JIT invocation triggers recompilation failure. May be a JIT state regression from accumulated profiling sessions.",
+      "first_call_ok": true,
+      "second_call_fails": true,
+      "audited_at": "2026-07-23T09:54:45.959360+00:00"
+    }
+  },
+  "audit_2026_07_23_classification": "UNDER_INVESTIGATION_JIT_REGRESSION",
+  "investigation_status": "PENDING",
+  "audit_2026_07_23_evidence": {
+    "b1_standalone_pass": true,
+    "b_gt_1_standalone_fail": true,
+    "error_signature": "CompileFunction: Run pass failed (host_machine.cpp:179)",
+    "hypothesis": "JIT state corruption / tile_fwk global state / shape specialization conflict",
+    "investigation_plan": "Phase 3: 10-matrix isolation test to determine root cause",
+    "env": {
+      "torch": "2.8.0+cpu",
+      "torch_npu": "2.8.0.post2",
+      "cann": "9.0.0",
+      "pypto_commit": "d1c290f36"
+    }
+  },
+  "historical_profiling_status": {
+    "stage_7_completed": true,
+    "batches_profiled": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64
+    ],
+    "note": "All historical profiling data preserved. Regression is in ability to reproduce, not in historical correctness."
+  },
+  "historical_correctness_status": {
+    "stage_5_completed": true,
+    "batches": "B1-B64",
+    "note": "Historical correctness preserved. Current env fails B>1."
+  }
 }

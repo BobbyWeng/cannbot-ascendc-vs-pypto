@@ -4,7 +4,7 @@
   "semantic_class": "ELEMENTWISE",
   "hardware_path": "VECTOR",
   "task_mode": "CONTINUE_DEVELOPMENT",
-  "lifecycle_stage": "RELEASE",
+  "lifecycle_stage": "FINAL_PROFILE",
   "active_plugin": "ops-direct-invoke",
   "active_agent": "ascendc-kernel-architect",
   "required_skills": [
@@ -30,7 +30,7 @@
   "profile_gate": "PASS",
   "release_eligibility": true,
   "next_action": "G13 code review before next release",
-  "last_successful_checkpoint": "Post-RC3 div implementation",
+  "last_successful_checkpoint": "PyPTO Stage 7 profiling completed (2026-07-23T09:15:04.186755+00:00)",
   "pypto_msprof_b1": {
     "primary_compute_kernel_us": 271.18,
     "primary_kernel_name": "PYPTO_div_kernel_2d",
@@ -44,5 +44,30 @@
       "KERNEL_MIX_AIC"
     ],
     "kernel_count": 400
+  },
+  "pypto_profiling": {
+    "status": "completed",
+    "batches_profiled": [
+      1,
+      16,
+      2,
+      32,
+      4,
+      64,
+      8
+    ],
+    "per_batch_primary_us": {
+      "B1": 55.128,
+      "B16": 251.79399999999998,
+      "B2": 66.618,
+      "B32": 371.352,
+      "B4": 76.698,
+      "B64": 576.038,
+      "B8": 129.387
+    },
+    "parsed_output": "/tmp/opencode/parsed_results/div_parsed.json",
+    "raw_msprof_base": "/tmp/opencode/prof_results/div",
+    "g10_gate": "PASS",
+    "completed_at": "2026-07-23T09:15:04.186755+00:00"
   }
 }

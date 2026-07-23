@@ -1,4 +1,5 @@
 {
+  "error": "No device kernels captured for batch_size=1",
   "kernel_count": 0,
   "logical_calls": 100,
   "kernels_per_logical_call": 0.0,

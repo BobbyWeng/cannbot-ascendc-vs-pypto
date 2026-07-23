@@ -2,7 +2,7 @@
   "operator": "matmul",
   "variant": "torch",
   "reference_type": "fp16",
-  "batch_results": [
+  "results": [
     {
       "batch": 1,
       "impl": "torch",
@@ -152,7 +152,8 @@
           "batch": 1
         }
       ],
-      "all_pass": true
+      "all_pass": true,
+      "status": "PASS"
     },
     {
       "batch": 2,
@@ -303,7 +304,8 @@
           "batch": 2
         }
       ],
-      "all_pass": true
+      "all_pass": true,
+      "status": "PASS"
     },
     {
       "batch": 4,
@@ -454,7 +456,8 @@
           "batch": 4
         }
       ],
-      "all_pass": true
+      "all_pass": true,
+      "status": "PASS"
     },
     {
       "batch": 8,
@@ -605,7 +608,8 @@
           "batch": 8
         }
       ],
-      "all_pass": true
+      "all_pass": true,
+      "status": "PASS"
     },
     {
       "batch": 16,
@@ -756,7 +760,8 @@
           "batch": 16
         }
       ],
-      "all_pass": true
+      "all_pass": true,
+      "status": "PASS"
     },
     {
       "batch": 32,
@@ -907,7 +912,8 @@
           "batch": 32
         }
       ],
-      "all_pass": true
+      "all_pass": true,
+      "status": "PASS"
     }
   ],
   "all_pass": true
