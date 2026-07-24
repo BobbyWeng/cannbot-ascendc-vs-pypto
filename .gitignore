@@ -59,3 +59,5 @@ reports/runtime/npu.lock
 
 # Large binaries
 *.bin
+reports/audit/perf_2026-07-23/
+operators/reports/

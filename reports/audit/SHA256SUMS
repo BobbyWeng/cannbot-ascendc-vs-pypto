@@ -1,0 +1,5 @@
+791f73d7b7a4baba22491c3265e2211ed2428c3242fd004bc6959797d954123b  reports/audit/pypto_full_audit_2026-07-24.md
+59fa8d27f7ae6a898f97bab952756ed0ec75f62554441f908970d5e387289765  reports/audit/perf_2026-07-24/host_timing_results.json
+519d90ff9e6457503d9813fd244a73de45f91a9ce08fddc19ce4af67d0c67c05  reports/audit/perf_2026-07-24/perf_measurement_script.py
+cf7c37ee935dba1abdf17c1163be031e5feac34bb921829c94ae607dc9edc7e1  reports/audit/perf_2026-07-24/msprof/softmax_b1/op_summary.csv
+003f0b1cc57636abe701096ee46cbf1ea3ccb44fee2dd7e8d3cf3d43f5262222  reports/audit/perf_2026-07-24/PROVENANCE.md

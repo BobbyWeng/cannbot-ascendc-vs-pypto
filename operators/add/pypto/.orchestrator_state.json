@@ -62,8 +62,8 @@
     "all_device_kernels_us_per_call": 1231.0,
     "note": "3 binary op kernels per logical call (4 inputs = 3 adds). Primary kernel ~38.6us each. Total device time ~1231us per call including AICPU."
   },
-  "last_updated": "2026-07-23T11:11:19Z",
-  "audit_2026_07_23_classification": "PYPTO_NATIVE_PASS",
+  "last_updated": "2026-07-24T09:45:00Z",
+  "audit_2026_07_23_classification": "PYPTO_NATIVE",
   "audit_2026_07_23_evidence": {
     "correctness_re_verified": true,
     "batches_tested": "B1-B64",
@@ -76,5 +76,19 @@
       "cann": "9.0.0",
       "pypto_commit": "d1c290f36"
     }
-  }
+  },
+  "route_variant": "PYPTO_NATIVE",
+  "fresh_reverify": {
+    "ts": "2026-07-23T12:04:27Z",
+    "result": "B1-B64 PASS with designed 4D shape [B,12,256,256]",
+    "kernel": "add_binary (2-arg)",
+    "native_jit": true
+  },
+  "perf_host_timing_us": {
+    "1": 212.9,
+    "8": 267.5,
+    "64": 716.3
+  },
+  "kernels_per_logical_call": 9,
+  "workaround_evaluation": "COMPLETE"
 }

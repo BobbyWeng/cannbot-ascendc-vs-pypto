@@ -58,8 +58,8 @@
     "g10_gate": "PASS",
     "completed_at": "2026-07-23T09:15:04.186755+00:00"
   },
-  "last_updated": "2026-07-23T11:11:19Z",
-  "audit_2026_07_23_classification": "PYPTO_NATIVE_PASS",
+  "last_updated": "2026-07-24T09:50:00Z",
+  "audit_2026_07_23_classification": "PYPTO_HOST_ORCHESTRATED",
   "audit_2026_07_23_evidence": {
     "correctness_re_verified": true,
     "batches_tested": "B1-B64",
@@ -72,5 +72,13 @@
       "cann": "9.0.0",
       "pypto_commit": "d1c290f36"
     }
-  }
+  },
+  "route_variant": "FAIL_ALWAYS",
+  "investigation_status": "UNDER_INVESTIGATION",
+  "fresh_reverify": {
+    "ts": "2026-07-23T12:04:27Z",
+    "result": "B1-B2 PASS with 4D shape [B,12,256,256]/[B,12,256,1]; B64 FAIL (NaN)",
+    "issue": "First dim 768 triggers tiling/broadcast error in div kernel"
+  },
+  "workaround_evaluation": "NEEDS_KERNEL_FIX"
 }

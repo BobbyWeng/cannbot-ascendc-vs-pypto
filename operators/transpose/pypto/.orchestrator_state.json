@@ -23,7 +23,7 @@
     "last_improvement": 0.0,
     "consecutive_no_improvement": 0
   },
-  "last_updated": "2026-07-23T11:11:19Z",
+  "last_updated": "2026-07-24T09:50:00Z",
   "pypto_status": "FIXED (all shapes PASS with tile(64,256))",
   "note": "Tile(64,256) fix from previous diagnosis confirmed working. All 3 tile candidates pass.",
   "env_check_passed": true,
@@ -77,7 +77,7 @@
     "re_verified_at": "2026-07-23T09:28:01.534850+00:00",
     "g8_gate": "PASS"
   },
-  "audit_2026_07_23_classification": "PYPTO_NATIVE_PASS",
+  "audit_2026_07_23_classification": "PYPTO_NATIVE",
   "audit_2026_07_23_evidence": {
     "correctness_re_verified": true,
     "batches_tested": "B1-B64",
@@ -98,5 +98,18 @@
       "removed_at": "2026-07-23T11:11:19Z",
       "reason": "Reclassified: single CompileFunction failure insufficient for BLOCKED_BACKEND per AGENTS.md criteria"
     }
-  ]
+  ],
+  "route_variant": "PYPTO_NATIVE",
+  "fresh_reverify": {
+    "ts": "2026-07-23T12:04:27Z",
+    "result": "B1-B64 PASS with 2D shape [B,256,384]",
+    "native_jit": true
+  },
+  "perf_host_timing_us": {
+    "1": 204.3,
+    "8": 920.1,
+    "64": 6658.8
+  },
+  "kernels_per_logical_call": "B (one per batch element)",
+  "workaround_evaluation": "COMPLETE"
 }

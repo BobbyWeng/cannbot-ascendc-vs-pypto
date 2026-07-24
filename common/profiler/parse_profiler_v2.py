@@ -27,16 +27,20 @@ def classify_kernel(tt):
 
 def main():
     logical_calls = None
-    args = sys.argv[1:]
-    while args and args[0].startswith('--'):
-        if args[0] == '--logical-calls' and len(args) > 1:
-            logical_calls = int(args[1]); args = args[2:]
+    positional = []
+    i = 0
+    while i < len(sys.argv[1:]):
+        arg = sys.argv[1 + i]
+        if arg == '--logical-calls' and i + 1 < len(sys.argv[1:]):
+            logical_calls = int(sys.argv[1 + i + 1]); i += 2
+        elif not arg.startswith('--'):
+            positional.append(arg); i += 1
         else:
-            break
-    if len(args) < 1:
-        print("Usage: parse_profiler_v2.py <raw_dir> [output_json] [--logical-calls N]")
+            i += 1
+    if len(positional) < 1:
+        print("Usage: parse_profiler_v2.py <raw_dir> [output_json] [--logical-calls N]", file=sys.stderr)
         sys.exit(1)
-    raw_dir = args[0]; output = args[1] if len(args) > 1 else None
+    raw_dir = positional[0]; output = positional[1] if len(positional) > 1 else None
 
     prof_dir = find_prof_dir(raw_dir)
     if not prof_dir:
@@ -75,13 +79,8 @@ def main():
     if logical_calls:
         loop_count = logical_calls
     else:
-        # Pick the most numerous compute kernel type as logical calls
+        print("WARNING: --logical-calls not provided, defaulting to 100 loops", file=sys.stderr)
         loop_count = 100
-        best_count = 0
-        for t in ('KERNEL_AIVEC', 'KERNEL_MIX_AIC', 'KERNEL_AIC', 'KERNEL_CUBE'):
-            if t in by_type and len(by_type[t]) > best_count:
-                best_count = len(by_type[t])
-                loop_count = len(by_type[t])
 
     # Per-call total device kernel time
     all_device_kernels_us_per_call = round(total_dur / loop_count, 3) if loop_count else 0

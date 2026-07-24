@@ -23,7 +23,7 @@
     "last_improvement": 0.0,
     "consecutive_no_improvement": 0
   },
-  "last_updated": "2026-07-23T11:11:19Z",
+  "last_updated": "2026-07-23T12:04:27Z",
   "pypto_status": "PASS (one-shot expand via torch.expand().clone(), all 7 batches bitwise)",
   "note": "One-shot fix: replaced per-row Python for-loop (16384 AICPU dispatches) with single torch.expand().clone() call. PyPTO expand_clone limited to 1D. Performance: 4.3s -> 0.05ms (33600x speedup for B=64).",
   "env_check_passed": true,
@@ -36,7 +36,7 @@
   "profiling": {
     "status": "TORCH_FALLBACK",
     "kernel_type": "KERNEL_AIVEC (torch_npu-native BroadcastTo)",
-    "note": "expand_wrapper uses x.expand().clone() — pure torch_npu, NOT PyPTO JIT. Zero MIX_AIC kernels observed. The expand_row JIT kernel exists as reference but is not the active code path. Marked COMPLETE_WITH_LIMITATION.",
+    "note": "expand_wrapper uses x.expand().clone() \u2014 pure torch_npu, NOT PyPTO JIT. Zero MIX_AIC kernels observed. The expand_row JIT kernel exists as reference but is not the active code path. Marked COMPLETE_WITH_LIMITATION.",
     "audit_evidence": "msprof audit confirms 0 KERNEL_MIX_AIC, 100% KERNEL_AIVEC BroadcastTo",
     "audited_at": "2026-07-23T09:52:46.105537+00:00"
   },
@@ -51,7 +51,7 @@
     "pypto_jit_kernel_used": false,
     "msprof_kernel_type": "KERNEL_AIVEC (BroadcastTo)",
     "kernel_mix_aic_observed": 0,
-    "reason": "expand_wrapper bypasses PyPTO JIT — uses pure torch_npu ops. expand_row JIT kernel exists but is not the active path.",
+    "reason": "expand_wrapper bypasses PyPTO JIT \u2014 uses pure torch_npu ops. expand_row JIT kernel exists but is not the active path.",
     "rank_exclusion": "Cannot be included in PyPTO PASS count, G8 coverage, or performance ranking",
     "env": {
       "torch": "2.8.0+cpu",
@@ -67,5 +67,6 @@
       "removed_at": "2026-07-23T11:11:19Z",
       "reason": "Reclassified: single CompileFunction failure insufficient for BLOCKED_BACKEND per AGENTS.md criteria"
     }
-  ]
+  ],
+  "route_variant": "TORCH_FALLBACK"
 }

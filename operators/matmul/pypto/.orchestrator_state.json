@@ -23,9 +23,9 @@
     "last_improvement": 0.0,
     "consecutive_no_improvement": 0
   },
-  "last_updated": "2026-07-23T11:46:02Z",
+  "last_updated": "2026-07-24T09:45:00Z",
   "note": "Stage 5 completed with SPEC.md, API_REPORT.md, matmul_golden.py, DESIGN.md, matmul_impl.py, test_matmul.py. PyPTO matmul API available. Precision verification TBD pending NPU execution.",
-  "audit_2026_07_23_classification": "PYPTO_NATIVE_PASS",
+  "audit_2026_07_23_classification": "PYPTO_HOST_ORCHESTRATED",
   "investigation_status": "RESOLVED",
   "audit_2026_07_23_evidence": {
     "reproduced_in_fresh_process": false,
@@ -83,5 +83,18 @@
     "detail": "TensorAnnotation shape mismatch caused wrong results. Fixed by using pypto.Tensor([], DT_FP16) dynamic shapes for 2D path + per-batch loop for 3D. 4D path unchanged.",
     "stability": "All 2D/3D/4D PASS, max_diff=0.031 (FP16 matmul)",
     "verified_at": "2026-07-23T11:46:02Z"
-  }
+  },
+  "route_variant": "PYPTO_HOST_ORCHESTRATED",
+  "fresh_reverify": {
+    "ts": "2026-07-23T12:04:27Z",
+    "result": "B1-B64 PASS, 2 rounds stable",
+    "native_jit": false
+  },
+  "perf_host_timing_us": {
+    "1": 381.6,
+    "8": 1986.9,
+    "64": 14704.6
+  },
+  "kernels_per_logical_call": "B (per batch for 3D) + 1 (2D/4D)",
+  "workaround_evaluation": "COMPLETE_WITH_LIMITATION"
 }
